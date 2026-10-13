@@ -1,0 +1,1168 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "id": "dec3a798-3eee-41af-b062-efa4f3c3a801",
+  "prevIds": [
+    "9589e100-b5bb-457d-b906-aa0aa4562787"
+  ],
+  "ddl": [
+    {
+      "name": "body_weights",
+      "entityType": "tables"
+    },
+    {
+      "name": "exercise_muscles",
+      "entityType": "tables"
+    },
+    {
+      "name": "exercises",
+      "entityType": "tables"
+    },
+    {
+      "name": "muscles",
+      "entityType": "tables"
+    },
+    {
+      "name": "routine_exercises",
+      "entityType": "tables"
+    },
+    {
+      "name": "routine_sets",
+      "entityType": "tables"
+    },
+    {
+      "name": "routines",
+      "entityType": "tables"
+    },
+    {
+      "name": "workout_exercises",
+      "entityType": "tables"
+    },
+    {
+      "name": "workout_sets",
+      "entityType": "tables"
+    },
+    {
+      "name": "workouts",
+      "entityType": "tables"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "body_weights"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "measured_at",
+      "entityType": "columns",
+      "table": "body_weights"
+    },
+    {
+      "type": "real",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "weight_kg",
+      "entityType": "columns",
+      "table": "body_weights"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "notes",
+      "entityType": "columns",
+      "table": "body_weights"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "body_weights"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "body_weights"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "exercise_id",
+      "entityType": "columns",
+      "table": "exercise_muscles"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "muscle_id",
+      "entityType": "columns",
+      "table": "exercise_muscles"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "role",
+      "entityType": "columns",
+      "table": "exercise_muscles"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "exercises"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "key",
+      "entityType": "columns",
+      "table": "exercises"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "exercises"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "description",
+      "entityType": "columns",
+      "table": "exercises"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "equipment",
+      "entityType": "columns",
+      "table": "exercises"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "tracking_type",
+      "entityType": "columns",
+      "table": "exercises"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "archived_at",
+      "entityType": "columns",
+      "table": "exercises"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "exercises"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "exercises"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "muscles"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "group_key",
+      "entityType": "columns",
+      "table": "muscles"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "0",
+      "generated": null,
+      "name": "sort_order",
+      "entityType": "columns",
+      "table": "muscles"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "routine_exercises"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "routine_id",
+      "entityType": "columns",
+      "table": "routine_exercises"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "exercise_id",
+      "entityType": "columns",
+      "table": "routine_exercises"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "position",
+      "entityType": "columns",
+      "table": "routine_exercises"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "rest_s",
+      "entityType": "columns",
+      "table": "routine_exercises"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "notes",
+      "entityType": "columns",
+      "table": "routine_exercises"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "routine_exercises"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "routine_exercises"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "routine_sets"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "routine_exercise_id",
+      "entityType": "columns",
+      "table": "routine_sets"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "position",
+      "entityType": "columns",
+      "table": "routine_sets"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "'normal'",
+      "generated": null,
+      "name": "set_type",
+      "entityType": "columns",
+      "table": "routine_sets"
+    },
+    {
+      "type": "real",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "weight_kg",
+      "entityType": "columns",
+      "table": "routine_sets"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "reps",
+      "entityType": "columns",
+      "table": "routine_sets"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "duration_s",
+      "entityType": "columns",
+      "table": "routine_sets"
+    },
+    {
+      "type": "real",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "distance_m",
+      "entityType": "columns",
+      "table": "routine_sets"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "routine_sets"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "routine_sets"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "routines"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "routines"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "notes",
+      "entityType": "columns",
+      "table": "routines"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "routines"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "routines"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "workout_exercises"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "workout_id",
+      "entityType": "columns",
+      "table": "workout_exercises"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "exercise_id",
+      "entityType": "columns",
+      "table": "workout_exercises"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "position",
+      "entityType": "columns",
+      "table": "workout_exercises"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "notes",
+      "entityType": "columns",
+      "table": "workout_exercises"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "workout_exercises"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "workout_exercises"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "workout_sets"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "workout_exercise_id",
+      "entityType": "columns",
+      "table": "workout_sets"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "position",
+      "entityType": "columns",
+      "table": "workout_sets"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "'normal'",
+      "generated": null,
+      "name": "set_type",
+      "entityType": "columns",
+      "table": "workout_sets"
+    },
+    {
+      "type": "real",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "weight_kg",
+      "entityType": "columns",
+      "table": "workout_sets"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "reps",
+      "entityType": "columns",
+      "table": "workout_sets"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "duration_s",
+      "entityType": "columns",
+      "table": "workout_sets"
+    },
+    {
+      "type": "real",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "distance_m",
+      "entityType": "columns",
+      "table": "workout_sets"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "completed_at",
+      "entityType": "columns",
+      "table": "workout_sets"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "workout_sets"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "workout_sets"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "workouts"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "routine_id",
+      "entityType": "columns",
+      "table": "workouts"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "workouts"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "started_at",
+      "entityType": "columns",
+      "table": "workouts"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "ended_at",
+      "entityType": "columns",
+      "table": "workouts"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "notes",
+      "entityType": "columns",
+      "table": "workouts"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "workouts"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "workouts"
+    },
+    {
+      "columns": [
+        "exercise_id"
+      ],
+      "tableTo": "exercises",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "nameExplicit": false,
+      "name": "fk_exercise_muscles_exercise_id_exercises_id_fk",
+      "entityType": "fks",
+      "table": "exercise_muscles"
+    },
+    {
+      "columns": [
+        "muscle_id"
+      ],
+      "tableTo": "muscles",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "nameExplicit": false,
+      "name": "fk_exercise_muscles_muscle_id_muscles_id_fk",
+      "entityType": "fks",
+      "table": "exercise_muscles"
+    },
+    {
+      "columns": [
+        "routine_id"
+      ],
+      "tableTo": "routines",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "nameExplicit": false,
+      "name": "fk_routine_exercises_routine_id_routines_id_fk",
+      "entityType": "fks",
+      "table": "routine_exercises"
+    },
+    {
+      "columns": [
+        "exercise_id"
+      ],
+      "tableTo": "exercises",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "nameExplicit": false,
+      "name": "fk_routine_exercises_exercise_id_exercises_id_fk",
+      "entityType": "fks",
+      "table": "routine_exercises"
+    },
+    {
+      "columns": [
+        "routine_exercise_id"
+      ],
+      "tableTo": "routine_exercises",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "nameExplicit": false,
+      "name": "fk_routine_sets_routine_exercise_id_routine_exercises_id_fk",
+      "entityType": "fks",
+      "table": "routine_sets"
+    },
+    {
+      "columns": [
+        "workout_id"
+      ],
+      "tableTo": "workouts",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "nameExplicit": false,
+      "name": "fk_workout_exercises_workout_id_workouts_id_fk",
+      "entityType": "fks",
+      "table": "workout_exercises"
+    },
+    {
+      "columns": [
+        "exercise_id"
+      ],
+      "tableTo": "exercises",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "nameExplicit": false,
+      "name": "fk_workout_exercises_exercise_id_exercises_id_fk",
+      "entityType": "fks",
+      "table": "workout_exercises"
+    },
+    {
+      "columns": [
+        "workout_exercise_id"
+      ],
+      "tableTo": "workout_exercises",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "nameExplicit": false,
+      "name": "fk_workout_sets_workout_exercise_id_workout_exercises_id_fk",
+      "entityType": "fks",
+      "table": "workout_sets"
+    },
+    {
+      "columns": [
+        "routine_id"
+      ],
+      "tableTo": "routines",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "SET NULL",
+      "nameExplicit": false,
+      "name": "fk_workouts_routine_id_routines_id_fk",
+      "entityType": "fks",
+      "table": "workouts"
+    },
+    {
+      "columns": [
+        "exercise_id",
+        "muscle_id"
+      ],
+      "nameExplicit": false,
+      "name": "exercise_muscles_pk",
+      "entityType": "pks",
+      "table": "exercise_muscles"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "body_weights_pk",
+      "table": "body_weights",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "exercises_pk",
+      "table": "exercises",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "muscles_pk",
+      "table": "muscles",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "routine_exercises_pk",
+      "table": "routine_exercises",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "routine_sets_pk",
+      "table": "routine_sets",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "routines_pk",
+      "table": "routines",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "workout_exercises_pk",
+      "table": "workout_exercises",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "workout_sets_pk",
+      "table": "workout_sets",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "workouts_pk",
+      "table": "workouts",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        {
+          "value": "measured_at",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "body_weights_measured_at_idx",
+      "entityType": "indexes",
+      "table": "body_weights"
+    },
+    {
+      "columns": [
+        {
+          "value": "muscle_id",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "exercise_muscles_muscle_id_idx",
+      "entityType": "indexes",
+      "table": "exercise_muscles"
+    },
+    {
+      "columns": [
+        {
+          "value": "routine_id",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "routine_exercises_routine_id_idx",
+      "entityType": "indexes",
+      "table": "routine_exercises"
+    },
+    {
+      "columns": [
+        {
+          "value": "exercise_id",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "routine_exercises_exercise_id_idx",
+      "entityType": "indexes",
+      "table": "routine_exercises"
+    },
+    {
+      "columns": [
+        {
+          "value": "routine_exercise_id",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "routine_sets_routine_exercise_id_idx",
+      "entityType": "indexes",
+      "table": "routine_sets"
+    },
+    {
+      "columns": [
+        {
+          "value": "workout_id",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "workout_exercises_workout_id_idx",
+      "entityType": "indexes",
+      "table": "workout_exercises"
+    },
+    {
+      "columns": [
+        {
+          "value": "exercise_id",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "workout_exercises_exercise_id_idx",
+      "entityType": "indexes",
+      "table": "workout_exercises"
+    },
+    {
+      "columns": [
+        {
+          "value": "workout_exercise_id",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "workout_sets_workout_exercise_id_idx",
+      "entityType": "indexes",
+      "table": "workout_sets"
+    },
+    {
+      "columns": [
+        {
+          "value": "routine_id",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "workouts_routine_id_idx",
+      "entityType": "indexes",
+      "table": "workouts"
+    },
+    {
+      "columns": [
+        {
+          "value": "started_at",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "workouts_started_at_idx",
+      "entityType": "indexes",
+      "table": "workouts"
+    },
+    {
+      "columns": [
+        "key"
+      ],
+      "nameExplicit": false,
+      "name": "exercises_key_unique",
+      "entityType": "uniques",
+      "table": "exercises"
+    },
+    {
+      "value": "role IN ('primary', 'secondary')",
+      "name": "exercise_muscles_role_check",
+      "entityType": "checks",
+      "table": "exercise_muscles"
+    },
+    {
+      "value": "key IS NOT NULL OR name IS NOT NULL",
+      "name": "exercises_key_or_name_check",
+      "entityType": "checks",
+      "table": "exercises"
+    },
+    {
+      "value": "equipment IN ('barbell', 'dumbbell', 'cable', 'machine', 'kettlebells', 'bands', 'medicine_ball', 'exercise_ball', 'foam_roll', 'ez_bar', 'bodyweight', 'other')",
+      "name": "exercises_equipment_check",
+      "entityType": "checks",
+      "table": "exercises"
+    },
+    {
+      "value": "tracking_type IN ('weight_reps', 'bodyweight_reps', 'duration', 'distance_duration')",
+      "name": "exercises_tracking_type_check",
+      "entityType": "checks",
+      "table": "exercises"
+    },
+    {
+      "value": "group_key IN ('chest', 'back', 'shoulders', 'arms', 'neck', 'legs', 'core')",
+      "name": "muscles_group_key_check",
+      "entityType": "checks",
+      "table": "muscles"
+    },
+    {
+      "value": "set_type IN ('normal', 'warmup', 'drop', 'failure')",
+      "name": "routine_sets_set_type_check",
+      "entityType": "checks",
+      "table": "routine_sets"
+    },
+    {
+      "value": "set_type IN ('normal', 'warmup', 'drop', 'failure')",
+      "name": "workout_sets_set_type_check",
+      "entityType": "checks",
+      "table": "workout_sets"
+    }
+  ],
+  "renames": []
+}

@@ -1,17 +1,23 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Index() {
+import { WeekDays } from "@/components/week-days";
+import { globalStyles } from "@/constants/theme";
+import { useTranslation } from "@/i18n";
+import { formatDayHeader } from "@/utils/date";
+
+export default function TodayScreen() {
+  const { t, language } = useTranslation();
+
   return (
-    <View style={styles.container}>
-      <Text>FortApp</Text>
-    </View>
+    <SafeAreaView style={globalStyles.screen} edges={["top"]}>
+      <View>
+        <Text style={globalStyles.subtitle}>
+          {formatDayHeader(new Date(), language)}
+        </Text>
+        <Text style={globalStyles.title}>{t.today.title}</Text>
+      </View>
+      <WeekDays />
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

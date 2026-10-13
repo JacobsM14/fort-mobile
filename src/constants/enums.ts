@@ -30,6 +30,7 @@ export const MUSCLE_GROUPS = [
   "back",
   "shoulders",
   "arms",
+  "neck",
   "legs",
   "core",
 ] as const;

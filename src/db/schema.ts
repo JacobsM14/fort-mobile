@@ -17,9 +17,6 @@ import {
   TRACKING_TYPES,
 } from "@/constants/enums";
 
-// Los ids no tienen valor por defecto: drizzle-kit carga este archivo en Node y
-// no puede importar expo-crypto. Al insertar se pasa `id: newId()` (de ./id).
-
 const timestamps = {
   createdAt: integer("created_at", { mode: "timestamp_ms" })
     .notNull()
@@ -30,8 +27,6 @@ const timestamps = {
     .$onUpdate(() => new Date()),
 };
 
-// CHECK con el nombre de columna sin prefijo de tabla: cuando drizzle-kit
-// recrea una tabla (como "__new_<tabla>"), un nombre cualificado ya no existe.
 function oneOf(column: string, values: readonly string[]) {
   return sql.raw(`${column} IN (${values.map((v) => `'${v}'`).join(", ")})`);
 }
@@ -40,14 +35,21 @@ export const exercises = sqliteTable(
   "exercises",
   {
     id: text("id").primaryKey(),
-    name: text("name").notNull(),
+    // Ejercicios del catálogo: clave estable ("bench_press"); el nombre y la
+    // descripción salen de src/i18n, así un idioma nuevo no toca la BD.
+    key: text("key").unique(),
+    name: text("name"),
+    description: text("description"),
     equipment: text("equipment", { enum: EQUIPMENT }),
     trackingType: text("tracking_type", { enum: TRACKING_TYPES }).notNull(),
-    isCustom: integer("is_custom", { mode: "boolean" }).notNull().default(false),
     archivedAt: integer("archived_at", { mode: "timestamp_ms" }),
     ...timestamps,
   },
   () => [
+    check(
+      "exercises_key_or_name_check",
+      sql.raw("key IS NOT NULL OR name IS NOT NULL"),
+    ),
     check("exercises_equipment_check", oneOf("equipment", EQUIPMENT)),
     check(
       "exercises_tracking_type_check",
