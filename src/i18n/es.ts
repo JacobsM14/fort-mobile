@@ -11,6 +11,28 @@ export const es = {
   today: {
     title: "¿Qué toca hoy?",
   },
+  routines: {
+    title: "Rutinas",
+    subtitle: "Prepáralas una vez y elige la que toque cada día.",
+    add: "Nueva Rutina",
+  },
+  new_routine: {
+    bread_crumb: "Cancelar",
+    title1: "Nueva",
+    title2: "Rutina",
+    nameLabel: "Nombre",
+    namePlaceholder: "Nombre de la rutina",
+    muscleLabel: "Músculo",
+    showMore: "Mostrar más",
+    showLess: "Mostrar menos",
+    exercisesLabel: "Ejercicios",
+    exercisesLabelSecondary: "Arrastra para ordenar",
+    addExercise: "Añadir ejercicio",
+  },
+  new_exercises: {
+    bread_crumb: "Nueva rutina",
+    title: "Ejercicios",
+  },
   exercises: {
     namePlaceholder: "Nombre del ejercicio",
     descriptionPlaceholder: "Descripción (opcional)",

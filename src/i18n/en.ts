@@ -10,6 +10,28 @@ export const en: Translations = {
   today: {
     title: "What's on today?",
   },
+  routines: {
+    title: "Routines",
+    subtitle: "Prepare them once and choose the one for each day.",
+    add: "New Routine",
+  },
+  new_routine: {
+    bread_crumb: "Cancel",
+    title1: "New",
+    title2: "Routine",
+    nameLabel: "Name",
+    namePlaceholder: "Routine name",
+    muscleLabel: "Muscle",
+    showMore: "Show more",
+    showLess: "Show less",
+    exercisesLabel: "Exercises",
+    exercisesLabelSecondary: "Drag to reorder",
+    addExercise: "Add exercise",
+  },
+  new_exercises: {
+    bread_crumb: "New Routine",
+    title: "Exercises",
+  },
   exercises: {
     namePlaceholder: "Exercise name",
     descriptionPlaceholder: "Description (optional)",

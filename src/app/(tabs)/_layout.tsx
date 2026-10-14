@@ -33,10 +33,6 @@ export default function TabsLayout() {
           height: TAB_BAR_HEIGHT + insets.bottom,
           paddingTop: 10,
         },
-        // tabBarItemStyle: {
-        //   flexDirection: "row",
-        //   alignItems: "center",
-        // },
         tabBarLabelStyle: {
           fontFamily: fontsInstrument.medium,
         },
