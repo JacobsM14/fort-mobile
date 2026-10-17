@@ -1,4 +1,9 @@
-import type { TrackingType } from "@/constants/enums";
+import type {
+  AccentColor,
+  Equipment,
+  ThemePreference,
+  TrackingType,
+} from "@/constants/enums";
 import type { ExerciseKey, MuscleId } from "@/features/exercises/catalog";
 
 export const es = {
@@ -15,6 +20,9 @@ export const es = {
     title: "Rutinas",
     subtitle: "Prepáralas una vez y elige la que toque cada día.",
     add: "Nueva Rutina",
+    no_content: "No hay rutinas todavía",
+    exerciseCount: (count: number) =>
+      `${count} ${count === 1 ? "ejercicio" : "ejercicios"}`,
   },
   new_routine: {
     bread_crumb: "Cancelar",
@@ -22,16 +30,104 @@ export const es = {
     title2: "Rutina",
     nameLabel: "Nombre",
     namePlaceholder: "Nombre de la rutina",
-    muscleLabel: "Músculo",
-    showMore: "Mostrar más",
-    showLess: "Mostrar menos",
     exercisesLabel: "Ejercicios",
     exercisesLabelSecondary: "Arrastra para ordenar",
     addExercise: "Añadir ejercicio",
+    removeExercise: "Quitar ejercicio",
+    no_content: "Añade ejercicios para empezar",
+    primaryButton: "Guardar rutina",
+    saveError: "No se ha podido guardar la rutina",
+  },
+  edit_routine: {
+    title1: "Editar",
+    title2: "Rutina",
+    primaryButton: "Guardar cambios",
   },
   new_exercises: {
     bread_crumb: "Nueva rutina",
+    bread_crumb_edit: "Editar rutina",
     title: "Ejercicios",
+    searchPlaceholder: "Buscar ejercicio",
+    clearSearch: "Borrar búsqueda",
+    allMuscles: "Todos",
+    noResults: "No hay ejercicios que coincidan",
+    done: (count: number) =>
+      `Listo · ${count} ${count === 1 ? "seleccionado" : "seleccionados"}`,
+  },
+  profile: {
+    appearance: "Apariencia",
+    themes: {
+      system: "Sistema",
+      light: "Claro",
+      dark: "Oscuro",
+    } satisfies Record<ThemePreference, string>,
+  },
+  settings: {
+    bread_crumb: "perfil",
+    title: "Ajustes",
+    sections: {
+      themes: "Temas",
+      user: "Usuario",
+      privacy: "Privacidad y licencia",
+      permissions: "Permisos",
+      data: "Exportar / Importar",
+      preferences: "Preferencias",
+      exercises: "Gestión de ejercicios",
+      about: "Acerca de",
+    },
+    accent: {
+      label: "Escoge un color",
+      names: {
+        orange: "Naranja",
+        blue: "Azul",
+        green: "Verde",
+        purple: "Morado",
+        pink: "Rosa",
+        amber: "Ámbar",
+      } satisfies Record<AccentColor, string>,
+    },
+  },
+  about: {
+    version: "Versión",
+    contact: "Contacto",
+    rate: "Valorar la app",
+  },
+  privacy: {
+    summary:
+      "Todo lo que registras se guarda solo en este dispositivo. No hay cuentas, servidores, anuncios ni analíticas.",
+    storedTitle: "Qué se guarda",
+    storedIntro: "En la base de datos de la app, dentro de este dispositivo:",
+    stored: [
+      "Tus rutinas y los ejercicios que añades",
+      "Tus entrenamientos, series y pesos",
+      "Tu peso corporal, si lo registras",
+      "Tus preferencias de apariencia (tema y color)",
+    ],
+    notDoneTitle: "Lo que no hace la app",
+    notDone: [
+      "Pedirte una cuenta o datos personales",
+      "Enviar nada a internet",
+      "Usar analíticas ni rastreo",
+      "Mostrar anuncios",
+    ],
+    backupsTitle: "Copias de seguridad",
+    backups:
+      "Si tienes activadas las copias de seguridad del sistema (iCloud o Google), tus datos pueden incluirse en ellas, como los de cualquier otra app. Esas copias dependen de tu cuenta, no de esta app.",
+    deleteTitle: "Borrar tus datos",
+    delete:
+      "Desinstalar la app borra todo lo que tenía guardado en este dispositivo.",
+    changesTitle: "Cambios",
+    changes:
+      "Si una versión futura cambia cómo se tratan tus datos (por ejemplo, para sincronizarlos entre dispositivos), se explicará aquí antes de que ocurra.",
+    contactTitle: "Contacto",
+    contact: "Dudas sobre privacidad",
+    licenseTitle: "Licencia",
+    rightsReserved: "Todos los derechos reservados.",
+    thirdParty: "Software de terceros",
+    imagesTitle: "Imágenes de ejercicios",
+    images:
+      "Las fotos de los ejercicios son del proyecto free-exercise-db, publicado como dominio público.",
+    lastUpdated: "Última actualización",
   },
   exercises: {
     namePlaceholder: "Nombre del ejercicio",
@@ -39,6 +135,12 @@ export const es = {
     add: "Añadir ejercicio",
     saveError: "No se ha podido guardar el ejercicio",
     empty: "Todavía no hay ejercicios",
+    showInfo: "Ver información del ejercicio",
+    noDescription: "Sin descripción",
+    closeInfo: "Cerrar",
+    equipmentLabel: "Material",
+    enlargeImage: "Ampliar foto",
+    closeImage: "Cerrar foto",
     trackingTypes: {
       weight_reps: "Peso + reps",
       bodyweight_reps: "Peso corporal",
@@ -1649,6 +1751,20 @@ export const es = {
     abductors: "Abductores",
     hip_flexors: "Flexores de la cadera",
   } satisfies Record<MuscleId, string>,
+  equipment: {
+    barbell: "Barra",
+    dumbbell: "Mancuernas",
+    cable: "Polea",
+    machine: "Máquina",
+    kettlebells: "Kettlebell",
+    bands: "Bandas",
+    medicine_ball: "Balón medicinal",
+    exercise_ball: "Fitball",
+    foam_roll: "Rodillo de espuma",
+    ez_bar: "Barra Z",
+    bodyweight: "Peso corporal",
+    other: "Otro",
+  } satisfies Record<Equipment, string>,
   errors: {
     database: "Error al preparar la base de datos",
   },

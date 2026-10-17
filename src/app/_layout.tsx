@@ -17,11 +17,32 @@ import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { useDatabase } from "@/db/use-database";
+import { makeStyles, ThemeProvider } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 SplashScreen.preventAutoHideAsync();
 
+// Keeps the tabs underneath when a modal is opened directly (e.g. a deep
+// link), so dismissing it doesn't leave an empty stack.
+export const unstable_settings = {
+  anchor: "(tabs)",
+};
+
+const MODAL_OPTIONS = {
+  presentation: "modal",
+  animation: "slide_from_bottom",
+} as const;
+
 export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <RootNavigator />
+    </ThemeProvider>
+  );
+}
+
+function RootNavigator() {
+  const styles = useStyles();
   const { ready, error } = useDatabase();
   const [fontsLoaded, fontsError] = useFonts({
     InstrumentSans_400Regular,
@@ -48,7 +69,7 @@ export default function RootLayout() {
   if (error) {
     return (
       <View style={styles.container}>
-        <Text>
+        <Text style={styles.errorText}>
           {t.errors.database}: {error.message}
         </Text>
       </View>
@@ -59,15 +80,27 @@ export default function RootLayout() {
     return null;
   }
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="routine/[id]" options={MODAL_OPTIONS} />
+      <Stack.Screen name="settings" options={MODAL_OPTIONS} />
+    </Stack>
+  );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 56,
-    paddingHorizontal: 20,
-  },
-});
+const useStyles = makeStyles(({ colors }) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      paddingVertical: 56,
+      paddingHorizontal: 20,
+      backgroundColor: colors.background,
+    },
+    errorText: {
+      color: colors.text,
+    },
+  }),
+);

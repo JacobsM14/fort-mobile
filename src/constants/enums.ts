@@ -38,3 +38,16 @@ export type MuscleGroup = (typeof MUSCLE_GROUPS)[number];
 
 export const MUSCLE_ROLES = ["primary", "secondary"] as const;
 export type MuscleRole = (typeof MUSCLE_ROLES)[number];
+
+export const THEME_PREFERENCES = ["system", "light", "dark"] as const;
+export type ThemePreference = (typeof THEME_PREFERENCES)[number];
+
+export const ACCENT_COLORS = [
+  "orange",
+  "blue",
+  "green",
+  "purple",
+  "pink",
+  "amber",
+] as const;
+export type AccentColor = (typeof ACCENT_COLORS)[number];

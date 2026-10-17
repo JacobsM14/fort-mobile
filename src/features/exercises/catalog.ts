@@ -1,6 +1,8 @@
 import type { Equipment, MuscleGroup, TrackingType } from "@/constants/enums";
 import type { Translations } from "@/i18n/es";
 
+import { EXERCISE_IMAGES } from "./images";
+
 // Catálogo que trae la app. Aquí solo van datos estables (claves, material,
 // músculos); los textos van en src/i18n, así un idioma nuevo no toca la BD.
 // syncCatalog (./sync-catalog.ts) lo vuelca en SQLite al arrancar.
@@ -34,6 +36,17 @@ export const MUSCLES = [
 ] as const satisfies readonly { id: string; groupKey: MuscleGroup }[];
 
 export type MuscleId = (typeof MUSCLES)[number]["id"];
+
+// Deduplicated because a muscle can be listed under two groups (traps).
+export const MUSCLE_IDS: readonly MuscleId[] = [
+  ...new Set(MUSCLES.map((muscle) => muscle.id)),
+];
+
+const MUSCLE_ID_SET = new Set<string>(MUSCLE_IDS);
+
+export function isMuscleId(id: string): id is MuscleId {
+  return MUSCLE_ID_SET.has(id);
+}
 
 export const EXERCISE_CATALOG = [
   {
@@ -2253,6 +2266,11 @@ export function isExerciseKey(key: string | null): key is ExerciseKey {
   return key !== null && EXERCISE_KEYS.has(key);
 }
 
+export type ExerciseText = {
+  name: string;
+  description: string | null;
+};
+
 export function getExerciseText(
   exercise: {
     key: string | null;
@@ -2260,7 +2278,7 @@ export function getExerciseText(
     description: string | null;
   },
   t: Translations,
-) {
+): ExerciseText {
   const catalog = isExerciseKey(exercise.key)
     ? t.exerciseCatalog[exercise.key]
     : undefined;
@@ -2269,4 +2287,54 @@ export function getExerciseText(
     name: exercise.name ?? catalog?.name ?? exercise.key ?? "",
     description: exercise.description ?? catalog?.description ?? null,
   };
+}
+
+export type ExerciseInfo = ExerciseText & {
+  muscles: string[];
+  equipment: string[];
+  images: readonly number[];
+};
+
+export function getExerciseInfo(
+  exercise: {
+    key: string | null;
+    name: string | null;
+    description: string | null;
+    equipment: Equipment | null;
+    primaryMuscles: readonly MuscleId[];
+    secondaryMuscles: readonly MuscleId[];
+  },
+  t: Translations,
+): ExerciseInfo {
+  return {
+    ...getExerciseText(exercise, t),
+    muscles: [...exercise.primaryMuscles, ...exercise.secondaryMuscles].map(
+      (muscle) => t.muscles[muscle],
+    ),
+    equipment:
+      exercise.equipment === null ? [] : [t.equipment[exercise.equipment]],
+    images: isExerciseKey(exercise.key)
+      ? (EXERCISE_IMAGES[exercise.key] ?? [])
+      : [],
+  };
+}
+
+export function getExerciseDetail(
+  exercise: {
+    equipment: Equipment | null;
+    trackingType: TrackingType;
+    primaryMuscles: readonly MuscleId[];
+  },
+  t: Translations,
+) {
+  const mainMuscle = exercise.primaryMuscles.at(0);
+  const parts = [
+    mainMuscle !== undefined ? t.muscles[mainMuscle] : null,
+    exercise.equipment !== null ? t.equipment[exercise.equipment] : null,
+  ].filter((part) => part !== null);
+
+  // User exercises can have neither, and an empty line would look broken.
+  return parts.length > 0
+    ? parts.join(" · ")
+    : t.exercises.trackingTypes[exercise.trackingType];
 }
