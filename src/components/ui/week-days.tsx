@@ -1,7 +1,7 @@
 import { useCalendars } from "expo-localization";
 import { StyleSheet, Text, View } from "react-native";
 
-import { fontsInstrument, spacing } from "@/constants/theme";
+import { fontsInstrument, fontSizes, radii, spacing } from "@/constants/theme";
 import { makeStyles } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 import { getWeekDays } from "@/utils/date";
@@ -61,19 +61,19 @@ const useStyles = makeStyles(({ colors }) =>
       gap: spacing.xs,
     },
     initial: {
-      fontSize: 13,
+      fontSize: fontSizes.footnote,
       fontFamily: fontsInstrument.medium,
       color: colors.disabled,
     },
     box: {
       width: 36,
       height: 36,
-      borderRadius: 2,
+      borderRadius: radii.sm,
       alignItems: "center",
       justifyContent: "center",
     },
     number: {
-      fontSize: 15,
+      fontSize: fontSizes.label,
     },
     disabledBox: {
       borderWidth: 1,

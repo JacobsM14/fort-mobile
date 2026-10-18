@@ -17,7 +17,7 @@ import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { useDatabase } from "@/db/use-database";
-import { makeStyles, ThemeProvider } from "@/hooks/use-theme";
+import { makeStyles, ThemeProvider, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 SplashScreen.preventAutoHideAsync();
@@ -43,6 +43,7 @@ export default function RootLayout() {
 
 function RootNavigator() {
   const styles = useStyles();
+  const { globalStyles } = useTheme();
   const { ready, error } = useDatabase();
   const [fontsLoaded, fontsError] = useFonts({
     InstrumentSans_400Regular,
@@ -56,7 +57,7 @@ function RootNavigator() {
   });
   const { t } = useTranslation();
 
-  // Si la fuente falla se sigue adelante con la del sistema.
+  // If a font fails to load, carry on with the system font.
   const fontsDone = fontsLoaded || fontsError !== null;
   const done = (ready && fontsDone) || error !== undefined;
 
@@ -68,9 +69,11 @@ function RootNavigator() {
 
   if (error) {
     return (
-      <View style={styles.container}>
+      <View style={[globalStyles.screen, globalStyles.centered]}>
         <Text style={styles.errorText}>
-          {t.errors.database}: {error.message}
+          {__DEV__
+            ? `${t.errors.database}: ${error.message}`
+            : t.errors.database}
         </Text>
       </View>
     );
@@ -91,14 +94,6 @@ function RootNavigator() {
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-      paddingVertical: 56,
-      paddingHorizontal: 20,
-      backgroundColor: colors.background,
-    },
     errorText: {
       color: colors.text,
     },

@@ -11,16 +11,16 @@ export function useDatabase() {
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
-    // Las foreign keys se apagan antes de migrar y se encienden después: las
-    // migraciones van en una transacción (donde el PRAGMA no tiene efecto) y,
-    // si recrean una tabla, su DROP TABLE dispararía el CASCADE (borrando las
-    // filas hijas) o el RESTRICT. Se apagan explícitamente porque con Fast
-    // Refresh la conexión sigue abierta con ellas ya encendidas.
+    // Foreign keys are turned off before migrating and back on afterwards:
+    // migrations run inside a transaction (where the PRAGMA has no effect)
+    // and, when one recreates a table, its DROP TABLE would fire the CASCADE
+    // (deleting child rows) or the RESTRICT. They are turned off explicitly
+    // because with Fast Refresh the connection stays open with them already on.
     expoDb.execSync("PRAGMA foreign_keys = OFF;");
     migrate(db, migrations)
       .then(() => {
         expoDb.execSync("PRAGMA foreign_keys = ON;");
-        // Con las foreign keys ya activas, para que validen los músculos.
+        // Runs once foreign keys are back on, so they validate the muscles.
         syncCatalog();
         setReady(true);
       })

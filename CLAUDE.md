@@ -5,20 +5,24 @@ Mobile app to track gym routines and workouts. Offline-first: all data lives in 
 ## Stack
 
 - React Native with Expo, TypeScript (strict)
-- Local DB: SQLite via expo-sqlite
-- Navigation: <Expo Router | React Navigation>
-- Styles: design tokens (colors, spacing, typography) live in `src/constants/theme.ts`; never hardcode them elsewhere
+- Local DB: SQLite via expo-sqlite, accessed through Drizzle ORM
+- Navigation: Expo Router (file-based routes in `src/app`)
+- Styles: design tokens (colors, `spacing`, `fontSizes`, `lineHeights`, `radii`, `iconSizes`) live in `src/constants/theme.ts`; never hardcode them elsewhere
+- Translations: `src/i18n` (`es.ts` defines the `Translations` type, `en.ts` must match it)
 
 ## Commands
 
 - `npx expo start`: start the app
 - `npx tsc --noEmit`: type check (run before finishing a task)
-- `npm run lint`: lint (if configured)
+- `npm run lint`: lint (ESLint via `expo lint`)
+- `npm run images`: regenerate `src/features/exercises/images.ts` after adding or removing files in `assets/exercises`
 
 ## Architecture
 
-- `src/components`: reusable UI · `src/screens`: screens · `src/hooks`: custom hooks · `src/db`: schema, migrations, repositories · `src/types`: domain types
-- Data flow: components → hooks → repositories → SQLite. UI code never calls SQLite directly. When the API arrives, only the repositories change.
+- `src/app`: routes and screens (Expo Router) · `src/features/<area>`: everything for one area of the app (catalog data, domain types, data access) · `src/components`: reusable UI · `src/hooks`: generic hooks · `src/constants`: theme tokens, enums, app info · `src/utils`: pure helpers · `src/db`: client, schema, migrations
+- `src/features/<area>/queries.ts` is the repository layer: Drizzle queries plus the live-query hooks the UI reads from.
+- Data flow: screens and components → feature hooks and functions → Drizzle → SQLite. UI code never calls SQLite or Drizzle directly (the root layout only runs `useDatabase` to migrate on startup).
+- Offline-first: SQLite stays the source of truth for the UI. When the API arrives, a sync layer writes to SQLite and the UI keeps reading local data; only the feature data layer changes.
 - Domain types are independent of DB row shapes.
 - Use string ids (UUID), not autoincrement, and keep `created_at` / `updated_at` on every table to ease future sync.
 - Schema changes go through versioned migrations.

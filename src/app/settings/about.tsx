@@ -1,11 +1,12 @@
 import Constants from "expo-constants";
-import { Linking, Platform, StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { BackHeader } from "@/components/ui/back-header";
 import { SettingsRow } from "@/components/settings/settings-row";
-import { CONTACT_EMAIL, STORE_URLS } from "@/constants/app-info";
+import { APP_NAME, CONTACT_EMAIL, STORE_URLS } from "@/constants/app-info";
 import { spacing } from "@/constants/theme";
+import { useOpenUrl } from "@/hooks/use-open-url";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
@@ -17,6 +18,7 @@ const storeUrl =
 export default function AboutScreen() {
   const { t } = useTranslation();
   const { globalStyles } = useTheme();
+  const openUrl = useOpenUrl();
   const version = Constants.expoConfig?.version ?? "-";
 
   return (
@@ -34,16 +36,17 @@ export default function AboutScreen() {
         <SettingsRow
           icon={{ ios: "envelope", android: "mail", web: "mail" }}
           label={t.about.contact}
-          onPress={() => Linking.openURL(`mailto:${CONTACT_EMAIL}`)}
+          onPress={() => openUrl(`mailto:${CONTACT_EMAIL}`)}
         />
         {storeUrl !== undefined && (
           <SettingsRow
             icon={{ ios: "star", android: "star", web: "star" }}
             label={t.about.rate}
-            onPress={() => Linking.openURL(storeUrl)}
+            onPress={() => openUrl(storeUrl)}
           />
         )}
       </View>
+      <Text style={globalStyles.subtitle}>{t.about.disclaimer(APP_NAME)}</Text>
     </SafeAreaView>
   );
 }

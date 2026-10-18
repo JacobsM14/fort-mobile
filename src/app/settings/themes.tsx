@@ -1,5 +1,5 @@
 import { ACCENT_COLORS, THEME_PREFERENCES } from "@/constants/enums";
-import { accentColors, spacing } from "@/constants/theme";
+import { accentColors, iconSizes, spacing } from "@/constants/theme";
 import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -82,7 +82,7 @@ export default function ThemesScreen() {
                         web: "check",
                       }}
                       tintColor={shades.onPrimary}
-                      size={18}
+                      size={iconSizes.sm}
                     />
                   )}
                 </View>

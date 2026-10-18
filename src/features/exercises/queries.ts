@@ -19,9 +19,9 @@ export type ExerciseSummary = {
   secondaryMuscles: MuscleId[];
 };
 
-// Ejercicio del usuario: sin key, con el nombre tal cual (no se traduce).
-// Se devuelve la consulta para que quien llame haga await: Drizzle no la
-// ejecuta hasta entonces.
+// User exercise: no key, and the name is stored as typed (not translated).
+// The query is returned so the caller awaits it: Drizzle doesn't run it until
+// then.
 export function createExercise(input: {
   name: string;
   description: string;
@@ -35,8 +35,8 @@ export function createExercise(input: {
   });
 }
 
-// Se vuelve a ejecutar sola cuando cambia la tabla (client.ts abre la base de
-// datos con enableChangeListener).
+// Re-runs by itself when the table changes (client.ts opens the database with
+// enableChangeListener).
 export function useExercises() {
   return useLiveQuery(
     db

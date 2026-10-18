@@ -2,7 +2,7 @@ import { router } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import { Pressable, Text, View } from "react-native";
 
-import { spacing } from "@/constants/theme";
+import { iconSizes, spacing } from "@/constants/theme";
 import { useTheme } from "@/hooks/use-theme";
 
 type BackHeaderProps = {
@@ -19,7 +19,7 @@ export function BackHeader({ backLabel, title }: BackHeaderProps) {
         style={globalStyles.breadCrumbPress}
         onPress={() => router.back()}
         hitSlop={spacing.sm}
-        accessibilityRole="link"
+        accessibilityRole="button"
       >
         <SymbolView
           name={{
@@ -28,7 +28,7 @@ export function BackHeader({ backLabel, title }: BackHeaderProps) {
             web: "chevron_left",
           }}
           tintColor={colors.primary}
-          size={22}
+          size={iconSizes.lg}
         />
         <Text style={globalStyles.breadCrumbText}>{backLabel}</Text>
       </Pressable>

@@ -98,12 +98,40 @@ export const spacing = {
   lg: 24,
 };
 
+export const fontSizes = {
+  caption: 12,
+  footnote: 13,
+  detail: 14,
+  label: 15,
+  body: 16,
+  button: 17,
+  lead: 18,
+  heading: 28,
+  display: 46,
+};
+
+export const lineHeights = {
+  body: 24,
+  lead: 26,
+};
+
+export const radii = {
+  sm: 2,
+  md: 8,
+};
+
+export const iconSizes = {
+  sm: 18,
+  md: 20,
+  lg: 22,
+  xl: 24,
+};
+
 function createGlobalStyles(colors: Colors) {
   return StyleSheet.create({
     screen: {
       flex: 1,
       backgroundColor: colors.background,
-      padding: spacing.md,
       paddingVertical: 56,
       paddingHorizontal: 20,
       gap: 22,
@@ -111,7 +139,6 @@ function createGlobalStyles(colors: Colors) {
     modalScreen: {
       flex: 1,
       backgroundColor: colors.background,
-      padding: spacing.md,
       paddingVertical: 30,
       paddingHorizontal: 20,
       gap: 22,
@@ -128,12 +155,12 @@ function createGlobalStyles(colors: Colors) {
       justifyContent: "center",
     },
     title: {
-      fontSize: 46,
+      fontSize: fontSizes.display,
       fontFamily: fontsInstrument.bold,
       color: colors.text,
     },
     subtitle: {
-      fontSize: 12,
+      fontSize: fontSizes.caption,
       fontFamily: fontsJetBrainsMono.medium,
       color: colors.disabled,
     },
@@ -143,10 +170,9 @@ function createGlobalStyles(colors: Colors) {
       flexDirection: "row",
       alignItems: "center",
       gap: spacing.xs,
-      color: colors.primary,
     },
     breadCrumbText: {
-      fontSize: 15,
+      fontSize: fontSizes.label,
       fontFamily: fontsInstrument.semiBold,
       color: colors.primary,
     },
@@ -156,7 +182,7 @@ function createGlobalStyles(colors: Colors) {
       gap: 6,
     },
     inputLabel: {
-      fontSize: 12,
+      fontSize: fontSizes.caption,
       fontFamily: fontsJetBrainsMono.medium,
       color: colors.disabled,
       letterSpacing: 0.8,
@@ -166,39 +192,38 @@ function createGlobalStyles(colors: Colors) {
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: 2,
+      borderRadius: radii.sm,
       paddingHorizontal: 14,
       boxSizing: "border-box",
-      fontSize: 18,
+      fontSize: fontSizes.lead,
       fontFamily: fontsInstrument.semiBold,
-      fontWeight: "600",
       color: colors.text,
     },
     notPressedButton: {
-      height: 44,
+      minHeight: 44,
       paddingHorizontal: 14,
       justifyContent: "center",
       backgroundColor: "transparent",
       borderWidth: 1,
       borderColor: colors.disabled,
-      borderRadius: 2,
+      borderRadius: radii.sm,
     },
     pressedButton: {
-      height: 44,
+      minHeight: 44,
       paddingHorizontal: 14,
       justifyContent: "center",
       backgroundColor: colors.primary,
       borderWidth: 1,
       borderColor: colors.primary,
-      borderRadius: 2,
+      borderRadius: radii.sm,
     },
     notPressedButtonText: {
-      fontSize: 15,
+      fontSize: fontSizes.label,
       fontFamily: fontsInstrument.semiBold,
       color: colors.disabled,
     },
     pressedButtonText: {
-      fontSize: 15,
+      fontSize: fontSizes.label,
       fontFamily: fontsInstrument.semiBold,
       color: colors.onPrimary,
     },

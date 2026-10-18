@@ -2,7 +2,13 @@ import { SymbolView, type SymbolViewProps } from "expo-symbols";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import type { TrackingType } from "@/constants/enums";
-import { fontsInstrument, spacing } from "@/constants/theme";
+import {
+  fontsInstrument,
+  fontSizes,
+  iconSizes,
+  radii,
+  spacing,
+} from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 const TRACKING_TYPE_ICONS: Record<TrackingType, SymbolViewProps["name"]> = {
@@ -45,7 +51,7 @@ export function ExerciseRow(props: ExerciseRowProps) {
         <SymbolView
           name={TRACKING_TYPE_ICONS[props.trackingType]}
           tintColor={colors.text}
-          size={20}
+          size={iconSizes.md}
         />
       </View>
       <View style={styles.text}>
@@ -71,7 +77,7 @@ export function ExerciseRow(props: ExerciseRowProps) {
             <SymbolView
               name={{ ios: "info.circle", android: "info", web: "info" }}
               tintColor={pressed ? colors.primary : colors.disabled}
-              size={20}
+              size={iconSizes.md}
             />
           )}
         </Pressable>
@@ -91,7 +97,7 @@ export function ExerciseRow(props: ExerciseRowProps) {
             <SymbolView
               name={{ ios: "xmark", android: "close", web: "close" }}
               tintColor={pressed ? colors.primary : colors.disabled}
-              size={18}
+              size={iconSizes.sm}
             />
           )}
         </Pressable>
@@ -114,7 +120,7 @@ export function ExerciseRow(props: ExerciseRowProps) {
                 : { ios: "plus", android: "add", web: "add" }
             }
             tintColor={props.selected ? colors.onPrimary : colors.primary}
-            size={20}
+            size={iconSizes.md}
           />
         </Pressable>
       )}
@@ -139,18 +145,18 @@ const useStyles = makeStyles(({ colors }) =>
       justifyContent: "center",
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: 2,
+      borderRadius: radii.sm,
     },
     text: {
       flex: 1,
     },
     name: {
-      fontSize: 16,
+      fontSize: fontSizes.body,
       fontFamily: fontsInstrument.semiBold,
       color: colors.text,
     },
     detail: {
-      fontSize: 14,
+      fontSize: fontSizes.detail,
       fontFamily: fontsInstrument.medium,
       color: colors.disabled,
     },
@@ -160,7 +166,7 @@ const useStyles = makeStyles(({ colors }) =>
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 1,
-      borderRadius: 2,
+      borderRadius: radii.sm,
     },
     outlineBox: {
       borderColor: colors.border,

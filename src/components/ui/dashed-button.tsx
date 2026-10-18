@@ -1,7 +1,13 @@
 import { SymbolView, type SymbolViewProps } from "expo-symbols";
 import { Pressable, StyleSheet, Text } from "react-native";
 
-import { fontsInstrument, spacing } from "@/constants/theme";
+import {
+  fontsInstrument,
+  fontSizes,
+  iconSizes,
+  radii,
+  spacing,
+} from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 type DashedButtonProps = {
@@ -39,7 +45,7 @@ export function DashedButton({
         return (
           <>
             {icon !== undefined && (
-              <SymbolView name={icon} tintColor={color} size={20} />
+              <SymbolView name={icon} tintColor={color} size={iconSizes.md} />
             )}
             <Text style={[styles.label, { color }]}>{label}</Text>
           </>
@@ -57,8 +63,8 @@ const useStyles = makeStyles(({ colors }) =>
       justifyContent: "center",
       gap: spacing.xs,
       width: "100%",
-      height: 56,
-      borderRadius: 2,
+      minHeight: 56,
+      borderRadius: radii.sm,
       borderWidth: 1.5,
       borderStyle: "dashed",
     },
@@ -66,7 +72,7 @@ const useStyles = makeStyles(({ colors }) =>
       backgroundColor: colors.backgroundSecondary,
     },
     label: {
-      fontSize: 16,
+      fontSize: fontSizes.body,
       fontFamily: fontsInstrument.bold,
     },
   }),

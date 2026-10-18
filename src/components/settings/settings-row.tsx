@@ -1,7 +1,14 @@
 import { SymbolView, type SymbolViewProps } from "expo-symbols";
 import { Pressable, StyleSheet, Text } from "react-native";
 
-import { fontsInstrument, fontsJetBrainsMono, spacing } from "@/constants/theme";
+import {
+  fontsInstrument,
+  fontSizes,
+  fontsJetBrainsMono,
+  iconSizes,
+  radii,
+  spacing,
+} from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 type SettingsRowProps = {
@@ -25,7 +32,11 @@ export function SettingsRow({ icon, label, value, onPress }: SettingsRowProps) {
     >
       {({ pressed }) => (
         <>
-          <SymbolView name={icon} tintColor={colors.primary} size={22} />
+          <SymbolView
+            name={icon}
+            tintColor={colors.primary}
+            size={iconSizes.lg}
+          />
           <Text style={styles.label}>{label}</Text>
           {value !== undefined ? (
             <Text style={styles.value}>{value}</Text>
@@ -38,7 +49,7 @@ export function SettingsRow({ icon, label, value, onPress }: SettingsRowProps) {
                   web: "chevron_right",
                 }}
                 tintColor={pressed ? colors.primary : colors.disabled}
-                size={18}
+                size={iconSizes.sm}
               />
             )
           )}
@@ -59,19 +70,19 @@ const useStyles = makeStyles(({ colors }) =>
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: 2,
+      borderRadius: radii.sm,
     },
     rowPressed: {
       borderColor: colors.primary,
     },
     label: {
       flex: 1,
-      fontSize: 16,
+      fontSize: fontSizes.body,
       fontFamily: fontsInstrument.semiBold,
       color: colors.text,
     },
     value: {
-      fontSize: 14,
+      fontSize: fontSizes.detail,
       fontFamily: fontsJetBrainsMono.medium,
       color: colors.disabled,
     },

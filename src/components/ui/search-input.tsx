@@ -1,7 +1,13 @@
 import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
 
-import { fontsInstrument, spacing } from "@/constants/theme";
+import {
+  fontsInstrument,
+  fontSizes,
+  iconSizes,
+  radii,
+  spacing,
+} from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 type SearchInputProps = {
@@ -25,7 +31,7 @@ export function SearchInput({
       <SymbolView
         name={{ ios: "magnifyingglass", android: "search", web: "search" }}
         tintColor={colors.disabled}
-        size={18}
+        size={iconSizes.sm}
       />
       <TextInput
         style={styles.input}
@@ -52,7 +58,7 @@ export function SearchInput({
               web: "cancel",
             }}
             tintColor={colors.disabled}
-            size={18}
+            size={iconSizes.sm}
           />
         </Pressable>
       )}
@@ -71,12 +77,12 @@ const useStyles = makeStyles(({ colors }) =>
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: 2,
+      borderRadius: radii.sm,
     },
     input: {
       flex: 1,
       height: "100%",
-      fontSize: 16,
+      fontSize: fontSizes.body,
       fontFamily: fontsInstrument.medium,
       color: colors.text,
     },

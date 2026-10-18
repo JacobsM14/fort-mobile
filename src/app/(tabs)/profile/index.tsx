@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { spacing } from "@/constants/theme";
+import { iconSizes, spacing } from "@/constants/theme";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 import { router } from "expo-router";
@@ -28,7 +28,7 @@ export default function ProfileScreen() {
               web: "settings",
             }}
             tintColor={colors.text}
-            size={24}
+            size={iconSizes.xl}
           />
         </Pressable>
       </View>

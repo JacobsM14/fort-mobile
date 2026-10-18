@@ -23,7 +23,7 @@ import { ExerciseInfoSheet } from "@/components/exercises/exercise-info-sheet";
 import { ExerciseRow } from "@/components/exercises/exercise-row";
 import { NoContentBox } from "@/components/ui/no-content-box";
 import { PrimaryButton } from "@/components/ui/primary-button";
-import { fontsJetBrainsMono, spacing } from "@/constants/theme";
+import { iconSizes, spacing } from "@/constants/theme";
 import {
   getExerciseDetail,
   getExerciseInfo,
@@ -90,7 +90,7 @@ export default function RoutineFormScreen() {
           style={globalStyles.breadCrumbPress}
           onPress={() => router.back()}
           hitSlop={spacing.sm}
-          accessibilityRole="link"
+          accessibilityRole="button"
         >
           <SymbolView
             name={{
@@ -99,7 +99,7 @@ export default function RoutineFormScreen() {
               web: "chevron_left",
             }}
             tintColor={colors.primary}
-            size={22}
+            size={iconSizes.lg}
           />
           <Text style={globalStyles.breadCrumbText}>
             {t.new_routine.bread_crumb}
@@ -125,21 +125,9 @@ export default function RoutineFormScreen() {
           />
         </View>
         <Animated.View style={globalStyles.formCage} layout={LAYOUT_TRANSITION}>
-          <View style={styles.labelRow}>
-            <Text style={globalStyles.inputLabel}>
-              {t.new_routine.exercisesLabel} · {selectedExercises.length}
-            </Text>
-            <Text
-              style={{
-                fontFamily: fontsJetBrainsMono.medium,
-                fontSize: 12,
-                color: colors.disabled,
-                letterSpacing: 0.08,
-              }}
-            >
-              {t.new_routine.exercisesLabelSecondary}
-            </Text>
-          </View>
+          <Text style={globalStyles.inputLabel}>
+            {t.new_routine.exercisesLabel} · {selectedExercises.length}
+          </Text>
           {selectedExercises.length === 0 ? (
             <NoContentBox label={t.new_routine.no_content} />
           ) : (
@@ -194,10 +182,5 @@ const styles = StyleSheet.create({
   content: {
     gap: spacing.lg,
     paddingBottom: spacing.lg,
-  },
-  labelRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
   },
 });

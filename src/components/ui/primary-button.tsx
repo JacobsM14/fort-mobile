@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 
-import { fontsInstrument } from "@/constants/theme";
+import { fontsInstrument, fontSizes, radii } from "@/constants/theme";
 import { makeStyles } from "@/hooks/use-theme";
 
 type PrimaryButtonProps = {
@@ -39,8 +39,8 @@ const useStyles = makeStyles(({ colors }) =>
       alignItems: "center",
       justifyContent: "center",
       width: "100%",
-      height: 64,
-      borderRadius: 2,
+      minHeight: 64,
+      borderRadius: radii.sm,
       backgroundColor: colors.primary,
     },
     buttonPressed: {
@@ -50,7 +50,7 @@ const useStyles = makeStyles(({ colors }) =>
       opacity: 0.4,
     },
     label: {
-      fontSize: 17,
+      fontSize: fontSizes.button,
       fontFamily: fontsInstrument.bold,
       color: colors.onPrimary,
     },

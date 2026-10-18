@@ -1,7 +1,13 @@
 import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { fontsInstrument, spacing } from "@/constants/theme";
+import {
+  fontsInstrument,
+  fontSizes,
+  iconSizes,
+  radii,
+  spacing,
+} from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 type RoutineCardProps = {
@@ -37,7 +43,7 @@ export function RoutineCard({ name, detail, onPress }: RoutineCardProps) {
               web: "chevron_right",
             }}
             tintColor={pressed ? colors.primary : colors.disabled}
-            size={18}
+            size={iconSizes.sm}
           />
         </>
       )}
@@ -57,7 +63,7 @@ const useStyles = makeStyles(({ colors }) =>
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: 2,
+      borderRadius: radii.sm,
     },
     cardPressed: {
       borderColor: colors.primary,
@@ -66,12 +72,12 @@ const useStyles = makeStyles(({ colors }) =>
       flex: 1,
     },
     name: {
-      fontSize: 16,
+      fontSize: fontSizes.body,
       fontFamily: fontsInstrument.semiBold,
       color: colors.text,
     },
     detail: {
-      fontSize: 14,
+      fontSize: fontSizes.detail,
       fontFamily: fontsInstrument.medium,
       color: colors.disabled,
     },

@@ -3,20 +3,19 @@ import type { Translations } from "@/i18n/es";
 
 import { EXERCISE_IMAGES } from "./images";
 
-// Catálogo que trae la app. Aquí solo van datos estables (claves, material,
-// músculos); los textos van en src/i18n, así un idioma nuevo no toca la BD.
-// syncCatalog (./sync-catalog.ts) lo vuelca en SQLite al arrancar.
+// Catalog bundled with the app. Only stable data lives here (keys, equipment,
+// muscles); texts live in src/i18n, so a new language never touches the DB.
+// syncCatalog (./sync-catalog.ts) writes it to SQLite on startup.
 
+// The order here is the order of the muscle filter chips. Each muscle belongs
+// to a single group because muscles.id is the table's primary key.
 export const MUSCLES = [
   { id: "chest", groupKey: "chest" },
-  { id: "middle_delts", groupKey: "shoulders" },
   { id: "front_delts", groupKey: "shoulders" },
   { id: "side_delts", groupKey: "shoulders" },
-  { id: "traps", groupKey: "shoulders" },
+  { id: "traps", groupKey: "back" },
   { id: "rear_delts", groupKey: "shoulders" },
   { id: "lats", groupKey: "back" },
-  { id: "traps", groupKey: "back" },
-  { id: "erector_spinae", groupKey: "back" },
   { id: "biceps", groupKey: "arms" },
   { id: "triceps", groupKey: "arms" },
   { id: "abs", groupKey: "core" },
@@ -24,7 +23,6 @@ export const MUSCLES = [
   { id: "lower_back", groupKey: "core" },
   { id: "glutes", groupKey: "core" },
   { id: "hamstrings", groupKey: "legs" },
-  { id: "quadriceps", groupKey: "legs" },
   { id: "calves", groupKey: "legs" },
   { id: "quads", groupKey: "legs" },
   { id: "upper_back", groupKey: "back" },
@@ -37,10 +35,9 @@ export const MUSCLES = [
 
 export type MuscleId = (typeof MUSCLES)[number]["id"];
 
-// Deduplicated because a muscle can be listed under two groups (traps).
-export const MUSCLE_IDS: readonly MuscleId[] = [
-  ...new Set(MUSCLES.map((muscle) => muscle.id)),
-];
+export const MUSCLE_IDS: readonly MuscleId[] = MUSCLES.map(
+  (muscle) => muscle.id,
+);
 
 const MUSCLE_ID_SET = new Set<string>(MUSCLE_IDS);
 
@@ -308,7 +305,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["chest"],
     secondaryMuscles: ["front_delts", "triceps"],
   },
-  // Hombros
+  // Shoulders
   {
     key: "overhead_press",
     equipment: "barbell",
@@ -484,7 +481,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["front_delts"],
     secondaryMuscles: ["triceps", "traps", "abs"],
   },
-  // Deltoides posterior y manguito rotador
+  // Rear delts and rotator cuff
   {
     key: "rear_delt_fly",
     equipment: "dumbbell",
@@ -555,7 +552,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["rear_delts"],
     secondaryMuscles: ["upper_back"],
   },
-  // Trapecios
+  // Traps
   {
     key: "upright_row",
     equipment: "barbell",
@@ -598,7 +595,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["traps"],
     secondaryMuscles: ["forearms"],
   },
-  // Espalda: dominadas y jalones
+  // Back: pull-ups and pulldowns
   {
     key: "pull_up",
     equipment: "bodyweight",
@@ -711,7 +708,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["lats"],
     secondaryMuscles: ["triceps", "rear_delts"],
   },
-  // Espalda: remos
+  // Back: rows
   {
     key: "barbell_row",
     equipment: "barbell",
@@ -852,7 +849,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["upper_back", "lats"],
     secondaryMuscles: ["biceps", "rear_delts"],
   },
-  // Cadena posterior y lumbares
+  // Posterior chain and lower back
   {
     key: "deadlift",
     equipment: "barbell",
@@ -958,7 +955,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["lower_back", "glutes"],
     secondaryMuscles: ["abs", "front_delts"],
   },
-  // Bíceps
+  // Biceps
   {
     key: "barbell_curl",
     equipment: "barbell",
@@ -1078,7 +1075,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
   },
-  // Antebrazos y agarre
+  // Forearms and grip
   {
     key: "reverse_curl",
     equipment: "barbell",
@@ -1121,7 +1118,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["obliques"],
     secondaryMuscles: ["forearms", "traps", "abs"],
   },
-  // Tríceps
+  // Triceps
   {
     key: "triceps_pushdown",
     equipment: "cable",
@@ -1220,7 +1217,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
   },
-  // Cuádriceps y sentadillas
+  // Quads and squats
   {
     key: "back_squat",
     equipment: "barbell",
@@ -1382,7 +1379,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["quads"],
     secondaryMuscles: ["hip_flexors"],
   },
-  // Zancadas y unilaterales
+  // Lunges and single-leg work
   {
     key: "lunge",
     equipment: "dumbbell",
@@ -1467,7 +1464,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["quads", "glutes", "adductors"],
     secondaryMuscles: ["hamstrings"],
   },
-  // Isquiotibiales
+  // Hamstrings
   {
     key: "lying_leg_curl",
     equipment: "machine",
@@ -1510,7 +1507,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["hamstrings", "glutes"],
     secondaryMuscles: ["lower_back", "calves"],
   },
-  // Glúteos
+  // Glutes
   {
     key: "hip_thrust",
     equipment: "barbell",
@@ -1616,7 +1613,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["glutes", "hamstrings"],
     secondaryMuscles: ["lower_back", "obliques", "forearms"],
   },
-  // Abductores y aductores
+  // Abductors and adductors
   {
     key: "hip_abduction_machine",
     equipment: "machine",
@@ -1680,7 +1677,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["adductors"],
     secondaryMuscles: ["obliques", "abs"],
   },
-  // Gemelos
+  // Calves
   {
     key: "standing_calf_raise",
     equipment: "machine",
@@ -1737,7 +1734,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
   },
-  // Abdominales
+  // Abs
   {
     key: "crunch",
     equipment: "bodyweight",
@@ -1850,7 +1847,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["abs"],
     secondaryMuscles: ["hip_flexors", "lats", "upper_back"],
   },
-  // Isométricos y estabilidad
+  // Isometrics and stability
   {
     key: "plank",
     equipment: "bodyweight",
@@ -1900,7 +1897,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["abs"],
     secondaryMuscles: ["front_delts", "quads", "triceps"],
   },
-  // Oblicuos y rotación
+  // Obliques and rotation
   {
     key: "oblique_crunch",
     equipment: "bodyweight",
@@ -1978,7 +1975,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["obliques"],
     secondaryMuscles: ["abs", "front_delts"],
   },
-  // Cuello
+  // Neck
   {
     key: "neck_flexion",
     equipment: "other",
@@ -2000,7 +1997,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["neck"],
     secondaryMuscles: ["traps"],
   },
-  // Olímpicos y funcionales
+  // Olympic and functional lifts
   {
     key: "power_clean",
     equipment: "barbell",
@@ -2106,7 +2103,7 @@ export const EXERCISE_CATALOG = [
     primaryMuscles: ["quads", "glutes", "front_delts"],
     secondaryMuscles: ["triceps", "abs"],
   },
-  // Pliometría y acondicionamiento
+  // Plyometrics and conditioning
   {
     key: "box_jump",
     equipment: "bodyweight",
@@ -2260,8 +2257,8 @@ export type ExerciseKey = (typeof EXERCISE_CATALOG)[number]["key"];
 
 const EXERCISE_KEYS = new Set<string>(EXERCISE_CATALOG.map((e) => e.key));
 
-// La BD puede tener una key que ya no está en el catálogo (se quitó en una
-// versión nueva de la app pero sigue en el historial).
+// The DB can hold a key that is no longer in the catalog (removed in a newer
+// app version but still in the user's history).
 export function isExerciseKey(key: string | null): key is ExerciseKey {
   return key !== null && EXERCISE_KEYS.has(key);
 }

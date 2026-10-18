@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import { fontsInstrument, spacing } from "@/constants/theme";
+import { fontsInstrument, radii, spacing } from "@/constants/theme";
 import { makeStyles } from "@/hooks/use-theme";
 
 type NoContentBoxProps = {
-  label?: string;
+  label: string;
 };
 
-export function NoContentBox({ label = "No Content" }: NoContentBoxProps) {
+export function NoContentBox({ label }: NoContentBoxProps) {
   const styles = useStyles();
 
   return (
@@ -28,7 +28,7 @@ const useStyles = makeStyles(({ colors }) =>
     container: {
       height: 300,
       backgroundColor: colors.background,
-      borderRadius: 8,
+      borderRadius: radii.md,
       alignItems: "center",
       gap: spacing.sm,
     },

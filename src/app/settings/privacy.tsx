@@ -1,17 +1,25 @@
 import type { ReactNode } from "react";
-import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { SettingsRow } from "@/components/settings/settings-row";
 import { BackHeader } from "@/components/ui/back-header";
 import { CornerFrame } from "@/components/ui/corner-frame";
 import {
+  APP_NAME,
   CONTACT_EMAIL,
   COPYRIGHT,
   EXERCISE_IMAGES_SOURCE,
   PRIVACY_UPDATED_AT,
 } from "@/constants/app-info";
-import { fontsInstrument, fontsJetBrainsMono, spacing } from "@/constants/theme";
+import {
+  fontsInstrument,
+  fontSizes,
+  fontsJetBrainsMono,
+  lineHeights,
+  spacing,
+} from "@/constants/theme";
+import { useOpenUrl } from "@/hooks/use-open-url";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
@@ -29,6 +37,7 @@ export default function PrivacyScreen() {
   const { t, language } = useTranslation();
   const { globalStyles } = useTheme();
   const styles = useStyles();
+  const openUrl = useOpenUrl();
 
   return (
     <SafeAreaView style={globalStyles.screen} edges={["top"]}>
@@ -41,7 +50,7 @@ export default function PrivacyScreen() {
         showsVerticalScrollIndicator={false}
       >
         <CornerFrame style={styles.summary}>
-          <Text style={styles.summaryText}>{t.privacy.summary}</Text>
+          <Text style={styles.summaryText}>{t.privacy.summary(APP_NAME)}</Text>
         </CornerFrame>
 
         <Section title={t.privacy.storedTitle}>
@@ -49,6 +58,7 @@ export default function PrivacyScreen() {
           {t.privacy.stored.map((item) => (
             <Bullet key={item} text={item} />
           ))}
+          <Text style={styles.body}>{t.privacy.security}</Text>
         </Section>
 
         <Section title={t.privacy.notDoneTitle}>
@@ -73,7 +83,7 @@ export default function PrivacyScreen() {
           <SettingsRow
             icon={{ ios: "envelope", android: "mail", web: "mail" }}
             label={t.privacy.contact}
-            onPress={() => Linking.openURL(`mailto:${CONTACT_EMAIL}`)}
+            onPress={() => openUrl(`mailto:${CONTACT_EMAIL}`)}
           />
         </Section>
 
@@ -95,8 +105,7 @@ export default function PrivacyScreen() {
           <SettingsRow
             icon={{ ios: "photo", android: "image", web: "image" }}
             label={EXERCISE_IMAGES_SOURCE.name}
-            value={EXERCISE_IMAGES_SOURCE.license}
-            onPress={() => Linking.openURL(EXERCISE_IMAGES_SOURCE.url)}
+            onPress={() => openUrl(EXERCISE_IMAGES_SOURCE.url)}
           />
         </Section>
 
@@ -136,7 +145,6 @@ function Bullet({ text }: { text: string }) {
   );
 }
 
-const BODY_LINE_HEIGHT = 24;
 const BULLET_SIZE = 6;
 
 const useStyles = makeStyles(({ colors }) =>
@@ -152,8 +160,8 @@ const useStyles = makeStyles(({ colors }) =>
       padding: spacing.md,
     },
     summaryText: {
-      fontSize: 18,
-      lineHeight: 26,
+      fontSize: fontSizes.lead,
+      lineHeight: lineHeights.lead,
       fontFamily: fontsInstrument.semiBold,
       color: colors.text,
     },
@@ -161,8 +169,8 @@ const useStyles = makeStyles(({ colors }) =>
       gap: spacing.sm,
     },
     body: {
-      fontSize: 16,
-      lineHeight: BODY_LINE_HEIGHT,
+      fontSize: fontSizes.body,
+      lineHeight: lineHeights.body,
       fontFamily: fontsInstrument.regular,
       color: colors.text,
     },
@@ -174,7 +182,7 @@ const useStyles = makeStyles(({ colors }) =>
     bulletMark: {
       width: BULLET_SIZE,
       height: BULLET_SIZE,
-      marginTop: (BODY_LINE_HEIGHT - BULLET_SIZE) / 2,
+      marginTop: (lineHeights.body - BULLET_SIZE) / 2,
       backgroundColor: colors.primary,
     },
     bulletText: {
@@ -191,12 +199,12 @@ const useStyles = makeStyles(({ colors }) =>
     },
     licenseName: {
       flex: 1,
-      fontSize: 15,
+      fontSize: fontSizes.label,
       fontFamily: fontsInstrument.medium,
       color: colors.text,
     },
     licenseValue: {
-      fontSize: 13,
+      fontSize: fontSizes.footnote,
       fontFamily: fontsJetBrainsMono.medium,
       color: colors.disabled,
     },

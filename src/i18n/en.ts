@@ -25,7 +25,6 @@ export const en: Translations = {
     nameLabel: "Name",
     namePlaceholder: "Routine name",
     exercisesLabel: "Exercises",
-    exercisesLabelSecondary: "Drag to reorder",
     addExercise: "Add exercise",
     removeExercise: "Remove exercise",
     no_content: "Add exercises to get started",
@@ -61,7 +60,7 @@ export const en: Translations = {
     sections: {
       themes: "Themes",
       user: "User",
-      privacy: "Privacy and license",
+      privacy: "Privacy policy and licenses",
       permissions: "Permissions",
       data: "Export / Import",
       preferences: "Preferences",
@@ -84,10 +83,12 @@ export const en: Translations = {
     version: "Version",
     contact: "Contact",
     rate: "Rate the app",
+    disclaimer: (appName) =>
+      `${appName} is not a medical device and does not diagnose, treat, cure or prevent any medical condition. Talk to a healthcare professional before starting an exercise program.`,
   },
   privacy: {
-    summary:
-      "Everything you log is stored only on this device. There are no accounts, servers, ads or analytics.",
+    summary: (appName) =>
+      `${appName} stores everything you log only on this device. There are no accounts, servers, ads or analytics.`,
     storedTitle: "What is stored",
     storedIntro: "In the app's database, on this device:",
     stored: [
@@ -96,6 +97,8 @@ export const en: Translations = {
       "Your body weight, if you log it",
       "Your appearance preferences (theme and color)",
     ],
+    security:
+      "This data lives in the app's private storage, which the system keeps other apps from accessing.",
     notDoneTitle: "What the app doesn't do",
     notDone: [
       "Ask you for an account or personal details",
@@ -117,8 +120,7 @@ export const en: Translations = {
     rightsReserved: "All rights reserved.",
     thirdParty: "Third-party software",
     imagesTitle: "Exercise images",
-    images:
-      "Exercise photos come from the free-exercise-db project, released into the public domain.",
+    images: "Exercise photos come from the free-exercise-db project.",
     lastUpdated: "Last updated",
   },
   exercises: {
@@ -1735,10 +1737,7 @@ export const en: Translations = {
     obliques: "Obliques",
     rear_delts: "Rear delts",
     neck: "Neck",
-    middle_delts: "Middle delts",
-    erector_spinae: "Erector spinae",
     lower_back: "Lower back",
-    quadriceps: "Quadriceps",
     upper_back: "Upper back",
     adductors: "Adductors",
     abductors: "Abductors",
@@ -1759,6 +1758,7 @@ export const en: Translations = {
     other: "Other",
   },
   errors: {
-    database: "Error setting up the database",
+    database: "Couldn't load your data. Close the app and open it again.",
+    openUrl: "Couldn't open the link",
   },
 };

@@ -4,6 +4,7 @@ import {
   BackHandler,
   Keyboard,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -11,9 +12,15 @@ import {
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 import { CornerFrame } from "@/components/ui/corner-frame";
-import { fontsInstrument, spacing } from "@/constants/theme";
+import {
+  fontsInstrument,
+  fontSizes,
+  lineHeights,
+  radii,
+  spacing,
+} from "@/constants/theme";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
-import { makeStyles, useTheme } from "@/hooks/use-theme";
+import { makeStyles } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 type ExerciseInfoSheetProps = {
@@ -28,7 +35,6 @@ export function ExerciseInfoSheet({
   const { t } = useTranslation();
   const styles = useStyles();
   const open = exercise !== null;
-  const { colors } = useTheme();
   const [zoomedImage, setZoomedImage] = useState<number | null>(null);
 
   function close() {
@@ -80,57 +86,58 @@ export function ExerciseInfoSheet({
         accessibilityViewIsModal
       >
         <View style={styles.panel}>
+          {/* The ScrollView sits inside the frame so it doesn't clip the
+              corners, which are drawn outside the content. */}
           <CornerFrame style={styles.content}>
-            <Text style={styles.title}>{exercise.name}</Text>
-            <View
-              style={{
-                height: 1,
-                width: "100%",
-                backgroundColor: colors.primary,
-              }}
-            />
-            {exercise.muscles.length > 0 && (
-              <View style={styles.muscles}>
-                {exercise.muscles.map((muscle) => (
-                  <View key={muscle} style={styles.muscleChip}>
-                    <Text style={styles.muscleText}>{muscle}</Text>
-                  </View>
-                ))}
-              </View>
-            )}
-            <Text style={styles.description}>
-              {exercise.description ?? t.exercises.noDescription}
-            </Text>
-            {exercise.images.length > 0 && (
-              <View style={styles.images}>
-                {exercise.images.map((image) => (
-                  <Pressable
-                    key={image}
-                    style={({ pressed }) => [
-                      styles.imageButton,
-                      pressed && styles.imageButtonPressed,
-                    ]}
-                    onPress={() => setZoomedImage(image)}
-                    accessibilityRole="imagebutton"
-                    accessibilityLabel={t.exercises.enlargeImage}
-                  >
-                    <Image
-                      source={image}
-                      style={styles.image}
-                      contentFit="contain"
-                    />
-                  </Pressable>
-                ))}
-              </View>
-            )}
-            {exercise.equipment.length > 0 && (
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              showsVerticalScrollIndicator={false}
+            >
+              <Text style={styles.title}>{exercise.name}</Text>
+              <View style={styles.divider} />
+              {exercise.muscles.length > 0 && (
+                <View style={styles.muscles}>
+                  {exercise.muscles.map((muscle) => (
+                    <View key={muscle} style={styles.muscleChip}>
+                      <Text style={styles.muscleText}>{muscle}</Text>
+                    </View>
+                  ))}
+                </View>
+              )}
               <Text style={styles.description}>
-                <Text style={styles.equipmentLabel}>
-                  {t.exercises.equipmentLabel}:
-                </Text>{" "}
-                {exercise.equipment.join(", ")}
+                {exercise.description ?? t.exercises.noDescription}
               </Text>
-            )}
+              {exercise.images.length > 0 && (
+                <View style={styles.images}>
+                  {exercise.images.map((image) => (
+                    <Pressable
+                      key={image}
+                      style={({ pressed }) => [
+                        styles.imageButton,
+                        pressed && styles.imageButtonPressed,
+                      ]}
+                      onPress={() => setZoomedImage(image)}
+                      accessibilityRole="imagebutton"
+                      accessibilityLabel={t.exercises.enlargeImage}
+                    >
+                      <Image
+                        source={image}
+                        style={styles.image}
+                        contentFit="contain"
+                      />
+                    </Pressable>
+                  ))}
+                </View>
+              )}
+              {exercise.equipment.length > 0 && (
+                <Text style={styles.description}>
+                  <Text style={styles.equipmentLabel}>
+                    {t.exercises.equipmentLabel}:
+                  </Text>{" "}
+                  {exercise.equipment.join(", ")}
+                </Text>
+              )}
+            </ScrollView>
           </CornerFrame>
         </View>
       </Animated.View>
@@ -185,17 +192,24 @@ const useStyles = makeStyles(({ colors }) =>
       borderColor: colors.primary,
     },
     content: {
-      flexGrow: 1,
+      flex: 1,
+    },
+    scrollContent: {
       gap: spacing.sm,
     },
     title: {
-      fontSize: 28,
+      fontSize: fontSizes.heading,
       fontFamily: fontsInstrument.bold,
       color: colors.text,
     },
+    divider: {
+      height: 1,
+      width: "100%",
+      backgroundColor: colors.primary,
+    },
     description: {
-      fontSize: 14,
-      lineHeight: 24,
+      fontSize: fontSizes.detail,
+      lineHeight: lineHeights.body,
       fontFamily: fontsInstrument.regular,
       color: colors.text,
     },
@@ -212,11 +226,11 @@ const useStyles = makeStyles(({ colors }) =>
       paddingVertical: spacing.xs,
       borderWidth: 1,
       borderColor: colors.primary,
-      borderRadius: 2,
+      borderRadius: radii.sm,
       backgroundColor: colors.background,
     },
     muscleText: {
-      fontSize: 12,
+      fontSize: fontSizes.caption,
       fontFamily: fontsInstrument.medium,
       color: colors.text,
     },
@@ -233,7 +247,7 @@ const useStyles = makeStyles(({ colors }) =>
     image: {
       width: "100%",
       aspectRatio: 3 / 2,
-      borderRadius: 2,
+      borderRadius: radii.sm,
       backgroundColor: colors.background,
     },
     zoomBackdrop: {

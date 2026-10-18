@@ -31,7 +31,6 @@ export const es = {
     nameLabel: "Nombre",
     namePlaceholder: "Nombre de la rutina",
     exercisesLabel: "Ejercicios",
-    exercisesLabelSecondary: "Arrastra para ordenar",
     addExercise: "Añadir ejercicio",
     removeExercise: "Quitar ejercicio",
     no_content: "Añade ejercicios para empezar",
@@ -68,7 +67,7 @@ export const es = {
     sections: {
       themes: "Temas",
       user: "Usuario",
-      privacy: "Privacidad y licencia",
+      privacy: "Política de privacidad y licencias",
       permissions: "Permisos",
       data: "Exportar / Importar",
       preferences: "Preferencias",
@@ -91,10 +90,12 @@ export const es = {
     version: "Versión",
     contact: "Contacto",
     rate: "Valorar la app",
+    disclaimer: (appName: string) =>
+      `${appName} no es un dispositivo médico y no diagnostica, trata, cura ni previene ninguna enfermedad. Consulta con un profesional sanitario antes de empezar un programa de ejercicio.`,
   },
   privacy: {
-    summary:
-      "Todo lo que registras se guarda solo en este dispositivo. No hay cuentas, servidores, anuncios ni analíticas.",
+    summary: (appName: string) =>
+      `${appName} guarda todo lo que registras solo en este dispositivo. No hay cuentas, servidores, anuncios ni analíticas.`,
     storedTitle: "Qué se guarda",
     storedIntro: "En la base de datos de la app, dentro de este dispositivo:",
     stored: [
@@ -103,6 +104,8 @@ export const es = {
       "Tu peso corporal, si lo registras",
       "Tus preferencias de apariencia (tema y color)",
     ],
+    security:
+      "Estos datos están en el almacenamiento privado de la app, al que el sistema no deja acceder a otras apps.",
     notDoneTitle: "Lo que no hace la app",
     notDone: [
       "Pedirte una cuenta o datos personales",
@@ -126,7 +129,7 @@ export const es = {
     thirdParty: "Software de terceros",
     imagesTitle: "Imágenes de ejercicios",
     images:
-      "Las fotos de los ejercicios son del proyecto free-exercise-db, publicado como dominio público.",
+      "Las fotos de los ejercicios proceden del proyecto free-exercise-db.",
     lastUpdated: "Última actualización",
   },
   exercises: {
@@ -334,7 +337,7 @@ export const es = {
       description:
         "Con la banda rodeando la espalda y los extremos en las manos, empuja hacia delante hasta estirar los brazos y vuelve con control.",
     },
-    // Hombros
+    // Shoulders
     overhead_press: {
       name: "Press militar",
       description:
@@ -460,7 +463,7 @@ export const es = {
       description:
         "En posición invertida con los pies apoyados en la pared y los brazos estirados, mantén la postura.",
     },
-    // Deltoides posterior y manguito rotador
+    // Rear delts and rotator cuff
     rear_delt_fly: {
       name: "Pájaros con mancuernas",
       description:
@@ -511,7 +514,7 @@ export const es = {
       description:
         "Con el codo pegado al cuerpo y flexionado a 90° y la banda anclada a un lado, gira el antebrazo hacia fuera y vuelve despacio.",
     },
-    // Trapecios
+    // Traps
     upright_row: {
       name: "Remo al mentón con barra",
       description:
@@ -542,7 +545,7 @@ export const es = {
       description:
         "De pie dentro de la barra hexagonal, sube los hombros hacia las orejas, mantén un instante y baja.",
     },
-    // Espalda: dominadas y jalones
+    // Back: pull-ups and pulldowns
     pull_up: {
       name: "Dominadas",
       description:
@@ -623,7 +626,7 @@ export const es = {
       description:
         "Con la banda anclada en alto, tira hacia abajo con los brazos casi estirados hasta llevar las manos a los muslos.",
     },
-    // Espalda: remos
+    // Back: rows
     barbell_row: {
       name: "Remo con barra",
       description:
@@ -724,7 +727,7 @@ export const es = {
       description:
         "Sentado con la banda alrededor de los pies, tira de los extremos hacia el abdomen juntando los omóplatos.",
     },
-    // Cadena posterior y lumbares
+    // Posterior chain and lower back
     deadlift: {
       name: "Peso muerto",
       description:
@@ -800,7 +803,7 @@ export const es = {
       description:
         "A cuatro apoyos, extiende un brazo y la pierna contraria manteniendo la espalda neutra y alterna los lados.",
     },
-    // Bíceps
+    // Biceps
     barbell_curl: {
       name: "Curl con barra",
       description:
@@ -886,7 +889,7 @@ export const es = {
       description:
         "Pisando la banda con los pies, flexiona los codos para subir las manos hasta los hombros y baja con control.",
     },
-    // Antebrazos y agarre
+    // Forearms and grip
     reverse_curl: {
       name: "Curl inverso",
       description:
@@ -917,7 +920,7 @@ export const es = {
       description:
         "Camina con una mancuerna pesada en una sola mano sin inclinar el torso hacia ningún lado.",
     },
-    // Tríceps
+    // Triceps
     triceps_pushdown: {
       name: "Extensión de tríceps en polea",
       description:
@@ -988,7 +991,7 @@ export const es = {
       description:
         "Con la banda anclada en alto, empuja hacia abajo hasta estirar los codos pegados al cuerpo y vuelve con control.",
     },
-    // Cuádriceps y sentadillas
+    // Quads and squats
     back_squat: {
       name: "Sentadilla trasera",
       description:
@@ -1104,7 +1107,7 @@ export const es = {
       description:
         "De rodillas con el torso erguido, inclínate hacia atrás con el cuerpo recto y vuelve a la posición inicial.",
     },
-    // Zancadas y unilaterales
+    // Lunges and single-leg work
     lunge: {
       name: "Zancada con mancuernas",
       description:
@@ -1165,7 +1168,7 @@ export const es = {
       description:
         "Con los pies muy abiertos y las puntas hacia fuera, sujeta una mancuerna entre las piernas y baja con el torso erguido.",
     },
-    // Isquiotibiales
+    // Hamstrings
     lying_leg_curl: {
       name: "Curl femoral tumbado",
       description:
@@ -1196,7 +1199,7 @@ export const es = {
       description:
         "En el banco GHD con los pies sujetos, baja el torso con el cuerpo recto y vuelve arriba flexionando las rodillas y extendiendo la cadera.",
     },
-    // Glúteos
+    // Glutes
     hip_thrust: {
       name: "Hip thrust",
       description:
@@ -1272,7 +1275,7 @@ export const es = {
       description:
         "Impulsa la kettlebell con una mano mediante una extensión explosiva de cadera hasta la altura del pecho sin girar el torso.",
     },
-    // Abductores y aductores
+    // Abductors and adductors
     hip_abduction_machine: {
       name: "Abducción de cadera en máquina",
       description:
@@ -1318,7 +1321,7 @@ export const es = {
       description:
         "En plancha lateral con la pierna de arriba apoyada en un banco, eleva la cadera y mantén la posición.",
     },
-    // Gemelos
+    // Calves
     standing_calf_raise: {
       name: "Elevación de talones de pie",
       description:
@@ -1359,7 +1362,7 @@ export const es = {
       description:
         "De pie sobre una pierna con la punta del pie en un escalón, sube sobre la punta y baja hasta estirar el gemelo.",
     },
-    // Abdominales
+    // Abs
     crunch: {
       name: "Crunch abdominal",
       description:
@@ -1475,7 +1478,7 @@ export const es = {
       description:
         "A cuatro apoyos con las rodillas elevadas del suelo, avanza moviendo mano y pie contrarios a la vez.",
     },
-    // Oblicuos y rotación
+    // Obliques and rotation
     oblique_crunch: {
       name: "Crunch oblicuo",
       description:
@@ -1531,7 +1534,7 @@ export const es = {
       description:
         "De pie sujetando con ambas manos el extremo de la barra anclada, gira el tronco de lado a lado con los brazos extendidos.",
     },
-    // Cuello
+    // Neck
     neck_flexion: {
       name: "Flexión de cuello con disco",
       description:
@@ -1547,7 +1550,7 @@ export const es = {
       description:
         "Tumbado de lado con la cabeza fuera del banco y un disco ligero sujeto junto a la sien, inclina la cabeza hacia el hombro de arriba y baja despacio.",
     },
-    // Olímpicos y funcionales
+    // Olympic and functional lifts
     power_clean: {
       name: "Cargada de potencia",
       description:
@@ -1623,7 +1626,7 @@ export const es = {
       description:
         "Con un balón medicinal frente al pecho, haz una sentadilla y, al subir, lánzalo a una diana en la pared; recógelo y repite.",
     },
-    // Pliometría y acondicionamiento
+    // Plyometrics and conditioning
     box_jump: {
       name: "Salto al cajón",
       description:
@@ -1742,10 +1745,7 @@ export const es = {
     obliques: "Oblicuos",
     rear_delts: "Deltoides posterior",
     neck: "Cuello",
-    middle_delts: "Deltoides medio",
-    erector_spinae: "Erectores espinales",
     lower_back: "Parte baja de la espalda",
-    quadriceps: "Cuádriceps",
     upper_back: "Parte superior de la espalda",
     adductors: "Aductores",
     abductors: "Abductores",
@@ -1766,7 +1766,9 @@ export const es = {
     other: "Otro",
   } satisfies Record<Equipment, string>,
   errors: {
-    database: "Error al preparar la base de datos",
+    database:
+      "No se han podido cargar tus datos. Cierra la app y vuelve a abrirla.",
+    openUrl: "No se ha podido abrir el enlace",
   },
 };
 

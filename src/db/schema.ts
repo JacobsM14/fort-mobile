@@ -35,8 +35,8 @@ export const exercises = sqliteTable(
   "exercises",
   {
     id: text("id").primaryKey(),
-    // Ejercicios del catálogo: clave estable ("bench_press"); el nombre y la
-    // descripción salen de src/i18n, así un idioma nuevo no toca la BD.
+    // Catalog exercises have a stable key ("bench_press"); their name and
+    // description come from src/i18n, so a new language never touches the DB.
     key: text("key").unique(),
     name: text("name"),
     description: text("description"),
