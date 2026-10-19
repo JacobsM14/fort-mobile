@@ -23,6 +23,8 @@ import { useOpenUrl } from "@/hooks/use-open-url";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
+import { HAS_EXERCISE_PHOTOS } from "@/features/exercises/catalog";
+
 const THIRD_PARTY = [
   { name: "React Native", license: "MIT" },
   { name: "Expo", license: "MIT" },
@@ -100,13 +102,19 @@ export default function PrivacyScreen() {
               </View>
             ))}
           </View>
-          <Text style={globalStyles.inputLabel}>{t.privacy.imagesTitle}</Text>
-          <Text style={styles.body}>{t.privacy.images}</Text>
-          <SettingsRow
-            icon={{ ios: "photo", android: "image", web: "image" }}
-            label={EXERCISE_IMAGES_SOURCE.name}
-            onPress={() => openUrl(EXERCISE_IMAGES_SOURCE.url)}
-          />
+          {HAS_EXERCISE_PHOTOS && (
+            <>
+              <Text style={globalStyles.inputLabel}>
+                {t.privacy.imagesTitle}
+              </Text>
+              <Text style={styles.body}>{t.privacy.images}</Text>
+              <SettingsRow
+                icon={{ ios: "photo", android: "image", web: "image" }}
+                label={EXERCISE_IMAGES_SOURCE.name}
+                onPress={() => openUrl(EXERCISE_IMAGES_SOURCE.url)}
+              />
+            </>
+          )}
         </Section>
 
         <Text style={globalStyles.subtitle}>

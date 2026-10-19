@@ -20,7 +20,14 @@ type AccentShades = {
   onPrimary: string;
 };
 
-export type Colors = BaseColors & AccentShades;
+export type Colors = BaseColors &
+  AccentShades & {
+    // The accent diluted over the background, for highlighted cards.
+    primaryTint: string;
+  };
+
+// Alpha of primaryTint, about 15 %.
+const TINT_ALPHA = "26";
 
 const baseColors: Record<ColorScheme, BaseColors> = {
   dark: {
@@ -103,6 +110,7 @@ export const spacing = {
 };
 
 export const fontSizes = {
+  lowFont: 10,
   caption: 12,
   footnote: 13,
   detail: 14,
@@ -129,6 +137,7 @@ export const iconSizes = {
   md: 20,
   lg: 22,
   xl: 24,
+  hero: 64,
 };
 
 function createGlobalStyles(colors: Colors) {
@@ -261,7 +270,12 @@ export type Theme = {
 };
 
 function createTheme(scheme: ColorScheme, accent: AccentColor): Theme {
-  const colors = { ...baseColors[scheme], ...accentColors[accent][scheme] };
+  const shades = accentColors[accent][scheme];
+  const colors = {
+    ...baseColors[scheme],
+    ...shades,
+    primaryTint: `${shades.primary}${TINT_ALPHA}`,
+  };
   return { scheme, accent, colors, globalStyles: createGlobalStyles(colors) };
 }
 

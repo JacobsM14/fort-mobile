@@ -66,9 +66,7 @@ export function ExerciseForm({
       showsVerticalScrollIndicator={false}
     >
       <View style={globalStyles.formCage}>
-        <Text style={globalStyles.inputLabel}>
-          {t.exerciseForm.nameLabel}
-        </Text>
+        <Text style={globalStyles.inputLabel}>{t.exerciseForm.nameLabel}</Text>
         <TextInput
           style={globalStyles.boxInput}
           value={name}

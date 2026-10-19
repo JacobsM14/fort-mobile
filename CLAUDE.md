@@ -35,6 +35,7 @@ Mobile app to track gym routines and workouts. Offline-first: all data lives in 
 - Comment only where the code isn't self-explanatory: explain the why, not the what. Comments always in English
 - No emojis in code, comments or commits
 - Commits in English, Conventional Commits format (`feat:`, `fix:`...)
+- Order imports in groups separated by a blank line: external packages, components, hooks, services, types (use `import type`), utils, styles/assets
 
 ## What NOT to do
 

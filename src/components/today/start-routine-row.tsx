@@ -17,6 +17,9 @@ type StartRoutineRowProps = {
   name: string;
   muscles: string;
   trackingTypes: readonly TrackingType[];
+  // A workout of this routine is in progress: the row stands out and its
+  // button continues it.
+  active?: boolean;
   onStart?: () => void;
 };
 
@@ -24,17 +27,24 @@ export function StartRoutineRow({
   name,
   muscles,
   trackingTypes,
+  active = false,
   onStart,
 }: StartRoutineRowProps) {
   const { t } = useTranslation();
   const { colors, globalStyles } = useTheme();
   const styles = useStyles();
   const start = useFocusedPress(onStart);
+  // Always in the same order, so the icons line up from one row to the next.
   const types = TRACKING_TYPES.filter((type) => trackingTypes.includes(type));
 
   return (
-    <View style={globalStyles.card}>
+    <View style={[globalStyles.card, active && styles.activeCard]}>
       <View style={styles.info}>
+        {active && (
+          <Text style={[globalStyles.inputLabel, styles.status]}>
+            {t.today.inProgress}
+          </Text>
+        )}
         <Text style={styles.name} numberOfLines={1}>
           {name}
         </Text>
@@ -69,9 +79,13 @@ export function StartRoutineRow({
         ]}
         onPress={start}
         accessibilityRole="button"
-        accessibilityLabel={t.today.startRoutine(name)}
+        accessibilityLabel={
+          active ? t.today.continueRoutine(name) : t.today.startRoutine(name)
+        }
       >
-        <Text style={globalStyles.pressedButtonText}>{t.today.start}</Text>
+        <Text style={globalStyles.pressedButtonText}>
+          {active ? t.today.continue : t.today.start}
+        </Text>
       </Pressable>
     </View>
   );
@@ -79,9 +93,16 @@ export function StartRoutineRow({
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
+    activeCard: {
+      backgroundColor: colors.primaryTint,
+      borderColor: colors.primary,
+    },
     info: {
       flex: 1,
       gap: spacing.xs,
+    },
+    status: {
+      color: colors.primary,
     },
     name: {
       fontSize: fontSizes.heading,

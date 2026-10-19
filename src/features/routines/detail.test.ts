@@ -15,9 +15,9 @@ describe("getRoutineMuscleGroups", () => {
   });
 
   it("counts glutes as legs and the lower back as back", () => {
-    expect(
-      getRoutineMuscleGroups({ muscles: ["quads", "glutes"] }, es),
-    ).toBe("Piernas");
+    expect(getRoutineMuscleGroups({ muscles: ["quads", "glutes"] }, es)).toBe(
+      "Piernas",
+    );
     expect(
       getRoutineMuscleGroups({ muscles: ["lats", "lower_back"] }, es),
     ).toBe("Espalda");

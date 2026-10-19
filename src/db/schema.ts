@@ -145,7 +145,14 @@ export const workoutSets = sqliteTable(
     reps: integer("reps"),
     durationS: integer("duration_s"),
     distanceM: real("distance_m"),
+    // Set while the set's own stopwatch runs (timed exercises).
+    startedAt: integer("started_at", { mode: "timestamp_ms" }),
     completedAt: integer("completed_at", { mode: "timestamp_ms" }),
+    // Rest after this set. restS is null while undecided, 0 when the next set
+    // was done straight away, and the seconds rested otherwise; the rest is
+    // running while restStartedAt is set and restS is still null.
+    restStartedAt: integer("rest_started_at", { mode: "timestamp_ms" }),
+    restS: integer("rest_s"),
     ...timestamps,
   },
   (t) => [

@@ -9,7 +9,9 @@ type IconButtonProps = {
   icon: SymbolViewProps["name"];
   accessibilityLabel: string;
   onPress: () => void;
-  tone?: "primary" | "danger";
+  // "muted" is a gray outline that turns to the accent when pressed, for
+  // secondary actions such as showing an exercise's info.
+  tone?: "primary" | "danger" | "muted";
 };
 
 export function IconButton({
@@ -20,17 +22,31 @@ export function IconButton({
 }: IconButtonProps) {
   const { colors } = useTheme();
   const styles = useStyles();
-  const color = tone === "danger" ? colors.danger : colors.primary;
-  const onColor = tone === "danger" ? colors.onDanger : colors.onPrimary;
   const handlePress = useFocusedPress(onPress);
+
+  function getColors(pressed: boolean) {
+    if (tone === "muted") {
+      return {
+        border: pressed ? colors.primary : colors.border,
+        fill: undefined,
+        icon: pressed ? colors.primary : colors.disabled,
+      };
+    }
+    const color = tone === "danger" ? colors.danger : colors.primary;
+    const onColor = tone === "danger" ? colors.onDanger : colors.onPrimary;
+    return {
+      border: color,
+      fill: pressed ? color : undefined,
+      icon: pressed ? onColor : color,
+    };
+  }
 
   return (
     <Pressable
-      style={({ pressed }) => [
-        styles.box,
-        { borderColor: color },
-        pressed && { backgroundColor: color },
-      ]}
+      style={({ pressed }) => {
+        const { border, fill } = getColors(pressed);
+        return [styles.box, { borderColor: border, backgroundColor: fill }];
+      }}
       onPress={handlePress}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
@@ -38,7 +54,7 @@ export function IconButton({
       {({ pressed }) => (
         <SymbolView
           name={icon}
-          tintColor={pressed ? onColor : color}
+          tintColor={getColors(pressed).icon}
           size={iconSizes.md}
         />
       )}

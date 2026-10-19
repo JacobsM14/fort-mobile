@@ -161,6 +161,7 @@ const useStyles = makeStyles(({ colors }) =>
     buttonLabel: {
       fontSize: fontSizes.body,
       fontFamily: fontsInstrument.bold,
+      textAlign: "center",
     },
     cancelLabel: {
       color: colors.text,
