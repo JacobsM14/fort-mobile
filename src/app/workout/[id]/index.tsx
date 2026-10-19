@@ -116,8 +116,6 @@ export default function WorkoutScreen() {
     });
   }
 
-  // A workout finished with sets done goes on to its summary; one discarded
-  // just closes.
   function leaveAfter(
     save: () => "finished" | "discarded",
     errorMessage: string,
