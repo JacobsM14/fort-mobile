@@ -9,17 +9,31 @@ export const en: Translations = {
   },
   today: {
     title: "What's on today?",
+    emptyTitle: "No routines yet",
+    emptyMessage:
+      "Create your first routine and pick it each day you go to train.",
+    emptyAction: "Create my first routine",
+    howItWorks: "How it works",
+    steps: [
+      "Create your routines just once",
+      "Select the exercises you want",
+      "On training day, pick one and start",
+    ],
+    pickRoutine: "Pick one of your routines",
+    start: "Start",
+    startRoutine: (name: string) => `Start ${name}`,
+    manageRoutines: "Manage my routines",
   },
   routines: {
     title: "Routines",
     subtitle: "Prepare them once and choose the one for each day.",
-    add: "New Routine",
-    no_content: "No routines yet",
+    add: "New routine",
+    noContent: "No routines yet",
     exerciseCount: (count) =>
       `${count} ${count === 1 ? "exercise" : "exercises"}`,
   },
-  new_routine: {
-    bread_crumb: "Cancel",
+  newRoutine: {
+    breadCrumb: "Cancel",
     title1: "New",
     title2: "Routine",
     nameLabel: "Name",
@@ -27,36 +41,80 @@ export const en: Translations = {
     exercisesLabel: "Exercises",
     addExercise: "Add exercise",
     removeExercise: "Remove exercise",
-    no_content: "Add exercises to get started",
+    noContent: "Add exercises to get started",
     primaryButton: "Save routine",
     saveError: "Couldn't save the routine",
   },
-  edit_routine: {
+  editRoutine: {
     title1: "Edit",
     title2: "Routine",
     primaryButton: "Save changes",
+    delete: "Delete routine",
+    deleteTitle: "Delete this routine?",
+    deleteMessage:
+      "The routine will be deleted. Your exercises and the workouts you already did with it are kept.",
+    deleteConfirm: "Delete",
+    cancel: "Cancel",
+    deleteError: "Couldn't delete the routine",
   },
-  new_exercises: {
-    bread_crumb: "New Routine",
-    bread_crumb_edit: "Edit Routine",
+  newExercises: {
+    breadCrumb: "New routine",
+    breadCrumbEdit: "Edit routine",
     title: "Exercises",
     searchPlaceholder: "Search exercise",
     clearSearch: "Clear search",
-    allMuscles: "All",
+    filters: "Filters",
+    clearFilters: "Clear",
+    closeFilters: "Close filters",
+    typeLabel: "Type",
+    muscleLabel: "Muscle",
+    showResults: (count) =>
+      count === 1 ? "Show 1 exercise" : `Show ${count} exercises`,
     noResults: "No matching exercises",
+    createCustom: "Create your own exercise",
     done: (count) => `Done · ${count} selected`,
   },
-  profile: {
+  newCustomExercise: {
+    breadCrumb: "Exercises",
+    title1: "New",
+    title2: "Exercise",
+    primaryButton: "Create exercise",
+  },
+  editExercise: {
+    title1: "Edit",
+    title2: "Exercise",
+    primaryButton: "Save changes",
+    delete: "Delete exercise",
+    deleteTitle: "Delete this exercise?",
+    deleteMessage: (routineCount) =>
+      routineCount === 0
+        ? "This can't be undone."
+        : `It will also be removed from ${routineCount} ${routineCount === 1 ? "routine" : "routines"}. This can't be undone.`,
+    deleteConfirm: "Delete",
+    cancel: "Cancel",
+    deleteError: "Couldn't delete the exercise",
+  },
+  exerciseForm: {
+    nameLabel: "Name",
+    trackingLabel: "Tracking type",
+    musclesLabel: "Main muscles",
+    descriptionLabel: "Description",
+  },
+  manageExercises: {
+    add: "Create exercise",
+    emptyTitle: "You haven't created any exercises yet",
+    emptyMessage:
+      "Create the ones that aren't in the catalog and use them in your routines like any other.",
+  },
+  settings: {
+    breadCrumb: "Profile",
+    title: "Settings",
     appearance: "Appearance",
-    themes: {
+    themeOptions: {
       system: "System",
       light: "Light",
       dark: "Dark",
     },
-  },
-  settings: {
-    bread_crumb: "profile",
-    title: "Settings",
     sections: {
       themes: "Themes",
       user: "User",
@@ -68,7 +126,7 @@ export const en: Translations = {
       about: "About",
     },
     accent: {
-      label: "Choose a color",
+      label: "Color",
       names: {
         orange: "Orange",
         blue: "Blue",
@@ -126,11 +184,10 @@ export const en: Translations = {
   exercises: {
     namePlaceholder: "Exercise name",
     descriptionPlaceholder: "Description (optional)",
-    add: "Add exercise",
     saveError: "Couldn't save the exercise",
-    empty: "No exercises yet",
     showInfo: "Show exercise info",
     noDescription: "No description",
+    noImages: "No photos",
     closeInfo: "Close",
     equipmentLabel: "Equipment",
     enlargeImage: "Enlarge photo",
@@ -1742,6 +1799,15 @@ export const en: Translations = {
     adductors: "Adductors",
     abductors: "Abductors",
     hip_flexors: "Hip flexors",
+  },
+  muscleGroups: {
+    chest: "Chest",
+    back: "Back",
+    shoulders: "Shoulders",
+    arms: "Arms",
+    neck: "Neck",
+    legs: "Legs",
+    core: "Core",
   },
   equipment: {
     barbell: "Barbell",

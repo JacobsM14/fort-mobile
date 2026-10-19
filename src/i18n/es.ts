@@ -1,6 +1,7 @@
 import type {
   AccentColor,
   Equipment,
+  MuscleGroup,
   ThemePreference,
   TrackingType,
 } from "@/constants/enums";
@@ -15,17 +16,31 @@ export const es = {
   },
   today: {
     title: "¿Qué toca hoy?",
+    emptyTitle: "Aún no tienes rutinas",
+    emptyMessage:
+      "Crea tu primera rutina y elígela cada día que vayas a entrenar.",
+    emptyAction: "Crear mi primera rutina",
+    howItWorks: "Cómo funciona",
+    steps: [
+      "Crea tus rutinas una sola vez",
+      "Selecciona los ejercicios que quieras",
+      "El día que toque, elige una y empieza",
+    ],
+    pickRoutine: "Elige una de tus rutinas",
+    start: "Empezar",
+    startRoutine: (name: string) => `Empezar ${name}`,
+    manageRoutines: "Gestionar mis rutinas",
   },
   routines: {
     title: "Rutinas",
     subtitle: "Prepáralas una vez y elige la que toque cada día.",
-    add: "Nueva Rutina",
-    no_content: "No hay rutinas todavía",
+    add: "Nueva rutina",
+    noContent: "No hay rutinas todavía",
     exerciseCount: (count: number) =>
       `${count} ${count === 1 ? "ejercicio" : "ejercicios"}`,
   },
-  new_routine: {
-    bread_crumb: "Cancelar",
+  newRoutine: {
+    breadCrumb: "Cancelar",
     title1: "Nueva",
     title2: "Rutina",
     nameLabel: "Nombre",
@@ -33,37 +48,81 @@ export const es = {
     exercisesLabel: "Ejercicios",
     addExercise: "Añadir ejercicio",
     removeExercise: "Quitar ejercicio",
-    no_content: "Añade ejercicios para empezar",
+    noContent: "Añade ejercicios para empezar",
     primaryButton: "Guardar rutina",
     saveError: "No se ha podido guardar la rutina",
   },
-  edit_routine: {
+  editRoutine: {
     title1: "Editar",
     title2: "Rutina",
     primaryButton: "Guardar cambios",
+    delete: "Eliminar rutina",
+    deleteTitle: "¿Eliminar esta rutina?",
+    deleteMessage:
+      "Se borrará la rutina. Tus ejercicios y los entrenamientos que ya hiciste con ella se conservan.",
+    deleteConfirm: "Eliminar",
+    cancel: "Cancelar",
+    deleteError: "No se ha podido eliminar la rutina",
   },
-  new_exercises: {
-    bread_crumb: "Nueva rutina",
-    bread_crumb_edit: "Editar rutina",
+  newExercises: {
+    breadCrumb: "Nueva rutina",
+    breadCrumbEdit: "Editar rutina",
     title: "Ejercicios",
     searchPlaceholder: "Buscar ejercicio",
     clearSearch: "Borrar búsqueda",
-    allMuscles: "Todos",
+    filters: "Filtros",
+    clearFilters: "Limpiar",
+    closeFilters: "Cerrar filtros",
+    typeLabel: "Tipo",
+    muscleLabel: "Músculo",
+    showResults: (count: number) =>
+      count === 1 ? "Ver 1 ejercicio" : `Ver ${count} ejercicios`,
     noResults: "No hay ejercicios que coincidan",
+    createCustom: "Crear ejercicio propio",
     done: (count: number) =>
       `Listo · ${count} ${count === 1 ? "seleccionado" : "seleccionados"}`,
   },
-  profile: {
+  newCustomExercise: {
+    breadCrumb: "Ejercicios",
+    title1: "Nuevo",
+    title2: "Ejercicio",
+    primaryButton: "Crear ejercicio",
+  },
+  editExercise: {
+    title1: "Editar",
+    title2: "Ejercicio",
+    primaryButton: "Guardar cambios",
+    delete: "Eliminar ejercicio",
+    deleteTitle: "¿Eliminar este ejercicio?",
+    deleteMessage: (routineCount: number) =>
+      routineCount === 0
+        ? "Esta acción no se puede deshacer."
+        : `Se quitará también de ${routineCount} ${routineCount === 1 ? "rutina" : "rutinas"}. Esta acción no se puede deshacer.`,
+    deleteConfirm: "Eliminar",
+    cancel: "Cancelar",
+    deleteError: "No se ha podido eliminar el ejercicio",
+  },
+  exerciseForm: {
+    nameLabel: "Nombre",
+    trackingLabel: "Tipo de registro",
+    musclesLabel: "Músculos principales",
+    descriptionLabel: "Descripción",
+  },
+  manageExercises: {
+    add: "Crear ejercicio",
+    emptyTitle: "Aún no has creado ejercicios",
+    emptyMessage:
+      "Crea los que no estén en el catálogo y úsalos en tus rutinas como cualquier otro.",
+  },
+  settings: {
+    breadCrumb: "Perfil",
+    title: "Ajustes",
     appearance: "Apariencia",
-    themes: {
+    themeOptions: {
       system: "Sistema",
       light: "Claro",
       dark: "Oscuro",
     } satisfies Record<ThemePreference, string>,
-  },
-  settings: {
-    bread_crumb: "perfil",
-    title: "Ajustes",
     sections: {
       themes: "Temas",
       user: "Usuario",
@@ -75,7 +134,7 @@ export const es = {
       about: "Acerca de",
     },
     accent: {
-      label: "Escoge un color",
+      label: "Color",
       names: {
         orange: "Naranja",
         blue: "Azul",
@@ -135,11 +194,10 @@ export const es = {
   exercises: {
     namePlaceholder: "Nombre del ejercicio",
     descriptionPlaceholder: "Descripción (opcional)",
-    add: "Añadir ejercicio",
     saveError: "No se ha podido guardar el ejercicio",
-    empty: "Todavía no hay ejercicios",
     showInfo: "Ver información del ejercicio",
     noDescription: "Sin descripción",
+    noImages: "Sin fotos",
     closeInfo: "Cerrar",
     equipmentLabel: "Material",
     enlargeImage: "Ampliar foto",
@@ -1751,6 +1809,15 @@ export const es = {
     abductors: "Abductores",
     hip_flexors: "Flexores de la cadera",
   } satisfies Record<MuscleId, string>,
+  muscleGroups: {
+    chest: "Pecho",
+    back: "Espalda",
+    shoulders: "Hombros",
+    arms: "Brazos",
+    neck: "Cuello",
+    legs: "Piernas",
+    core: "Core",
+  } satisfies Record<MuscleGroup, string>,
   equipment: {
     barbell: "Barra",
     dumbbell: "Mancuernas",

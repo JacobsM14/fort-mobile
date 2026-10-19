@@ -2,7 +2,7 @@ import Constants from "expo-constants";
 import { Platform, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { BackHeader } from "@/components/ui/back-header";
+import { BackHeader } from "@/components/ui/layout/back-header";
 import { SettingsRow } from "@/components/settings/settings-row";
 import { APP_NAME, CONTACT_EMAIL, STORE_URLS } from "@/constants/app-info";
 import { spacing } from "@/constants/theme";

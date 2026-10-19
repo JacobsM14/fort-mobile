@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 
 import { fontsInstrument, fontSizes, radii } from "@/constants/theme";
+import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles } from "@/hooks/use-theme";
 
 type PrimaryButtonProps = {
@@ -15,6 +16,7 @@ export function PrimaryButton({
   disabled = false,
 }: PrimaryButtonProps) {
   const styles = useStyles();
+  const handlePress = useFocusedPress(onPress);
 
   return (
     <Pressable
@@ -23,7 +25,7 @@ export function PrimaryButton({
         pressed && styles.buttonPressed,
         disabled && styles.buttonDisabled,
       ]}
-      onPress={onPress}
+      onPress={handlePress}
       disabled={disabled}
       accessibilityRole="button"
       accessibilityState={{ disabled }}

@@ -1,36 +1,35 @@
 import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import {
-  fontsInstrument,
-  fontSizes,
-  iconSizes,
-  radii,
-  spacing,
-} from "@/constants/theme";
+import { fontsInstrument, fontSizes, iconSizes } from "@/constants/theme";
+import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
-type RoutineCardProps = {
-  name: string;
+type NavCardProps = {
+  title: string;
   detail: string;
   onPress: () => void;
 };
 
-export function RoutineCard({ name, detail, onPress }: RoutineCardProps) {
-  const { colors } = useTheme();
+export function NavCard({ title, detail, onPress }: NavCardProps) {
+  const { colors, globalStyles } = useTheme();
   const styles = useStyles();
+  const handlePress = useFocusedPress(onPress);
 
   return (
     <Pressable
-      style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
-      onPress={onPress}
+      style={({ pressed }) => [
+        globalStyles.card,
+        pressed && globalStyles.cardPressed,
+      ]}
+      onPress={handlePress}
       accessibilityRole="button"
     >
       {({ pressed }) => (
         <>
           <View style={styles.text}>
-            <Text style={styles.name} numberOfLines={1}>
-              {name}
+            <Text style={styles.title} numberOfLines={1}>
+              {title}
             </Text>
             <Text style={styles.detail} numberOfLines={1}>
               {detail}
@@ -53,25 +52,10 @@ export function RoutineCard({ name, detail, onPress }: RoutineCardProps) {
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
-    card: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: spacing.sm,
-      minHeight: 56,
-      paddingHorizontal: spacing.md,
-      paddingVertical: spacing.sm,
-      backgroundColor: colors.backgroundSecondary,
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: radii.sm,
-    },
-    cardPressed: {
-      borderColor: colors.primary,
-    },
     text: {
       flex: 1,
     },
-    name: {
+    title: {
       fontSize: fontSizes.body,
       fontFamily: fontsInstrument.semiBold,
       color: colors.text,

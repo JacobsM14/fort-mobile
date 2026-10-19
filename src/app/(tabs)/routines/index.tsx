@@ -2,10 +2,11 @@ import { router } from "expo-router";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { DashedButton } from "@/components/ui/dashed-button";
-import { NoContentBox } from "@/components/ui/no-content-box";
-import { RoutineCard } from "@/components/routines/routine-card";
+import { DashedButton } from "@/components/ui/buttons/dashed-button";
+import { NavCard } from "@/components/ui/content/nav-card";
+import { NoContentBox } from "@/components/ui/content/no-content-box";
 import { spacing } from "@/constants/theme";
+import { getRoutineDetail } from "@/features/routines/detail";
 import { useRoutineList } from "@/features/routines/queries";
 import { NEW_ROUTINE_ID } from "@/hooks/use-routine-draft";
 import { useTheme } from "@/hooks/use-theme";
@@ -28,18 +29,13 @@ export default function RoutinesScreen() {
         keyboardShouldPersistTaps="handled"
       >
         {loaded && routines.length === 0 ? (
-          <NoContentBox label={t.routines.no_content} />
+          <NoContentBox label={t.routines.noContent} />
         ) : (
           routines.map((routine) => (
-            <RoutineCard
+            <NavCard
               key={routine.id}
-              name={routine.name}
-              detail={[
-                t.routines.exerciseCount(routine.exerciseCount),
-                routine.muscles.map((muscle) => t.muscles[muscle]).join(", "),
-              ]
-                .filter((part) => part !== "")
-                .join(" · ")}
+              title={routine.name}
+              detail={getRoutineDetail(routine, t)}
               onPress={() =>
                 router.push({
                   pathname: "/routine/[id]",

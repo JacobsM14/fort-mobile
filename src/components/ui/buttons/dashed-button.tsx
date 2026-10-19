@@ -8,6 +8,7 @@ import {
   radii,
   spacing,
 } from "@/constants/theme";
+import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 type DashedButtonProps = {
@@ -25,6 +26,7 @@ export function DashedButton({
 }: DashedButtonProps) {
   const { colors } = useTheme();
   const styles = useStyles();
+  const handlePress = useFocusedPress(onPress);
 
   return (
     <Pressable
@@ -36,7 +38,7 @@ export function DashedButton({
         },
         pressed && styles.buttonPressed,
       ]}
-      onPress={onPress}
+      onPress={handlePress}
       accessibilityRole="button"
     >
       {({ pressed }) => {

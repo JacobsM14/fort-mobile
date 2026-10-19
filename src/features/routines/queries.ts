@@ -1,17 +1,22 @@
 import { asc, desc, eq, inArray } from "drizzle-orm";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 
+import type { TrackingType } from "@/constants/enums";
 import { db } from "@/db/client";
 import { newId } from "@/db/id";
 import { routineExercises, routines } from "@/db/schema";
 import type { MuscleId } from "@/features/exercises/catalog";
-import { useExerciseList } from "@/features/exercises/queries";
+import {
+  useExerciseList,
+  type ExerciseSummary,
+} from "@/features/exercises/queries";
 
 export type RoutineSummary = {
   id: string;
   name: string;
   exerciseCount: number;
   muscles: MuscleId[];
+  trackingTypes: TrackingType[];
 };
 
 export function createRoutine(input: {
@@ -85,6 +90,10 @@ export function updateRoutine(
   });
 }
 
+export function deleteRoutine(id: string) {
+  db.delete(routines).where(eq(routines.id, id)).run();
+}
+
 export function useRoutine(id: string | null) {
   const { data, updatedAt } = useLiveQuery(
     db
@@ -113,6 +122,49 @@ export function useRoutine(id: string | null) {
   return { routine, loaded: updatedAt !== undefined };
 }
 
+export type RoutineExerciseRow = {
+  id: string;
+  name: string;
+  exerciseId: string | null;
+};
+
+// The list query returns one row per routine and exercise (a left join); this
+// folds them into one summary per routine, with each exercise's main muscle
+// and tracking type listed once.
+export function toRoutineSummaries(
+  rows: readonly RoutineExerciseRow[],
+  exercises: readonly ExerciseSummary[],
+): RoutineSummary[] {
+  const exercisesById = new Map(
+    exercises.map((exercise) => [exercise.id, exercise] as const),
+  );
+  const summaries = new Map<string, RoutineSummary>();
+  for (const { exerciseId, ...routine } of rows) {
+    const summary = summaries.get(routine.id) ?? {
+      ...routine,
+      exerciseCount: 0,
+      muscles: [],
+      trackingTypes: [],
+    };
+    if (exerciseId !== null) {
+      summary.exerciseCount += 1;
+      const exercise = exercisesById.get(exerciseId);
+      const muscle = exercise?.primaryMuscles.at(0);
+      if (muscle !== undefined && !summary.muscles.includes(muscle)) {
+        summary.muscles.push(muscle);
+      }
+      if (
+        exercise !== undefined &&
+        !summary.trackingTypes.includes(exercise.trackingType)
+      ) {
+        summary.trackingTypes.push(exercise.trackingType);
+      }
+    }
+    summaries.set(routine.id, summary);
+  }
+  return [...summaries.values()];
+}
+
 export function useRoutineList() {
   const { data, updatedAt } = useLiveQuery(
     db
@@ -125,32 +177,12 @@ export function useRoutineList() {
       .leftJoin(routineExercises, eq(routineExercises.routineId, routines.id))
       .orderBy(desc(routines.createdAt), asc(routineExercises.position)),
   );
-  const { exercises } = useExerciseList();
-
-  const mainMuscles = new Map(
-    exercises.map(
-      (exercise) => [exercise.id, exercise.primaryMuscles.at(0)] as const,
-    ),
-  );
-  const summaries = new Map<string, RoutineSummary>();
-  for (const { exerciseId, ...routine } of data) {
-    const summary = summaries.get(routine.id) ?? {
-      ...routine,
-      exerciseCount: 0,
-      muscles: [],
-    };
-    if (exerciseId !== null) {
-      summary.exerciseCount += 1;
-      const muscle = mainMuscles.get(exerciseId);
-      if (muscle !== undefined && !summary.muscles.includes(muscle)) {
-        summary.muscles.push(muscle);
-      }
-    }
-    summaries.set(routine.id, summary);
-  }
+  const { exercises, loaded: exercisesLoaded } = useExerciseList();
 
   return {
-    routines: [...summaries.values()],
-    loaded: updatedAt !== undefined,
+    routines: toRoutineSummaries(data, exercises),
+    // The summaries take muscles and tracking types from the exercises, so
+    // they aren't complete until both queries have loaded.
+    loaded: updatedAt !== undefined && exercisesLoaded,
   };
 }

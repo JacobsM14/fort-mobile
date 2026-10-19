@@ -4,12 +4,7 @@ import {
   InstrumentSans_600SemiBold,
   InstrumentSans_700Bold,
 } from "@expo-google-fonts/instrument-sans";
-import {
-  JetBrainsMono_400Regular,
-  JetBrainsMono_500Medium,
-  JetBrainsMono_600SemiBold,
-  JetBrainsMono_700Bold,
-} from "@expo-google-fonts/jetbrains-mono";
+import { JetBrainsMono_500Medium } from "@expo-google-fonts/jetbrains-mono";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -50,10 +45,7 @@ function RootNavigator() {
     InstrumentSans_500Medium,
     InstrumentSans_600SemiBold,
     InstrumentSans_700Bold,
-    JetBrainsMono_400Regular,
     JetBrainsMono_500Medium,
-    JetBrainsMono_600SemiBold,
-    JetBrainsMono_700Bold,
   });
   const { t } = useTranslation();
 

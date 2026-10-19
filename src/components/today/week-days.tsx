@@ -12,39 +12,38 @@ export function WeekDays() {
   const { language } = useTranslation();
   const styles = useStyles();
   const [calendar] = useCalendars();
-  const days = getWeekDays(new Date(), calendar.firstWeekday ?? MONDAY);
   const today = new Date();
+  const days = getWeekDays(today, calendar.firstWeekday ?? MONDAY);
 
   return (
     <View style={styles.week}>
-      {days.map((day) => (
-        <View key={day.toDateString()} style={styles.day}>
-          <Text style={styles.initial}>
-            {day
-              .toLocaleDateString(language, { weekday: "narrow" })
-              .toLocaleUpperCase(language)}
-          </Text>
-          <View
-            style={[
-              styles.box,
-              day.toDateString() === today.toDateString()
-                ? styles.activeBox
-                : styles.disabledBox,
-            ]}
-          >
-            <Text
+      {days.map((day) => {
+        const isToday = day.toDateString() === today.toDateString();
+        return (
+          <View key={day.toDateString()} style={styles.day}>
+            <Text style={styles.initial}>
+              {day
+                .toLocaleDateString(language, { weekday: "narrow" })
+                .toLocaleUpperCase(language)}
+            </Text>
+            <View
               style={[
-                styles.number,
-                day.toDateString() === today.toDateString()
-                  ? styles.activeNumber
-                  : styles.disabledNumber,
+                styles.box,
+                isToday ? styles.activeBox : styles.disabledBox,
               ]}
             >
-              {day.getDate()}
-            </Text>
+              <Text
+                style={[
+                  styles.number,
+                  isToday ? styles.activeNumber : styles.disabledNumber,
+                ]}
+              >
+                {day.getDate()}
+              </Text>
+            </View>
           </View>
-        </View>
-      ))}
+        );
+      })}
     </View>
   );
 }

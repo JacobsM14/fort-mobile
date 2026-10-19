@@ -1,10 +1,11 @@
-import { ACCENT_COLORS, THEME_PREFERENCES } from "@/constants/enums";
-import { accentColors, iconSizes, spacing } from "@/constants/theme";
 import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { BackHeader } from "@/components/ui/back-header";
+import { Chip } from "@/components/ui/inputs/chip";
+import { BackHeader } from "@/components/ui/layout/back-header";
+import { ACCENT_COLORS, THEME_PREFERENCES } from "@/constants/enums";
+import { accentColors, iconSizes, spacing } from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
@@ -22,35 +23,18 @@ export default function ThemesScreen() {
         title={t.settings.sections.themes}
       />
       <View style={globalStyles.formCage}>
-        <Text style={globalStyles.inputLabel}>{t.profile.appearance}</Text>
+        <Text style={globalStyles.inputLabel}>{t.settings.appearance}</Text>
         <View style={styles.options} accessibilityRole="radiogroup">
-          {THEME_PREFERENCES.map((option) => {
-            const selected = option === preference;
-            return (
-              <Pressable
-                key={option}
-                style={[
-                  selected
-                    ? globalStyles.pressedButton
-                    : globalStyles.notPressedButton,
-                  styles.option,
-                ]}
-                onPress={() => setPreference(option)}
-                accessibilityRole="radio"
-                accessibilityState={{ checked: selected }}
-              >
-                <Text
-                  style={
-                    selected
-                      ? globalStyles.pressedButtonText
-                      : globalStyles.notPressedButtonText
-                  }
-                >
-                  {t.profile.themes[option]}
-                </Text>
-              </Pressable>
-            );
-          })}
+          {THEME_PREFERENCES.map((option) => (
+            <Chip
+              key={option}
+              role="radio"
+              label={t.settings.themeOptions[option]}
+              selected={option === preference}
+              onPress={() => setPreference(option)}
+              style={styles.option}
+            />
+          ))}
         </View>
       </View>
       <View style={globalStyles.formCage}>
@@ -113,7 +97,7 @@ const useStyles = makeStyles(({ colors }) =>
       gap: spacing.sm,
     },
     swatchRing: {
-      padding: 3,
+      padding: spacing.xs,
       borderWidth: 2,
       borderColor: "transparent",
       borderRadius: SWATCH_SIZE,

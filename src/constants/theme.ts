@@ -11,6 +11,8 @@ type BaseColors = {
   disabled: string;
   border: string;
   scrim: string;
+  danger: string;
+  onDanger: string;
 };
 
 type AccentShades = {
@@ -28,6 +30,8 @@ const baseColors: Record<ColorScheme, BaseColors> = {
     disabled: "#A0A0A8",
     border: "#6A6A72",
     scrim: "#00000099",
+    danger: "#FF5A5F",
+    onDanger: "#0C0C0D",
   },
   light: {
     background: "#F4F4F1",
@@ -36,6 +40,8 @@ const baseColors: Record<ColorScheme, BaseColors> = {
     disabled: "#64646C",
     border: "#85858D",
     scrim: "#00000066",
+    danger: "#C62828",
+    onDanger: "#FFFFFF",
   },
 };
 
@@ -84,11 +90,9 @@ export const fontsInstrument = {
   bold: "InstrumentSans_700Bold",
 };
 
+// Only the weight in use is loaded at startup (see app/_layout.tsx).
 export const fontsJetBrainsMono = {
-  regular: "JetBrainsMono_400Regular",
   medium: "JetBrainsMono_500Medium",
-  semiBold: "JetBrainsMono_600SemiBold",
-  bold: "JetBrainsMono_700Bold",
 };
 
 export const spacing = {
@@ -148,6 +152,7 @@ function createGlobalStyles(colors: Colors) {
       justifyContent: "space-between",
       alignItems: "center",
       gap: spacing.sm,
+      paddingBottom: spacing.sm,
     },
     centered: {
       flex: 1,
@@ -226,6 +231,22 @@ function createGlobalStyles(colors: Colors) {
       fontSize: fontSizes.label,
       fontFamily: fontsInstrument.semiBold,
       color: colors.onPrimary,
+    },
+    // Row-shaped card used by list items (routines, settings, exercises).
+    card: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: spacing.sm,
+      minHeight: 56,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      backgroundColor: colors.backgroundSecondary,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radii.sm,
+    },
+    cardPressed: {
+      borderColor: colors.primary,
     },
   });
 }

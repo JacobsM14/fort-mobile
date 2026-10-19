@@ -3,8 +3,8 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { SettingsRow } from "@/components/settings/settings-row";
-import { BackHeader } from "@/components/ui/back-header";
-import { CornerFrame } from "@/components/ui/corner-frame";
+import { BackHeader } from "@/components/ui/layout/back-header";
+import { CornerFrame } from "@/components/ui/layout/corner-frame";
 import {
   APP_NAME,
   CONTACT_EMAIL,

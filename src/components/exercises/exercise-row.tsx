@@ -1,6 +1,7 @@
-import { SymbolView, type SymbolViewProps } from "expo-symbols";
+import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { TRACKING_TYPE_ICONS } from "@/constants/tracking-type-icons";
 import type { TrackingType } from "@/constants/enums";
 import {
   fontsInstrument,
@@ -10,25 +11,6 @@ import {
   spacing,
 } from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
-
-const TRACKING_TYPE_ICONS: Record<TrackingType, SymbolViewProps["name"]> = {
-  weight_reps: {
-    ios: "dumbbell.fill",
-    android: "fitness_center",
-    web: "fitness_center",
-  },
-  bodyweight_reps: {
-    ios: "figure.strengthtraining.functional",
-    android: "sports_gymnastics",
-    web: "sports_gymnastics",
-  },
-  duration: { ios: "timer", android: "timer", web: "timer" },
-  distance_duration: {
-    ios: "figure.run",
-    android: "directions_run",
-    web: "directions_run",
-  },
-};
 
 type ExerciseRowProps = {
   name: string;
@@ -47,7 +29,7 @@ export function ExerciseRow(props: ExerciseRowProps) {
 
   return (
     <View style={styles.row}>
-      <View style={styles.typeBox}>
+      <View>
         <SymbolView
           name={TRACKING_TYPE_ICONS[props.trackingType]}
           tintColor={colors.text}
@@ -137,15 +119,6 @@ const useStyles = makeStyles(({ colors }) =>
       alignItems: "center",
       gap: spacing.sm,
       paddingVertical: spacing.xs,
-    },
-    typeBox: {
-      width: BOX_SIZE,
-      height: BOX_SIZE,
-      alignItems: "center",
-      justifyContent: "center",
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: radii.sm,
     },
     text: {
       flex: 1,

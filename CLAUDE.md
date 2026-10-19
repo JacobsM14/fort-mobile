@@ -15,6 +15,7 @@ Mobile app to track gym routines and workouts. Offline-first: all data lives in 
 - `npx expo start`: start the app
 - `npx tsc --noEmit`: type check (run before finishing a task)
 - `npm run lint`: lint (ESLint via `expo lint`)
+- `npm test`: tests (Jest); data tests run the real queries on an in-memory SQLite database
 - `npm run images`: regenerate `src/features/exercises/images.ts` after adding or removing files in `assets/exercises`
 
 ## Architecture

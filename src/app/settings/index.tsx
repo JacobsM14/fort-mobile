@@ -3,8 +3,8 @@ import type { SymbolViewProps } from "expo-symbols";
 import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { BackHeader } from "@/components/ui/back-header";
 import { SettingsRow } from "@/components/settings/settings-row";
+import { BackHeader } from "@/components/ui/layout/back-header";
 import { spacing } from "@/constants/theme";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
@@ -77,7 +77,7 @@ export default function SettingsScreen() {
 
   return (
     <SafeAreaView style={globalStyles.screen} edges={["top"]}>
-      <BackHeader backLabel={t.settings.bread_crumb} title={t.settings.title} />
+      <BackHeader backLabel={t.settings.breadCrumb} title={t.settings.title} />
       <ScrollView
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}

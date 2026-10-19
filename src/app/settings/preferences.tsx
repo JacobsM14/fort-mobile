@@ -1,6 +1,6 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { BackHeader } from "@/components/ui/back-header";
+import { BackHeader } from "@/components/ui/layout/back-header";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 

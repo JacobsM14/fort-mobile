@@ -1,17 +1,11 @@
 import { Image } from "expo-image";
-import { useEffect, useState } from "react";
-import {
-  BackHandler,
-  Keyboard,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { useState } from "react";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
-import { CornerFrame } from "@/components/ui/corner-frame";
+import { ImagePlaceholder } from "@/components/ui/content/image-placeholder";
+import { CornerFrame } from "@/components/ui/layout/corner-frame";
+import { Backdrop } from "@/components/ui/overlays/backdrop";
 import {
   fontsInstrument,
   fontSizes,
@@ -20,6 +14,7 @@ import {
   spacing,
 } from "@/constants/theme";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
+import { useCloseOnBack } from "@/hooks/use-close-on-back";
 import { makeStyles } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
@@ -34,7 +29,6 @@ export function ExerciseInfoSheet({
 }: ExerciseInfoSheetProps) {
   const { t } = useTranslation();
   const styles = useStyles();
-  const open = exercise !== null;
   const [zoomedImage, setZoomedImage] = useState<number | null>(null);
 
   function close() {
@@ -42,24 +36,14 @@ export function ExerciseInfoSheet({
     onClose();
   }
 
-  useEffect(() => {
-    if (!open) {
-      return;
+  // Back closes the enlarged photo first, then the sheet.
+  useCloseOnBack(exercise !== null, () => {
+    if (zoomedImage !== null) {
+      setZoomedImage(null);
+    } else {
+      onClose();
     }
-    Keyboard.dismiss();
-    const subscription = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        if (zoomedImage !== null) {
-          setZoomedImage(null);
-        } else {
-          onClose();
-        }
-        return true;
-      },
-    );
-    return () => subscription.remove();
-  }, [open, zoomedImage, onClose]);
+  });
 
   if (exercise === null) {
     return null;
@@ -67,18 +51,7 @@ export function ExerciseInfoSheet({
 
   return (
     <>
-      <Animated.View
-        entering={FadeIn}
-        exiting={FadeOut}
-        style={[StyleSheet.absoluteFill, styles.backdrop]}
-      >
-        <Pressable
-          style={StyleSheet.absoluteFill}
-          onPress={close}
-          accessibilityRole="button"
-          accessibilityLabel={t.exercises.closeInfo}
-        />
-      </Animated.View>
+      <Backdrop onPress={close} label={t.exercises.closeInfo} />
       <Animated.View
         entering={FadeIn}
         exiting={FadeOut}
@@ -86,8 +59,6 @@ export function ExerciseInfoSheet({
         accessibilityViewIsModal
       >
         <View style={styles.panel}>
-          {/* The ScrollView sits inside the frame so it doesn't clip the
-              corners, which are drawn outside the content. */}
           <CornerFrame style={styles.content}>
             <ScrollView
               contentContainerStyle={styles.scrollContent}
@@ -107,13 +78,13 @@ export function ExerciseInfoSheet({
               <Text style={styles.description}>
                 {exercise.description ?? t.exercises.noDescription}
               </Text>
-              {exercise.images.length > 0 && (
+              {exercise.images.length > 0 ? (
                 <View style={styles.images}>
                   {exercise.images.map((image) => (
                     <Pressable
                       key={image}
                       style={({ pressed }) => [
-                        styles.imageButton,
+                        styles.imageSlot,
                         pressed && styles.imageButtonPressed,
                       ]}
                       onPress={() => setZoomedImage(image)}
@@ -126,6 +97,20 @@ export function ExerciseInfoSheet({
                         contentFit="contain"
                       />
                     </Pressable>
+                  ))}
+                </View>
+              ) : (
+                <View
+                  style={styles.images}
+                  accessible
+                  accessibilityLabel={t.exercises.noImages}
+                >
+                  {PLACEHOLDER_SLOTS.map((slot) => (
+                    <ImagePlaceholder
+                      key={slot}
+                      aspectRatio={IMAGE_ASPECT_RATIO}
+                      style={styles.imageSlot}
+                    />
                   ))}
                 </View>
               )}
@@ -166,12 +151,11 @@ export function ExerciseInfoSheet({
   );
 }
 
+const IMAGE_ASPECT_RATIO = 3 / 2;
+const PLACEHOLDER_SLOTS = [0, 1];
+
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
-    backdrop: {
-      backgroundColor: colors.scrim,
-    },
-    // Lets taps outside the panel through to the backdrop, which closes it.
     center: {
       position: "absolute",
       top: 0,
@@ -188,7 +172,6 @@ const useStyles = makeStyles(({ colors }) =>
       padding: spacing.lg,
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,
-      borderTopWidth: 1,
       borderColor: colors.primary,
     },
     content: {
@@ -238,7 +221,7 @@ const useStyles = makeStyles(({ colors }) =>
       flexDirection: "row",
       gap: spacing.sm,
     },
-    imageButton: {
+    imageSlot: {
       flex: 1,
     },
     imageButtonPressed: {
@@ -246,7 +229,7 @@ const useStyles = makeStyles(({ colors }) =>
     },
     image: {
       width: "100%",
-      aspectRatio: 3 / 2,
+      aspectRatio: IMAGE_ASPECT_RATIO,
       borderRadius: radii.sm,
       backgroundColor: colors.background,
     },

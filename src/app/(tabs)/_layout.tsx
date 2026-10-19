@@ -19,7 +19,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { fontsInstrument } from "@/constants/theme";
+import { fontsInstrument, spacing } from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
@@ -80,7 +80,7 @@ export default function TabsLayout() {
           backgroundColor: colors.backgroundSecondary,
           borderTopWidth: 0,
           height: TAB_BAR_HEIGHT + insets.bottom,
-          paddingTop: 10,
+          paddingTop: spacing.sm,
         },
         tabBarLabelStyle: {
           fontFamily: fontsInstrument.medium,

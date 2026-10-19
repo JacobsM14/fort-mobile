@@ -6,9 +6,8 @@ import {
   fontSizes,
   fontsJetBrainsMono,
   iconSizes,
-  radii,
-  spacing,
 } from "@/constants/theme";
+import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 type SettingsRowProps = {
@@ -20,13 +19,17 @@ type SettingsRowProps = {
 };
 
 export function SettingsRow({ icon, label, value, onPress }: SettingsRowProps) {
-  const { colors } = useTheme();
+  const { colors, globalStyles } = useTheme();
   const styles = useStyles();
+  const handlePress = useFocusedPress(onPress);
 
   return (
     <Pressable
-      style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
-      onPress={onPress}
+      style={({ pressed }) => [
+        globalStyles.card,
+        pressed && globalStyles.cardPressed,
+      ]}
+      onPress={handlePress}
       disabled={onPress === undefined}
       accessibilityRole={onPress === undefined ? "text" : "button"}
     >
@@ -61,20 +64,6 @@ export function SettingsRow({ icon, label, value, onPress }: SettingsRowProps) {
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
-    row: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: spacing.sm,
-      minHeight: 56,
-      paddingHorizontal: spacing.md,
-      backgroundColor: colors.backgroundSecondary,
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: radii.sm,
-    },
-    rowPressed: {
-      borderColor: colors.primary,
-    },
     label: {
       flex: 1,
       fontSize: fontSizes.body,
