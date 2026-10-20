@@ -9,7 +9,9 @@ import {
   formatPreviousSet,
   formatSet,
   getDefaultExerciseId,
+  getStopwatchState,
   isSetUnlocked,
+  isStopwatchTracking,
   needsRestChoice,
 } from "./sets";
 
@@ -57,16 +59,14 @@ describe("canCompleteSet", () => {
       true,
     );
   });
+});
 
-  it("needs a time for timed sets and a distance for distance sets", () => {
-    expect(canCompleteSet("duration", { ...EMPTY, durationS: 45 })).toBe(true);
-    expect(canCompleteSet("duration", EMPTY)).toBe(false);
-    expect(
-      canCompleteSet("distance_duration", { ...EMPTY, durationS: 600 }),
-    ).toBe(false);
-    expect(
-      canCompleteSet("distance_duration", { ...EMPTY, distanceM: 2000 }),
-    ).toBe(true);
+describe("isStopwatchTracking", () => {
+  it("is true for timed and distance exercises only", () => {
+    expect(isStopwatchTracking("duration")).toBe(true);
+    expect(isStopwatchTracking("distance_duration")).toBe(true);
+    expect(isStopwatchTracking("weight_reps")).toBe(false);
+    expect(isStopwatchTracking("bodyweight_reps")).toBe(false);
   });
 });
 
@@ -160,6 +160,12 @@ describe("formatSet", () => {
       ),
     ).toBe("5,2 km / 26:10");
   });
+
+  it("leaves out a distance not typed yet", () => {
+    expect(
+      formatSet("distance_duration", { ...EMPTY, durationS: 1570 }, es, "es"),
+    ).toBe("26:10");
+  });
 });
 
 describe("formatPreviousSet", () => {
@@ -180,6 +186,31 @@ describe("formatPreviousSet", () => {
         { ...EMPTY, distanceM: 5200, durationS: 1570 },
         "es",
       ),
-    ).toBe("5,2 km · 26:10");
+    ).toBe("5,2 km / 26:10");
+  });
+});
+
+describe("getStopwatchState", () => {
+  const started = new Date(2026, 9, 19, 18, 0, 0);
+
+  it("is idle with nothing run on the first set not done", () => {
+    expect(getStopwatchState([]).status).toBe("idle");
+    expect(
+      getStopwatchState([set({ completedAt: DONE_AT, durationS: 40 }), set()])
+        .status,
+    ).toBe("idle");
+  });
+
+  it("is running from the set's start, after any time already run", () => {
+    expect(
+      getStopwatchState([set({ startedAt: started, durationS: 30 })]),
+    ).toMatchObject({ status: "running", since: started, offsetS: 30 });
+  });
+
+  it("is paused with the time run so far", () => {
+    expect(getStopwatchState([set({ durationS: 30 })])).toMatchObject({
+      status: "paused",
+      seconds: 30,
+    });
   });
 });

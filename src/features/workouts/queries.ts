@@ -57,6 +57,16 @@ function secondsBetween(from: Date, to: Date) {
   return Math.max(0, Math.floor((to.getTime() - from.getTime()) / 1000));
 }
 
+// A set's stopwatch can be paused and resumed: durationS holds the time
+// before the current run, which started at startedAt.
+function accumulatedSeconds(
+  durationS: number | null,
+  startedAt: Date,
+  now: Date,
+) {
+  return (durationS ?? 0) + secondsBetween(startedAt, now);
+}
+
 // Only these four columns: a whole set passed as SetValues would otherwise
 // write its id, timestamps and rest too.
 function pickSetValues(values: SetValues): SetValues {
@@ -74,6 +84,7 @@ function getSetContext(tx: Transaction, setId: string) {
       workoutId: workoutExercises.workoutId,
       workoutExerciseId: workoutSets.workoutExerciseId,
       position: workoutSets.position,
+      durationS: workoutSets.durationS,
       startedAt: workoutSets.startedAt,
       restStartedAt: workoutSets.restStartedAt,
       restS: workoutSets.restS,
@@ -120,10 +131,15 @@ function endRunningRests(tx: Transaction, workoutId: string, now: Date) {
   }
 }
 
-// Likewise, only one set's stopwatch runs at a time.
-function stopRunningTimers(tx: Transaction, workoutId: string, now: Date) {
+// Likewise, only one set's stopwatch runs at a time: starting another one
+// pauses it, keeping its time.
+function pauseRunningTimers(tx: Transaction, workoutId: string, now: Date) {
   const running = tx
-    .select({ id: workoutSets.id, startedAt: workoutSets.startedAt })
+    .select({
+      id: workoutSets.id,
+      durationS: workoutSets.durationS,
+      startedAt: workoutSets.startedAt,
+    })
     .from(workoutSets)
     .where(
       and(
@@ -136,10 +152,13 @@ function stopRunningTimers(tx: Transaction, workoutId: string, now: Date) {
       ),
     )
     .all();
-  for (const { id, startedAt } of running) {
+  for (const { id, durationS, startedAt } of running) {
     if (startedAt !== null) {
       tx.update(workoutSets)
-        .set({ durationS: secondsBetween(startedAt, now), startedAt: null })
+        .set({
+          durationS: accumulatedSeconds(durationS, startedAt, now),
+          startedAt: null,
+        })
         .where(eq(workoutSets.id, id))
         .run();
     }
@@ -148,7 +167,11 @@ function stopRunningTimers(tx: Transaction, workoutId: string, now: Date) {
 
 // New sets start with the previous set's values, which is usually what the
 // next one repeats.
-function appendSet(tx: Transaction, workoutExerciseId: string) {
+function appendSet(
+  tx: Transaction,
+  workoutExerciseId: string,
+  overrides: Partial<SetValues> = {},
+) {
   const last = tx
     .select({
       position: workoutSets.position,
@@ -168,7 +191,13 @@ function appendSet(tx: Transaction, workoutExerciseId: string) {
     .values(
       last === undefined
         ? { id, workoutExerciseId, position: 0 }
-        : { ...last, id, workoutExerciseId, position: last.position + 1 },
+        : {
+            ...last,
+            ...overrides,
+            id,
+            workoutExerciseId,
+            position: last.position + 1,
+          },
     )
     .run();
   return id;
@@ -181,7 +210,7 @@ function startTimer(
   now: Date,
 ) {
   endRunningRests(tx, workoutId, now);
-  stopRunningTimers(tx, workoutId, now);
+  pauseRunningTimers(tx, workoutId, now);
   tx.update(workoutSets)
     .set({ startedAt: now })
     .where(eq(workoutSets.id, setId))
@@ -292,7 +321,7 @@ export function completeSet(
         durationS:
           set.startedAt === null
             ? values.durationS
-            : secondsBetween(set.startedAt, now),
+            : accumulatedSeconds(set.durationS, set.startedAt, now),
         startedAt: null,
         completedAt: now,
       })
@@ -307,17 +336,9 @@ export function deleteSet(setId: string) {
   db.delete(workoutSets).where(eq(workoutSets.id, setId)).run();
 }
 
-export function startSetTimer(setId: string, now = new Date()) {
-  db.transaction((tx) => {
-    const set = getSetContext(tx, setId);
-    if (set !== undefined) {
-      startTimer(tx, setId, set.workoutId, now);
-    }
-  });
-}
-
-// Timed exercises run from one big button instead of rows: it starts the
-// first set not done yet, adding one when all are done.
+// Timed and distance exercises run from one stopwatch instead of rows: it
+// starts (or resumes) the first set not done yet, adding one when all are
+// done.
 export function startNextSetTimer(workoutExerciseId: string, now = new Date()) {
   db.transaction((tx) => {
     const pending = tx
@@ -346,22 +367,36 @@ export function startNextSetTimer(workoutExerciseId: string, now = new Date()) {
       .where(eq(workoutExercises.id, workoutExerciseId))
       .get();
     if (exercise !== undefined) {
-      startTimer(tx, appendSet(tx, workoutExerciseId), exercise.workoutId, now);
+      // Its time is counted from zero; an inherited one would count as
+      // already run.
+      const setId = appendSet(tx, workoutExerciseId, { durationS: null });
+      startTimer(tx, setId, exercise.workoutId, now);
     }
   });
 }
 
-export function stopSetTimer(setId: string, now = new Date()) {
+export function pauseSetTimer(setId: string, now = new Date()) {
   db.transaction((tx) => {
     const set = getSetContext(tx, setId);
     if (set === undefined || set.startedAt === null) {
       return;
     }
     tx.update(workoutSets)
-      .set({ durationS: secondsBetween(set.startedAt, now), startedAt: null })
+      .set({
+        durationS: accumulatedSeconds(set.durationS, set.startedAt, now),
+        startedAt: null,
+      })
       .where(eq(workoutSets.id, setId))
       .run();
   });
+}
+
+// Drops the time run so far without saving a set.
+export function resetSetTimer(setId: string) {
+  db.update(workoutSets)
+    .set({ durationS: null, startedAt: null })
+    .where(and(eq(workoutSets.id, setId), isNull(workoutSets.completedAt)))
+    .run();
 }
 
 // Both choices bring up the next set right away, so it can be adjusted while

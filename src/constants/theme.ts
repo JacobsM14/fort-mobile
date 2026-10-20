@@ -120,6 +120,7 @@ export const fontSizes = {
   lead: 18,
   heading: 28,
   display: 46,
+  timer: 72,
 };
 
 export const lineHeights = {

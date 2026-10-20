@@ -15,8 +15,6 @@ import {
   completeSet,
   deleteSet,
   endRest,
-  startSetTimer,
-  stopSetTimer,
   updateSetValues,
 } from "@/features/workouts/queries";
 import {
@@ -25,18 +23,18 @@ import {
   needsRestChoice,
 } from "@/features/workouts/sets";
 
-import type { TrackingType } from "@/constants/enums";
 import type {
   SetValues,
   WorkoutExercise,
   WorkoutSet,
 } from "@/features/workouts/queries";
+import type { RepsTrackingType } from "@/features/workouts/sets";
 
 import { spacing } from "@/constants/theme";
 
 type SetListProps = {
   exercise: WorkoutExercise;
-  trackingType: TrackingType;
+  trackingType: RepsTrackingType;
   // What was done the last time, matched to the sets here by number.
   previousSets: readonly SetValues[];
   // The screen asks for confirmation; its dialog has to cover the whole
@@ -59,22 +57,6 @@ export function SetList({
     } catch {
       Alert.alert(t.workout.saveError);
     }
-  }
-
-  // The values typed are saved first, so starting the stopwatch doesn't lose
-  // a distance typed a moment ago.
-  function startTimer(setId: string, values: SetValues) {
-    run(() => {
-      updateSetValues(setId, values);
-      startSetTimer(setId);
-    });
-  }
-
-  function stopTimer(setId: string, values: SetValues) {
-    run(() => {
-      updateSetValues(setId, values);
-      stopSetTimer(setId);
-    });
   }
 
   // Only a done set asks first; one not done yet holds nothing to lose.
@@ -122,8 +104,6 @@ export function SetList({
                 onSave={(values) => run(() => updateSetValues(set.id, values))}
                 onComplete={(values) => run(() => completeSet(set.id, values))}
                 onDelete={() => removeSet(set, index + 1)}
-                onStartTimer={(values) => startTimer(set.id, values)}
-                onStopTimer={(values) => stopTimer(set.id, values)}
               />
             </Animated.View>
             {rest !== null && (

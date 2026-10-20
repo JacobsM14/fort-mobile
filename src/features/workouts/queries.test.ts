@@ -20,9 +20,10 @@ import {
   discardWorkout,
   endRest,
   finishWorkout,
+  pauseSetTimer,
   previousSetsQuery,
+  resetSetTimer,
   startNextSetTimer,
-  startSetTimer,
   startWorkout,
   toWorkoutExercises,
   toWorkoutHistory,
@@ -220,7 +221,7 @@ describe("rests", () => {
     completeSet(bench.sets[0].id, BENCH, at(30));
     chooseRest(bench.sets[0].id, "timed", at(30));
 
-    startSetTimer(plank.sets[0].id, at(90));
+    startNextSetTimer(plank.id, at(90));
 
     expect(readWorkout(workoutId)[0].sets[0].restS).toBe(60);
   });
@@ -253,7 +254,7 @@ describe("rests", () => {
 describe("set stopwatch", () => {
   it("a set done while its stopwatch runs lasts until then", () => {
     const { workoutId, plank } = startPushDay();
-    startSetTimer(plank.sets[0].id, at(10));
+    startNextSetTimer(plank.id, at(10));
 
     completeSet(
       plank.sets[0].id,
@@ -290,7 +291,70 @@ describe("startNextSetTimer", () => {
     sets = readWorkout(workoutId)[1].sets;
     expect(sets).toHaveLength(2);
     expect(sets[0].durationS).toBe(40);
-    expect(sets[1]).toMatchObject({ startedAt: at(100), completedAt: null });
+    // The new set counts from zero instead of inheriting the 40 s.
+    expect(sets[1]).toMatchObject({
+      durationS: null,
+      startedAt: at(100),
+      completedAt: null,
+    });
+  });
+
+  it("starting another stopwatch pauses the running one, keeping its time", () => {
+    const { workoutId, plank } = startPushDay();
+    const [run] = addWorkoutExercises(workoutId, [catalogId("plank")]);
+    startNextSetTimer(plank.id, at(0));
+
+    startNextSetTimer(run, at(30));
+
+    const [, first, second] = readWorkout(workoutId);
+    expect(first.sets[0]).toMatchObject({ durationS: 30, startedAt: null });
+    expect(second.sets[0].startedAt).toEqual(at(30));
+  });
+});
+
+describe("pausing and resetting a stopwatch", () => {
+  const none = { weightKg: null, reps: null, durationS: null, distanceM: null };
+
+  it("resuming continues the same set, adding up its time", () => {
+    const { workoutId, plank } = startPushDay();
+    startNextSetTimer(plank.id, at(0));
+
+    pauseSetTimer(plank.sets[0].id, at(30));
+    expect(readWorkout(workoutId)[1].sets[0]).toMatchObject({
+      durationS: 30,
+      startedAt: null,
+    });
+
+    startNextSetTimer(plank.id, at(100));
+    completeSet(plank.sets[0].id, none, at(120));
+
+    const sets = readWorkout(workoutId)[1].sets;
+    expect(sets).toHaveLength(1);
+    expect(sets[0]).toMatchObject({ durationS: 50, completedAt: at(120) });
+  });
+
+  it("pausing a stopwatch that isn't running changes nothing", () => {
+    const { workoutId, plank } = startPushDay();
+    startNextSetTimer(plank.id, at(0));
+    pauseSetTimer(plank.sets[0].id, at(30));
+
+    pauseSetTimer(plank.sets[0].id, at(90));
+
+    expect(readWorkout(workoutId)[1].sets[0].durationS).toBe(30);
+  });
+
+  it("resetting drops the time without saving a set", () => {
+    const { workoutId, plank } = startPushDay();
+    startNextSetTimer(plank.id, at(0));
+    pauseSetTimer(plank.sets[0].id, at(30));
+
+    resetSetTimer(plank.sets[0].id);
+
+    expect(readWorkout(workoutId)[1].sets[0]).toMatchObject({
+      durationS: null,
+      startedAt: null,
+      completedAt: null,
+    });
   });
 });
 

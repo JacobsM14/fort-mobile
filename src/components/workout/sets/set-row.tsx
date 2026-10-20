@@ -6,24 +6,17 @@ import {
   DELETE_SET_WIDTH,
   DeleteSetButton,
 } from "@/components/workout/shared/delete-set-button";
-import { ElapsedTime } from "@/components/workout/shared/elapsed-time";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 import { canCompleteSet, formatPreviousSet } from "@/features/workouts/sets";
 
-import type { TrackingType } from "@/constants/enums";
 import type { SetValues, WorkoutSet } from "@/features/workouts/queries";
+import type { RepsTrackingType } from "@/features/workouts/sets";
 import type { Language } from "@/i18n";
 import type { Translations } from "@/i18n/es";
 
-import {
-  cleanDurationDigits,
-  digitsFromDuration,
-  durationFromDigits,
-  formatDurationDigits,
-} from "@/utils/duration";
 import { formatDecimal, parseDecimal, parseInteger } from "@/utils/number";
 
 import {
@@ -35,16 +28,14 @@ import {
   spacing,
 } from "@/constants/theme";
 
-type Field = "weight" | "reps" | "distance" | "time";
+type Field = "weight" | "reps";
 
-const FIELDS: Record<TrackingType, readonly Field[]> = {
+const FIELDS: Record<RepsTrackingType, readonly Field[]> = {
   weight_reps: ["weight", "reps"],
   bodyweight_reps: ["reps"],
-  duration: ["time"],
-  distance_duration: ["distance", "time"],
 };
 
-// What the inputs hold while typing; time holds the digits typed.
+// What the inputs hold while typing.
 type Texts = Record<Field, string>;
 
 function toTexts(values: SetValues, language: Language): Texts {
@@ -52,21 +43,15 @@ function toTexts(values: SetValues, language: Language): Texts {
     weight:
       values.weightKg === null ? "" : formatDecimal(values.weightKg, language),
     reps: values.reps === null ? "" : String(values.reps),
-    distance:
-      values.distanceM === null
-        ? ""
-        : formatDecimal(values.distanceM / 1000, language),
-    time: digitsFromDuration(values.durationS),
   };
 }
 
 function toValues(texts: Texts): SetValues {
-  const km = parseDecimal(texts.distance);
   return {
     weightKg: parseDecimal(texts.weight),
     reps: parseInteger(texts.reps),
-    durationS: durationFromDigits(texts.time),
-    distanceM: km === null ? null : Math.round(km * 1000),
+    durationS: null,
+    distanceM: null,
   };
 }
 
@@ -74,8 +59,6 @@ function getFieldLabels(t: Translations): Record<Field, string> {
   return {
     weight: t.workout.weight,
     reps: t.workout.reps,
-    distance: t.workout.distance,
-    time: t.workout.time,
   };
 }
 
@@ -85,14 +68,8 @@ function valuesKey(values: SetValues) {
     .join("|");
 }
 
-// Last time's set goes in its own column when it's short ("77,5×5"); a
-// distance and time don't fit next to two inputs, so they go below the row.
-function hasPreviousColumn(trackingType: TrackingType) {
-  return FIELDS[trackingType].includes("reps");
-}
-
 type SetHeaderProps = {
-  trackingType: TrackingType;
+  trackingType: RepsTrackingType;
   // Whether the exercise was done before, so there is a last time to show.
   showPrevious: boolean;
 };
@@ -109,7 +86,7 @@ export function SetHeader({ trackingType, showPrevious }: SetHeaderProps) {
       <Text style={[globalStyles.inputLabel, styles.number]}>
         {t.workout.set}
       </Text>
-      {showPrevious && hasPreviousColumn(trackingType) && (
+      {showPrevious && (
         <Text style={[globalStyles.inputLabel, styles.column, styles.label]}>
           {t.workout.previous}
         </Text>
@@ -131,7 +108,7 @@ export function SetHeader({ trackingType, showPrevious }: SetHeaderProps) {
 type SetRowProps = {
   number: number;
   set: WorkoutSet;
-  trackingType: TrackingType;
+  trackingType: RepsTrackingType;
   // The set with the same number last time; undefined when it had fewer.
   previous: SetValues | undefined;
   showPrevious: boolean;
@@ -140,8 +117,6 @@ type SetRowProps = {
   onSave: (values: SetValues) => void;
   onComplete: (values: SetValues) => void;
   onDelete: () => void;
-  onStartTimer: (values: SetValues) => void;
-  onStopTimer: (values: SetValues) => void;
 };
 
 export function SetRow({
@@ -154,16 +129,14 @@ export function SetRow({
   onSave,
   onComplete,
   onDelete,
-  onStartTimer,
-  onStopTimer,
 }: SetRowProps) {
   const { t, language } = useTranslation();
   const { colors } = useTheme();
   const styles = useStyles();
   const [texts, setTexts] = useState(() => toTexts(set, language));
 
-  // When the saved values change (a stopwatch stops, a field is saved), the
-  // inputs show them as saved: "0:90" becomes "1:30".
+  // When the saved values change (a field is saved, a set is added), the
+  // inputs show them as saved: "62.50" becomes "62,5".
   const savedKey = valuesKey(set);
   const [shownKey, setShownKey] = useState(savedKey);
   if (savedKey !== shownKey) {
@@ -180,14 +153,9 @@ export function SetRow({
     previous === undefined
       ? undefined
       : formatPreviousSet(trackingType, previous, language);
-  const timerStartedAt = done ? null : set.startedAt;
-  const timerDisabled = done || (locked && timerStartedAt === null);
 
   function change(field: Field, text: string) {
-    setTexts((current) => ({
-      ...current,
-      [field]: field === "time" ? cleanDurationDigits(text) : text,
-    }));
+    setTexts((current) => ({ ...current, [field]: text }));
   }
 
   function save() {
@@ -198,105 +166,28 @@ export function SetRow({
     }
   }
 
-  function toggleTimer() {
-    if (timerStartedAt === null) {
-      onStartTimer(values);
-    } else if (trackingType === "duration" || ready) {
-      onComplete(values);
-    } else {
-      onStopTimer(values);
-    }
-  }
-
   function renderField(field: Field) {
-    const label = `${t.workout.set} ${number}, ${labels[field]}`;
-
-    if (field !== "time") {
-      return (
-        <TextInput
-          key={field}
-          style={[styles.input, styles.column]}
-          value={texts[field]}
-          onChangeText={(text) => change(field, text)}
-          onEndEditing={save}
-          keyboardType={field === "reps" ? "number-pad" : "decimal-pad"}
-          selectTextOnFocus
-          placeholder="0"
-          placeholderTextColor={colors.disabled}
-          accessibilityLabel={label}
-        />
-      );
-    }
-
     return (
-      <View key={field} style={[styles.column, styles.timeGroup]}>
-        {timerStartedAt === null ? (
-          <TextInput
-            style={[styles.input, styles.timeInput]}
-            value={texts.time === "" ? "" : formatDurationDigits(texts.time)}
-            onChangeText={(text) => change("time", text)}
-            onEndEditing={save}
-            keyboardType="number-pad"
-            selectTextOnFocus
-            placeholder="0:00"
-            placeholderTextColor={colors.disabled}
-            accessibilityLabel={label}
-          />
-        ) : (
-          <View style={[styles.input, styles.timeInput, styles.timeRunning]}>
-            <ElapsedTime
-              since={timerStartedAt}
-              style={[styles.timeText, styles.timeTextRunning]}
-            />
-          </View>
-        )}
-        <Pressable
-          style={({ pressed }) => [
-            styles.box,
-            styles.timerButton,
-            (pressed || timerStartedAt !== null) && styles.boxFilled,
-            timerDisabled && styles.boxDisabled,
-          ]}
-          onPress={toggleTimer}
-          disabled={timerDisabled}
-          accessibilityRole="button"
-          accessibilityLabel={
-            timerStartedAt === null ? t.workout.startTimer : t.workout.stopTimer
-          }
-          accessibilityHint={
-            locked && !done ? t.workout.previousSetFirst : undefined
-          }
-          accessibilityState={{ disabled: timerDisabled }}
-        >
-          {({ pressed }) => (
-            <SymbolView
-              name={
-                timerStartedAt === null
-                  ? {
-                      ios: "play.fill",
-                      android: "play_arrow",
-                      web: "play_arrow",
-                    }
-                  : { ios: "stop.fill", android: "stop", web: "stop" }
-              }
-              tintColor={
-                pressed || timerStartedAt !== null
-                  ? colors.onPrimary
-                  : colors.primary
-              }
-              size={iconSizes.sm}
-            />
-          )}
-        </Pressable>
-      </View>
+      <TextInput
+        key={field}
+        style={[styles.input, styles.column]}
+        value={texts[field]}
+        onChangeText={(text) => change(field, text)}
+        onEndEditing={save}
+        keyboardType={field === "reps" ? "number-pad" : "decimal-pad"}
+        selectTextOnFocus
+        placeholder="0"
+        placeholderTextColor={colors.disabled}
+        accessibilityLabel={`${t.workout.set} ${number}, ${labels[field]}`}
+      />
     );
   }
 
   const previousLabel = `${t.workout.previous}: ${previousText ?? "-"}`;
-  const row = (
+  return (
     <View style={styles.row}>
       <Text style={styles.number}>{number}</Text>
-      {showPrevious && hasPreviousColumn(trackingType) && (
+      {showPrevious && (
         <Text
           style={[styles.column, styles.previous]}
           numberOfLines={1}
@@ -331,18 +222,6 @@ export function SetRow({
         />
       </Pressable>
       <DeleteSetButton number={number} onPress={onDelete} />
-    </View>
-  );
-
-  if (hasPreviousColumn(trackingType) || previousText === undefined) {
-    return row;
-  }
-  return (
-    <View style={styles.withCaption}>
-      {row}
-      <Text style={styles.caption} accessibilityLabel={previousLabel}>
-        {t.workout.previous} · {previousText}
-      </Text>
     </View>
   );
 }
@@ -383,28 +262,6 @@ const useStyles = makeStyles(({ colors }) =>
       // borderWidth: 1,
       // borderColor: colors.border,
     },
-    timeGroup: {
-      flexDirection: "row",
-      gap: spacing.xs,
-    },
-    timeInput: {
-      flex: 1,
-      fontSize: fontSizes.label,
-      fontFamily: fontsJetBrainsMono.medium,
-    },
-    timeRunning: {
-      alignItems: "center",
-      justifyContent: "center",
-      borderColor: colors.primary,
-    },
-    timeText: {
-      fontSize: fontSizes.label,
-      fontFamily: fontsJetBrainsMono.medium,
-      color: colors.text,
-    },
-    timeTextRunning: {
-      color: colors.primary,
-    },
     boxSpace: {
       width: BOX_SIZE,
     },
@@ -417,26 +274,12 @@ const useStyles = makeStyles(({ colors }) =>
       fontFamily: fontsJetBrainsMono.medium,
       color: colors.disabled,
     },
-    withCaption: {
-      gap: spacing.xs,
-    },
-    // Starts under the first input, past the set number.
-    caption: {
-      marginLeft: BOX_SIZE + spacing.sm,
-      fontSize: fontSizes.caption,
-      fontFamily: fontsJetBrainsMono.medium,
-      color: colors.disabled,
-    },
     box: {
       width: BOX_SIZE,
       height: BOX_SIZE,
       alignItems: "center",
       justifyContent: "center",
       borderRadius: radii.sm,
-    },
-    timerButton: {
-      borderWidth: 1,
-      borderColor: colors.primary,
     },
     checkBox: {
       borderWidth: 1,

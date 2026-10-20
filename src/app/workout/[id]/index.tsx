@@ -30,6 +30,7 @@ import {
   deleteSet,
   discardWorkout,
   finishWorkout,
+  resetSetTimer,
 } from "@/features/workouts/queries";
 import { getDefaultExerciseId, isExerciseDone } from "@/features/workouts/sets";
 
@@ -37,12 +38,15 @@ import type { MenuAnchor } from "@/components/workout/header/exercise-select";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
 import type { WorkoutEntry } from "@/features/workouts/entries";
 
+import { formatDuration } from "@/utils/duration";
+
 import { spacing } from "@/constants/theme";
 
 type Confirmation =
   | { kind: "finish" }
   | { kind: "cancel" }
-  | { kind: "deleteSet"; setId: string; number: number };
+  | { kind: "deleteSet"; setId: string; number: number }
+  | { kind: "resetTimer"; setId: string; seconds: number };
 
 type DialogTexts = {
   tone: "primary" | "danger";
@@ -139,11 +143,11 @@ export default function WorkoutScreen() {
     }
   }
 
-  function removeSet(setId: string) {
+  function attempt(action: () => void, errorMessage: string) {
     try {
-      deleteSet(setId);
+      action();
     } catch {
-      Alert.alert(t.workout.deleteSetError);
+      Alert.alert(errorMessage);
     }
   }
 
@@ -160,7 +164,10 @@ export default function WorkoutScreen() {
         }, t.workout.cancelError);
         break;
       case "deleteSet":
-        removeSet(action.setId);
+        attempt(() => deleteSet(action.setId), t.workout.deleteSetError);
+        break;
+      case "resetTimer":
+        attempt(() => resetSetTimer(action.setId), t.workout.saveError);
         break;
     }
   }
@@ -191,6 +198,14 @@ export default function WorkoutScreen() {
           title: t.workout.deleteSetTitle(action.number),
           message: t.workout.deleteSetMessage,
           confirmLabel: t.workout.deleteSetConfirm,
+          cancelLabel: t.workout.cancel,
+        };
+      case "resetTimer":
+        return {
+          tone: "danger",
+          title: t.workout.resetTitle,
+          message: t.workout.resetMessage(formatDuration(action.seconds)),
+          confirmLabel: t.workout.resetConfirm,
           cancelLabel: t.workout.cancel,
         };
     }
@@ -250,6 +265,9 @@ export default function WorkoutScreen() {
             trackingType={current.summary.trackingType}
             onDeleteSet={(setId, number) =>
               setConfirmation({ kind: "deleteSet", setId, number })
+            }
+            onResetTimer={(setId, seconds) =>
+              setConfirmation({ kind: "resetTimer", setId, seconds })
             }
           />
         )}
