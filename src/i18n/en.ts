@@ -205,7 +205,6 @@ export const en: Translations = {
       en: "English",
     },
     sections: {
-      themes: "Themes",
       user: "User",
       privacy: "Privacy policy and licenses",
       permissions: "Permissions",

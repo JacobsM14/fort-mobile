@@ -218,7 +218,6 @@ export const es = {
       en: "English",
     } satisfies Record<LanguagePreference, string>,
     sections: {
-      themes: "Temas",
       user: "Usuario",
       privacy: "Política de privacidad y licencias",
       permissions: "Permisos",

@@ -18,11 +18,6 @@ type Section = {
 
 const SECTIONS: Section[] = [
   {
-    key: "themes",
-    href: "/settings/themes",
-    icon: { ios: "paintpalette", android: "palette", web: "palette" },
-  },
-  {
     key: "user",
     href: "/settings/user",
     icon: { ios: "person", android: "person", web: "person" },
