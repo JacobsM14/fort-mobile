@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { useDatabase } from "@/db/use-database";
+import { LanguageProvider } from "@/hooks/use-language";
 import { makeStyles, ThemeProvider, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
@@ -30,9 +31,11 @@ const MODAL_OPTIONS = {
 
 export default function RootLayout() {
   return (
-    <ThemeProvider>
-      <RootNavigator />
-    </ThemeProvider>
+    <LanguageProvider>
+      <ThemeProvider>
+        <RootNavigator />
+      </ThemeProvider>
+    </LanguageProvider>
   );
 }
 

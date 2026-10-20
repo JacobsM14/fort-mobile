@@ -1,6 +1,7 @@
 import type {
   AccentColor,
   Equipment,
+  LanguagePreference,
   MuscleGroup,
   ThemePreference,
   TrackingType,
@@ -209,6 +210,13 @@ export const es = {
       light: "Claro",
       dark: "Oscuro",
     } satisfies Record<ThemePreference, string>,
+    language: "Idioma",
+    // Each language in its own name, so it can be found from any of them.
+    languageOptions: {
+      system: "Sistema",
+      es: "Español",
+      en: "English",
+    } satisfies Record<LanguagePreference, string>,
     sections: {
       themes: "Temas",
       user: "Usuario",

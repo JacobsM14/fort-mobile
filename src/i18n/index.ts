@@ -1,5 +1,7 @@
 import { useLocales } from "expo-localization";
 
+import { useLanguagePreference } from "@/hooks/use-language";
+
 import { en } from "./en";
 import { es, type Translations } from "./es";
 
@@ -14,10 +16,14 @@ function isSupported(code: string | null): code is Language {
 }
 
 export function useTranslation() {
+  const { preference, setPreference } = useLanguagePreference();
   const [locale] = useLocales();
-  const language = isSupported(locale.languageCode)
-    ? locale.languageCode
-    : fallbackLanguage;
+  const language: Language =
+    preference !== "system"
+      ? preference
+      : isSupported(locale.languageCode)
+        ? locale.languageCode
+        : fallbackLanguage;
 
-  return { t: translations[language], language };
+  return { t: translations[language], language, preference, setPreference };
 }

@@ -198,6 +198,12 @@ export const en: Translations = {
       light: "Light",
       dark: "Dark",
     },
+    language: "Language",
+    languageOptions: {
+      system: "System",
+      es: "Español",
+      en: "English",
+    },
     sections: {
       themes: "Themes",
       user: "User",
