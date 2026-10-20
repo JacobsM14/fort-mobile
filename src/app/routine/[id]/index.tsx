@@ -35,6 +35,7 @@ import { useExerciseList } from "@/features/exercises/queries";
 import {
   createRoutine,
   deleteRoutine,
+  ROUTINE_NAME_MAX_LENGTH,
   updateRoutine,
 } from "@/features/routines/queries";
 import { NEW_ROUTINE_ID, useRoutineDraft } from "@/hooks/use-routine-draft";
@@ -124,11 +125,19 @@ export default function RoutineFormScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={globalStyles.formCage}>
-          <Text style={globalStyles.inputLabel}>{t.newRoutine.nameLabel}</Text>
+          <View style={styles.labelRow}>
+            <Text style={globalStyles.inputLabel}>
+              {t.newRoutine.nameLabel}
+            </Text>
+            <Text style={globalStyles.inputLabel}>
+              {name.length}/{ROUTINE_NAME_MAX_LENGTH}
+            </Text>
+          </View>
           <TextInput
             style={globalStyles.boxInput}
             value={name}
             onChangeText={setName}
+            maxLength={ROUTINE_NAME_MAX_LENGTH}
             placeholder={t.newRoutine.namePlaceholder}
             placeholderTextColor={colors.disabled}
           />
@@ -199,5 +208,9 @@ const styles = StyleSheet.create({
   content: {
     gap: spacing.lg,
     paddingBottom: spacing.lg,
+  },
+  labelRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

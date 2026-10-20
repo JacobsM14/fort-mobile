@@ -11,6 +11,18 @@ import {
   type ExerciseSummary,
 } from "@/features/exercises/queries";
 
+// Long enough for "Pierna y glúteos · semana 3", short enough to fit the
+// routine cards on Today and in Progress.
+export const ROUTINE_NAME_MAX_LENGTH = 40;
+
+// Counted in characters, not UTF-16 units, so an emoji isn't cut in half.
+function cleanRoutineName(name: string) {
+  return Array.from(name.trim())
+    .slice(0, ROUTINE_NAME_MAX_LENGTH)
+    .join("")
+    .trim();
+}
+
 export type RoutineSummary = {
   id: string;
   name: string;
@@ -26,7 +38,7 @@ export function createRoutine(input: {
   const routineId = newId();
   db.transaction((tx) => {
     tx.insert(routines)
-      .values({ id: routineId, name: input.name.trim() })
+      .values({ id: routineId, name: cleanRoutineName(input.name) })
       .run();
     if (input.exerciseIds.length > 0) {
       tx.insert(routineExercises)
@@ -50,7 +62,7 @@ export function updateRoutine(
 ) {
   db.transaction((tx) => {
     tx.update(routines)
-      .set({ name: input.name.trim() })
+      .set({ name: cleanRoutineName(input.name) })
       .where(eq(routines.id, id))
       .run();
 

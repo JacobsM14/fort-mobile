@@ -9,6 +9,7 @@ import { syncCatalog } from "@/features/exercises/sync-catalog";
 import {
   createRoutine,
   deleteRoutine,
+  ROUTINE_NAME_MAX_LENGTH,
   toRoutineSummaries,
   updateRoutine,
 } from "./queries";
@@ -55,6 +56,20 @@ describe("createRoutine", () => {
       .all();
     expect(routine.name).toBe("Push");
     expect(routineRows(routineId).map((row) => row.exerciseId)).toEqual(ids);
+  });
+
+  it("cuts a name longer than the limit", () => {
+    const routineId = createRoutine({
+      name: "a".repeat(ROUTINE_NAME_MAX_LENGTH + 10),
+      exerciseIds: [],
+    });
+
+    const [routine] = db
+      .select()
+      .from(routines)
+      .where(eq(routines.id, routineId))
+      .all();
+    expect(routine.name).toHaveLength(ROUTINE_NAME_MAX_LENGTH);
   });
 });
 
