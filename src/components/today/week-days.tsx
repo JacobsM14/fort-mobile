@@ -49,12 +49,12 @@ export function WeekDays() {
             <View
               style={[
                 styles.box,
+                missed && styles.missedBox,
                 trained
                   ? styles.trainedBox
                   : isToday
                     ? styles.activeBox
                     : styles.disabledBox,
-                missed && styles.missedBox,
               ]}
             >
               {trained ? (
@@ -101,6 +101,9 @@ const useStyles = makeStyles(({ colors }) =>
       width: 36,
       height: 36,
       borderRadius: radii.sm,
+      // Always set: trained days arrive after a first render as missed, and a
+      // dashed border left out of the style isn't reset back to solid.
+      borderStyle: "solid",
       alignItems: "center",
       justifyContent: "center",
     },
