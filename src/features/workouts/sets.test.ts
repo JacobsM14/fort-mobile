@@ -2,6 +2,8 @@ import { describe, expect, it } from "@jest/globals";
 
 import { es } from "@/i18n/es";
 
+import type { Units } from "@/utils/units";
+
 import type { SetValues, WorkoutExercise, WorkoutSet } from "./queries";
 import {
   canCompleteSet,
@@ -14,6 +16,8 @@ import {
   isStopwatchTracking,
   needsRestChoice,
 } from "./sets";
+
+const METRIC: Units = { weight: "kg", distance: "km" };
 
 const EMPTY: SetValues = {
   weightKg: null,
@@ -143,18 +147,25 @@ describe("elapsedSeconds", () => {
 describe("formatSet", () => {
   it("shows each tracking type's values", () => {
     expect(
-      formatSet("weight_reps", { ...EMPTY, weightKg: 62.5, reps: 8 }, es, "es"),
+      formatSet(
+        "weight_reps",
+        { ...EMPTY, weightKg: 62.5, reps: 8 },
+        METRIC,
+        es,
+        "es",
+      ),
     ).toBe("62,5 kg × 8");
-    expect(formatSet("bodyweight_reps", { ...EMPTY, reps: 12 }, es, "es")).toBe(
-      "12 reps",
-    );
-    expect(formatSet("duration", { ...EMPTY, durationS: 45 }, es, "es")).toBe(
-      "0:45",
-    );
+    expect(
+      formatSet("bodyweight_reps", { ...EMPTY, reps: 12 }, METRIC, es, "es"),
+    ).toBe("12 reps");
+    expect(
+      formatSet("duration", { ...EMPTY, durationS: 45 }, METRIC, es, "es"),
+    ).toBe("0:45");
     expect(
       formatSet(
         "distance_duration",
         { ...EMPTY, distanceM: 5200, durationS: 1570 },
+        METRIC,
         es,
         "es",
       ),
@@ -163,8 +174,38 @@ describe("formatSet", () => {
 
   it("leaves out a distance not typed yet", () => {
     expect(
-      formatSet("distance_duration", { ...EMPTY, durationS: 1570 }, es, "es"),
+      formatSet(
+        "distance_duration",
+        { ...EMPTY, durationS: 1570 },
+        METRIC,
+        es,
+        "es",
+      ),
     ).toBe("26:10");
+  });
+});
+
+describe("formatSet in other units", () => {
+  it("shows pounds and miles from the kg and meters stored", () => {
+    const imperial: Units = { weight: "lb", distance: "mi" };
+    expect(
+      formatSet(
+        "weight_reps",
+        { ...EMPTY, weightKg: 45.359237, reps: 5 },
+        imperial,
+        es,
+        "es",
+      ),
+    ).toBe("100 lb × 5");
+    expect(
+      formatSet(
+        "distance_duration",
+        { ...EMPTY, distanceM: 1609, durationS: 480 },
+        imperial,
+        es,
+        "es",
+      ),
+    ).toBe("1 mi / 8:00");
   });
 });
 
@@ -174,16 +215,23 @@ describe("formatPreviousSet", () => {
       formatPreviousSet(
         "weight_reps",
         { ...EMPTY, weightKg: 77.5, reps: 5 },
+        METRIC,
         "es",
       ),
     ).toBe("77,5×5");
     expect(
-      formatPreviousSet("bodyweight_reps", { ...EMPTY, reps: 12 }, "es"),
+      formatPreviousSet(
+        "bodyweight_reps",
+        { ...EMPTY, reps: 12 },
+        METRIC,
+        "es",
+      ),
     ).toBe("12");
     expect(
       formatPreviousSet(
         "distance_duration",
         { ...EMPTY, distanceM: 5200, durationS: 1570 },
+        METRIC,
         "es",
       ),
     ).toBe("5,2 km / 26:10");

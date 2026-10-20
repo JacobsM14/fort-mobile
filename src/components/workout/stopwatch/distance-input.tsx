@@ -2,11 +2,14 @@ import { useState } from "react";
 import { StyleSheet, TextInput } from "react-native";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
+import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
 
+import type { DistanceUnit } from "@/constants/enums";
 import type { Language } from "@/i18n";
 
 import { formatDecimal, parseDecimal } from "@/utils/number";
+import { distanceFromUnit, distanceToUnit } from "@/utils/units";
 
 import {
   fontsJetBrainsMono,
@@ -23,12 +26,14 @@ type DistanceInputProps = {
   accessibilityLabel: string;
 };
 
-function toKmText(meters: number | null, language: Language) {
-  return meters === null ? "" : formatDecimal(meters / 1000, language);
+function toText(meters: number | null, unit: DistanceUnit, language: Language) {
+  return meters === null
+    ? ""
+    : formatDecimal(distanceToUnit(meters, unit), language);
 }
 
-// Typed in km, saved in meters. Empty until typed, since the stopwatch only
-// knows the time: it stands out so it isn't forgotten.
+// Typed in km or miles, saved in meters. Empty until typed, since the
+// stopwatch only knows the time: it stands out so it isn't forgotten.
 export function DistanceInput({
   meters,
   onSave,
@@ -36,22 +41,26 @@ export function DistanceInput({
 }: DistanceInputProps) {
   const { language } = useTranslation();
   const { colors } = useTheme();
+  const { distance: unit } = useUnits();
   const styles = useStyles();
-  const [text, setText] = useState(() => toKmText(meters, language));
+  const savedText = toText(meters, unit, language);
+  const [text, setText] = useState(savedText);
 
-  const [shownMeters, setShownMeters] = useState(meters);
-  if (meters !== shownMeters) {
-    setShownMeters(meters);
-    setText(toKmText(meters, language));
+  const [shownKey, setShownKey] = useState(`${unit}|${meters}`);
+  if (`${unit}|${meters}` !== shownKey) {
+    setShownKey(`${unit}|${meters}`);
+    setText(savedText);
   }
 
+  // Left as shown, it keeps the saved meters instead of the rounded miles
+  // converted back.
   function save() {
-    const km = parseDecimal(text);
-    const typed = km === null ? null : Math.round(km * 1000);
-    if (typed !== null && typed > 0 && typed !== meters) {
+    const value = parseDecimal(text);
+    const typed = value === null ? null : distanceFromUnit(value, unit);
+    if (text !== savedText && typed !== null && typed > 0) {
       onSave(typed);
     } else {
-      setText(toKmText(meters, language));
+      setText(savedText);
     }
   }
 
@@ -63,7 +72,7 @@ export function DistanceInput({
       onEndEditing={save}
       keyboardType="decimal-pad"
       selectTextOnFocus
-      placeholder="km"
+      placeholder={unit}
       placeholderTextColor={colors.disabled}
       accessibilityLabel={accessibilityLabel}
     />

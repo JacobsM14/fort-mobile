@@ -8,16 +8,19 @@ import {
 } from "@/components/workout/shared/delete-set-button";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
+import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
 
 import { canCompleteSet, formatPreviousSet } from "@/features/workouts/sets";
 
+import type { WeightUnit } from "@/constants/enums";
 import type { SetValues, WorkoutSet } from "@/features/workouts/queries";
 import type { RepsTrackingType } from "@/features/workouts/sets";
 import type { Language } from "@/i18n";
 import type { Translations } from "@/i18n/es";
 
 import { formatDecimal, parseDecimal, parseInteger } from "@/utils/number";
+import { weightFromUnit, weightToUnit } from "@/utils/units";
 
 import {
   fontsInstrument,
@@ -38,26 +41,48 @@ const FIELDS: Record<RepsTrackingType, readonly Field[]> = {
 // What the inputs hold while typing.
 type Texts = Record<Field, string>;
 
-function toTexts(values: SetValues, language: Language): Texts {
+function toTexts(
+  values: SetValues,
+  unit: WeightUnit,
+  language: Language,
+): Texts {
   return {
     weight:
-      values.weightKg === null ? "" : formatDecimal(values.weightKg, language),
+      values.weightKg === null
+        ? ""
+        : formatDecimal(weightToUnit(values.weightKg, unit), language),
     reps: values.reps === null ? "" : String(values.reps),
   };
 }
 
-function toValues(texts: Texts): SetValues {
+// A weight left as shown keeps the saved kg: converting the rounded pounds
+// back would change it slightly on every save.
+function toValues(
+  texts: Texts,
+  saved: SetValues,
+  savedTexts: Texts,
+  unit: WeightUnit,
+): SetValues {
+  const typedWeight = parseDecimal(texts.weight);
   return {
-    weightKg: parseDecimal(texts.weight),
+    weightKg:
+      texts.weight === savedTexts.weight
+        ? saved.weightKg
+        : typedWeight === null
+          ? null
+          : weightFromUnit(typedWeight, unit),
     reps: parseInteger(texts.reps),
     durationS: null,
     distanceM: null,
   };
 }
 
-function getFieldLabels(t: Translations): Record<Field, string> {
+function getFieldLabels(
+  t: Translations,
+  unit: WeightUnit,
+): Record<Field, string> {
   return {
-    weight: t.workout.weight,
+    weight: unit,
     reps: t.workout.reps,
   };
 }
@@ -78,8 +103,9 @@ type SetHeaderProps = {
 export function SetHeader({ trackingType, showPrevious }: SetHeaderProps) {
   const { t } = useTranslation();
   const { globalStyles } = useTheme();
+  const units = useUnits();
   const styles = useStyles();
-  const labels = getFieldLabels(t);
+  const labels = getFieldLabels(t, units.weight);
 
   return (
     <View style={styles.row}>
@@ -132,27 +158,29 @@ export function SetRow({
 }: SetRowProps) {
   const { t, language } = useTranslation();
   const { colors } = useTheme();
+  const units = useUnits();
   const styles = useStyles();
-  const [texts, setTexts] = useState(() => toTexts(set, language));
+  const savedTexts = toTexts(set, units.weight, language);
+  const [texts, setTexts] = useState(savedTexts);
 
-  // When the saved values change (a field is saved, a set is added), the
-  // inputs show them as saved: "62.50" becomes "62,5".
-  const savedKey = valuesKey(set);
+  // When the saved values or the unit change (a field is saved, a set is
+  // added), the inputs show them as saved: "62.50" becomes "62,5".
+  const savedKey = `${units.weight}|${valuesKey(set)}`;
   const [shownKey, setShownKey] = useState(savedKey);
   if (savedKey !== shownKey) {
     setShownKey(savedKey);
-    setTexts(toTexts(set, language));
+    setTexts(savedTexts);
   }
 
-  const labels = getFieldLabels(t);
-  const values = toValues(texts);
+  const labels = getFieldLabels(t, units.weight);
+  const values = toValues(texts, set, savedTexts, units.weight);
   const done = set.completedAt !== null;
   const ready = canCompleteSet(trackingType, values);
   const checkDisabled = done || locked || !ready;
   const previousText =
     previous === undefined
       ? undefined
-      : formatPreviousSet(trackingType, previous, language);
+      : formatPreviousSet(trackingType, previous, units, language);
 
   function change(field: Field, text: string) {
     setTexts((current) => ({ ...current, [field]: text }));
@@ -160,8 +188,8 @@ export function SetRow({
 
   function save() {
     if (done && !ready) {
-      setTexts(toTexts(set, language));
-    } else if (valuesKey(values) !== savedKey) {
+      setTexts(savedTexts);
+    } else if (valuesKey(values) !== valuesKey(set)) {
       onSave(values);
     }
   }

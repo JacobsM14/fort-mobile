@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 
 import { makeStyles } from "@/hooks/use-theme";
+import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
 
 import { formatSet } from "@/features/workouts/sets";
@@ -23,6 +24,7 @@ export function ExerciseSummary({
   sets,
 }: ExerciseSummaryProps) {
   const { t, language } = useTranslation();
+  const units = useUnits();
   const styles = useStyles();
 
   return (
@@ -30,7 +32,7 @@ export function ExerciseSummary({
       <Text style={styles.name}>{name}</Text>
       <Text style={styles.sets}>
         {sets
-          .map((set) => formatSet(trackingType, set, t, language))
+          .map((set) => formatSet(trackingType, set, units, t, language))
           .join(" · ")}
       </Text>
     </View>

@@ -45,6 +45,18 @@ export type ThemePreference = (typeof THEME_PREFERENCES)[number];
 export const LANGUAGE_PREFERENCES = ["system", "en", "es"] as const;
 export type LanguagePreference = (typeof LANGUAGE_PREFERENCES)[number];
 
+export const WEIGHT_UNITS = ["kg", "lb"] as const;
+export type WeightUnit = (typeof WEIGHT_UNITS)[number];
+
+export const DISTANCE_UNITS = ["km", "mi"] as const;
+export type DistanceUnit = (typeof DISTANCE_UNITS)[number];
+
+export const WEIGHT_UNIT_PREFERENCES = ["system", ...WEIGHT_UNITS] as const;
+export type WeightUnitPreference = (typeof WEIGHT_UNIT_PREFERENCES)[number];
+
+export const DISTANCE_UNIT_PREFERENCES = ["system", ...DISTANCE_UNITS] as const;
+export type DistanceUnitPreference = (typeof DISTANCE_UNIT_PREFERENCES)[number];
+
 export const ACCENT_COLORS = [
   "orange",
   "blue",

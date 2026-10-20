@@ -6,12 +6,15 @@ import { Chip } from "@/components/ui/inputs/chip";
 import { BackHeader } from "@/components/ui/layout/back-header";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
+import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
 
 import {
   ACCENT_COLORS,
+  DISTANCE_UNIT_PREFERENCES,
   LANGUAGE_PREFERENCES,
   THEME_PREFERENCES,
+  WEIGHT_UNIT_PREFERENCES,
 } from "@/constants/enums";
 import { accentColors, iconSizes, spacing } from "@/constants/theme";
 
@@ -29,7 +32,19 @@ export default function PreferencesScreen() {
     accent,
     setAccent,
   } = useTheme();
+  const {
+    weightPreference,
+    distancePreference,
+    setWeightPreference,
+    setDistancePreference,
+  } = useUnits();
   const styles = useStyles();
+
+  // Unit symbols read the same in every language; only "system" is
+  // translated.
+  function unitLabel(option: string) {
+    return option === "system" ? t.settings.units.system : option;
+  }
 
   return (
     <SafeAreaView style={globalStyles.screen} edges={["top"]}>
@@ -51,6 +66,38 @@ export default function PreferencesScreen() {
                 label={t.settings.languageOptions[option]}
                 selected={option === languagePreference}
                 onPress={() => setLanguagePreference(option)}
+                style={styles.option}
+              />
+            ))}
+          </View>
+        </View>
+        <View style={globalStyles.formCage}>
+          <Text style={globalStyles.inputLabel}>{t.settings.units.weight}</Text>
+          <View style={styles.options} accessibilityRole="radiogroup">
+            {WEIGHT_UNIT_PREFERENCES.map((option) => (
+              <Chip
+                key={option}
+                role="radio"
+                label={unitLabel(option)}
+                selected={option === weightPreference}
+                onPress={() => setWeightPreference(option)}
+                style={styles.option}
+              />
+            ))}
+          </View>
+        </View>
+        <View style={globalStyles.formCage}>
+          <Text style={globalStyles.inputLabel}>
+            {t.settings.units.distance}
+          </Text>
+          <View style={styles.options} accessibilityRole="radiogroup">
+            {DISTANCE_UNIT_PREFERENCES.map((option) => (
+              <Chip
+                key={option}
+                role="radio"
+                label={unitLabel(option)}
+                selected={option === distancePreference}
+                onPress={() => setDistancePreference(option)}
                 style={styles.option}
               />
             ))}

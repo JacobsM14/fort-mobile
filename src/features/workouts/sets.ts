@@ -4,6 +4,7 @@ import type { Translations } from "@/i18n/es";
 
 import { formatDuration } from "@/utils/duration";
 import { formatDecimal } from "@/utils/number";
+import { distanceToUnit, weightToUnit, type Units } from "@/utils/units";
 
 import type { SetValues, WorkoutExercise, WorkoutSet } from "./queries";
 
@@ -105,13 +106,17 @@ export function getStopwatchState(sets: readonly WorkoutSet[]): StopwatchState {
   return { status: "idle" };
 }
 
+function formatWeight(set: SetValues, units: Units, language: Language) {
+  return formatDecimal(weightToUnit(set.weightKg ?? 0, units.weight), language);
+}
+
 // The distance is typed after the stopwatch stops, so it may be missing:
 // "5,2 km / 26:10" or "26:10".
-function formatDistanceSet(set: SetValues, language: Language) {
+function formatDistanceSet(set: SetValues, units: Units, language: Language) {
   return [
     set.distanceM === null
       ? null
-      : `${formatDecimal(set.distanceM / 1000, language)} km`,
+      : `${formatDecimal(distanceToUnit(set.distanceM, units.distance), language)} ${units.distance}`,
     set.durationS === null ? null : formatDuration(set.durationS),
   ]
     .filter((part) => part !== null)
@@ -123,17 +128,18 @@ function formatDistanceSet(set: SetValues, language: Language) {
 export function formatPreviousSet(
   trackingType: TrackingType,
   set: SetValues,
+  units: Units,
   language: Language,
 ) {
   switch (trackingType) {
     case "weight_reps":
-      return `${formatDecimal(set.weightKg ?? 0, language)}×${set.reps ?? 0}`;
+      return `${formatWeight(set, units, language)}×${set.reps ?? 0}`;
     case "bodyweight_reps":
       return String(set.reps ?? 0);
     case "duration":
       return formatDuration(set.durationS ?? 0);
     case "distance_duration":
-      return formatDistanceSet(set, language);
+      return formatDistanceSet(set, units, language);
   }
 }
 
@@ -142,17 +148,18 @@ export function formatPreviousSet(
 export function formatSet(
   trackingType: TrackingType,
   set: SetValues,
+  units: Units,
   t: Translations,
   language: Language,
 ) {
   switch (trackingType) {
     case "weight_reps":
-      return `${formatDecimal(set.weightKg ?? 0, language)} kg × ${set.reps ?? 0}`;
+      return `${formatWeight(set, units, language)} ${units.weight} × ${set.reps ?? 0}`;
     case "bodyweight_reps":
       return t.progress.reps(set.reps ?? 0);
     case "duration":
       return formatDuration(set.durationS ?? 0);
     case "distance_duration":
-      return formatDistanceSet(set, language);
+      return formatDistanceSet(set, units, language);
   }
 }

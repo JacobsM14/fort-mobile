@@ -42,10 +42,8 @@ export const en: Translations = {
     exerciseDone: (name) => `${name}, done`,
     noExercises: "Add an extra exercise to start",
     set: "Set",
-    weight: "Kg",
     reps: "Reps",
     time: "Time",
-    distance: "Km",
     completeSet: (set) => `Set ${set} done`,
     previousSetFirst: "Mark the previous set first",
     previous: "Last",
@@ -203,6 +201,11 @@ export const en: Translations = {
       system: "System",
       es: "Español",
       en: "English",
+    },
+    units: {
+      weight: "Weight",
+      distance: "Distance",
+      system: "System",
     },
     sections: {
       user: "User",

@@ -12,6 +12,7 @@ import {
 import { ElapsedTime } from "@/components/workout/shared/elapsed-time";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
+import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
 
 import {
@@ -73,6 +74,7 @@ export function StopwatchTracker({
 }: StopwatchTrackerProps) {
   const { t, language } = useTranslation();
   const { globalStyles } = useTheme();
+  const units = useUnits();
   const styles = useStyles();
   const state = getStopwatchState(exercise.sets);
   const doneSets = exercise.sets.filter(isSetDone);
@@ -158,7 +160,7 @@ export function StopwatchTracker({
             {[
               t.workout.previous,
               ...previousSets.map((set) =>
-                formatPreviousSet(trackingType, set, language),
+                formatPreviousSet(trackingType, set, units, language),
               ),
             ].join(" · ")}
           </Text>
@@ -173,7 +175,7 @@ export function StopwatchTracker({
             <View style={styles.row}>
               <View style={styles.numberSpace} />
               <Text style={[globalStyles.inputLabel, styles.columnLabel]}>
-                {t.workout.distance}
+                {units.distance}
               </Text>
               <Text style={[globalStyles.inputLabel, styles.columnLabel]}>
                 {t.workout.time}
@@ -195,7 +197,7 @@ export function StopwatchTracker({
                   onSave={(distanceM) =>
                     run(() => updateSetValues(set.id, { ...set, distanceM }))
                   }
-                  accessibilityLabel={`${t.workout.set} ${index + 1}, ${t.workout.distance}`}
+                  accessibilityLabel={`${t.workout.set} ${index + 1}, ${units.distance}`}
                 />
               )}
               <DurationInput

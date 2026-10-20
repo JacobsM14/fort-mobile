@@ -50,10 +50,8 @@ export const es = {
     exerciseDone: (name: string) => `${name}, hecho`,
     noExercises: "Añade un ejercicio extra para empezar",
     set: "Serie",
-    weight: "Kg",
     reps: "Reps",
     time: "Tiempo",
-    distance: "Km",
     completeSet: (set: number) => `Serie ${set} hecha`,
     previousSetFirst: "Marca antes la serie anterior",
     previous: "Antes",
@@ -217,6 +215,11 @@ export const es = {
       es: "Español",
       en: "English",
     } satisfies Record<LanguagePreference, string>,
+    units: {
+      weight: "Peso",
+      distance: "Distancia",
+      system: "Sistema",
+    },
     sections: {
       user: "Usuario",
       privacy: "Política de privacidad y licencias",
