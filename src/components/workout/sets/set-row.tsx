@@ -109,7 +109,7 @@ export function SetHeader({ trackingType, showPrevious }: SetHeaderProps) {
 
   return (
     <View style={styles.row}>
-      <Text style={[globalStyles.inputLabel, styles.number]}>
+      <Text style={[globalStyles.inputLabel, styles.numberColumn]}>
         {t.workout.set}
       </Text>
       {showPrevious && (
@@ -214,7 +214,7 @@ export function SetRow({
   const previousLabel = `${t.workout.previous}: ${previousText ?? "-"}`;
   return (
     <View style={styles.row}>
-      <Text style={styles.number}>{number}</Text>
+      <Text style={[styles.numberColumn, styles.number]}>{number}</Text>
       {showPrevious && (
         <Text
           style={[styles.column, styles.previous]}
@@ -263,10 +263,14 @@ const useStyles = makeStyles(({ colors }) =>
       alignItems: "center",
       gap: spacing.sm,
     },
-    // Fits the "SERIE" label above the set numbers.
-    number: {
+    // Fits the "SERIE" label above the set numbers. The label keeps its own
+    // font size: the numbers' one is too big for it.
+    numberColumn: {
       width: BOX_SIZE,
       textAlign: "center",
+      color: colors.text,
+    },
+    number: {
       fontSize: fontSizes.label,
       fontFamily: fontsJetBrainsMono.medium,
       color: colors.text,
