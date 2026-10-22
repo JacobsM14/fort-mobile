@@ -1,6 +1,7 @@
 // Writes src/features/exercises/images.ts from the files in assets/exercises
-// (<exercise key>_<n>.webp). Metro only bundles images passed to a literal
-// require(), so the map can't be built at runtime from the key.
+// (<exercise key>.webp, or <exercise key>_<n>.webp for several in order).
+// Metro only bundles images passed to a literal require(), so the map can't
+// be built at runtime from the key.
 // Run it after adding or removing images: npm run images
 import { readdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -8,7 +9,8 @@ import path from "node:path";
 const root = path.resolve(import.meta.dirname, "..");
 const imagesDir = path.join(root, "assets/exercises");
 const outFile = path.join(root, "src/features/exercises/images.ts");
-const IMAGE_NAME = /^([a-z0-9_]+)_(\d+)\.webp$/;
+// The key is matched lazily so a trailing _<n> goes to the index, not the key.
+const IMAGE_NAME = /^([a-z0-9_]+?)(?:_(\d+))?\.webp$/;
 
 const imagesByKey = new Map();
 for (const file of readdirSync(imagesDir)) {
@@ -18,7 +20,7 @@ for (const file of readdirSync(imagesDir)) {
   }
   const [, key, index] = match;
   const images = imagesByKey.get(key) ?? [];
-  images.push({ file, index: Number(index) });
+  images.push({ file, index: index === undefined ? 0 : Number(index) });
   imagesByKey.set(key, images);
 }
 

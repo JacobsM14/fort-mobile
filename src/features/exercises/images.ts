@@ -4,1019 +4,936 @@ import type { ExerciseKey } from "./catalog";
 
 export const EXERCISE_IMAGES: Partial<Record<ExerciseKey, readonly number[]>> = {
   ab_wheel_rollout: [
-    require("../../../assets/exercises/ab_wheel_rollout_1.webp"),
-    require("../../../assets/exercises/ab_wheel_rollout_2.webp"),
+    require("../../../assets/exercises/ab_wheel_rollout.webp"),
+  ],
+  archer_push_up: [
+    require("../../../assets/exercises/archer_push_up.webp"),
   ],
   arnold_press: [
-    require("../../../assets/exercises/arnold_press_1.webp"),
-    require("../../../assets/exercises/arnold_press_2.webp"),
+    require("../../../assets/exercises/arnold_press.webp"),
+  ],
+  assault_bike: [
+    require("../../../assets/exercises/assault_bike.webp"),
+  ],
+  assisted_dip: [
+    require("../../../assets/exercises/assisted_dip.webp"),
   ],
   assisted_pull_up: [
-    require("../../../assets/exercises/assisted_pull_up_1.webp"),
-    require("../../../assets/exercises/assisted_pull_up_2.webp"),
+    require("../../../assets/exercises/assisted_pull_up.webp"),
   ],
   back_extension: [
-    require("../../../assets/exercises/back_extension_1.webp"),
-    require("../../../assets/exercises/back_extension_2.webp"),
+    require("../../../assets/exercises/back_extension.webp"),
   ],
   back_squat: [
-    require("../../../assets/exercises/back_squat_1.webp"),
-    require("../../../assets/exercises/back_squat_2.webp"),
+    require("../../../assets/exercises/back_squat.webp"),
+  ],
+  band_chest_press: [
+    require("../../../assets/exercises/band_chest_press.webp"),
+  ],
+  band_curl: [
+    require("../../../assets/exercises/band_curl.webp"),
   ],
   band_external_rotation: [
-    require("../../../assets/exercises/band_external_rotation_1.webp"),
-    require("../../../assets/exercises/band_external_rotation_2.webp"),
+    require("../../../assets/exercises/band_external_rotation.webp"),
+  ],
+  band_face_pull: [
+    require("../../../assets/exercises/band_face_pull.webp"),
   ],
   band_lateral_raise: [
-    require("../../../assets/exercises/band_lateral_raise_1.webp"),
-    require("../../../assets/exercises/band_lateral_raise_2.webp"),
+    require("../../../assets/exercises/band_lateral_raise.webp"),
   ],
   band_pull_apart: [
-    require("../../../assets/exercises/band_pull_apart_1.webp"),
-    require("../../../assets/exercises/band_pull_apart_2.webp"),
+    require("../../../assets/exercises/band_pull_apart.webp"),
+  ],
+  band_pulldown: [
+    require("../../../assets/exercises/band_pulldown.webp"),
+  ],
+  band_pushdown: [
+    require("../../../assets/exercises/band_pushdown.webp"),
+  ],
+  band_row: [
+    require("../../../assets/exercises/band_row.webp"),
   ],
   band_shoulder_press: [
-    require("../../../assets/exercises/band_shoulder_press_1.webp"),
-    require("../../../assets/exercises/band_shoulder_press_2.webp"),
+    require("../../../assets/exercises/band_shoulder_press.webp"),
   ],
   band_squat: [
-    require("../../../assets/exercises/band_squat_1.webp"),
-    require("../../../assets/exercises/band_squat_2.webp"),
+    require("../../../assets/exercises/band_squat.webp"),
   ],
   banded_lateral_walk: [
-    require("../../../assets/exercises/banded_lateral_walk_1.webp"),
-    require("../../../assets/exercises/banded_lateral_walk_2.webp"),
+    require("../../../assets/exercises/banded_lateral_walk.webp"),
   ],
   barbell_curl: [
-    require("../../../assets/exercises/barbell_curl_1.webp"),
-    require("../../../assets/exercises/barbell_curl_2.webp"),
+    require("../../../assets/exercises/barbell_curl.webp"),
   ],
   barbell_front_raise: [
-    require("../../../assets/exercises/barbell_front_raise_1.webp"),
-    require("../../../assets/exercises/barbell_front_raise_2.webp"),
+    require("../../../assets/exercises/barbell_front_raise.webp"),
   ],
   barbell_glute_bridge: [
-    require("../../../assets/exercises/barbell_glute_bridge_1.webp"),
-    require("../../../assets/exercises/barbell_glute_bridge_2.webp"),
+    require("../../../assets/exercises/barbell_glute_bridge.webp"),
   ],
   barbell_lunge: [
-    require("../../../assets/exercises/barbell_lunge_1.webp"),
-    require("../../../assets/exercises/barbell_lunge_2.webp"),
+    require("../../../assets/exercises/barbell_lunge.webp"),
   ],
   barbell_row: [
-    require("../../../assets/exercises/barbell_row_1.webp"),
-    require("../../../assets/exercises/barbell_row_2.webp"),
+    require("../../../assets/exercises/barbell_row.webp"),
   ],
   barbell_shrug: [
-    require("../../../assets/exercises/barbell_shrug_1.webp"),
-    require("../../../assets/exercises/barbell_shrug_2.webp"),
+    require("../../../assets/exercises/barbell_shrug.webp"),
   ],
   battle_ropes: [
-    require("../../../assets/exercises/battle_ropes_1.webp"),
-    require("../../../assets/exercises/battle_ropes_2.webp"),
+    require("../../../assets/exercises/battle_ropes.webp"),
+  ],
+  bayesian_curl: [
+    require("../../../assets/exercises/bayesian_curl.webp"),
+  ],
+  bear_crawl: [
+    require("../../../assets/exercises/bear_crawl.webp"),
   ],
   behind_the_neck_press: [
-    require("../../../assets/exercises/behind_the_neck_press_1.webp"),
-    require("../../../assets/exercises/behind_the_neck_press_2.webp"),
+    require("../../../assets/exercises/behind_the_neck_press.webp"),
+  ],
+  belt_squat: [
+    require("../../../assets/exercises/belt_squat.webp"),
   ],
   bench_dip: [
-    require("../../../assets/exercises/bench_dip_1.webp"),
-    require("../../../assets/exercises/bench_dip_2.webp"),
+    require("../../../assets/exercises/bench_dip.webp"),
   ],
   bench_press: [
-    require("../../../assets/exercises/bench_press_1.webp"),
-    require("../../../assets/exercises/bench_press_2.webp"),
+    require("../../../assets/exercises/bench_press.webp"),
   ],
   bent_over_dumbbell_row: [
-    require("../../../assets/exercises/bent_over_dumbbell_row_1.webp"),
-    require("../../../assets/exercises/bent_over_dumbbell_row_2.webp"),
+    require("../../../assets/exercises/bent_over_dumbbell_row.webp"),
   ],
   bicycle_crunch: [
-    require("../../../assets/exercises/bicycle_crunch_1.webp"),
-    require("../../../assets/exercises/bicycle_crunch_2.webp"),
+    require("../../../assets/exercises/bicycle_crunch.webp"),
+  ],
+  bird_dog: [
+    require("../../../assets/exercises/bird_dog.webp"),
+  ],
+  bodyweight_calf_raise: [
+    require("../../../assets/exercises/bodyweight_calf_raise.webp"),
   ],
   bodyweight_lunge: [
-    require("../../../assets/exercises/bodyweight_lunge_1.webp"),
-    require("../../../assets/exercises/bodyweight_lunge_2.webp"),
+    require("../../../assets/exercises/bodyweight_lunge.webp"),
   ],
   bodyweight_squat: [
-    require("../../../assets/exercises/bodyweight_squat_1.webp"),
-    require("../../../assets/exercises/bodyweight_squat_2.webp"),
+    require("../../../assets/exercises/bodyweight_squat.webp"),
   ],
   box_jump: [
-    require("../../../assets/exercises/box_jump_1.webp"),
-    require("../../../assets/exercises/box_jump_2.webp"),
+    require("../../../assets/exercises/box_jump.webp"),
   ],
   box_squat: [
-    require("../../../assets/exercises/box_squat_1.webp"),
-    require("../../../assets/exercises/box_squat_2.webp"),
+    require("../../../assets/exercises/box_squat.webp"),
   ],
   broad_jump: [
-    require("../../../assets/exercises/broad_jump_1.webp"),
-    require("../../../assets/exercises/broad_jump_2.webp"),
+    require("../../../assets/exercises/broad_jump.webp"),
+  ],
+  bulgarian_split_squat: [
+    require("../../../assets/exercises/bulgarian_split_squat.webp"),
+  ],
+  burpee: [
+    require("../../../assets/exercises/burpee.webp"),
   ],
   cable_chest_press: [
-    require("../../../assets/exercises/cable_chest_press_1.webp"),
-    require("../../../assets/exercises/cable_chest_press_2.webp"),
+    require("../../../assets/exercises/cable_chest_press.webp"),
   ],
   cable_crossover: [
-    require("../../../assets/exercises/cable_crossover_1.webp"),
-    require("../../../assets/exercises/cable_crossover_2.webp"),
+    require("../../../assets/exercises/cable_crossover.webp"),
   ],
   cable_crunch: [
-    require("../../../assets/exercises/cable_crunch_1.webp"),
-    require("../../../assets/exercises/cable_crunch_2.webp"),
+    require("../../../assets/exercises/cable_crunch.webp"),
   ],
   cable_curl: [
-    require("../../../assets/exercises/cable_curl_1.webp"),
-    require("../../../assets/exercises/cable_curl_2.webp"),
+    require("../../../assets/exercises/cable_curl.webp"),
   ],
   cable_external_rotation: [
-    require("../../../assets/exercises/cable_external_rotation_1.webp"),
-    require("../../../assets/exercises/cable_external_rotation_2.webp"),
+    require("../../../assets/exercises/cable_external_rotation.webp"),
   ],
   cable_fly: [
-    require("../../../assets/exercises/cable_fly_1.webp"),
-    require("../../../assets/exercises/cable_fly_2.webp"),
+    require("../../../assets/exercises/cable_fly.webp"),
   ],
   cable_front_raise: [
-    require("../../../assets/exercises/cable_front_raise_1.webp"),
-    require("../../../assets/exercises/cable_front_raise_2.webp"),
+    require("../../../assets/exercises/cable_front_raise.webp"),
   ],
   cable_glute_kickback: [
-    require("../../../assets/exercises/cable_glute_kickback_1.webp"),
-    require("../../../assets/exercises/cable_glute_kickback_2.webp"),
+    require("../../../assets/exercises/cable_glute_kickback.webp"),
+  ],
+  cable_hip_abduction: [
+    require("../../../assets/exercises/cable_hip_abduction.webp"),
   ],
   cable_hip_adduction: [
-    require("../../../assets/exercises/cable_hip_adduction_1.webp"),
-    require("../../../assets/exercises/cable_hip_adduction_2.webp"),
+    require("../../../assets/exercises/cable_hip_adduction.webp"),
+  ],
+  cable_kickback: [
+    require("../../../assets/exercises/cable_kickback.webp"),
   ],
   cable_lateral_raise: [
-    require("../../../assets/exercises/cable_lateral_raise_1.webp"),
-    require("../../../assets/exercises/cable_lateral_raise_2.webp"),
+    require("../../../assets/exercises/cable_lateral_raise.webp"),
   ],
   cable_pull_through: [
-    require("../../../assets/exercises/cable_pull_through_1.webp"),
-    require("../../../assets/exercises/cable_pull_through_2.webp"),
+    require("../../../assets/exercises/cable_pull_through.webp"),
   ],
   cable_rear_delt_fly: [
-    require("../../../assets/exercises/cable_rear_delt_fly_1.webp"),
-    require("../../../assets/exercises/cable_rear_delt_fly_2.webp"),
+    require("../../../assets/exercises/cable_rear_delt_fly.webp"),
   ],
   cable_upright_row: [
-    require("../../../assets/exercises/cable_upright_row_1.webp"),
-    require("../../../assets/exercises/cable_upright_row_2.webp"),
+    require("../../../assets/exercises/cable_upright_row.webp"),
   ],
   cable_woodchop: [
-    require("../../../assets/exercises/cable_woodchop_1.webp"),
-    require("../../../assets/exercises/cable_woodchop_2.webp"),
+    require("../../../assets/exercises/cable_woodchop.webp"),
   ],
   captains_chair_leg_raise: [
-    require("../../../assets/exercises/captains_chair_leg_raise_1.webp"),
-    require("../../../assets/exercises/captains_chair_leg_raise_2.webp"),
+    require("../../../assets/exercises/captains_chair_leg_raise.webp"),
   ],
   chest_dip: [
-    require("../../../assets/exercises/chest_dip_1.webp"),
-    require("../../../assets/exercises/chest_dip_2.webp"),
+    require("../../../assets/exercises/chest_dip.webp"),
   ],
   chest_supported_dumbbell_row: [
-    require("../../../assets/exercises/chest_supported_dumbbell_row_1.webp"),
-    require("../../../assets/exercises/chest_supported_dumbbell_row_2.webp"),
+    require("../../../assets/exercises/chest_supported_dumbbell_row.webp"),
   ],
   chest_supported_rear_delt_fly: [
-    require("../../../assets/exercises/chest_supported_rear_delt_fly_1.webp"),
-    require("../../../assets/exercises/chest_supported_rear_delt_fly_2.webp"),
+    require("../../../assets/exercises/chest_supported_rear_delt_fly.webp"),
   ],
   chest_supported_t_bar_row: [
-    require("../../../assets/exercises/chest_supported_t_bar_row_1.webp"),
-    require("../../../assets/exercises/chest_supported_t_bar_row_2.webp"),
+    require("../../../assets/exercises/chest_supported_t_bar_row.webp"),
   ],
   chin_up: [
-    require("../../../assets/exercises/chin_up_1.webp"),
-    require("../../../assets/exercises/chin_up_2.webp"),
+    require("../../../assets/exercises/chin_up.webp"),
+  ],
+  clamshell: [
+    require("../../../assets/exercises/clamshell.webp"),
   ],
   clap_push_up: [
-    require("../../../assets/exercises/clap_push_up_1.webp"),
-    require("../../../assets/exercises/clap_push_up_2.webp"),
+    require("../../../assets/exercises/clap_push_up.webp"),
   ],
   clean_and_jerk: [
-    require("../../../assets/exercises/clean_and_jerk_1.webp"),
-    require("../../../assets/exercises/clean_and_jerk_2.webp"),
+    require("../../../assets/exercises/clean_and_jerk.webp"),
   ],
   clean_pull: [
-    require("../../../assets/exercises/clean_pull_1.webp"),
-    require("../../../assets/exercises/clean_pull_2.webp"),
+    require("../../../assets/exercises/clean_pull.webp"),
   ],
   close_grip_bench_press: [
-    require("../../../assets/exercises/close_grip_bench_press_1.webp"),
-    require("../../../assets/exercises/close_grip_bench_press_2.webp"),
+    require("../../../assets/exercises/close_grip_bench_press.webp"),
   ],
   concentration_curl: [
-    require("../../../assets/exercises/concentration_curl_1.webp"),
-    require("../../../assets/exercises/concentration_curl_2.webp"),
+    require("../../../assets/exercises/concentration_curl.webp"),
+  ],
+  copenhagen_plank: [
+    require("../../../assets/exercises/copenhagen_plank.webp"),
+  ],
+  cossack_squat: [
+    require("../../../assets/exercises/cossack_squat.webp"),
   ],
   cross_body_hammer_curl: [
-    require("../../../assets/exercises/cross_body_hammer_curl_1.webp"),
-    require("../../../assets/exercises/cross_body_hammer_curl_2.webp"),
+    require("../../../assets/exercises/cross_body_hammer_curl.webp"),
   ],
   crunch: [
-    require("../../../assets/exercises/crunch_1.webp"),
-    require("../../../assets/exercises/crunch_2.webp"),
+    require("../../../assets/exercises/crunch.webp"),
   ],
   curtsy_lunge: [
-    require("../../../assets/exercises/curtsy_lunge_1.webp"),
-    require("../../../assets/exercises/curtsy_lunge_2.webp"),
+    require("../../../assets/exercises/curtsy_lunge.webp"),
   ],
   dead_bug: [
-    require("../../../assets/exercises/dead_bug_1.webp"),
-    require("../../../assets/exercises/dead_bug_2.webp"),
+    require("../../../assets/exercises/dead_bug.webp"),
   ],
   dead_hang: [
-    require("../../../assets/exercises/dead_hang_1.webp"),
-    require("../../../assets/exercises/dead_hang_2.webp"),
+    require("../../../assets/exercises/dead_hang.webp"),
   ],
   deadlift: [
-    require("../../../assets/exercises/deadlift_1.webp"),
-    require("../../../assets/exercises/deadlift_2.webp"),
+    require("../../../assets/exercises/deadlift.webp"),
   ],
   decline_bench_press: [
-    require("../../../assets/exercises/decline_bench_press_1.webp"),
-    require("../../../assets/exercises/decline_bench_press_2.webp"),
+    require("../../../assets/exercises/decline_bench_press.webp"),
   ],
   decline_dumbbell_press: [
-    require("../../../assets/exercises/decline_dumbbell_press_1.webp"),
-    require("../../../assets/exercises/decline_dumbbell_press_2.webp"),
+    require("../../../assets/exercises/decline_dumbbell_press.webp"),
   ],
   decline_push_up: [
-    require("../../../assets/exercises/decline_push_up_1.webp"),
-    require("../../../assets/exercises/decline_push_up_2.webp"),
+    require("../../../assets/exercises/decline_push_up.webp"),
   ],
   decline_sit_up: [
-    require("../../../assets/exercises/decline_sit_up_1.webp"),
-    require("../../../assets/exercises/decline_sit_up_2.webp"),
+    require("../../../assets/exercises/decline_sit_up.webp"),
   ],
   diamond_push_up: [
-    require("../../../assets/exercises/diamond_push_up_1.webp"),
-    require("../../../assets/exercises/diamond_push_up_2.webp"),
+    require("../../../assets/exercises/diamond_push_up.webp"),
   ],
   dip: [
-    require("../../../assets/exercises/dip_1.webp"),
-    require("../../../assets/exercises/dip_2.webp"),
+    require("../../../assets/exercises/dip.webp"),
   ],
   donkey_calf_raise: [
-    require("../../../assets/exercises/donkey_calf_raise_1.webp"),
-    require("../../../assets/exercises/donkey_calf_raise_2.webp"),
+    require("../../../assets/exercises/donkey_calf_raise.webp"),
   ],
   donkey_kick: [
-    require("../../../assets/exercises/donkey_kick_1.webp"),
-    require("../../../assets/exercises/donkey_kick_2.webp"),
+    require("../../../assets/exercises/donkey_kick.webp"),
   ],
   drag_curl: [
-    require("../../../assets/exercises/drag_curl_1.webp"),
-    require("../../../assets/exercises/drag_curl_2.webp"),
+    require("../../../assets/exercises/drag_curl.webp"),
+  ],
+  dragon_flag: [
+    require("../../../assets/exercises/dragon_flag.webp"),
   ],
   dumbbell_bench_press: [
-    require("../../../assets/exercises/dumbbell_bench_press_1.webp"),
-    require("../../../assets/exercises/dumbbell_bench_press_2.webp"),
+    require("../../../assets/exercises/dumbbell_bench_press.webp"),
   ],
   dumbbell_calf_raise: [
-    require("../../../assets/exercises/dumbbell_calf_raise_1.webp"),
-    require("../../../assets/exercises/dumbbell_calf_raise_2.webp"),
+    require("../../../assets/exercises/dumbbell_calf_raise.webp"),
   ],
   dumbbell_curl: [
-    require("../../../assets/exercises/dumbbell_curl_1.webp"),
-    require("../../../assets/exercises/dumbbell_curl_2.webp"),
+    require("../../../assets/exercises/dumbbell_curl.webp"),
   ],
   dumbbell_external_rotation: [
-    require("../../../assets/exercises/dumbbell_external_rotation_1.webp"),
-    require("../../../assets/exercises/dumbbell_external_rotation_2.webp"),
+    require("../../../assets/exercises/dumbbell_external_rotation.webp"),
   ],
   dumbbell_floor_press: [
-    require("../../../assets/exercises/dumbbell_floor_press_1.webp"),
-    require("../../../assets/exercises/dumbbell_floor_press_2.webp"),
+    require("../../../assets/exercises/dumbbell_floor_press.webp"),
   ],
   dumbbell_fly: [
-    require("../../../assets/exercises/dumbbell_fly_1.webp"),
-    require("../../../assets/exercises/dumbbell_fly_2.webp"),
+    require("../../../assets/exercises/dumbbell_fly.webp"),
   ],
   dumbbell_hip_thrust: [
-    require("../../../assets/exercises/dumbbell_hip_thrust_1.webp"),
-    require("../../../assets/exercises/dumbbell_hip_thrust_2.webp"),
+    require("../../../assets/exercises/dumbbell_hip_thrust.webp"),
   ],
   dumbbell_kickback: [
-    require("../../../assets/exercises/dumbbell_kickback_1.webp"),
-    require("../../../assets/exercises/dumbbell_kickback_2.webp"),
+    require("../../../assets/exercises/dumbbell_kickback.webp"),
   ],
   dumbbell_pullover: [
-    require("../../../assets/exercises/dumbbell_pullover_1.webp"),
-    require("../../../assets/exercises/dumbbell_pullover_2.webp"),
+    require("../../../assets/exercises/dumbbell_pullover.webp"),
   ],
   dumbbell_romanian_deadlift: [
-    require("../../../assets/exercises/dumbbell_romanian_deadlift_1.webp"),
-    require("../../../assets/exercises/dumbbell_romanian_deadlift_2.webp"),
+    require("../../../assets/exercises/dumbbell_romanian_deadlift.webp"),
   ],
   dumbbell_row: [
-    require("../../../assets/exercises/dumbbell_row_1.webp"),
-    require("../../../assets/exercises/dumbbell_row_2.webp"),
+    require("../../../assets/exercises/dumbbell_row.webp"),
   ],
   dumbbell_shoulder_press: [
-    require("../../../assets/exercises/dumbbell_shoulder_press_1.webp"),
-    require("../../../assets/exercises/dumbbell_shoulder_press_2.webp"),
+    require("../../../assets/exercises/dumbbell_shoulder_press.webp"),
   ],
   dumbbell_shrug: [
-    require("../../../assets/exercises/dumbbell_shrug_1.webp"),
-    require("../../../assets/exercises/dumbbell_shrug_2.webp"),
+    require("../../../assets/exercises/dumbbell_shrug.webp"),
   ],
   dumbbell_skull_crusher: [
-    require("../../../assets/exercises/dumbbell_skull_crusher_1.webp"),
-    require("../../../assets/exercises/dumbbell_skull_crusher_2.webp"),
+    require("../../../assets/exercises/dumbbell_skull_crusher.webp"),
   ],
   dumbbell_snatch: [
-    require("../../../assets/exercises/dumbbell_snatch_1.webp"),
-    require("../../../assets/exercises/dumbbell_snatch_2.webp"),
+    require("../../../assets/exercises/dumbbell_snatch.webp"),
   ],
   dumbbell_squat: [
-    require("../../../assets/exercises/dumbbell_squat_1.webp"),
-    require("../../../assets/exercises/dumbbell_squat_2.webp"),
+    require("../../../assets/exercises/dumbbell_squat.webp"),
   ],
   dumbbell_thruster: [
-    require("../../../assets/exercises/dumbbell_thruster_1.webp"),
-    require("../../../assets/exercises/dumbbell_thruster_2.webp"),
+    require("../../../assets/exercises/dumbbell_thruster.webp"),
   ],
   dumbbell_upright_row: [
-    require("../../../assets/exercises/dumbbell_upright_row_1.webp"),
-    require("../../../assets/exercises/dumbbell_upright_row_2.webp"),
+    require("../../../assets/exercises/dumbbell_upright_row.webp"),
   ],
   elliptical: [
-    require("../../../assets/exercises/elliptical_1.webp"),
-    require("../../../assets/exercises/elliptical_2.webp"),
+    require("../../../assets/exercises/elliptical.webp"),
   ],
   ez_bar_curl: [
-    require("../../../assets/exercises/ez_bar_curl_1.webp"),
-    require("../../../assets/exercises/ez_bar_curl_2.webp"),
+    require("../../../assets/exercises/ez_bar_curl.webp"),
   ],
   face_pull: [
-    require("../../../assets/exercises/face_pull_1.webp"),
-    require("../../../assets/exercises/face_pull_2.webp"),
+    require("../../../assets/exercises/face_pull.webp"),
   ],
   farmer_walk: [
-    require("../../../assets/exercises/farmer_walk_1.webp"),
-    require("../../../assets/exercises/farmer_walk_2.webp"),
+    require("../../../assets/exercises/farmer_walk.webp"),
+  ],
+  fire_hydrant: [
+    require("../../../assets/exercises/fire_hydrant.webp"),
   ],
   floor_press: [
-    require("../../../assets/exercises/floor_press_1.webp"),
-    require("../../../assets/exercises/floor_press_2.webp"),
+    require("../../../assets/exercises/floor_press.webp"),
   ],
   flutter_kicks: [
-    require("../../../assets/exercises/flutter_kicks_1.webp"),
-    require("../../../assets/exercises/flutter_kicks_2.webp"),
+    require("../../../assets/exercises/flutter_kicks.webp"),
+  ],
+  frog_pump: [
+    require("../../../assets/exercises/frog_pump.webp"),
   ],
   front_raise: [
-    require("../../../assets/exercises/front_raise_1.webp"),
-    require("../../../assets/exercises/front_raise_2.webp"),
+    require("../../../assets/exercises/front_raise.webp"),
   ],
   front_squat: [
-    require("../../../assets/exercises/front_squat_1.webp"),
-    require("../../../assets/exercises/front_squat_2.webp"),
+    require("../../../assets/exercises/front_squat.webp"),
   ],
   glute_bridge: [
-    require("../../../assets/exercises/glute_bridge_1.webp"),
-    require("../../../assets/exercises/glute_bridge_2.webp"),
+    require("../../../assets/exercises/glute_bridge.webp"),
   ],
   glute_ham_raise: [
-    require("../../../assets/exercises/glute_ham_raise_1.webp"),
-    require("../../../assets/exercises/glute_ham_raise_2.webp"),
+    require("../../../assets/exercises/glute_ham_raise.webp"),
   ],
   goblet_squat: [
-    require("../../../assets/exercises/goblet_squat_1.webp"),
-    require("../../../assets/exercises/goblet_squat_2.webp"),
+    require("../../../assets/exercises/goblet_squat.webp"),
   ],
   good_morning: [
-    require("../../../assets/exercises/good_morning_1.webp"),
-    require("../../../assets/exercises/good_morning_2.webp"),
+    require("../../../assets/exercises/good_morning.webp"),
   ],
   hack_squat: [
-    require("../../../assets/exercises/hack_squat_1.webp"),
-    require("../../../assets/exercises/hack_squat_2.webp"),
+    require("../../../assets/exercises/hack_squat.webp"),
   ],
   hammer_curl: [
-    require("../../../assets/exercises/hammer_curl_1.webp"),
-    require("../../../assets/exercises/hammer_curl_2.webp"),
+    require("../../../assets/exercises/hammer_curl.webp"),
   ],
   handstand_push_up: [
-    require("../../../assets/exercises/handstand_push_up_1.webp"),
-    require("../../../assets/exercises/handstand_push_up_2.webp"),
+    require("../../../assets/exercises/handstand_push_up.webp"),
   ],
   hang_power_clean: [
-    require("../../../assets/exercises/hang_power_clean_1.webp"),
-    require("../../../assets/exercises/hang_power_clean_2.webp"),
+    require("../../../assets/exercises/hang_power_clean.webp"),
   ],
   hanging_knee_raise: [
-    require("../../../assets/exercises/hanging_knee_raise_1.webp"),
-    require("../../../assets/exercises/hanging_knee_raise_2.webp"),
+    require("../../../assets/exercises/hanging_knee_raise.webp"),
   ],
   hanging_leg_raise: [
-    require("../../../assets/exercises/hanging_leg_raise_1.webp"),
-    require("../../../assets/exercises/hanging_leg_raise_2.webp"),
+    require("../../../assets/exercises/hanging_leg_raise.webp"),
+  ],
+  hanging_windshield_wiper: [
+    require("../../../assets/exercises/hanging_windshield_wiper.webp"),
   ],
   heel_touch: [
-    require("../../../assets/exercises/heel_touch_1.webp"),
-    require("../../../assets/exercises/heel_touch_2.webp"),
+    require("../../../assets/exercises/heel_touch.webp"),
   ],
   high_cable_curl: [
-    require("../../../assets/exercises/high_cable_curl_1.webp"),
-    require("../../../assets/exercises/high_cable_curl_2.webp"),
+    require("../../../assets/exercises/high_cable_curl.webp"),
+  ],
+  high_foot_leg_press: [
+    require("../../../assets/exercises/high_foot_leg_press.webp"),
+  ],
+  high_knees: [
+    require("../../../assets/exercises/high_knees.webp"),
   ],
   hip_abduction_machine: [
-    require("../../../assets/exercises/hip_abduction_machine_1.webp"),
-    require("../../../assets/exercises/hip_abduction_machine_2.webp"),
+    require("../../../assets/exercises/hip_abduction_machine.webp"),
   ],
   hip_adduction_machine: [
-    require("../../../assets/exercises/hip_adduction_machine_1.webp"),
-    require("../../../assets/exercises/hip_adduction_machine_2.webp"),
+    require("../../../assets/exercises/hip_adduction_machine.webp"),
   ],
   hip_thrust: [
-    require("../../../assets/exercises/hip_thrust_1.webp"),
-    require("../../../assets/exercises/hip_thrust_2.webp"),
+    require("../../../assets/exercises/hip_thrust.webp"),
+  ],
+  hollow_hold: [
+    require("../../../assets/exercises/hollow_hold.webp"),
   ],
   incline_bench_press: [
-    require("../../../assets/exercises/incline_bench_press_1.webp"),
-    require("../../../assets/exercises/incline_bench_press_2.webp"),
+    require("../../../assets/exercises/incline_bench_press.webp"),
   ],
   incline_dumbbell_curl: [
-    require("../../../assets/exercises/incline_dumbbell_curl_1.webp"),
-    require("../../../assets/exercises/incline_dumbbell_curl_2.webp"),
+    require("../../../assets/exercises/incline_dumbbell_curl.webp"),
   ],
   incline_dumbbell_fly: [
-    require("../../../assets/exercises/incline_dumbbell_fly_1.webp"),
-    require("../../../assets/exercises/incline_dumbbell_fly_2.webp"),
+    require("../../../assets/exercises/incline_dumbbell_fly.webp"),
   ],
   incline_dumbbell_press: [
-    require("../../../assets/exercises/incline_dumbbell_press_1.webp"),
-    require("../../../assets/exercises/incline_dumbbell_press_2.webp"),
+    require("../../../assets/exercises/incline_dumbbell_press.webp"),
   ],
   incline_machine_chest_press: [
-    require("../../../assets/exercises/incline_machine_chest_press_1.webp"),
-    require("../../../assets/exercises/incline_machine_chest_press_2.webp"),
+    require("../../../assets/exercises/incline_machine_chest_press.webp"),
   ],
   incline_push_up: [
-    require("../../../assets/exercises/incline_push_up_1.webp"),
-    require("../../../assets/exercises/incline_push_up_2.webp"),
+    require("../../../assets/exercises/incline_push_up.webp"),
   ],
   incline_treadmill_walk: [
-    require("../../../assets/exercises/incline_treadmill_walk_1.webp"),
-    require("../../../assets/exercises/incline_treadmill_walk_2.webp"),
+    require("../../../assets/exercises/incline_treadmill_walk.webp"),
   ],
   inverted_row: [
-    require("../../../assets/exercises/inverted_row_1.webp"),
-    require("../../../assets/exercises/inverted_row_2.webp"),
+    require("../../../assets/exercises/inverted_row.webp"),
   ],
   jm_press: [
-    require("../../../assets/exercises/jm_press_1.webp"),
-    require("../../../assets/exercises/jm_press_2.webp"),
+    require("../../../assets/exercises/jm_press.webp"),
   ],
   jump_rope: [
-    require("../../../assets/exercises/jump_rope_1.webp"),
-    require("../../../assets/exercises/jump_rope_2.webp"),
+    require("../../../assets/exercises/jump_rope.webp"),
   ],
   jump_squat: [
-    require("../../../assets/exercises/jump_squat_1.webp"),
-    require("../../../assets/exercises/jump_squat_2.webp"),
+    require("../../../assets/exercises/jump_squat.webp"),
   ],
   jumping_jack: [
-    require("../../../assets/exercises/jumping_jack_1.webp"),
-    require("../../../assets/exercises/jumping_jack_2.webp"),
+    require("../../../assets/exercises/jumping_jack.webp"),
   ],
   kettlebell_clean: [
-    require("../../../assets/exercises/kettlebell_clean_1.webp"),
-    require("../../../assets/exercises/kettlebell_clean_2.webp"),
+    require("../../../assets/exercises/kettlebell_clean.webp"),
+  ],
+  kettlebell_clean_and_press: [
+    require("../../../assets/exercises/kettlebell_clean_and_press.webp"),
+  ],
+  kettlebell_deadlift: [
+    require("../../../assets/exercises/kettlebell_deadlift.webp"),
   ],
   kettlebell_press: [
-    require("../../../assets/exercises/kettlebell_press_1.webp"),
-    require("../../../assets/exercises/kettlebell_press_2.webp"),
+    require("../../../assets/exercises/kettlebell_press.webp"),
   ],
   kettlebell_row: [
-    require("../../../assets/exercises/kettlebell_row_1.webp"),
-    require("../../../assets/exercises/kettlebell_row_2.webp"),
+    require("../../../assets/exercises/kettlebell_row.webp"),
   ],
   kettlebell_snatch: [
-    require("../../../assets/exercises/kettlebell_snatch_1.webp"),
-    require("../../../assets/exercises/kettlebell_snatch_2.webp"),
+    require("../../../assets/exercises/kettlebell_snatch.webp"),
   ],
   kettlebell_swing: [
-    require("../../../assets/exercises/kettlebell_swing_1.webp"),
-    require("../../../assets/exercises/kettlebell_swing_2.webp"),
+    require("../../../assets/exercises/kettlebell_swing.webp"),
   ],
   kettlebell_turkish_get_up: [
-    require("../../../assets/exercises/kettlebell_turkish_get_up_1.webp"),
-    require("../../../assets/exercises/kettlebell_turkish_get_up_2.webp"),
+    require("../../../assets/exercises/kettlebell_turkish_get_up.webp"),
+  ],
+  knee_push_up: [
+    require("../../../assets/exercises/knee_push_up.webp"),
+  ],
+  l_sit: [
+    require("../../../assets/exercises/l_sit.webp"),
+  ],
+  landmine_press: [
+    require("../../../assets/exercises/landmine_press.webp"),
   ],
   landmine_rotation: [
-    require("../../../assets/exercises/landmine_rotation_1.webp"),
-    require("../../../assets/exercises/landmine_rotation_2.webp"),
+    require("../../../assets/exercises/landmine_rotation.webp"),
   ],
   lat_pulldown: [
-    require("../../../assets/exercises/lat_pulldown_1.webp"),
-    require("../../../assets/exercises/lat_pulldown_2.webp"),
+    require("../../../assets/exercises/lat_pulldown.webp"),
+  ],
+  lateral_lunge: [
+    require("../../../assets/exercises/lateral_lunge.webp"),
   ],
   lateral_raise: [
-    require("../../../assets/exercises/lateral_raise_1.webp"),
-    require("../../../assets/exercises/lateral_raise_2.webp"),
+    require("../../../assets/exercises/lateral_raise.webp"),
   ],
   leg_extension: [
-    require("../../../assets/exercises/leg_extension_1.webp"),
-    require("../../../assets/exercises/leg_extension_2.webp"),
+    require("../../../assets/exercises/leg_extension.webp"),
   ],
   leg_press: [
-    require("../../../assets/exercises/leg_press_1.webp"),
-    require("../../../assets/exercises/leg_press_2.webp"),
+    require("../../../assets/exercises/leg_press.webp"),
   ],
   leg_press_calf_raise: [
-    require("../../../assets/exercises/leg_press_calf_raise_1.webp"),
-    require("../../../assets/exercises/leg_press_calf_raise_2.webp"),
+    require("../../../assets/exercises/leg_press_calf_raise.webp"),
   ],
   leg_raise: [
-    require("../../../assets/exercises/leg_raise_1.webp"),
-    require("../../../assets/exercises/leg_raise_2.webp"),
+    require("../../../assets/exercises/leg_raise.webp"),
   ],
   low_cable_crossover: [
-    require("../../../assets/exercises/low_cable_crossover_1.webp"),
-    require("../../../assets/exercises/low_cable_crossover_2.webp"),
+    require("../../../assets/exercises/low_cable_crossover.webp"),
   ],
   low_to_high_cable_woodchop: [
-    require("../../../assets/exercises/low_to_high_cable_woodchop_1.webp"),
-    require("../../../assets/exercises/low_to_high_cable_woodchop_2.webp"),
+    require("../../../assets/exercises/low_to_high_cable_woodchop.webp"),
   ],
   lunge: [
-    require("../../../assets/exercises/lunge_1.webp"),
-    require("../../../assets/exercises/lunge_2.webp"),
+    require("../../../assets/exercises/lunge.webp"),
   ],
   lying_leg_curl: [
-    require("../../../assets/exercises/lying_leg_curl_1.webp"),
-    require("../../../assets/exercises/lying_leg_curl_2.webp"),
+    require("../../../assets/exercises/lying_leg_curl.webp"),
   ],
   machine_chest_press: [
-    require("../../../assets/exercises/machine_chest_press_1.webp"),
-    require("../../../assets/exercises/machine_chest_press_2.webp"),
+    require("../../../assets/exercises/machine_chest_press.webp"),
   ],
   machine_crunch: [
-    require("../../../assets/exercises/machine_crunch_1.webp"),
-    require("../../../assets/exercises/machine_crunch_2.webp"),
+    require("../../../assets/exercises/machine_crunch.webp"),
   ],
   machine_dip: [
-    require("../../../assets/exercises/machine_dip_1.webp"),
-    require("../../../assets/exercises/machine_dip_2.webp"),
+    require("../../../assets/exercises/machine_dip.webp"),
+  ],
+  machine_glute_kickback: [
+    require("../../../assets/exercises/machine_glute_kickback.webp"),
   ],
   machine_high_row: [
-    require("../../../assets/exercises/machine_high_row_1.webp"),
-    require("../../../assets/exercises/machine_high_row_2.webp"),
+    require("../../../assets/exercises/machine_high_row.webp"),
+  ],
+  machine_hip_thrust: [
+    require("../../../assets/exercises/machine_hip_thrust.webp"),
+  ],
+  machine_lateral_raise: [
+    require("../../../assets/exercises/machine_lateral_raise.webp"),
   ],
   machine_preacher_curl: [
-    require("../../../assets/exercises/machine_preacher_curl_1.webp"),
-    require("../../../assets/exercises/machine_preacher_curl_2.webp"),
+    require("../../../assets/exercises/machine_preacher_curl.webp"),
+  ],
+  machine_pullover: [
+    require("../../../assets/exercises/machine_pullover.webp"),
   ],
   machine_row: [
-    require("../../../assets/exercises/machine_row_1.webp"),
-    require("../../../assets/exercises/machine_row_2.webp"),
+    require("../../../assets/exercises/machine_row.webp"),
   ],
   machine_shoulder_press: [
-    require("../../../assets/exercises/machine_shoulder_press_1.webp"),
-    require("../../../assets/exercises/machine_shoulder_press_2.webp"),
+    require("../../../assets/exercises/machine_shoulder_press.webp"),
   ],
   machine_triceps_extension: [
-    require("../../../assets/exercises/machine_triceps_extension_1.webp"),
-    require("../../../assets/exercises/machine_triceps_extension_2.webp"),
+    require("../../../assets/exercises/machine_triceps_extension.webp"),
   ],
   meadows_row: [
-    require("../../../assets/exercises/meadows_row_1.webp"),
-    require("../../../assets/exercises/meadows_row_2.webp"),
+    require("../../../assets/exercises/meadows_row.webp"),
   ],
   medicine_ball_slam: [
-    require("../../../assets/exercises/medicine_ball_slam_1.webp"),
-    require("../../../assets/exercises/medicine_ball_slam_2.webp"),
+    require("../../../assets/exercises/medicine_ball_slam.webp"),
   ],
   mountain_climber: [
-    require("../../../assets/exercises/mountain_climber_1.webp"),
-    require("../../../assets/exercises/mountain_climber_2.webp"),
+    require("../../../assets/exercises/mountain_climber.webp"),
   ],
   neck_extension: [
-    require("../../../assets/exercises/neck_extension_1.webp"),
-    require("../../../assets/exercises/neck_extension_2.webp"),
+    require("../../../assets/exercises/neck_extension.webp"),
   ],
   neck_flexion: [
-    require("../../../assets/exercises/neck_flexion_1.webp"),
-    require("../../../assets/exercises/neck_flexion_2.webp"),
+    require("../../../assets/exercises/neck_flexion.webp"),
+  ],
+  neck_lateral_flexion: [
+    require("../../../assets/exercises/neck_lateral_flexion.webp"),
+  ],
+  negative_pull_up: [
+    require("../../../assets/exercises/negative_pull_up.webp"),
   ],
   neutral_grip_lat_pulldown: [
-    require("../../../assets/exercises/neutral_grip_lat_pulldown_1.webp"),
-    require("../../../assets/exercises/neutral_grip_lat_pulldown_2.webp"),
+    require("../../../assets/exercises/neutral_grip_lat_pulldown.webp"),
   ],
   neutral_grip_pull_up: [
-    require("../../../assets/exercises/neutral_grip_pull_up_1.webp"),
-    require("../../../assets/exercises/neutral_grip_pull_up_2.webp"),
+    require("../../../assets/exercises/neutral_grip_pull_up.webp"),
+  ],
+  nordic_curl: [
+    require("../../../assets/exercises/nordic_curl.webp"),
   ],
   oblique_crunch: [
-    require("../../../assets/exercises/oblique_crunch_1.webp"),
-    require("../../../assets/exercises/oblique_crunch_2.webp"),
+    require("../../../assets/exercises/oblique_crunch.webp"),
   ],
   overhead_cable_triceps_extension: [
-    require("../../../assets/exercises/overhead_cable_triceps_extension_1.webp"),
-    require("../../../assets/exercises/overhead_cable_triceps_extension_2.webp"),
+    require("../../../assets/exercises/overhead_cable_triceps_extension.webp"),
   ],
   overhead_dumbbell_triceps_extension: [
-    require("../../../assets/exercises/overhead_dumbbell_triceps_extension_1.webp"),
-    require("../../../assets/exercises/overhead_dumbbell_triceps_extension_2.webp"),
+    require("../../../assets/exercises/overhead_dumbbell_triceps_extension.webp"),
   ],
   overhead_press: [
-    require("../../../assets/exercises/overhead_press_1.webp"),
-    require("../../../assets/exercises/overhead_press_2.webp"),
+    require("../../../assets/exercises/overhead_press.webp"),
   ],
   overhead_squat: [
-    require("../../../assets/exercises/overhead_squat_1.webp"),
-    require("../../../assets/exercises/overhead_squat_2.webp"),
+    require("../../../assets/exercises/overhead_squat.webp"),
   ],
   pallof_press: [
-    require("../../../assets/exercises/pallof_press_1.webp"),
-    require("../../../assets/exercises/pallof_press_2.webp"),
+    require("../../../assets/exercises/pallof_press.webp"),
   ],
   pec_deck: [
-    require("../../../assets/exercises/pec_deck_1.webp"),
-    require("../../../assets/exercises/pec_deck_2.webp"),
+    require("../../../assets/exercises/pec_deck.webp"),
+  ],
+  pendlay_row: [
+    require("../../../assets/exercises/pendlay_row.webp"),
+  ],
+  pendulum_squat: [
+    require("../../../assets/exercises/pendulum_squat.webp"),
+  ],
+  pike_push_up: [
+    require("../../../assets/exercises/pike_push_up.webp"),
   ],
   pistol_squat: [
-    require("../../../assets/exercises/pistol_squat_1.webp"),
-    require("../../../assets/exercises/pistol_squat_2.webp"),
+    require("../../../assets/exercises/pistol_squat.webp"),
   ],
   plank: [
-    require("../../../assets/exercises/plank_1.webp"),
-    require("../../../assets/exercises/plank_2.webp"),
+    require("../../../assets/exercises/plank.webp"),
   ],
   plate_front_raise: [
-    require("../../../assets/exercises/plate_front_raise_1.webp"),
-    require("../../../assets/exercises/plate_front_raise_2.webp"),
+    require("../../../assets/exercises/plate_front_raise.webp"),
   ],
   plate_pinch: [
-    require("../../../assets/exercises/plate_pinch_1.webp"),
-    require("../../../assets/exercises/plate_pinch_2.webp"),
+    require("../../../assets/exercises/plate_pinch.webp"),
   ],
   power_clean: [
-    require("../../../assets/exercises/power_clean_1.webp"),
-    require("../../../assets/exercises/power_clean_2.webp"),
+    require("../../../assets/exercises/power_clean.webp"),
   ],
   power_snatch: [
-    require("../../../assets/exercises/power_snatch_1.webp"),
-    require("../../../assets/exercises/power_snatch_2.webp"),
+    require("../../../assets/exercises/power_snatch.webp"),
   ],
   preacher_curl: [
-    require("../../../assets/exercises/preacher_curl_1.webp"),
-    require("../../../assets/exercises/preacher_curl_2.webp"),
+    require("../../../assets/exercises/preacher_curl.webp"),
   ],
   pull_up: [
-    require("../../../assets/exercises/pull_up_1.webp"),
-    require("../../../assets/exercises/pull_up_2.webp"),
+    require("../../../assets/exercises/pull_up.webp"),
   ],
   push_press: [
-    require("../../../assets/exercises/push_press_1.webp"),
-    require("../../../assets/exercises/push_press_2.webp"),
+    require("../../../assets/exercises/push_press.webp"),
   ],
   push_up: [
-    require("../../../assets/exercises/push_up_1.webp"),
-    require("../../../assets/exercises/push_up_2.webp"),
+    require("../../../assets/exercises/push_up.webp"),
   ],
   rack_pull: [
-    require("../../../assets/exercises/rack_pull_1.webp"),
-    require("../../../assets/exercises/rack_pull_2.webp"),
+    require("../../../assets/exercises/rack_pull.webp"),
   ],
   rear_delt_fly: [
-    require("../../../assets/exercises/rear_delt_fly_1.webp"),
-    require("../../../assets/exercises/rear_delt_fly_2.webp"),
+    require("../../../assets/exercises/rear_delt_fly.webp"),
   ],
   renegade_row: [
-    require("../../../assets/exercises/renegade_row_1.webp"),
-    require("../../../assets/exercises/renegade_row_2.webp"),
+    require("../../../assets/exercises/renegade_row.webp"),
   ],
   reverse_crunch: [
-    require("../../../assets/exercises/reverse_crunch_1.webp"),
-    require("../../../assets/exercises/reverse_crunch_2.webp"),
+    require("../../../assets/exercises/reverse_crunch.webp"),
   ],
   reverse_curl: [
-    require("../../../assets/exercises/reverse_curl_1.webp"),
-    require("../../../assets/exercises/reverse_curl_2.webp"),
+    require("../../../assets/exercises/reverse_curl.webp"),
   ],
   reverse_grip_lat_pulldown: [
-    require("../../../assets/exercises/reverse_grip_lat_pulldown_1.webp"),
-    require("../../../assets/exercises/reverse_grip_lat_pulldown_2.webp"),
+    require("../../../assets/exercises/reverse_grip_lat_pulldown.webp"),
   ],
   reverse_grip_pushdown: [
-    require("../../../assets/exercises/reverse_grip_pushdown_1.webp"),
-    require("../../../assets/exercises/reverse_grip_pushdown_2.webp"),
+    require("../../../assets/exercises/reverse_grip_pushdown.webp"),
   ],
   reverse_hyperextension: [
-    require("../../../assets/exercises/reverse_hyperextension_1.webp"),
-    require("../../../assets/exercises/reverse_hyperextension_2.webp"),
+    require("../../../assets/exercises/reverse_hyperextension.webp"),
   ],
   reverse_lunge: [
-    require("../../../assets/exercises/reverse_lunge_1.webp"),
-    require("../../../assets/exercises/reverse_lunge_2.webp"),
+    require("../../../assets/exercises/reverse_lunge.webp"),
+  ],
+  reverse_nordic_curl: [
+    require("../../../assets/exercises/reverse_nordic_curl.webp"),
   ],
   reverse_pec_deck: [
-    require("../../../assets/exercises/reverse_pec_deck_1.webp"),
-    require("../../../assets/exercises/reverse_pec_deck_2.webp"),
+    require("../../../assets/exercises/reverse_pec_deck.webp"),
   ],
   reverse_wrist_curl: [
-    require("../../../assets/exercises/reverse_wrist_curl_1.webp"),
-    require("../../../assets/exercises/reverse_wrist_curl_2.webp"),
+    require("../../../assets/exercises/reverse_wrist_curl.webp"),
   ],
   romanian_deadlift: [
-    require("../../../assets/exercises/romanian_deadlift_1.webp"),
-    require("../../../assets/exercises/romanian_deadlift_2.webp"),
+    require("../../../assets/exercises/romanian_deadlift.webp"),
   ],
   rope_hammer_curl: [
-    require("../../../assets/exercises/rope_hammer_curl_1.webp"),
-    require("../../../assets/exercises/rope_hammer_curl_2.webp"),
+    require("../../../assets/exercises/rope_hammer_curl.webp"),
   ],
   rope_pushdown: [
-    require("../../../assets/exercises/rope_pushdown_1.webp"),
-    require("../../../assets/exercises/rope_pushdown_2.webp"),
+    require("../../../assets/exercises/rope_pushdown.webp"),
   ],
   rowing_machine: [
-    require("../../../assets/exercises/rowing_machine_1.webp"),
-    require("../../../assets/exercises/rowing_machine_2.webp"),
+    require("../../../assets/exercises/rowing_machine.webp"),
   ],
   running: [
-    require("../../../assets/exercises/running_1.webp"),
-    require("../../../assets/exercises/running_2.webp"),
+    require("../../../assets/exercises/running.webp"),
   ],
   russian_twist: [
-    require("../../../assets/exercises/russian_twist_1.webp"),
-    require("../../../assets/exercises/russian_twist_2.webp"),
+    require("../../../assets/exercises/russian_twist.webp"),
   ],
   seal_row: [
-    require("../../../assets/exercises/seal_row_1.webp"),
-    require("../../../assets/exercises/seal_row_2.webp"),
+    require("../../../assets/exercises/seal_row.webp"),
   ],
   seated_cable_row: [
-    require("../../../assets/exercises/seated_cable_row_1.webp"),
-    require("../../../assets/exercises/seated_cable_row_2.webp"),
+    require("../../../assets/exercises/seated_cable_row.webp"),
   ],
   seated_calf_raise: [
-    require("../../../assets/exercises/seated_calf_raise_1.webp"),
-    require("../../../assets/exercises/seated_calf_raise_2.webp"),
+    require("../../../assets/exercises/seated_calf_raise.webp"),
   ],
   seated_lateral_raise: [
-    require("../../../assets/exercises/seated_lateral_raise_1.webp"),
-    require("../../../assets/exercises/seated_lateral_raise_2.webp"),
+    require("../../../assets/exercises/seated_lateral_raise.webp"),
   ],
   seated_leg_curl: [
-    require("../../../assets/exercises/seated_leg_curl_1.webp"),
-    require("../../../assets/exercises/seated_leg_curl_2.webp"),
+    require("../../../assets/exercises/seated_leg_curl.webp"),
   ],
   seated_overhead_press: [
-    require("../../../assets/exercises/seated_overhead_press_1.webp"),
-    require("../../../assets/exercises/seated_overhead_press_2.webp"),
+    require("../../../assets/exercises/seated_overhead_press.webp"),
   ],
   side_bend: [
-    require("../../../assets/exercises/side_bend_1.webp"),
-    require("../../../assets/exercises/side_bend_2.webp"),
+    require("../../../assets/exercises/side_bend.webp"),
   ],
   side_lying_hip_abduction: [
-    require("../../../assets/exercises/side_lying_hip_abduction_1.webp"),
-    require("../../../assets/exercises/side_lying_hip_abduction_2.webp"),
+    require("../../../assets/exercises/side_lying_hip_abduction.webp"),
   ],
   side_plank: [
-    require("../../../assets/exercises/side_plank_1.webp"),
-    require("../../../assets/exercises/side_plank_2.webp"),
+    require("../../../assets/exercises/side_plank.webp"),
   ],
   single_arm_cable_row: [
-    require("../../../assets/exercises/single_arm_cable_row_1.webp"),
-    require("../../../assets/exercises/single_arm_cable_row_2.webp"),
+    require("../../../assets/exercises/single_arm_cable_row.webp"),
   ],
   single_arm_dumbbell_press: [
-    require("../../../assets/exercises/single_arm_dumbbell_press_1.webp"),
-    require("../../../assets/exercises/single_arm_dumbbell_press_2.webp"),
+    require("../../../assets/exercises/single_arm_dumbbell_press.webp"),
   ],
   single_arm_kettlebell_swing: [
-    require("../../../assets/exercises/single_arm_kettlebell_swing_1.webp"),
-    require("../../../assets/exercises/single_arm_kettlebell_swing_2.webp"),
+    require("../../../assets/exercises/single_arm_kettlebell_swing.webp"),
   ],
   single_arm_lat_pulldown: [
-    require("../../../assets/exercises/single_arm_lat_pulldown_1.webp"),
-    require("../../../assets/exercises/single_arm_lat_pulldown_2.webp"),
+    require("../../../assets/exercises/single_arm_lat_pulldown.webp"),
   ],
   single_arm_pushdown: [
-    require("../../../assets/exercises/single_arm_pushdown_1.webp"),
-    require("../../../assets/exercises/single_arm_pushdown_2.webp"),
+    require("../../../assets/exercises/single_arm_pushdown.webp"),
+  ],
+  single_leg_calf_raise: [
+    require("../../../assets/exercises/single_leg_calf_raise.webp"),
   ],
   single_leg_extension: [
-    require("../../../assets/exercises/single_leg_extension_1.webp"),
-    require("../../../assets/exercises/single_leg_extension_2.webp"),
+    require("../../../assets/exercises/single_leg_extension.webp"),
   ],
   single_leg_glute_bridge: [
-    require("../../../assets/exercises/single_leg_glute_bridge_1.webp"),
-    require("../../../assets/exercises/single_leg_glute_bridge_2.webp"),
+    require("../../../assets/exercises/single_leg_glute_bridge.webp"),
+  ],
+  single_leg_hip_thrust: [
+    require("../../../assets/exercises/single_leg_hip_thrust.webp"),
+  ],
+  single_leg_press: [
+    require("../../../assets/exercises/single_leg_press.webp"),
   ],
   single_leg_romanian_deadlift: [
-    require("../../../assets/exercises/single_leg_romanian_deadlift_1.webp"),
-    require("../../../assets/exercises/single_leg_romanian_deadlift_2.webp"),
+    require("../../../assets/exercises/single_leg_romanian_deadlift.webp"),
   ],
   sissy_squat: [
-    require("../../../assets/exercises/sissy_squat_1.webp"),
-    require("../../../assets/exercises/sissy_squat_2.webp"),
+    require("../../../assets/exercises/sissy_squat.webp"),
   ],
   sit_up: [
-    require("../../../assets/exercises/sit_up_1.webp"),
-    require("../../../assets/exercises/sit_up_2.webp"),
+    require("../../../assets/exercises/sit_up.webp"),
   ],
   skater_jump: [
-    require("../../../assets/exercises/skater_jump_1.webp"),
-    require("../../../assets/exercises/skater_jump_2.webp"),
+    require("../../../assets/exercises/skater_jump.webp"),
+  ],
+  ski_erg: [
+    require("../../../assets/exercises/ski_erg.webp"),
   ],
   skull_crusher: [
-    require("../../../assets/exercises/skull_crusher_1.webp"),
-    require("../../../assets/exercises/skull_crusher_2.webp"),
+    require("../../../assets/exercises/skull_crusher.webp"),
   ],
   smith_machine_bench_press: [
-    require("../../../assets/exercises/smith_machine_bench_press_1.webp"),
-    require("../../../assets/exercises/smith_machine_bench_press_2.webp"),
+    require("../../../assets/exercises/smith_machine_bench_press.webp"),
   ],
   smith_machine_calf_raise: [
-    require("../../../assets/exercises/smith_machine_calf_raise_1.webp"),
-    require("../../../assets/exercises/smith_machine_calf_raise_2.webp"),
+    require("../../../assets/exercises/smith_machine_calf_raise.webp"),
   ],
   smith_machine_hip_thrust: [
-    require("../../../assets/exercises/smith_machine_hip_thrust_1.webp"),
-    require("../../../assets/exercises/smith_machine_hip_thrust_2.webp"),
+    require("../../../assets/exercises/smith_machine_hip_thrust.webp"),
   ],
   smith_machine_incline_press: [
-    require("../../../assets/exercises/smith_machine_incline_press_1.webp"),
-    require("../../../assets/exercises/smith_machine_incline_press_2.webp"),
+    require("../../../assets/exercises/smith_machine_incline_press.webp"),
   ],
   smith_machine_shoulder_press: [
-    require("../../../assets/exercises/smith_machine_shoulder_press_1.webp"),
-    require("../../../assets/exercises/smith_machine_shoulder_press_2.webp"),
+    require("../../../assets/exercises/smith_machine_shoulder_press.webp"),
   ],
   smith_machine_squat: [
-    require("../../../assets/exercises/smith_machine_squat_1.webp"),
-    require("../../../assets/exercises/smith_machine_squat_2.webp"),
+    require("../../../assets/exercises/smith_machine_squat.webp"),
   ],
   snatch: [
-    require("../../../assets/exercises/snatch_1.webp"),
-    require("../../../assets/exercises/snatch_2.webp"),
+    require("../../../assets/exercises/snatch.webp"),
   ],
   spider_curl: [
-    require("../../../assets/exercises/spider_curl_1.webp"),
-    require("../../../assets/exercises/spider_curl_2.webp"),
+    require("../../../assets/exercises/spider_curl.webp"),
   ],
   split_squat: [
-    require("../../../assets/exercises/split_squat_1.webp"),
-    require("../../../assets/exercises/split_squat_2.webp"),
+    require("../../../assets/exercises/split_squat.webp"),
   ],
   stability_ball_leg_curl: [
-    require("../../../assets/exercises/stability_ball_leg_curl_1.webp"),
-    require("../../../assets/exercises/stability_ball_leg_curl_2.webp"),
+    require("../../../assets/exercises/stability_ball_leg_curl.webp"),
   ],
   stair_climber: [
-    require("../../../assets/exercises/stair_climber_1.webp"),
-    require("../../../assets/exercises/stair_climber_2.webp"),
+    require("../../../assets/exercises/stair_climber.webp"),
   ],
   standing_calf_raise: [
-    require("../../../assets/exercises/standing_calf_raise_1.webp"),
-    require("../../../assets/exercises/standing_calf_raise_2.webp"),
+    require("../../../assets/exercises/standing_calf_raise.webp"),
   ],
   standing_dumbbell_press: [
-    require("../../../assets/exercises/standing_dumbbell_press_1.webp"),
-    require("../../../assets/exercises/standing_dumbbell_press_2.webp"),
+    require("../../../assets/exercises/standing_dumbbell_press.webp"),
   ],
   standing_leg_curl: [
-    require("../../../assets/exercises/standing_leg_curl_1.webp"),
-    require("../../../assets/exercises/standing_leg_curl_2.webp"),
+    require("../../../assets/exercises/standing_leg_curl.webp"),
   ],
   stationary_bike: [
-    require("../../../assets/exercises/stationary_bike_1.webp"),
-    require("../../../assets/exercises/stationary_bike_2.webp"),
+    require("../../../assets/exercises/stationary_bike.webp"),
   ],
   step_up: [
-    require("../../../assets/exercises/step_up_1.webp"),
-    require("../../../assets/exercises/step_up_2.webp"),
+    require("../../../assets/exercises/step_up.webp"),
   ],
   stiff_leg_deadlift: [
-    require("../../../assets/exercises/stiff_leg_deadlift_1.webp"),
-    require("../../../assets/exercises/stiff_leg_deadlift_2.webp"),
+    require("../../../assets/exercises/stiff_leg_deadlift.webp"),
   ],
   straight_arm_pulldown: [
-    require("../../../assets/exercises/straight_arm_pulldown_1.webp"),
-    require("../../../assets/exercises/straight_arm_pulldown_2.webp"),
+    require("../../../assets/exercises/straight_arm_pulldown.webp"),
+  ],
+  suitcase_carry: [
+    require("../../../assets/exercises/suitcase_carry.webp"),
   ],
   sumo_deadlift: [
-    require("../../../assets/exercises/sumo_deadlift_1.webp"),
-    require("../../../assets/exercises/sumo_deadlift_2.webp"),
+    require("../../../assets/exercises/sumo_deadlift.webp"),
   ],
   sumo_squat: [
-    require("../../../assets/exercises/sumo_squat_1.webp"),
-    require("../../../assets/exercises/sumo_squat_2.webp"),
+    require("../../../assets/exercises/sumo_squat.webp"),
   ],
   superman: [
-    require("../../../assets/exercises/superman_1.webp"),
-    require("../../../assets/exercises/superman_2.webp"),
+    require("../../../assets/exercises/superman.webp"),
   ],
   suspension_row: [
-    require("../../../assets/exercises/suspension_row_1.webp"),
-    require("../../../assets/exercises/suspension_row_2.webp"),
+    require("../../../assets/exercises/suspension_row.webp"),
   ],
   svend_press: [
-    require("../../../assets/exercises/svend_press_1.webp"),
-    require("../../../assets/exercises/svend_press_2.webp"),
+    require("../../../assets/exercises/svend_press.webp"),
+  ],
+  swimming: [
+    require("../../../assets/exercises/swimming.webp"),
   ],
   t_bar_row: [
-    require("../../../assets/exercises/t_bar_row_1.webp"),
-    require("../../../assets/exercises/t_bar_row_2.webp"),
+    require("../../../assets/exercises/t_bar_row.webp"),
   ],
   thruster: [
-    require("../../../assets/exercises/thruster_1.webp"),
-    require("../../../assets/exercises/thruster_2.webp"),
+    require("../../../assets/exercises/thruster.webp"),
+  ],
+  toes_to_bar: [
+    require("../../../assets/exercises/toes_to_bar.webp"),
   ],
   trap_bar_deadlift: [
-    require("../../../assets/exercises/trap_bar_deadlift_1.webp"),
-    require("../../../assets/exercises/trap_bar_deadlift_2.webp"),
+    require("../../../assets/exercises/trap_bar_deadlift.webp"),
+  ],
+  trap_bar_shrug: [
+    require("../../../assets/exercises/trap_bar_shrug.webp"),
   ],
   treadmill_run: [
-    require("../../../assets/exercises/treadmill_run_1.webp"),
-    require("../../../assets/exercises/treadmill_run_2.webp"),
+    require("../../../assets/exercises/treadmill_run.webp"),
   ],
   treadmill_walk: [
-    require("../../../assets/exercises/treadmill_walk_1.webp"),
-    require("../../../assets/exercises/treadmill_walk_2.webp"),
+    require("../../../assets/exercises/treadmill_walk.webp"),
   ],
   triceps_pushdown: [
-    require("../../../assets/exercises/triceps_pushdown_1.webp"),
-    require("../../../assets/exercises/triceps_pushdown_2.webp"),
+    require("../../../assets/exercises/triceps_pushdown.webp"),
   ],
   underhand_barbell_row: [
-    require("../../../assets/exercises/underhand_barbell_row_1.webp"),
-    require("../../../assets/exercises/underhand_barbell_row_2.webp"),
+    require("../../../assets/exercises/underhand_barbell_row.webp"),
   ],
   upright_row: [
-    require("../../../assets/exercises/upright_row_1.webp"),
-    require("../../../assets/exercises/upright_row_2.webp"),
+    require("../../../assets/exercises/upright_row.webp"),
   ],
   v_up: [
-    require("../../../assets/exercises/v_up_1.webp"),
-    require("../../../assets/exercises/v_up_2.webp"),
+    require("../../../assets/exercises/v_up.webp"),
   ],
   walking: [
-    require("../../../assets/exercises/walking_1.webp"),
-    require("../../../assets/exercises/walking_2.webp"),
+    require("../../../assets/exercises/walking.webp"),
   ],
   walking_lunge: [
-    require("../../../assets/exercises/walking_lunge_1.webp"),
-    require("../../../assets/exercises/walking_lunge_2.webp"),
+    require("../../../assets/exercises/walking_lunge.webp"),
+  ],
+  wall_ball: [
+    require("../../../assets/exercises/wall_ball.webp"),
+  ],
+  wall_handstand_hold: [
+    require("../../../assets/exercises/wall_handstand_hold.webp"),
+  ],
+  wall_sit: [
+    require("../../../assets/exercises/wall_sit.webp"),
   ],
   weighted_back_extension: [
-    require("../../../assets/exercises/weighted_back_extension_1.webp"),
-    require("../../../assets/exercises/weighted_back_extension_2.webp"),
+    require("../../../assets/exercises/weighted_back_extension.webp"),
   ],
   weighted_chin_up: [
-    require("../../../assets/exercises/weighted_chin_up_1.webp"),
-    require("../../../assets/exercises/weighted_chin_up_2.webp"),
+    require("../../../assets/exercises/weighted_chin_up.webp"),
   ],
   weighted_dip: [
-    require("../../../assets/exercises/weighted_dip_1.webp"),
-    require("../../../assets/exercises/weighted_dip_2.webp"),
+    require("../../../assets/exercises/weighted_dip.webp"),
   ],
   weighted_pull_up: [
-    require("../../../assets/exercises/weighted_pull_up_1.webp"),
-    require("../../../assets/exercises/weighted_pull_up_2.webp"),
+    require("../../../assets/exercises/weighted_pull_up.webp"),
   ],
   weighted_push_up: [
-    require("../../../assets/exercises/weighted_push_up_1.webp"),
-    require("../../../assets/exercises/weighted_push_up_2.webp"),
+    require("../../../assets/exercises/weighted_push_up.webp"),
   ],
   weighted_russian_twist: [
-    require("../../../assets/exercises/weighted_russian_twist_1.webp"),
-    require("../../../assets/exercises/weighted_russian_twist_2.webp"),
+    require("../../../assets/exercises/weighted_russian_twist.webp"),
   ],
   wide_grip_pull_up: [
-    require("../../../assets/exercises/wide_grip_pull_up_1.webp"),
-    require("../../../assets/exercises/wide_grip_pull_up_2.webp"),
+    require("../../../assets/exercises/wide_grip_pull_up.webp"),
   ],
   wide_grip_seated_row: [
-    require("../../../assets/exercises/wide_grip_seated_row_1.webp"),
-    require("../../../assets/exercises/wide_grip_seated_row_2.webp"),
+    require("../../../assets/exercises/wide_grip_seated_row.webp"),
   ],
   wide_push_up: [
-    require("../../../assets/exercises/wide_push_up_1.webp"),
-    require("../../../assets/exercises/wide_push_up_2.webp"),
+    require("../../../assets/exercises/wide_push_up.webp"),
+  ],
+  windshield_wiper: [
+    require("../../../assets/exercises/windshield_wiper.webp"),
   ],
   wrist_curl: [
-    require("../../../assets/exercises/wrist_curl_1.webp"),
-    require("../../../assets/exercises/wrist_curl_2.webp"),
+    require("../../../assets/exercises/wrist_curl.webp"),
   ],
   zercher_squat: [
-    require("../../../assets/exercises/zercher_squat_1.webp"),
-    require("../../../assets/exercises/zercher_squat_2.webp"),
+    require("../../../assets/exercises/zercher_squat.webp"),
   ],
   zottman_curl: [
-    require("../../../assets/exercises/zottman_curl_1.webp"),
-    require("../../../assets/exercises/zottman_curl_2.webp"),
+    require("../../../assets/exercises/zottman_curl.webp"),
   ],
 };
