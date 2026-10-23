@@ -19,7 +19,7 @@ class WorkoutNotificationModule : Module() {
         Name("WorkoutNotification")
 
         Function("show") { options: ShowOptions ->
-            // 1. Canal (importancia baja, sin sonido ni vibración)
+            // Low importance: it sits in the shade without sound or vibration.
             val channel = NotificationChannelCompat.Builder(CHANNEL_ID, NotificationManagerCompat.IMPORTANCE_LOW)
                 .setName(options.channelName)
                 .setShowBadge(false)
@@ -28,20 +28,21 @@ class WorkoutNotificationModule : Module() {
                 .build()
             NotificationManagerCompat.from(context).createNotificationChannel(channel)
 
-            // 2. Notificación (aquí van el cronómetro y el resto)
+            // The system draws the chronometer from `when`, so it keeps counting
+            // while the app is closed.
             val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setSmallIcon(R.drawable.ic_stat_workout)
                 .setContentTitle(options.title)
                 .setContentText(options.text)
                 .setOngoing(true)
-                .setWhen(options.startedAtMs)
+                .setWhen(options.startedAtMs.toLong())
                 .setShowWhen(true)
                 .setUsesChronometer(true)
                 .setOnlyAlertOnce(true)
                 .setSilent(true)
                 .setCategory(NotificationCompat.CATEGORY_WORKOUT)
 
-            // 3. Publicar
+            // False without the notification permission, so notify never throws.
             if (NotificationManagerCompat.from(context).areNotificationsEnabled()) {
                 NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
             }

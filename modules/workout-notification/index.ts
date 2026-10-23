@@ -1,11 +1,14 @@
-import { NativeModule, requireOptionalNativeModule } from "expo";
+import { requireOptionalNativeModule } from "expo";
+
 import type { ShowOptions } from "./src/types";
 
-declare class WorkoutNotificationModule extends NativeModule<{}> {
+type WorkoutNotificationModule = {
   show(options: ShowOptions): void;
   dismiss(): void;
-}
+};
 
+// Android only. On iOS, web, Expo Go and in tests there is no native module,
+// and these do nothing.
 const native = requireOptionalNativeModule<WorkoutNotificationModule>(
   "WorkoutNotification",
 );
@@ -13,6 +16,7 @@ const native = requireOptionalNativeModule<WorkoutNotificationModule>(
 export function show(options: ShowOptions): void {
   native?.show(options);
 }
+
 export function dismiss(): void {
   native?.dismiss();
 }
