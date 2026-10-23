@@ -4,16 +4,10 @@
   },
   "build": {
     "preview": {
-      "distribution": "internal",
-      "env": {
-        "EXERCISE_PHOTOS": "off"
-      }
+      "distribution": "internal"
     },
     "production": {
-      "autoIncrement": true,
-      "env": {
-        "EXERCISE_PHOTOS": "off"
-      }
+      "autoIncrement": true
     }
   },
   "submit": {

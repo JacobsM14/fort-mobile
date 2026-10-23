@@ -51,12 +51,6 @@ npx eas-cli build --profile preview      # distribución interna (testers)
 npx eas-cli build --profile production   # App Store y Google Play
 ```
 
-Los dos perfiles definen `EXERCISE_PHOTOS=off`. Con esa variable, `metro.config.js` cambia el mapa de fotos (`src/features/exercises/images.ts`) por uno vacío (`images-none.ts`), así que las fotos de `assets/exercises` no entran en el bundle: no tienen licencia para distribuirse (ver `src/constants/app-info.ts`). La ficha de cada ejercicio muestra «Sin fotos» y Privacidad deja de citarlas. Para una build release local, exporta la variable y limpia la caché de Metro:
-
-```bash
-EXERCISE_PHOTOS=off npx expo export --clear
-```
-
 El icono y la splash se generan a partir de los SVG de `assets/images/source/`. Si cambias alguno, vuelve a exportar el PNG con el mismo tamaño (el icono, 1024×1024 y sin transparencia).
 
 Antes de enviar a revisión, en las consolas de las tiendas:

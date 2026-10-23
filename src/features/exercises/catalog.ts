@@ -3,9 +3,6 @@ import type { Translations } from "@/i18n/es";
 
 import { EXERCISE_IMAGES } from "./images";
 
-// False in store builds, which leave the photos out (see metro.config.js).
-export const HAS_EXERCISE_PHOTOS = Object.keys(EXERCISE_IMAGES).length > 0;
-
 // Catalog bundled with the app. Only stable data lives here (keys, equipment,
 // muscles); texts live in src/i18n, so a new language never touches the DB.
 // syncCatalog (./sync-catalog.ts) writes it to SQLite on startup.

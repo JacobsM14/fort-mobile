@@ -9,11 +9,6 @@ export const STORE_URLS: { ios?: string; android?: string } = {};
 
 export const COPYRIGHT = { year: 2026, holder: "Marcel" };
 
-// free-exercise-db is labeled Unlicense, but the photos come from
-// wrkout/exercises.json, whose CONTRIBUTING.md says they were scraped from the
-// internet and the project doesn't own their copyright. Builds for testers and
-// the stores leave them out (EXERCISE_PHOTOS=off in eas.json); they can only
-// go back in once replaced by owned or licensed photos.
 export const EXERCISE_IMAGES_SOURCE = {
   name: "free-exercise-db",
   url: "https://github.com/yuhonas/free-exercise-db",
