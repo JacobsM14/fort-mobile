@@ -34,11 +34,12 @@ Mobile app to track gym routines and workouts. Offline-first: all data lives in 
 - No `any`; type props and return values
 - Comment only where the code isn't self-explanatory: explain the why, not the what. Comments always in English
 - No emojis in code, comments or commits
-- Commits in English, Conventional Commits format (`feat:`, `fix:`...)
 - Order imports in groups separated by a blank line: external packages, components, hooks, services, types (use `import type`), utils, styles/assets
+- Never run `git commit` or `git push`; the user does it. When a task changes files, end your reply with a suggested commit message in English, Conventional Commits format (`feat:`, `fix:`...)
 
 ## What NOT to do
 
 - Do not install libraries without asking first
 - Do not `git push`; the user does it
 - Do not make destructive DB changes (dropping tables or columns, wiping data) without asking
+- Do not run git commit or git push
