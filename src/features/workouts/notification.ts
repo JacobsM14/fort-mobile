@@ -3,9 +3,17 @@ import { useEffect } from "react";
 
 import { useTranslation } from "@/i18n";
 
+import {
+  hasAskedNotificationPermission,
+  markNotificationPermissionAsked,
+} from "@/features/settings/notification-permission";
 import { useActiveWorkout } from "@/features/workouts/queries";
 
-import { dismiss, show } from "@/modules/workout-notification";
+import {
+  dismiss,
+  ensureNotificationPermission,
+  show,
+} from "@/modules/workout-notification";
 
 type UseWorkoutNotificationOptions = {
   workoutId: string;
@@ -53,6 +61,18 @@ export function useWorkoutNotification({
     inProgress,
     channelName,
   ]);
+}
+
+// Asked the first time the app opens, so the dialog doesn't interrupt a
+// workout later. A denial isn't asked again: Android would stop showing the
+// dialog after two anyway, and the app works the same without it.
+export function useAskNotificationPermissionOnFirstOpen() {
+  useEffect(() => {
+    if (hasAskedNotificationPermission()) {
+      return;
+    }
+    void ensureNotificationPermission().then(markNotificationPermissionAsked);
+  }, []);
 }
 
 // Removes the notification once no workout is in progress, however it ended

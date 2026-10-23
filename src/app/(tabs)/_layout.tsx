@@ -23,7 +23,10 @@ import { fontsInstrument, spacing } from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import { useDismissEndedWorkoutNotification } from "@/features/workouts/notification";
+import {
+  useAskNotificationPermissionOnFirstOpen,
+  useDismissEndedWorkoutNotification,
+} from "@/features/workouts/notification";
 
 const TAB_BAR_HEIGHT = 70;
 const INDICATOR_WIDTH = 24;
@@ -71,6 +74,7 @@ export default function TabsLayout() {
   // Here because the tabs stay mounted under every modal, and only once the
   // database is ready.
   useDismissEndedWorkoutNotification();
+  useAskNotificationPermissionOnFirstOpen();
 
   return (
     <Tabs

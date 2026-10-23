@@ -13,6 +13,8 @@ const native = requireOptionalNativeModule<WorkoutNotificationModule>(
   "WorkoutNotification",
 );
 
+export { ensureNotificationPermission } from "./permission";
+
 export function show(options: ShowOptions): void {
   native?.show(options);
 }
