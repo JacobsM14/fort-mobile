@@ -1,5 +1,6 @@
 // Same fields as ShowOptions.kt.
 export interface ShowOptions {
+  url: string;
   title: string;
   text: string;
   startedAtMs: number;

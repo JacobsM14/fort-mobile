@@ -26,6 +26,7 @@ import { useTranslation } from "@/i18n";
 
 import { getExerciseInfo } from "@/features/exercises/catalog";
 import { useWorkoutEntries } from "@/features/workouts/entries";
+import { useWorkoutNotification } from "@/features/workouts/notification";
 import {
   deleteSet,
   discardWorkout,
@@ -65,7 +66,7 @@ export default function WorkoutScreen() {
   const { t } = useTranslation();
   const { globalStyles } = useTheme();
   const { workoutId, subscribeExerciseAdded } = useWorkoutSession();
-  const { title, found, entries, anyDone, startedAt, loaded } =
+  const { title, found, entries, anyDone, startedAt, endedAt, loaded } =
     useWorkoutEntries(workoutId);
   const [currentId, setCurrentId] = useState<string>();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -96,6 +97,14 @@ export default function WorkoutScreen() {
     (entry) => entry.id === currentId,
   );
   const current = currentIndex === -1 ? undefined : view.entries[currentIndex];
+
+  useWorkoutNotification({
+    workoutId,
+    routineName: title,
+    exerciseName: current?.name,
+    startedAt,
+    endedAt,
+  });
 
   function measureHeader(event: LayoutChangeEvent) {
     const { x, y, width, height } = event.nativeEvent.layout;

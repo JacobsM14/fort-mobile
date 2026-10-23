@@ -23,6 +23,8 @@ import { fontsInstrument, spacing } from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
+import { useDismissEndedWorkoutNotification } from "@/features/workouts/notification";
+
 const TAB_BAR_HEIGHT = 70;
 const INDICATOR_WIDTH = 24;
 const INDICATOR_SPRING = { damping: 18, stiffness: 200, mass: 1 };
@@ -66,6 +68,9 @@ export default function TabsLayout() {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
+  // Here because the tabs stay mounted under every modal, and only once the
+  // database is ready.
+  useDismissEndedWorkoutNotification();
 
   return (
     <Tabs

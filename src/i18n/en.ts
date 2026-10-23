@@ -1914,6 +1914,9 @@ export const en: Translations = {
     bodyweight: "Bodyweight",
     other: "Other",
   },
+  notifications: {
+    channel: "Workout in progress",
+  },
   errors: {
     database: "Couldn't load your data. Close the app and open it again.",
     openUrl: "Couldn't open the link",

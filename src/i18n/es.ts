@@ -1928,6 +1928,9 @@ export const es = {
     bodyweight: "Peso corporal",
     other: "Otro",
   } satisfies Record<Equipment, string>,
+  notifications: {
+    channel: "Entrenamiento en curso",
+  },
   errors: {
     database:
       "No se han podido cargar tus datos. Cierra la app y vuelve a abrirla.",
