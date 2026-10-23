@@ -18,6 +18,10 @@ expo-env.d.ts
 *.p12
 *.key
 *.mobileprovision
+# Gradle output of the local native modules
+modules/*/android/build/
+modules/*/android/.gradle/
+modules/*/android/.cxx/
 
 # Metro
 .metro-health-check*
