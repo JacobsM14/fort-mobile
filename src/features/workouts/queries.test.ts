@@ -16,6 +16,8 @@ import {
   addWorkoutExercises,
   chooseRest,
   completeSet,
+  countExercisesByDay,
+  dailyExerciseRowsQuery,
   deleteSet,
   discardWorkout,
   endRest,
@@ -527,5 +529,105 @@ describe("toWorkoutExercises", () => {
       ["s1", "s2"],
       [],
     ]);
+  });
+});
+
+describe("countExercisesByDay", () => {
+  it("counts the rows of each day", () => {
+    const rows = [
+      { startedAt: at(0) },
+      { startedAt: at(60) },
+      { startedAt: at(24 * 60 * 60) },
+    ];
+    expect(countExercisesByDay(rows)).toEqual(
+      new Map([
+        [at(0).toDateString(), 2],
+        [at(24 * 60 * 60).toDateString(), 1],
+      ]),
+    );
+  });
+});
+
+describe("dailyExerciseRowsQuery", () => {
+  // A day no other test uses: the database is shared by the whole file.
+  const DAY = new Date(2030, 0, 15, 10, 0, 0);
+
+  function onDay(seconds: number) {
+    return new Date(DAY.getTime() + seconds * 1000);
+  }
+
+  it("returns one row per exercise with a set done in the range", () => {
+    const benchId = catalogId("bench_press");
+    const routineId = createRoutine({ name: "Bench", exerciseIds: [benchId] });
+    const workoutId = startWorkout(routineId, onDay(0));
+    const [bench] = readWorkout(workoutId);
+    completeSet(bench.sets[0].id, BENCH, onDay(30));
+    addSet(bench.id);
+    completeSet(readWorkout(workoutId)[0].sets[1].id, BENCH, onDay(90));
+
+    const rows = dailyExerciseRowsQuery(
+      new Date(2030, 0, 15),
+      new Date(2030, 0, 16),
+    ).all();
+
+    expect(rows).toEqual([
+      { startedAt: onDay(0), workoutExerciseId: bench.id },
+    ]);
+  });
+
+  // Each test below uses its own days so the shared database doesn't mix them.
+  function benchWorkout(startedAt: Date, done: boolean) {
+    const benchId = catalogId("bench_press");
+    const routineId = createRoutine({ name: "Bench", exerciseIds: [benchId] });
+    const workoutId = startWorkout(routineId, startedAt);
+    const [bench] = readWorkout(workoutId);
+    if (done) {
+      completeSet(
+        bench.sets[0].id,
+        BENCH,
+        new Date(startedAt.getTime() + 30_000),
+      );
+    }
+    return bench.id;
+  }
+
+  it("ignores exercises with no set done", () => {
+    benchWorkout(new Date(2030, 0, 20, 10), false);
+
+    const rows = dailyExerciseRowsQuery(
+      new Date(2030, 0, 20),
+      new Date(2030, 0, 21),
+    ).all();
+
+    expect(rows).toEqual([]);
+  });
+
+  it("includes the start of the range and leaves out its end", () => {
+    const from = new Date(2030, 0, 25, 10);
+    const to = new Date(2030, 0, 26, 10);
+    const atStart = benchWorkout(from, true);
+    benchWorkout(to, true);
+    benchWorkout(new Date(2030, 0, 24, 9), true);
+
+    const rows = dailyExerciseRowsQuery(from, to).all();
+
+    expect(rows).toEqual([{ startedAt: from, workoutExerciseId: atStart }]);
+  });
+
+  it("returns the exercises of every workout on the same day", () => {
+    const first = benchWorkout(new Date(2030, 0, 30, 8), true);
+    const second = benchWorkout(new Date(2030, 0, 30, 18), true);
+
+    const rows = dailyExerciseRowsQuery(
+      new Date(2030, 0, 30),
+      new Date(2030, 0, 31),
+    ).all();
+
+    expect(rows.map((row) => row.workoutExerciseId).sort()).toEqual(
+      [first, second].sort(),
+    );
+    expect(countExercisesByDay(rows)).toEqual(
+      new Map([[new Date(2030, 0, 30).toDateString(), 2]]),
+    );
   });
 });
