@@ -23,7 +23,7 @@ class WorkoutNotificationModule : Module() {
 
         Function("show") { options: ShowOptions ->
             // Low importance: it sits in the shade without sound or vibration.
-            val channel = NotificationChannelCompat.Builder(CHANNEL_ID, NotificationManagerCompat.IMPORTANCE_LOW)
+            val channel = NotificationChannelCompat.Builder(CHANNEL_ID, NotificationManagerCompat.IMPORTANCE_DEFAULT)
                 .setName(options.channelName)
                 .setShowBadge(false)
                 .setVibrationEnabled(false)
