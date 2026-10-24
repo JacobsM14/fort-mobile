@@ -221,7 +221,7 @@ export function ExercisePickerScreen({
           />
         )}
         ListEmptyComponent={
-          loaded ? <NoContentBox label={t.newExercises.noResults} /> : null
+          loaded ? <NoContentBox label={t.newExercises.noResults} /> : undefined
         }
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"

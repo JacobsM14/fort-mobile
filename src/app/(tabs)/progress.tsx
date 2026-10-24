@@ -39,7 +39,7 @@ export default function ProgressScreen() {
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          loaded ? <NoContentBox label={t.progress.noContent} /> : null
+          loaded ? <NoContentBox label={t.progress.noContent} /> : undefined
         }
         renderItem={({ item }) => {
           const inProgress = item.endedAt === null;
