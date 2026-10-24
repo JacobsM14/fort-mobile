@@ -105,6 +105,10 @@ export const en: Translations = {
     summary: (exercises, sets) =>
       `${exercises} ${exercises === 1 ? "exercise" : "exercises"} · ${sets} ${sets === 1 ? "set" : "sets"}`,
   },
+  history: {
+    title: "History",
+    day: "Day",
+  },
   routines: {
     title: "Routines",
     subtitle: "Prepare them once and choose the one for each day.",

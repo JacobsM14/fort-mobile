@@ -30,7 +30,7 @@ export default function ProgressScreen() {
   return (
     <SafeAreaView style={[globalStyles.screen, styles.screen]} edges={["top"]}>
       <View>
-        <Text style={globalStyles.subtitle}>{t.progress.history}</Text>
+        {/* <Text style={globalStyles.subtitle}>{t.progress.history}</Text> */}
         <Text style={globalStyles.title}>{t.tabs.progress}</Text>
       </View>
       <FlatList

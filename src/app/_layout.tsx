@@ -86,6 +86,7 @@ function RootNavigator() {
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="routine/[id]" options={MODAL_OPTIONS} />
       <Stack.Screen name="workout/[id]" options={MODAL_OPTIONS} />
+      <Stack.Screen name="history" options={MODAL_OPTIONS} />
       <Stack.Screen name="settings" options={MODAL_OPTIONS} />
     </Stack>
   );

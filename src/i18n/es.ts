@@ -116,6 +116,10 @@ export const es = {
     summary: (exercises: number, sets: number) =>
       `${exercises} ${exercises === 1 ? "ejercicio" : "ejercicios"} · ${sets} ${sets === 1 ? "serie" : "series"}`,
   },
+  history: {
+    title: "Historial",
+    day: "Día",
+  },
   routines: {
     title: "Rutinas",
     subtitle: "Prepáralas una vez y elige la que toque cada día.",
