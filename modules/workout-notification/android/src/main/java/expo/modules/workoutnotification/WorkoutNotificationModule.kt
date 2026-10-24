@@ -16,7 +16,7 @@ private const val NOTIFICATION_ID = 1001
 class WorkoutNotificationModule : Module() {
 
     private val context: Context
-        get() = requireNotNull(appContext.reactContext)
+        get() = Exceptions.ReactContextLost()
 
     override fun definition() = ModuleDefinition {
         Name("WorkoutNotification")
