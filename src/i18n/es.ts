@@ -119,6 +119,9 @@ export const es = {
   history: {
     title: "Historial",
     day: "Día",
+    exerciseCount: (count: number) =>
+      `${count} ${count === 1 ? "ejercicio" : "ejercicios"}`,
+    noWorkout: "Sin entreno",
   },
   routines: {
     title: "Rutinas",

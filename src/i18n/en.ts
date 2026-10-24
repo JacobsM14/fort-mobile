@@ -108,6 +108,9 @@ export const en: Translations = {
   history: {
     title: "History",
     day: "Day",
+    exerciseCount: (count) =>
+      `${count} ${count === 1 ? "exercise" : "exercises"}`,
+    noWorkout: "No workout",
   },
   routines: {
     title: "Routines",
