@@ -1,6 +1,11 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { formatDayHeader, getWeekDays } from "./date";
+import {
+  formatDayHeader,
+  getDaysBetween,
+  getWeekDays,
+  toDateKey,
+} from "./date";
 
 // expo-localization numbers weekdays from 1 (Sunday).
 const SUNDAY = 1;
@@ -39,5 +44,23 @@ describe("formatDayHeader", () => {
     const monday = new Date(2026, 9, 19);
     expect(formatDayHeader(monday, "es")).toBe("LUNES 19 OCT");
     expect(formatDayHeader(monday, "en")).toBe("MONDAY 19 OCT");
+  });
+});
+
+describe("getDaysBetween", () => {
+  it("lists the days from the newest to the oldest, leaving out the end", () => {
+    const days = getDaysBetween(new Date(2026, 9, 29), new Date(2026, 10, 2));
+    expect(days.map((day) => [day.getMonth(), day.getDate()])).toEqual([
+      [10, 1],
+      [9, 31],
+      [9, 30],
+      [9, 29],
+    ]);
+  });
+});
+
+describe("toDateKey", () => {
+  it("pads month and day, using the local date", () => {
+    expect(toDateKey(new Date(2026, 0, 5, 23, 59))).toBe("2026-01-05");
   });
 });

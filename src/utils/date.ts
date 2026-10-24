@@ -40,3 +40,21 @@ export function getWeekDays(date: Date, firstWeekday: number) {
       ),
   );
 }
+
+// Every local day from `from` up to (not including) `to`, newest first.
+export function getDaysBetween(from: Date, to: Date) {
+  const days: Date[] = [];
+  const cursor = new Date(to.getFullYear(), to.getMonth(), to.getDate() - 1);
+  while (cursor >= from) {
+    days.push(new Date(cursor));
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return days;
+}
+
+// "2026-10-24", in local time: the key a day travels with in a route.
+export function toDateKey(date: Date) {
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${date.getFullYear()}-${month}-${day}`;
+}
