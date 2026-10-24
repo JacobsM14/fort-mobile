@@ -10,7 +10,7 @@ import androidx.core.app.NotificationManagerCompat
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 
-private const val CHANNEL_ID = "workout_ongoing_v1"
+private const val CHANNEL_ID = "workout_ongoing_v2"
 private const val NOTIFICATION_ID = 1001
 
 class WorkoutNotificationModule : Module() {
