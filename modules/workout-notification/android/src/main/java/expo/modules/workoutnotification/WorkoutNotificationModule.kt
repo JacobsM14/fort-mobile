@@ -7,6 +7,7 @@ import android.net.Uri
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import expo.modules.kotlin.exception.Exceptions
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 
@@ -16,7 +17,7 @@ private const val NOTIFICATION_ID = 1001
 class WorkoutNotificationModule : Module() {
 
     private val context: Context
-        get() = Exceptions.ReactContextLost()
+        get() = appContext.reactContext ?: throw Exceptions.ReactContextLost()
 
     override fun definition() = ModuleDefinition {
         Name("WorkoutNotification")
