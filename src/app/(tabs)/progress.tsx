@@ -1,9 +1,12 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { router } from "expo-router";
+import { SymbolView } from "expo-symbols";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { NoContentBox } from "@/components/ui/content/no-content-box";
 import { ExerciseSummary } from "@/components/workout/summary/exercise-summary";
 
+import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
@@ -14,11 +17,16 @@ import { useWorkoutHistory } from "@/features/workouts/queries";
 import { formatDateTime } from "@/utils/date";
 import { formatDuration } from "@/utils/duration";
 
-import { fontsInstrument, fontSizes, spacing } from "@/constants/theme";
+import {
+  fontsInstrument,
+  fontSizes,
+  iconSizes,
+  spacing,
+} from "@/constants/theme";
 
 export default function ProgressScreen() {
   const { t, language } = useTranslation();
-  const { globalStyles } = useTheme();
+  const { globalStyles, colors } = useTheme();
   const styles = useStyles();
   const { workouts, loaded: workoutsLoaded } = useWorkoutHistory();
   const { exercises, loaded: exercisesLoaded } = useExerciseList();
@@ -27,11 +35,30 @@ export default function ProgressScreen() {
     exercises.map((exercise) => [exercise.id, exercise] as const),
   );
 
+  const openSettings = useFocusedPress(() => router.push("/history"));
+
   return (
     <SafeAreaView style={[globalStyles.screen, styles.screen]} edges={["top"]}>
-      <View>
-        {/* <Text style={globalStyles.subtitle}>{t.progress.history}</Text> */}
+      <View style={globalStyles.dualheader}>
         <Text style={globalStyles.title}>{t.tabs.progress}</Text>
+        <Pressable
+          onPress={openSettings}
+          hitSlop={spacing.sm}
+          accessibilityRole="button"
+          accessibilityLabel={t.settings.title}
+        >
+          {({ pressed }) => (
+            <SymbolView
+              name={{
+                ios: "calendar",
+                android: "calendar_check",
+                web: "calendar_check",
+              }}
+              tintColor={pressed ? colors.primary : colors.disabled}
+              size={iconSizes.xl}
+            />
+          )}
+        </Pressable>
       </View>
       <FlatList
         data={workouts}
