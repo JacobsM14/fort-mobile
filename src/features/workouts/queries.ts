@@ -741,6 +741,37 @@ export function useTrainedDays(from: Date, to: Date) {
   return new Set(data.map((row) => row.startedAt.toDateString()));
 }
 
+export function useDailyExerciseCounts(from: Date, to: Date) {
+  const { data } = useLiveQuery(
+    db
+      .selectDistinct({
+        startedAt: workouts.startedAt,
+        workoutExerciseId: workoutExercises.id,
+      })
+      .from(workoutSets)
+      .innerJoin(
+        workoutExercises,
+        eq(workoutExercises.id, workoutSets.workoutExerciseId),
+      )
+      .innerJoin(workouts, eq(workouts.id, workoutExercises.workoutId))
+      .where(
+        and(
+          isNotNull(workoutSets.completedAt),
+          gte(workouts.startedAt, from),
+          lt(workouts.startedAt, to),
+        ),
+      ),
+    [from.getTime(), to.getTime()],
+  );
+
+  const counts = new Map<string, number>();
+  for (const row of data) {
+    const key = row.startedAt.toDateString();
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  return counts;
+}
+
 // The sets done for an exercise the last time it was in another finished
 // workout, in order. Finishing removes exercises with nothing done, so that
 // one always has sets.
