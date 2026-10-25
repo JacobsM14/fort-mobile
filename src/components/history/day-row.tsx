@@ -43,25 +43,29 @@ export function DayRow({ day, exerciseCount, onPress }: DayRowProps) {
       accessibilityRole="button"
       accessibilityLabel={`${title}, ${detail}`}
     >
-      <DayBox
-        dayOfMonth={day.getDate()}
-        trained={trained}
-        isToday={isToday}
-        missed={missed}
-      />
-      <View style={styles.info}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.detail}>{detail}</Text>
-      </View>
-      <SymbolView
-        name={{
-          ios: "chevron.right",
-          android: "chevron_right",
-          web: "chevron_right",
-        }}
-        tintColor={colors.disabled}
-        size={iconSizes.md}
-      />
+      {({ pressed }) => (
+        <>
+          <DayBox
+            dayOfMonth={day.getDate()}
+            trained={trained}
+            isToday={isToday}
+            missed={missed}
+          />
+          <View style={styles.info}>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.detail}>{detail}</Text>
+          </View>
+          <SymbolView
+            name={{
+              ios: "chevron.right",
+              android: "chevron_right",
+              web: "chevron_right",
+            }}
+            tintColor={pressed ? colors.primary : colors.disabled}
+            size={iconSizes.md}
+          />
+        </>
+      )}
     </Pressable>
   );
 }
@@ -70,6 +74,7 @@ const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
     row: {
       flexDirection: "row",
+      paddingHorizontal: spacing.sm,
       alignItems: "center",
       gap: spacing.md,
       paddingVertical: spacing.sm,
