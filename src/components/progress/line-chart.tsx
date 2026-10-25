@@ -45,7 +45,7 @@ import {
 } from "@/constants/theme";
 
 const CHART_HEIGHT = 200;
-// The strip on the right where the selected value's block sits.
+// The block with the selected value, floating at the start of its line.
 const BLOCK_WIDTH = 84;
 const BLOCK_HEIGHT = 44;
 // Room above and below the line so the markers aren't cut off.
@@ -53,6 +53,7 @@ const PLOT_INSET = 14;
 const MARKER_SIZE = 10;
 const SELECTED_MARKER_SIZE = 14;
 const HATCH_GAP = 7;
+const DASH = "4 4";
 // A drag this far sideways selects; up and down first, it's the page's scroll.
 const DRAG_SLOP = 8;
 
@@ -78,9 +79,9 @@ function trianglePoints({ x, y }: PlottedPoint, size: number) {
   return `${x},${y - half} ${x + half},${y + half * 0.8} ${x - half},${y + half * 0.8}`;
 }
 
-// One value per day: a line over a hatched body, a triangle on each day and a
-// square on the last. Dragging or tapping picks the closest day; the last one
-// is picked to begin with.
+// One value per day: a line over a hatched body and a triangle on each day.
+// The selected day is a hollow square where the dashed lines meet; dragging or
+// tapping picks the closest day, and the last one is picked to begin with.
 export function LineChart({
   points,
   formatValue,
@@ -97,14 +98,13 @@ export function LineChart({
   const [selected, setSelected] = useState(points.length - 1);
   const index = Math.min(selected, points.length - 1);
 
-  const plotRight = Math.max(0, width - BLOCK_WIDTH - spacing.sm);
   const baseline = CHART_HEIGHT - 1;
   const plotted = scalePoints(
     points.map((point) => point.value),
     {
       left: SELECTED_MARKER_SIZE / 2,
       top: PLOT_INSET,
-      width: Math.max(0, plotRight - SELECTED_MARKER_SIZE),
+      width: Math.max(0, width - SELECTED_MARKER_SIZE),
       height: CHART_HEIGHT - PLOT_INSET * 2,
     },
   );
@@ -160,6 +160,17 @@ export function LineChart({
           Math.max(current.y - BLOCK_HEIGHT / 2, 0),
           CHART_HEIGHT - BLOCK_HEIGHT,
         );
+  // On the left edge, where the line starts, unless the selected point is
+  // under it there (the first days): then it moves just right of the point.
+  const pointLeftEdge =
+    current === undefined ? 0 : current.x - SELECTED_MARKER_SIZE / 2;
+  const blockLeft =
+    current === undefined || pointLeftEdge > BLOCK_WIDTH + spacing.xs
+      ? 0
+      : Math.min(
+          current.x + SELECTED_MARKER_SIZE / 2 + spacing.xs,
+          width - BLOCK_WIDTH,
+        );
 
   return (
     <View style={styles.container}>
@@ -200,7 +211,7 @@ export function LineChart({
               <Line
                 x1={0}
                 y1={baseline}
-                x2={plotRight}
+                x2={width}
                 y2={baseline}
                 stroke={colors.border}
                 strokeWidth={1}
@@ -214,14 +225,16 @@ export function LineChart({
                     y2={current.y}
                     stroke={lineColor}
                     strokeWidth={1}
+                    strokeDasharray={DASH}
                   />
                   <Line
-                    x1={current.x}
+                    x1={0}
                     y1={current.y}
-                    x2={width}
+                    x2={current.x}
                     y2={current.y}
                     stroke={lineColor}
                     strokeWidth={1}
+                    strokeDasharray={DASH}
                   />
                 </>
               )}
@@ -233,40 +246,38 @@ export function LineChart({
                 strokeLinejoin="round"
                 strokeLinecap="round"
               />
-              {plotted.map((point, pointIndex) => {
-                const size =
-                  pointIndex === index ? SELECTED_MARKER_SIZE : MARKER_SIZE;
-                // The ring in the background color keeps a marker readable
-                // where it sits on the line.
-                return pointIndex === plotted.length - 1 ? (
-                  <Rect
-                    key={pointIndex}
-                    x={point.x - size / 2}
-                    y={point.y - size / 2}
-                    width={size}
-                    height={size}
-                    fill={lineColor}
-                    stroke={colors.background}
-                    strokeWidth={2}
-                  />
-                ) : (
+              {plotted.map((point, pointIndex) =>
+                pointIndex === index ? null : (
+                  // The ring in the background color keeps a marker readable
+                  // where it sits on the line.
                   <Polygon
                     key={pointIndex}
-                    points={trianglePoints(point, size)}
+                    points={trianglePoints(point, MARKER_SIZE)}
                     fill={lineColor}
                     stroke={colors.background}
                     strokeWidth={2}
                     strokeLinejoin="round"
                   />
-                );
-              })}
+                ),
+              )}
+              {current !== undefined && (
+                <Rect
+                  x={current.x - SELECTED_MARKER_SIZE / 2}
+                  y={current.y - SELECTED_MARKER_SIZE / 2}
+                  width={SELECTED_MARKER_SIZE}
+                  height={SELECTED_MARKER_SIZE}
+                  fill={colors.background}
+                  stroke={lineColor}
+                  strokeWidth={2}
+                />
+              )}
             </Svg>
           )}
           {currentPoint !== undefined && width > 0 && (
             <View
               style={[
                 styles.block,
-                { top: blockTop, backgroundColor: lineColor },
+                { top: blockTop, left: blockLeft, backgroundColor: lineColor },
               ]}
             >
               <Text
@@ -284,7 +295,7 @@ export function LineChart({
         </View>
       </GestureDetector>
       {first !== undefined && last !== undefined && (
-        <View style={[styles.dates, { width: plotRight }]}>
+        <View style={styles.dates}>
           <Text style={styles.date}>
             {formatShortDate(first.date, language)}
           </Text>
@@ -309,12 +320,14 @@ const useStyles = makeStyles(({ colors }) =>
     },
     block: {
       position: "absolute",
-      right: 0,
       width: BLOCK_WIDTH,
       height: BLOCK_HEIGHT,
       justifyContent: "center",
       paddingHorizontal: spacing.xs,
       borderRadius: radii.sm,
+      // Same ring as the markers, to lift it off the hatching and the line.
+      borderWidth: 2,
+      borderColor: colors.background,
     },
     blockValue: {
       fontSize: fontSizes.label,
