@@ -704,6 +704,35 @@ export function toWorkoutHistory(
   });
 }
 
+// The sets done, in order, of every workout or only of those started within
+// a range, so a single day doesn't read the whole history.
+export function doneSetsQuery(range?: { from: Date; to: Date }) {
+  return db
+    .select({
+      workoutId: workoutExercises.workoutId,
+      workoutExerciseId: workoutSets.workoutExerciseId,
+      exerciseId: workoutExercises.exerciseId,
+      weightKg: workoutSets.weightKg,
+      reps: workoutSets.reps,
+      durationS: workoutSets.durationS,
+      distanceM: workoutSets.distanceM,
+    })
+    .from(workoutSets)
+    .innerJoin(
+      workoutExercises,
+      eq(workoutExercises.id, workoutSets.workoutExerciseId),
+    )
+    .innerJoin(workouts, eq(workouts.id, workoutExercises.workoutId))
+    .where(
+      and(
+        isNotNull(workoutSets.completedAt),
+        range === undefined ? undefined : gte(workouts.startedAt, range.from),
+        range === undefined ? undefined : lt(workouts.startedAt, range.to),
+      ),
+    )
+    .orderBy(asc(workoutExercises.position), asc(workoutSets.position));
+}
+
 // Newest first, all of them or only those started within a range. The done
 // sets come from their own query so the workout in progress updates as sets
 // are marked.
@@ -728,25 +757,10 @@ export function useWorkoutHistory(range?: { from: Date; to: Date }) {
       .orderBy(desc(workouts.startedAt)),
     [range?.from.getTime(), range?.to.getTime()],
   );
-  const doneSets = useLiveQuery(
-    db
-      .select({
-        workoutId: workoutExercises.workoutId,
-        workoutExerciseId: workoutSets.workoutExerciseId,
-        exerciseId: workoutExercises.exerciseId,
-        weightKg: workoutSets.weightKg,
-        reps: workoutSets.reps,
-        durationS: workoutSets.durationS,
-        distanceM: workoutSets.distanceM,
-      })
-      .from(workoutSets)
-      .innerJoin(
-        workoutExercises,
-        eq(workoutExercises.id, workoutSets.workoutExerciseId),
-      )
-      .where(isNotNull(workoutSets.completedAt))
-      .orderBy(asc(workoutExercises.position), asc(workoutSets.position)),
-  );
+  const doneSets = useLiveQuery(doneSetsQuery(range), [
+    range?.from.getTime(),
+    range?.to.getTime(),
+  ]);
 
   return {
     workouts: toWorkoutHistory(workoutRows.data, doneSets.data),

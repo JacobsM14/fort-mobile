@@ -21,6 +21,7 @@ import {
   deleteSet,
   deleteWorkoutExercise,
   discardWorkout,
+  doneSetsQuery,
   endRest,
   finishWorkout,
   logWorkout,
@@ -478,6 +479,25 @@ describe("deleteWorkoutExercise", () => {
         .where(eq(workoutSets.workoutExerciseId, bench.id))
         .all(),
     ).toEqual([]);
+  });
+});
+
+describe("doneSetsQuery", () => {
+  it("reads only the done sets of the workouts started in the range", () => {
+    const benchId = catalogId("bench_press");
+    const routineId = createRoutine({ name: "Bench", exerciseIds: [benchId] });
+    const inside = logWorkout(routineId, new Date(2031, 2, 10, 10));
+    const outside = logWorkout(routineId, new Date(2031, 2, 11, 10));
+    for (const workoutId of [inside, outside]) {
+      completeSet(readWorkout(workoutId)[0].sets[0].id, BENCH);
+    }
+
+    const rows = doneSetsQuery({
+      from: new Date(2031, 2, 10),
+      to: new Date(2031, 2, 11),
+    }).all();
+
+    expect(rows.map((row) => row.workoutId)).toEqual([inside]);
   });
 });
 
