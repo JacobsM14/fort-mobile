@@ -8,10 +8,16 @@ import { formatDecimal } from "@/utils/number";
 import { distanceToUnit, weightToUnit, type Units } from "@/utils/units";
 
 const SECONDS_PER_HOUR = 3600;
+// Epley's formula only holds for low reps: past this, reps measure endurance
+// more than strength, and 60 kg x 30 would read as a 120 kg max. Whoever did
+// more could surely have done this many, so counting them as this never
+// overstates by much and keeps the day on the chart.
+const MAX_ONE_REP_MAX_REPS = 15;
 
 // Epley's formula. One rep is already the max, so it gets nothing added.
 export function estimatedOneRepMax(weightKg: number, reps: number) {
-  return reps <= 1 ? weightKg : weightKg * (1 + reps / 30);
+  const counted = Math.min(reps, MAX_ONE_REP_MAX_REPS);
+  return counted <= 1 ? weightKg : weightKg * (1 + counted / 30);
 }
 
 function setMetric(trackingType: TrackingType, set: SetValues): number | null {
@@ -25,7 +31,9 @@ function setMetric(trackingType: TrackingType, set: SetValues): number | null {
     case "duration":
       return set.durationS;
     case "distance_duration":
-      // Meters per second; formatMetric shows it as km/h or mph.
+      // Meters per second; formatMetric shows it as km/h or mph. The fastest
+      // set wins whatever its distance, so a short sprint beats a long run:
+      // to revisit with real data (e.g. comparing similar distances).
       return set.distanceM === null ||
         set.durationS === null ||
         set.durationS === 0

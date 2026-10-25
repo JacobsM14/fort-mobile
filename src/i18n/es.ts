@@ -109,15 +109,13 @@ export const es = {
     close: "Cerrar",
   },
   progress: {
-    history: "Tus entrenamientos",
-    noContent: "Aún no hay entrenamientos",
     inProgress: "En curso",
     reps: (count: number) => `${count} reps`,
     summary: (exercises: number, sets: number) =>
       `${exercises} ${exercises === 1 ? "ejercicio" : "ejercicios"} · ${sets} ${sets === 1 ? "serie" : "series"}`,
     strength: "Fuerza",
     oneRepMaxNote:
-      "1RM estimado: el peso máximo que podrías levantar una sola vez, calculado con la mejor serie del día (fórmula de Epley).",
+      "1RM estimado: el peso máximo que podrías levantar una sola vez, calculado con la mejor serie del día (fórmula de Epley). Las series de más de 15 repeticiones cuentan como 15.",
     today: "Hoy",
     chooseExercise: (name: string) => `Elegir ejercicio, ${name}`,
     metrics: {

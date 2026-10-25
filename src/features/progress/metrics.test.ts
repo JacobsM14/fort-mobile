@@ -22,6 +22,12 @@ describe("estimatedOneRepMax", () => {
   it("leaves a single rep as it is", () => {
     expect(estimatedOneRepMax(120, 1)).toBe(120);
   });
+
+  it("counts long sets as 15 reps, so they don't read as a false max", () => {
+    expect(estimatedOneRepMax(60, 30)).toBe(estimatedOneRepMax(60, 15));
+    expect(estimatedOneRepMax(60, 30)).toBe(90);
+    expect(estimatedOneRepMax(60, 12)).toBeCloseTo(84);
+  });
 });
 
 describe("dailyMetric", () => {
@@ -32,6 +38,14 @@ describe("dailyMetric", () => {
       { ...EMPTY, weightKg: 60, reps: 8 },
     ];
     expect(dailyMetric("weight_reps", sets)).toBeCloseTo(98);
+  });
+
+  it("doesn't let a light, long set beat a heavy one", () => {
+    const sets: SetValues[] = [
+      { ...EMPTY, weightKg: 80, reps: 8 },
+      { ...EMPTY, weightKg: 60, reps: 30 },
+    ];
+    expect(dailyMetric("weight_reps", sets)).toBeCloseTo(101.33);
   });
 
   it("ignores sets missing a value", () => {
