@@ -1,14 +1,16 @@
 import { useCalendars } from "expo-localization";
-import { StyleSheet, Text, View } from "react-native";
+import { router } from "expo-router";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { DayBox } from "@/components/today/day-box";
 
+import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 import { useTrainedDays } from "@/features/workouts/queries";
 
-import { getWeekDays } from "@/utils/date";
+import { formatDayHeader, getWeekDays, toDateKey } from "@/utils/date";
 
 import { fontsInstrument, fontSizes, spacing } from "@/constants/theme";
 
@@ -24,6 +26,12 @@ export function WeekDays() {
   weekEnd.setDate(weekEnd.getDate() + 1);
   // A day counts as trained when a workout started that day has a set done.
   const trainedDays = useTrainedDays(days[0], weekEnd);
+  const openDay = useFocusedPress((day: Date) =>
+    router.push({
+      pathname: "/history/day/[date]",
+      params: { date: toDateKey(day) },
+    }),
+  );
 
   return (
     <View style={styles.week}>
@@ -33,8 +41,18 @@ export function WeekDays() {
         const trained = trainedDays.has(key);
         // Days already gone without a workout are dashed.
         const missed = !trained && !isToday && day < today;
+        // Days still to come have nothing to show yet.
+        const upcoming = !isToday && day > today;
         return (
-          <View key={key} style={styles.day}>
+          <Pressable
+            key={key}
+            style={({ pressed }) => [styles.day, pressed && styles.dayPressed]}
+            onPress={() => openDay(day)}
+            disabled={upcoming}
+            accessibilityRole="button"
+            accessibilityLabel={formatDayHeader(day, language)}
+            accessibilityState={{ disabled: upcoming }}
+          >
             <Text style={styles.initial}>
               {day
                 .toLocaleDateString(language, { weekday: "narrow" })
@@ -46,7 +64,7 @@ export function WeekDays() {
               isToday={isToday}
               missed={missed}
             />
-          </View>
+          </Pressable>
         );
       })}
     </View>
@@ -63,6 +81,9 @@ const useStyles = makeStyles(({ colors }) =>
     day: {
       alignItems: "center",
       gap: spacing.xs,
+    },
+    dayPressed: {
+      opacity: 0.6,
     },
     initial: {
       fontSize: fontSizes.footnote,
