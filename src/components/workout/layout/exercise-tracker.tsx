@@ -13,6 +13,7 @@ type ExerciseTrackerProps = {
   trackingType: TrackingType;
   onDeleteSet: (setId: string, number: number) => void;
   onResetTimer: (setId: string, seconds: number) => void;
+  mode?: "live" | "edit";
 };
 
 // Timed and distance exercises run from one big stopwatch; the others log
@@ -23,6 +24,7 @@ export function ExerciseTracker({
   trackingType,
   onDeleteSet,
   onResetTimer,
+  mode = "live",
 }: ExerciseTrackerProps) {
   const previousSets = usePreviousSets(exercise.exerciseId, workoutId);
 
@@ -40,6 +42,7 @@ export function ExerciseTracker({
       trackingType={trackingType}
       previousSets={previousSets}
       onDeleteSet={onDeleteSet}
+      mode={mode}
     />
   );
 }
