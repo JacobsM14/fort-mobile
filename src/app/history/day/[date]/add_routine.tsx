@@ -2,10 +2,12 @@ import { router, useLocalSearchParams } from "expo-router";
 import { Alert, FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { PrimaryButton } from "@/components/ui/buttons/primary-button";
 import { NavCard } from "@/components/ui/content/nav-card";
 import { NoContentBox } from "@/components/ui/content/no-content-box";
 import { BackHeader } from "@/components/ui/layout/back-header";
 
+import { NEW_ROUTINE_ID } from "@/hooks/use-routine-draft";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
@@ -66,7 +68,20 @@ export default function AddRoutineScreen() {
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          loaded ? <NoContentBox label={t.routines.noContent} /> : undefined
+          loaded ? (
+            <>
+              <NoContentBox label={t.routines.noContent} />
+              <PrimaryButton
+                label={t.routines.add}
+                onPress={() =>
+                  router.push({
+                    pathname: "/routine/[id]",
+                    params: { id: NEW_ROUTINE_ID },
+                  })
+                }
+              />
+            </>
+          ) : undefined
         }
         renderItem={({ item }) => (
           <NavCard
