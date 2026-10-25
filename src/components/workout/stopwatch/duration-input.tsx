@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { StyleSheet } from "react-native";
+// See SetRow: lets a drag that starts here scroll the list.
 import { TextInput } from "react-native-gesture-handler";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
@@ -61,8 +62,6 @@ export function DurationInput({
       onEndEditing={save}
       keyboardType="number-pad"
       selectTextOnFocus
-      // Lets a drag that starts here scroll the list (see SetRow).
-      scrollEnabled={false}
       placeholder="0:00"
       placeholderTextColor={colors.disabled}
       accessibilityLabel={accessibilityLabel}

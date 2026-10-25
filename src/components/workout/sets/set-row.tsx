@@ -1,6 +1,8 @@
 import { SymbolView } from "expo-symbols";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+// Gesture handler's input, with its scroll view on the screen, lets a drag
+// that starts on it scroll the list; on Android the plain one keeps the touch.
 import { TextInput } from "react-native-gesture-handler";
 
 import {
@@ -205,9 +207,6 @@ export function SetRow({
         onEndEditing={save}
         keyboardType={field === "reps" ? "number-pad" : "decimal-pad"}
         selectTextOnFocus
-        // On Android an input that can scroll its own text keeps the touch,
-        // so a drag that starts on it wouldn't scroll the list.
-        scrollEnabled={false}
         placeholder="0"
         placeholderTextColor={colors.disabled}
         accessibilityLabel={`${t.workout.set} ${number}, ${labels[field]}`}
