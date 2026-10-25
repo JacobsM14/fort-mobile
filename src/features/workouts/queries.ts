@@ -10,6 +10,7 @@ import {
   isNull,
   lt,
   max,
+  min,
   ne,
   notInArray,
 } from "drizzle-orm";
@@ -819,6 +820,16 @@ export function useActiveWorkout() {
   );
 
   return { activeWorkout: data.at(0), loaded: updatedAt !== undefined };
+}
+
+// When the first workout started; undefined while there is none. Tells the
+// history how far back it can go.
+export function useFirstWorkoutStart() {
+  const { data } = useLiveQuery(
+    db.select({ startedAt: min(workouts.startedAt) }).from(workouts),
+  );
+
+  return data.at(0)?.startedAt ?? undefined;
 }
 
 export function dailyExerciseRowsQuery(from: Date, to: Date) {

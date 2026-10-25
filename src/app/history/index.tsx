@@ -9,28 +9,40 @@ import { BackHeader } from "@/components/ui/layout/back-header";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import { useDailyExerciseCounts } from "@/features/workouts/queries";
+import {
+  useDailyExerciseCounts,
+  useFirstWorkoutStart,
+} from "@/features/workouts/queries";
 
 import { getDaysBetween, toDateKey } from "@/utils/date";
 
 import { spacing } from "@/constants/theme";
 
+const PAGE_DAYS = 30;
+
 export default function HistoryScreen() {
   const { t } = useTranslation();
   const { globalStyles } = useTheme();
 
-  const [range] = useState(() => {
-    const now = new Date();
-    const y = now.getFullYear();
-    const m = now.getMonth();
-    const d = now.getDate();
-    return {
-      from: new Date(y, m, d - 29), // 30 days back, from midnight
-      to: new Date(y, m, d + 1), // up to the end of today
-    };
-  });
-  const days = getDaysBetween(range.from, range.to);
-  const dailyExerciseCounts = useDailyExerciseCounts(range.from, range.to);
+  const [today] = useState(() => new Date());
+  const [pages, setPages] = useState(1);
+  const y = today.getFullYear();
+  const m = today.getMonth();
+  const d = today.getDate();
+  // From midnight PAGE_DAYS * pages days back up to the end of today.
+  const from = new Date(y, m, d - PAGE_DAYS * pages + 1);
+  const to = new Date(y, m, d + 1);
+  const days = getDaysBetween(from, to);
+  const dailyExerciseCounts = useDailyExerciseCounts(from, to);
+  // Going further back than the first workout would only add empty days.
+  const firstWorkoutStart = useFirstWorkoutStart();
+  const hasMore = firstWorkoutStart !== undefined && firstWorkoutStart < from;
+
+  function loadMore() {
+    if (hasMore) {
+      setPages((count) => count + 1);
+    }
+  }
 
   return (
     <SafeAreaView style={globalStyles.modalScreen} edges={["top", "bottom"]}>
@@ -54,6 +66,8 @@ export default function HistoryScreen() {
             />
           );
         }}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.5}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
       />
