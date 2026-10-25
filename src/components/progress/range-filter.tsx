@@ -56,6 +56,9 @@ const useStyles = makeStyles(({ colors }) =>
     row: {
       flexDirection: "row",
       gap: spacing.sm,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+      paddingBottom: spacing.sm,
     },
     option: {
       flex: 1,
