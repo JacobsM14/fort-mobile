@@ -1,7 +1,6 @@
 import type { TrackingType } from "@/constants/enums";
 import type { ExerciseKey } from "@/features/exercises/catalog";
 import type { SetValues } from "@/features/workouts/queries";
-import type { ChartPoint } from "@/utils/chart";
 
 import { dailyMetric } from "./metrics";
 
@@ -9,10 +8,15 @@ import { dailyMetric } from "./metrics";
 // Each day holds its sets, so they go through the same dailyMetric the real
 // data will.
 
+export type ProgressPoint = {
+  date: Date;
+  value: number;
+};
+
 export type SampleExercise = {
   key: ExerciseKey;
   trackingType: TrackingType;
-  points: ChartPoint[];
+  points: ProgressPoint[];
 };
 
 type SampleDay = {
@@ -49,7 +53,7 @@ function runs(...sets: [distanceM: number, durationS: number][]): SetValues[] {
 }
 
 function toPoints(trackingType: TrackingType, days: SampleDay[]) {
-  return days.flatMap(({ day, sets }): ChartPoint[] => {
+  return days.flatMap(({ day, sets }): ProgressPoint[] => {
     const value = dailyMetric(trackingType, sets);
     return value === null ? [] : [{ date: new Date(2026, 9, day), value }];
   });
