@@ -105,6 +105,8 @@ export const en: Translations = {
     summary: (exercises, sets) =>
       `${exercises} ${exercises === 1 ? "exercise" : "exercises"} · ${sets} ${sets === 1 ? "set" : "sets"}`,
     strength: "Strength",
+    oneRepMaxNote:
+      "Estimated 1RM: the most weight you could lift once, worked out from the day's best set (Epley formula).",
     today: "Today",
     chooseExercise: (name) => `Choose exercise, ${name}`,
     metrics: {

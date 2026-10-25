@@ -161,6 +161,9 @@ export default function ProgressScreen() {
                   )
             }
           />
+          {exercise.trackingType === "weight_reps" && (
+            <Text style={styles.note}>{t.progress.oneRepMaxNote}</Text>
+          )}
         </View>
       </ScrollView>
       {menuAnchor !== undefined && (
@@ -208,6 +211,11 @@ const useStyles = makeStyles(({ colors }) =>
       paddingBottom: spacing.sm,
       borderBottomWidth: 1,
       borderBottomColor: colors.border,
+    },
+    note: {
+      fontSize: fontSizes.caption,
+      fontFamily: fontsInstrument.medium,
+      color: colors.disabled,
     },
     pickerRow: {
       flexDirection: "row",

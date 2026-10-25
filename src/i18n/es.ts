@@ -116,6 +116,8 @@ export const es = {
     summary: (exercises: number, sets: number) =>
       `${exercises} ${exercises === 1 ? "ejercicio" : "ejercicios"} · ${sets} ${sets === 1 ? "serie" : "series"}`,
     strength: "Fuerza",
+    oneRepMaxNote:
+      "1RM estimado: el peso máximo que podrías levantar una sola vez, calculado con la mejor serie del día (fórmula de Epley).",
     today: "Hoy",
     chooseExercise: (name: string) => `Elegir ejercicio, ${name}`,
     metrics: {
