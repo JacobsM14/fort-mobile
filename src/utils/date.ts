@@ -58,3 +58,9 @@ export function toDateKey(date: Date) {
   const day = String(date.getDate()).padStart(2, "0");
   return `${date.getFullYear()}-${month}-${day}`;
 }
+
+// The inverse of toDateKey: midnight of that day, in local time.
+export function parseDateKey(key: string) {
+  const [year, month, day] = key.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}

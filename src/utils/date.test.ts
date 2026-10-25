@@ -4,6 +4,7 @@ import {
   formatDayHeader,
   getDaysBetween,
   getWeekDays,
+  parseDateKey,
   toDateKey,
 } from "./date";
 
@@ -62,5 +63,12 @@ describe("getDaysBetween", () => {
 describe("toDateKey", () => {
   it("pads month and day, using the local date", () => {
     expect(toDateKey(new Date(2026, 0, 5, 23, 59))).toBe("2026-01-05");
+  });
+});
+
+describe("parseDateKey", () => {
+  it("reads back the local day written by toDateKey", () => {
+    const day = new Date(2026, 0, 5);
+    expect(parseDateKey(toDateKey(day))).toEqual(day);
   });
 });
