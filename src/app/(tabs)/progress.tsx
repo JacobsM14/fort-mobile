@@ -194,6 +194,7 @@ export default function ProgressScreen() {
             <LineChart
               key={`body-weight-${range}`}
               points={weightPoints}
+              color={colors.text}
               formatValue={formatWeight}
               accessibilityLabel={
                 firstWeight === undefined || lastWeight === undefined
