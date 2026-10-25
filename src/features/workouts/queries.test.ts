@@ -24,6 +24,7 @@ import {
   doneSetsQuery,
   endRest,
   finishWorkout,
+  firstWorkoutStartQuery,
   logWorkout,
   pauseSetTimer,
   previousSetsQuery,
@@ -498,6 +499,22 @@ describe("doneSetsQuery", () => {
     }).all();
 
     expect(rows.map((row) => row.workoutId)).toEqual([inside]);
+  });
+});
+
+describe("firstWorkoutStartQuery", () => {
+  it("reads when the earliest workout started, as a date", () => {
+    const routineId = createRoutine({
+      name: "Old",
+      exerciseIds: [catalogId("bench_press")],
+    });
+    const earliest = new Date(2001, 0, 1, 9);
+    logWorkout(routineId, new Date(2001, 5, 1, 9));
+    logWorkout(routineId, earliest);
+
+    const [row] = firstWorkoutStartQuery().all();
+
+    expect(row.startedAt).toEqual(earliest);
   });
 });
 

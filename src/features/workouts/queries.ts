@@ -859,10 +859,12 @@ export function useActiveWorkout() {
 
 // When the first workout started; undefined while there is none. Tells the
 // history how far back it can go.
+export function firstWorkoutStartQuery() {
+  return db.select({ startedAt: min(workouts.startedAt) }).from(workouts);
+}
+
 export function useFirstWorkoutStart() {
-  const { data } = useLiveQuery(
-    db.select({ startedAt: min(workouts.startedAt) }).from(workouts),
-  );
+  const { data } = useLiveQuery(firstWorkoutStartQuery());
 
   return data.at(0)?.startedAt ?? undefined;
 }
