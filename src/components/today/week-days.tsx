@@ -29,7 +29,7 @@ export function WeekDays() {
   const openDay = useFocusedPress((day: Date) =>
     router.push({
       pathname: "/history/day/[date]",
-      params: { date: toDateKey(day) },
+      params: { date: toDateKey(day), from: "today" },
     }),
   );
 

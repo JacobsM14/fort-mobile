@@ -18,7 +18,12 @@ import { spacing } from "@/constants/theme";
 export default function HistoryDayScreen() {
   const { t, language } = useTranslation();
   const { globalStyles } = useTheme();
-  const { date } = useLocalSearchParams<{ date: string }>();
+  // "today" when opened from Today's week: going back closes the modal and
+  // returns there instead of to the history list.
+  const { date, from } = useLocalSearchParams<{
+    date: string;
+    from?: "today";
+  }>();
   const day = parseDateKey(date);
   const nextDay = new Date(
     day.getFullYear(),
@@ -36,7 +41,7 @@ export default function HistoryDayScreen() {
       edges={["top", "bottom"]}
     >
       <BackHeader
-        backLabel={t.history.title}
+        backLabel={from === "today" ? t.tabs.today : t.history.title}
         title={formatDayHeader(day, language)}
       />
       <FlatList
