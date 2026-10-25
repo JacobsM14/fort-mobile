@@ -60,6 +60,8 @@ export function DurationInput({
       onEndEditing={save}
       keyboardType="number-pad"
       selectTextOnFocus
+      // Lets a drag that starts here scroll the list (see SetRow).
+      scrollEnabled={false}
       placeholder="0:00"
       placeholderTextColor={colors.disabled}
       accessibilityLabel={accessibilityLabel}

@@ -204,6 +204,9 @@ export function SetRow({
         onEndEditing={save}
         keyboardType={field === "reps" ? "number-pad" : "decimal-pad"}
         selectTextOnFocus
+        // On Android an input that can scroll its own text keeps the touch,
+        // so a drag that starts on it wouldn't scroll the list.
+        scrollEnabled={false}
         placeholder="0"
         placeholderTextColor={colors.disabled}
         accessibilityLabel={`${t.workout.set} ${number}, ${labels[field]}`}

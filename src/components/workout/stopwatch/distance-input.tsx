@@ -72,6 +72,8 @@ export function DistanceInput({
       onEndEditing={save}
       keyboardType="decimal-pad"
       selectTextOnFocus
+      // Lets a drag that starts here scroll the list (see SetRow).
+      scrollEnabled={false}
       placeholder={unit}
       placeholderTextColor={colors.disabled}
       accessibilityLabel={accessibilityLabel}
