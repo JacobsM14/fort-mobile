@@ -111,6 +111,17 @@ export const en: Translations = {
     exerciseCount: (count) =>
       `${count} ${count === 1 ? "exercise" : "exercises"}`,
     noWorkout: "No workout",
+    addExercise: "Add exercise",
+    deleteExercise: (name) => `Remove ${name}`,
+    deleteExerciseTitle: (name) => `Remove ${name}?`,
+    deleteExerciseMessage: "All its sets in this workout will be deleted.",
+    deleteExerciseConfirm: "Remove",
+    deleteWorkout: "Delete workout",
+    deleteWorkoutTitle: "Delete the workout?",
+    deleteWorkoutMessage:
+      "All its exercises and sets will be deleted. This can't be undone.",
+    deleteWorkoutConfirm: "Delete",
+    deleteError: "It couldn't be deleted. Try again.",
   },
   routines: {
     title: "Routines",

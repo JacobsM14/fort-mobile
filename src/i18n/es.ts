@@ -122,6 +122,17 @@ export const es = {
     exerciseCount: (count: number) =>
       `${count} ${count === 1 ? "ejercicio" : "ejercicios"}`,
     noWorkout: "Sin entreno",
+    addExercise: "Añadir ejercicio",
+    deleteExercise: (name: string) => `Quitar ${name}`,
+    deleteExerciseTitle: (name: string) => `¿Quitar ${name}?`,
+    deleteExerciseMessage: "Se borrarán todas sus series de este entreno.",
+    deleteExerciseConfirm: "Quitar",
+    deleteWorkout: "Eliminar entreno",
+    deleteWorkoutTitle: "¿Eliminar el entreno?",
+    deleteWorkoutMessage:
+      "Se borrarán todos sus ejercicios y series. No se puede deshacer.",
+    deleteWorkoutConfirm: "Eliminar",
+    deleteError: "No se ha podido borrar. Inténtalo de nuevo.",
   },
   routines: {
     title: "Rutinas",
