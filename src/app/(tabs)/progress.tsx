@@ -136,21 +136,18 @@ export default function ProgressScreen() {
         <RangeFilter value={range} onChange={setRange} />
         <Text style={styles.sectionTitle}>{t.progress.strength}</Text>
         <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <View ref={headerRef} style={styles.pickerRow}>
-              <ExercisePickerButton
-                name={name}
-                open={menuAnchor !== undefined}
-                onPress={toggleMenu}
-              />
-              <IconButton
-                tone="muted"
-                icon={{ ios: "info.circle", android: "info", web: "info" }}
-                accessibilityLabel={t.exercises.showInfo}
-                onPress={showInfo}
-              />
-            </View>
-            <Text style={globalStyles.inputLabel}>{metric}</Text>
+          <View ref={headerRef} style={styles.pickerRow}>
+            <ExercisePickerButton
+              name={name}
+              open={menuAnchor !== undefined}
+              onPress={toggleMenu}
+            />
+            <IconButton
+              tone="muted"
+              icon={{ ios: "info.circle", android: "info", web: "info" }}
+              accessibilityLabel={t.exercises.showInfo}
+              onPress={showInfo}
+            />
           </View>
           {points.length === 0 && (
             <Text style={styles.note}>{t.progress.noData}</Text>
@@ -214,12 +211,6 @@ const useStyles = makeStyles(({ colors }) =>
       borderColor: colors.border,
       padding: spacing.sm,
       backgroundColor: colors.backgroundSecondary,
-    },
-    sectionHeader: {
-      gap: spacing.xs,
-      paddingBottom: spacing.sm,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
     },
     note: {
       fontSize: fontSizes.caption,
