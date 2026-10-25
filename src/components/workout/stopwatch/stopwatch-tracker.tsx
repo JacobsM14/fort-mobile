@@ -1,6 +1,7 @@
 import { Alert, StyleSheet, Text, View } from "react-native";
 import Animated, { FadeIn, LinearTransition } from "react-native-reanimated";
 
+import { DashedButton } from "@/components/ui/buttons/dashed-button";
 import { CornerFrame } from "@/components/ui/layout/corner-frame";
 import { DistanceInput } from "@/components/workout/stopwatch/distance-input";
 import { DurationInput } from "@/components/workout/stopwatch/duration-input";
@@ -16,7 +17,9 @@ import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
 
 import {
+  addSet,
   completeSet,
+  deleteSet,
   pauseSetTimer,
   resetSetTimer,
   startNextSetTimer,
@@ -29,7 +32,11 @@ import {
   isSetDone,
 } from "@/features/workouts/sets";
 
-import type { SetValues, WorkoutExercise } from "@/features/workouts/queries";
+import type {
+  SetValues,
+  WorkoutExercise,
+  WorkoutSet,
+} from "@/features/workouts/queries";
 import type {
   StopwatchState,
   StopwatchTrackingType,
@@ -50,6 +57,8 @@ type StopwatchTrackerProps = {
   onDeleteSet: (setId: string, number: number) => void;
   // The screen asks first; the time run so far would be lost.
   onResetTimer: (setId: string, seconds: number) => void;
+  // "edit" corrects a finished workout: no stopwatch, the times are typed.
+  mode?: "live" | "edit";
 };
 
 function secondsSoFar(state: StopwatchState) {
@@ -64,13 +73,15 @@ function secondsSoFar(state: StopwatchState) {
 }
 
 // Each stop of the stopwatch saves a set; a distance set gets its km typed in
-// its row afterwards.
+// its row afterwards. When editing, every set is a row and typing the time of
+// a new one is what marks it done.
 export function StopwatchTracker({
   exercise,
   trackingType,
   previousSets,
   onDeleteSet,
   onResetTimer,
+  mode = "live",
 }: StopwatchTrackerProps) {
   const { t, language } = useTranslation();
   const { globalStyles } = useTheme();
@@ -79,6 +90,7 @@ export function StopwatchTracker({
   const state = getStopwatchState(exercise.sets);
   const doneSets = exercise.sets.filter(isSetDone);
   const withDistance = trackingType === "distance_duration";
+  const rows = mode === "edit" ? exercise.sets : doneSets;
 
   function run(action: () => void) {
     try {
@@ -97,6 +109,23 @@ export function StopwatchTracker({
       run(() => resetSetTimer(set.id));
     } else {
       run(() => completeSet(set.id, set));
+    }
+  }
+
+  function saveDuration(set: WorkoutSet, durationS: number) {
+    if (isSetDone(set)) {
+      run(() => updateSetValues(set.id, { ...set, durationS }));
+    } else {
+      run(() => completeSet(set.id, { ...set, durationS }));
+    }
+  }
+
+  // Only a done set asks first; one not done yet holds nothing to lose.
+  function removeSet(set: WorkoutSet, number: number) {
+    if (isSetDone(set)) {
+      onDeleteSet(set.id, number);
+    } else {
+      run(() => deleteSet(set.id));
     }
   }
 
@@ -135,38 +164,41 @@ export function StopwatchTracker({
 
   return (
     <Animated.View style={styles.container} layout={LinearTransition}>
-      <View style={styles.stopwatch}>
-        <CornerFrame style={styles.frame}>
-          <View style={styles.display}>
-            {renderTime()}
-            {state.status === "paused" && (
-              <Text style={[globalStyles.inputLabel, styles.pausedLabel]}>
-                {t.workout.paused}
-              </Text>
-            )}
-          </View>
-        </CornerFrame>
-        <StopwatchControls
-          status={state.status}
-          onStart={() => run(() => startNextSetTimer(exercise.id))}
-          onPause={() =>
-            state.status === "running" && run(() => pauseSetTimer(state.set.id))
-          }
-          onStop={stop}
-          onReset={reset}
-        />
-        {previousSets.length > 0 && (
-          <Text style={styles.previous}>
-            {[
-              t.workout.previous,
-              ...previousSets.map((set) =>
-                formatPreviousSet(trackingType, set, units, language),
-              ),
-            ].join(" · ")}
-          </Text>
-        )}
-      </View>
-      {doneSets.length > 0 && (
+      {mode === "live" && (
+        <View style={styles.stopwatch}>
+          <CornerFrame style={styles.frame}>
+            <View style={styles.display}>
+              {renderTime()}
+              {state.status === "paused" && (
+                <Text style={[globalStyles.inputLabel, styles.pausedLabel]}>
+                  {t.workout.paused}
+                </Text>
+              )}
+            </View>
+          </CornerFrame>
+          <StopwatchControls
+            status={state.status}
+            onStart={() => run(() => startNextSetTimer(exercise.id))}
+            onPause={() =>
+              state.status === "running" &&
+              run(() => pauseSetTimer(state.set.id))
+            }
+            onStop={stop}
+            onReset={reset}
+          />
+          {previousSets.length > 0 && (
+            <Text style={styles.previous}>
+              {[
+                t.workout.previous,
+                ...previousSets.map((set) =>
+                  formatPreviousSet(trackingType, set, units, language),
+                ),
+              ].join(" · ")}
+            </Text>
+          )}
+        </View>
+      )}
+      {(rows.length > 0 || mode === "edit") && (
         <View style={globalStyles.formCage}>
           <Text style={globalStyles.inputLabel}>
             {t.workout.sets} · {doneSets.length}
@@ -183,7 +215,7 @@ export function StopwatchTracker({
               <View style={styles.deleteSpace} />
             </View>
           )}
-          {doneSets.map((set, index) => (
+          {rows.map((set, index) => (
             <Animated.View
               key={set.id}
               style={styles.row}
@@ -202,17 +234,23 @@ export function StopwatchTracker({
               )}
               <DurationInput
                 seconds={set.durationS}
-                onSave={(durationS) =>
-                  run(() => updateSetValues(set.id, { ...set, durationS }))
-                }
+                onSave={(durationS) => saveDuration(set, durationS)}
                 accessibilityLabel={`${t.workout.set} ${index + 1}, ${t.workout.time}`}
               />
               <DeleteSetButton
                 number={index + 1}
-                onPress={() => onDeleteSet(set.id, index + 1)}
+                onPress={() => removeSet(set, index + 1)}
               />
             </Animated.View>
           ))}
+          {mode === "edit" && (
+            <DashedButton
+              tone="muted"
+              icon={{ ios: "plus", android: "add", web: "add" }}
+              label={t.workout.addSet}
+              onPress={() => run(() => addSet(exercise.id))}
+            />
+          )}
         </View>
       )}
     </Animated.View>
