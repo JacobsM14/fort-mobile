@@ -115,6 +115,7 @@ export const es = {
     summary: (exercises: number, sets: number) =>
       `${exercises} ${exercises === 1 ? "ejercicio" : "ejercicios"} · ${sets} ${sets === 1 ? "serie" : "series"}`,
     strength: "Fuerza",
+    bodyWeight: "Peso corporal",
     oneRepMaxNote:
       "1RM estimado: el peso máximo que podrías levantar una sola vez, calculado con la mejor serie del día (fórmula de Epley). Las series de más de 15 repeticiones cuentan como 15.",
     today: "Hoy",

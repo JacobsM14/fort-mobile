@@ -27,11 +27,17 @@ import { getExerciseInfo } from "@/features/exercises/catalog";
 import { useExerciseList } from "@/features/exercises/queries";
 import { formatMetric } from "@/features/progress/metrics";
 import { pointsInRange } from "@/features/progress/ranges";
-import { SAMPLE_EXERCISES } from "@/features/progress/sample-data";
+import {
+  SAMPLE_BODY_WEIGHT,
+  SAMPLE_EXERCISES,
+} from "@/features/progress/sample-data";
 
 import type { MenuAnchor } from "@/components/workout/header/exercise-select";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
 import type { ProgressRange } from "@/features/progress/ranges";
+
+import { formatDecimal } from "@/utils/number";
+import { weightToUnit } from "@/utils/units";
 
 import {
   fontsInstrument,
@@ -66,6 +72,12 @@ export default function ProgressScreen() {
   const points = pointsInRange(exercise.points, range, new Date());
   const first = points.at(0);
   const last = points.at(-1);
+
+  const weightPoints = pointsInRange(SAMPLE_BODY_WEIGHT, range, new Date());
+  const firstWeight = weightPoints.at(0);
+  const lastWeight = weightPoints.at(-1);
+  const formatWeight = (kg: number) =>
+    `${formatDecimal(Math.round(weightToUnit(kg, units.weight) * 10) / 10, language)} ${units.weight}`;
 
   // The chart only knows the catalog key; the exercise is looked up in the
   // list for what the sheet shows. An exercise deleted since has none.
@@ -134,42 +146,67 @@ export default function ProgressScreen() {
         showsVerticalScrollIndicator={false}
       >
         <RangeFilter value={range} onChange={setRange} />
-        <Text style={styles.sectionTitle}>{t.progress.strength}</Text>
-        <View style={styles.section}>
-          <View ref={headerRef} style={styles.pickerRow}>
-            <ExercisePickerButton
-              name={name}
-              open={menuAnchor !== undefined}
-              onPress={toggleMenu}
+        <View>
+          <Text style={styles.sectionTitle}>{t.progress.strength}</Text>
+          <View style={styles.section}>
+            <View ref={headerRef} style={styles.pickerRow}>
+              <ExercisePickerButton
+                name={name}
+                open={menuAnchor !== undefined}
+                onPress={toggleMenu}
+              />
+              <IconButton
+                tone="muted"
+                icon={{ ios: "info.circle", android: "info", web: "info" }}
+                accessibilityLabel={t.exercises.showInfo}
+                onPress={showInfo}
+              />
+            </View>
+            {points.length === 0 && (
+              <Text style={styles.note}>{t.progress.noData}</Text>
+            )}
+            <LineChart
+              key={`${exercise.key}-${range}`}
+              points={points}
+              formatValue={format}
+              accessibilityLabel={
+                first === undefined || last === undefined
+                  ? metric
+                  : t.progress.chartSummary(
+                      metric,
+                      format(first.value),
+                      format(last.value),
+                      points.length,
+                    )
+              }
             />
-            <IconButton
-              tone="muted"
-              icon={{ ios: "info.circle", android: "info", web: "info" }}
-              accessibilityLabel={t.exercises.showInfo}
-              onPress={showInfo}
+            {exercise.trackingType === "weight_reps" && (
+              <Text style={styles.note}>{t.progress.oneRepMaxNote}</Text>
+            )}
+          </View>
+        </View>
+        <View>
+          <Text style={styles.sectionTitle}>{t.progress.bodyWeight}</Text>
+          <View style={styles.section}>
+            {weightPoints.length === 0 && (
+              <Text style={styles.note}>{t.progress.noData}</Text>
+            )}
+            <LineChart
+              key={`body-weight-${range}`}
+              points={weightPoints}
+              formatValue={formatWeight}
+              accessibilityLabel={
+                firstWeight === undefined || lastWeight === undefined
+                  ? t.progress.bodyWeight
+                  : t.progress.chartSummary(
+                      t.progress.bodyWeight,
+                      formatWeight(firstWeight.value),
+                      formatWeight(lastWeight.value),
+                      weightPoints.length,
+                    )
+              }
             />
           </View>
-          {points.length === 0 && (
-            <Text style={styles.note}>{t.progress.noData}</Text>
-          )}
-          <LineChart
-            key={`${exercise.key}-${range}`}
-            points={points}
-            formatValue={format}
-            accessibilityLabel={
-              first === undefined || last === undefined
-                ? metric
-                : t.progress.chartSummary(
-                    metric,
-                    format(first.value),
-                    format(last.value),
-                    points.length,
-                  )
-            }
-          />
-          {exercise.trackingType === "weight_reps" && (
-            <Text style={styles.note}>{t.progress.oneRepMaxNote}</Text>
-          )}
         </View>
       </ScrollView>
       {menuAnchor !== undefined && (
@@ -197,7 +234,7 @@ const useStyles = makeStyles(({ colors }) =>
       paddingBottom: 0,
     },
     content: {
-      gap: spacing.sm,
+      gap: spacing.md,
       paddingBottom: spacing.lg,
     },
     sectionTitle: {

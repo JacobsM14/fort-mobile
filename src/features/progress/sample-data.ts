@@ -128,3 +128,19 @@ export const SAMPLE_EXERCISES: SampleExercise[] = [
     ),
   },
 ];
+
+// A weigh-in every few days over a year, in kg like the body_weights table:
+// a slow gain with the day-to-day ups and downs a scale shows.
+export const SAMPLE_BODY_WEIGHT: ChartPoint[] = (() => {
+  const today = new Date();
+  const count = 90;
+  const everyDays = 4;
+  return Array.from({ length: count }, (_, weighIn) => ({
+    date: new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - (count - 1 - weighIn) * everyDays,
+    ),
+    value: 72 + weighIn * 0.04 + wobble(weighIn, 0.3),
+  }));
+})();

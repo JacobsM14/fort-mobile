@@ -103,6 +103,7 @@ export const en: Translations = {
     summary: (exercises, sets) =>
       `${exercises} ${exercises === 1 ? "exercise" : "exercises"} · ${sets} ${sets === 1 ? "set" : "sets"}`,
     strength: "Strength",
+    bodyWeight: "Body weight",
     oneRepMaxNote:
       "Estimated 1RM: the most weight you could lift once, worked out from the day's best set (Epley formula). Sets of more than 15 reps count as 15.",
     today: "Today",
