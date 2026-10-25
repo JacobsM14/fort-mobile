@@ -1,12 +1,7 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  View,
-  type LayoutChangeEvent,
-} from "react-native";
+import { Alert, StyleSheet, View, type LayoutChangeEvent } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ExerciseInfoSheet } from "@/components/exercises/exercise-info-sheet";

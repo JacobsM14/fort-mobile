@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
@@ -11,8 +12,8 @@ import {
 } from "@/utils/duration";
 
 import {
-  fontsJetBrainsMono,
   fontSizes,
+  fontsJetBrainsMono,
   radii,
   spacing,
 } from "@/constants/theme";

@@ -10,6 +10,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { useDatabase } from "@/db/use-database";
 import { LanguageProvider } from "@/hooks/use-language";
@@ -32,13 +33,15 @@ const MODAL_OPTIONS = {
 
 export default function RootLayout() {
   return (
-    <LanguageProvider>
-      <UnitsProvider>
-        <ThemeProvider>
-          <RootNavigator />
-        </ThemeProvider>
-      </UnitsProvider>
-    </LanguageProvider>
+    <GestureHandlerRootView style={rootStyles.root}>
+      <LanguageProvider>
+        <UnitsProvider>
+          <ThemeProvider>
+            <RootNavigator />
+          </ThemeProvider>
+        </UnitsProvider>
+      </LanguageProvider>
+    </GestureHandlerRootView>
   );
 }
 
@@ -91,6 +94,14 @@ function RootNavigator() {
     </Stack>
   );
 }
+
+// Gesture handler's components (the scroll views and inputs of the workout)
+// only work inside it.
+const rootStyles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+});
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({

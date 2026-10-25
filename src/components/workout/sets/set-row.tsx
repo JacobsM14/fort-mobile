@@ -1,6 +1,7 @@
 import { SymbolView } from "expo-symbols";
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 
 import {
   DELETE_SET_WIDTH,
