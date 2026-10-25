@@ -22,6 +22,7 @@ import {
   resetSetTimer,
 } from "@/features/workouts/queries";
 
+import { formatDayHeader } from "@/utils/date";
 import { formatDuration } from "@/utils/duration";
 
 import { fontsInstrument, fontSizes, spacing } from "@/constants/theme";
@@ -41,11 +42,11 @@ type DialogTexts = {
 // Every exercise at once, unlike the workout screen: a finished workout is
 // read and corrected as a whole. Changes are saved as they are made.
 export default function HistoryWorkoutScreen() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const { globalStyles } = useTheme();
   const styles = useStyles();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { title, found, entries, loaded } = useWorkoutEntries(id);
+  const { title, found, entries, startedAt, loaded } = useWorkoutEntries(id);
   const [confirmation, setConfirmation] = useState<Confirmation>();
 
   function addExercise() {
@@ -120,7 +121,14 @@ export default function HistoryWorkoutScreen() {
       style={[globalStyles.modalScreen, styles.screen]}
       edges={["top", "bottom"]}
     >
-      <BackHeader backLabel={t.history.day} title={title} />
+      <BackHeader
+        backLabel={
+          startedAt === undefined
+            ? t.history.day
+            : formatDayHeader(startedAt, language)
+        }
+        title={title}
+      />
       <ScrollView
         contentContainerStyle={styles.content}
         keyboardShouldPersistTaps="handled"
@@ -152,6 +160,7 @@ export default function HistoryWorkoutScreen() {
               workoutId={id}
               exercise={entry}
               trackingType={entry.summary.trackingType}
+              mode="edit"
               onDeleteSet={(setId, number) =>
                 setConfirmation({ kind: "deleteSet", setId, number })
               }

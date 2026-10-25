@@ -36,6 +36,11 @@ export default function HistoryDayScreen() {
     to: nextDay,
   });
 
+  // A malformed link has no day to show.
+  if (Number.isNaN(day.getTime())) {
+    return null;
+  }
+
   return (
     <SafeAreaView
       style={[globalStyles.modalScreen, styles.screen]}
@@ -71,10 +76,17 @@ export default function HistoryDayScreen() {
           <WorkoutCard
             workout={item}
             onPress={() =>
-              router.push({
-                pathname: "/history/workout/[id]",
-                params: { id: item.id },
-              })
+              // The workout in progress belongs to its own screen, with the
+              // stopwatch, rests and notification.
+              item.endedAt === null
+                ? router.push({
+                    pathname: "/workout/[id]",
+                    params: { id: item.id },
+                  })
+                : router.push({
+                    pathname: "/history/workout/[id]",
+                    params: { id: item.id },
+                  })
             }
           />
         )}

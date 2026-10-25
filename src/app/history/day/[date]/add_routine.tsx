@@ -27,6 +27,8 @@ export default function AddRoutineScreen() {
   const { date } = useLocalSearchParams<{ date: string }>();
   const day = parseDateKey(date);
   const { routines, loaded } = useRoutineList();
+  // A malformed link has no day to log to.
+  const validDay = !Number.isNaN(day.getTime());
 
   function addRoutine(routineId: string) {
     // At the current time of day, so today's lands at now and several logged
@@ -51,6 +53,10 @@ export default function AddRoutineScreen() {
       pathname: "/history/workout/[id]",
       params: { id: workoutId },
     });
+  }
+
+  if (!validDay) {
+    return null;
   }
 
   return (
