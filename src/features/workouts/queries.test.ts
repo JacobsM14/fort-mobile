@@ -23,6 +23,7 @@ import {
   discardWorkout,
   endRest,
   finishWorkout,
+  logWorkout,
   pauseSetTimer,
   previousSetsQuery,
   resetSetTimer,
@@ -135,6 +136,25 @@ describe("startWorkout", () => {
         completedAt: null,
       });
     }
+  });
+});
+
+describe("logWorkout", () => {
+  it("creates the routine's workout already finished, with empty sets", () => {
+    const routineId = createRoutine({
+      name: "Legs",
+      exerciseIds: [catalogId("bench_press")],
+    });
+
+    const workoutId = logWorkout(routineId, START);
+
+    const workout = readWorkoutRow(workoutId);
+    expect(workout?.name).toBe("Legs");
+    expect(workout?.startedAt).toEqual(START);
+    expect(workout?.endedAt).toEqual(START);
+    const [bench] = readWorkout(workoutId);
+    expect(bench.sets).toHaveLength(1);
+    expect(bench.sets[0].completedAt).toBeNull();
   });
 });
 

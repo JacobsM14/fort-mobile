@@ -29,6 +29,11 @@ export function WorkoutCard({ workout, onPress }: WorkoutCardProps) {
   const styles = useStyles();
   const press = useFocusedPress(onPress);
   const inProgress = workout.endedAt === null;
+  // A workout logged afterwards from the history has no duration to show.
+  const durationS =
+    workout.endedAt === null
+      ? 0
+      : (workout.endedAt.getTime() - workout.startedAt.getTime()) / 1000;
 
   return (
     <Pressable
@@ -52,12 +57,7 @@ export function WorkoutCard({ workout, onPress }: WorkoutCardProps) {
         <Text style={styles.detail}>
           {[
             formatDateTime(workout.startedAt, language),
-            workout.endedAt === null
-              ? null
-              : formatDuration(
-                  (workout.endedAt.getTime() - workout.startedAt.getTime()) /
-                    1000,
-                ),
+            durationS > 0 ? formatDuration(durationS) : null,
           ]
             .filter((part) => part !== null)
             .join(" · ")}

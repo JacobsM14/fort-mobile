@@ -2,6 +2,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { DashedButton } from "@/components/ui/buttons/dashed-button";
 import { NoContentBox } from "@/components/ui/content/no-content-box";
 import { BackHeader } from "@/components/ui/layout/back-header";
 import { WorkoutCard } from "@/components/workout/summary/workout-card";
@@ -52,10 +53,23 @@ export default function HistoryDayScreen() {
         ListEmptyComponent={
           loaded ? <NoContentBox label={t.history.noWorkout} /> : undefined
         }
+        ListFooterComponent={
+          loaded ? (
+            <DashedButton
+              icon={{ ios: "plus", android: "add", web: "add" }}
+              label={t.history.addRoutine}
+              onPress={() =>
+                router.push({
+                  pathname: "/history/day/[date]/add_routine",
+                  params: { date },
+                })
+              }
+            />
+          ) : undefined
+        }
         renderItem={({ item }) => (
           <WorkoutCard
             workout={item}
-
             onPress={() =>
               router.push({
                 pathname: "/history/workout/[id]",

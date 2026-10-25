@@ -247,6 +247,21 @@ function insertWorkoutExercises(
 }
 
 export function startWorkout(routineId: string, now = new Date()) {
+  return createWorkout(routineId, now, null);
+}
+
+// A workout done on another day and not logged then: it is created already
+// finished, so it never becomes the workout in progress, and its sets are
+// filled in from the history.
+export function logWorkout(routineId: string, startedAt: Date) {
+  return createWorkout(routineId, startedAt, startedAt);
+}
+
+function createWorkout(
+  routineId: string,
+  startedAt: Date,
+  endedAt: Date | null,
+) {
   const workoutId = newId();
   db.transaction((tx) => {
     const routine = tx
@@ -268,7 +283,13 @@ export function startWorkout(routineId: string, now = new Date()) {
     // The name is copied so the workout keeps it if the routine is renamed
     // or deleted later.
     tx.insert(workouts)
-      .values({ id: workoutId, routineId, name: routine.name, startedAt: now })
+      .values({
+        id: workoutId,
+        routineId,
+        name: routine.name,
+        startedAt,
+        endedAt,
+      })
       .run();
     insertWorkoutExercises(tx, workoutId, exerciseIds, 0);
   });
