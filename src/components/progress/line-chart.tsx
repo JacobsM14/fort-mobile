@@ -73,6 +73,13 @@ function formatShortDate(date: Date, language: Language) {
     .replace(".", "");
 }
 
+// Under the chart, the latest day reads "Today" when it is.
+function formatAxisDate(date: Date, today: string, language: Language) {
+  return date.toDateString() === new Date().toDateString()
+    ? today
+    : formatShortDate(date, language);
+}
+
 // A triangle pointing up, centered on the point.
 function trianglePoints({ x, y }: PlottedPoint, size: number) {
   const half = size / 2;
@@ -297,11 +304,11 @@ export function LineChart({
       {first !== undefined && last !== undefined && (
         <View style={styles.dates}>
           <Text style={styles.date}>
-            {formatShortDate(first.date, language)}
+            {formatAxisDate(first.date, t.progress.today, language)}
           </Text>
           {points.length > 1 && (
             <Text style={styles.date}>
-              {formatShortDate(last.date, language)}
+              {formatAxisDate(last.date, t.progress.today, language)}
             </Text>
           )}
         </View>

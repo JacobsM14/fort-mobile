@@ -115,7 +115,9 @@ export const es = {
     reps: (count: number) => `${count} reps`,
     summary: (exercises: number, sets: number) =>
       `${exercises} ${exercises === 1 ? "ejercicio" : "ejercicios"} · ${sets} ${sets === 1 ? "serie" : "series"}`,
-    sampleNotice: "Datos de ejemplo",
+    strength: "Fuerza",
+    today: "Hoy",
+    chooseExercise: (name: string) => `Elegir ejercicio, ${name}`,
     metrics: {
       weight_reps: "1RM estimado",
       bodyweight_reps: "Mejor serie",

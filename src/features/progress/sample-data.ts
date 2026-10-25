@@ -1,6 +1,7 @@
 import type { TrackingType } from "@/constants/enums";
 import type { ExerciseKey } from "@/features/exercises/catalog";
 import type { SetValues } from "@/features/workouts/queries";
+import type { ChartPoint } from "@/utils/chart";
 
 import { dailyMetric } from "./metrics";
 
@@ -8,19 +9,14 @@ import { dailyMetric } from "./metrics";
 // Each day holds its sets, so they go through the same dailyMetric the real
 // data will.
 
-export type ProgressPoint = {
-  date: Date;
-  value: number;
-};
-
 export type SampleExercise = {
   key: ExerciseKey;
   trackingType: TrackingType;
-  points: ProgressPoint[];
+  points: ChartPoint[];
 };
 
 type SampleDay = {
-  // Days into October 2026.
+  // Counted from the first; the last one lands on today.
   day: number;
   sets: SetValues[];
 };
@@ -52,10 +48,18 @@ function runs(...sets: [distanceM: number, durationS: number][]): SetValues[] {
   }));
 }
 
+// Shifted so the last day is today, as it would be right after training.
 function toPoints(trackingType: TrackingType, days: SampleDay[]) {
-  return days.flatMap(({ day, sets }): ProgressPoint[] => {
+  const today = new Date();
+  const lastDay = Math.max(...days.map(({ day }) => day));
+  return days.flatMap(({ day, sets }): ChartPoint[] => {
     const value = dailyMetric(trackingType, sets);
-    return value === null ? [] : [{ date: new Date(2026, 9, day), value }];
+    const date = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - (lastDay - day),
+    );
+    return value === null ? [] : [{ date, value }];
   });
 }
 

@@ -98,7 +98,8 @@ type ExerciseSelectMenuProps = {
   // the button, as wide as it.
   anchor: MenuAnchor;
   onSelect: (id: string) => void;
-  onAddExercise: () => void;
+  // Without it, the menu only picks among the items (no "extra exercise").
+  onAddExercise?: () => void;
   onClose: () => void;
 };
 
@@ -174,13 +175,15 @@ export function ExerciseSelectMenu({
             );
           })}
         </ScrollView>
-        <View style={styles.footer}>
-          <DashedButton
-            icon={{ ios: "plus", android: "add", web: "add" }}
-            label={t.workout.extraExercise}
-            onPress={onAddExercise}
-          />
-        </View>
+        {onAddExercise !== undefined && (
+          <View style={styles.footer}>
+            <DashedButton
+              icon={{ ios: "plus", android: "add", web: "add" }}
+              label={t.workout.extraExercise}
+              onPress={onAddExercise}
+            />
+          </View>
+        )}
       </Animated.View>
     </>
   );

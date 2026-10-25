@@ -104,7 +104,9 @@ export const en: Translations = {
     reps: (count) => `${count} reps`,
     summary: (exercises, sets) =>
       `${exercises} ${exercises === 1 ? "exercise" : "exercises"} · ${sets} ${sets === 1 ? "set" : "sets"}`,
-    sampleNotice: "Sample data",
+    strength: "Strength",
+    today: "Today",
+    chooseExercise: (name) => `Choose exercise, ${name}`,
     metrics: {
       weight_reps: "Estimated 1RM",
       bodyweight_reps: "Best set",
