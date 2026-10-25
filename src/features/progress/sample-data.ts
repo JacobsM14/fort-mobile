@@ -63,64 +63,68 @@ function toPoints(trackingType: TrackingType, days: SampleDay[]) {
   });
 }
 
+// A session every `everyDays` over about a year, so every range of the
+// filter has something to show.
+function sessions(
+  count: number,
+  everyDays: number,
+  setsFor: (session: number) => SetValues[],
+): SampleDay[] {
+  return Array.from({ length: count }, (_, session) => ({
+    day: session * everyDays,
+    sets: setsFor(session),
+  }));
+}
+
+// Small ups and downs on top of the trend, the same every time.
+function wobble(session: number, size: number) {
+  return ((session * 7) % 5) * size - 2 * size;
+}
+
 export const SAMPLE_EXERCISES: SampleExercise[] = [
   {
     key: "bench_press",
     trackingType: "weight_reps",
-    points: toPoints("weight_reps", [
-      { day: 1, sets: lifts([60, 8], [60, 8], [60, 7]) },
-      { day: 3, sets: lifts([62.5, 6], [60, 8]) },
-      { day: 6, sets: lifts([62.5, 8], [62.5, 7]) },
-      { day: 8, sets: lifts([65, 5], [62.5, 6]) },
-      { day: 10, sets: lifts([60, 8]) },
-      { day: 13, sets: lifts([65, 7], [65, 6]) },
-      { day: 15, sets: lifts([67.5, 5], [65, 6]) },
-      { day: 17, sets: lifts([67.5, 6], [67.5, 6]) },
-      { day: 20, sets: lifts([70, 4], [67.5, 5]) },
-      { day: 22, sets: lifts([70, 6], [70, 5]) },
-      { day: 24, sets: lifts([72.5, 5], [70, 6]) },
-    ]),
+    points: toPoints(
+      "weight_reps",
+      sessions(52, 7, (session) => {
+        const weight = 50 + 2.5 * Math.floor(session / 4);
+        return lifts(
+          [weight + wobble(session, 1.25), 5 + (session % 3)],
+          [weight - 5, 8],
+        );
+      }),
+    ),
   },
   {
     key: "pull_up",
     trackingType: "bodyweight_reps",
-    points: toPoints("bodyweight_reps", [
-      { day: 2, sets: reps(5, 4, 4) },
-      { day: 5, sets: reps(6, 5, 4) },
-      { day: 9, sets: reps(6, 6, 5) },
-      { day: 12, sets: reps(5, 5) },
-      { day: 16, sets: reps(7, 6, 5) },
-      { day: 19, sets: reps(8, 6, 6) },
-      { day: 23, sets: reps(8, 7, 7) },
-      { day: 26, sets: reps(9, 7) },
-    ]),
+    points: toPoints(
+      "bodyweight_reps",
+      sessions(40, 9, (session) => {
+        const best = 4 + Math.floor(session / 5) + (session % 2);
+        return reps(best, best - 1, best - 2);
+      }),
+    ),
   },
   {
     key: "plank",
     trackingType: "duration",
-    points: toPoints("duration", [
-      { day: 1, sets: holds(45, 40) },
-      { day: 4, sets: holds(50, 45) },
-      { day: 7, sets: holds(48, 50) },
-      { day: 11, sets: holds(60, 55) },
-      { day: 14, sets: holds(65) },
-      { day: 18, sets: holds(62, 58) },
-      { day: 21, sets: holds(75, 70) },
-      { day: 25, sets: holds(80, 72) },
-    ]),
+    points: toPoints(
+      "duration",
+      sessions(45, 8, (session) =>
+        holds(40 + Math.round(session * 1.2) + wobble(session, 3), 40),
+      ),
+    ),
   },
   {
     key: "running",
     trackingType: "distance_duration",
-    points: toPoints("distance_duration", [
-      { day: 2, sets: runs([5000, 1800]) },
-      { day: 6, sets: runs([5000, 1740]) },
-      { day: 9, sets: runs([6000, 2160]) },
-      { day: 13, sets: runs([5000, 1680]) },
-      { day: 16, sets: runs([8000, 2960]) },
-      { day: 20, sets: runs([5000, 1620]) },
-      { day: 23, sets: runs([5000, 1650]) },
-      { day: 27, sets: runs([5000, 1590]) },
-    ]),
+    points: toPoints(
+      "distance_duration",
+      sessions(52, 7, (session) =>
+        runs([5000, 1900 - session * 6 + wobble(session, 15)]),
+      ),
+    ),
   },
 ];

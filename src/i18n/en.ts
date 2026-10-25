@@ -117,6 +117,13 @@ export const en: Translations = {
     chartSummary: (metric, first, last, days) =>
       `${metric}: from ${first} to ${last} over ${days} ${days === 1 ? "day" : "days"}`,
     chartHint: "Swipe up or down to change the day",
+    noData: "No data in this period",
+    ranges: {
+      "4w": { short: "4W", label: "4 weeks" },
+      "3m": { short: "3M", label: "3 months" },
+      "6m": { short: "6M", label: "6 months" },
+      "1y": { short: "1Y", label: "1 year" },
+    },
   },
   history: {
     title: "History",

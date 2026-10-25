@@ -7,6 +7,7 @@ import type {
   TrackingType,
 } from "@/constants/enums";
 import type { ExerciseKey, MuscleId } from "@/features/exercises/catalog";
+import type { ProgressRange } from "@/features/progress/ranges";
 
 export const es = {
   tabs: {
@@ -128,6 +129,13 @@ export const es = {
     chartSummary: (metric: string, first: string, last: string, days: number) =>
       `${metric}: de ${first} a ${last} en ${days} ${days === 1 ? "día" : "días"}`,
     chartHint: "Desliza arriba o abajo para cambiar de día",
+    noData: "Sin datos en este periodo",
+    ranges: {
+      "4w": { short: "4S", label: "4 semanas" },
+      "3m": { short: "3M", label: "3 meses" },
+      "6m": { short: "6M", label: "6 meses" },
+      "1y": { short: "1A", label: "1 año" },
+    } satisfies Record<ProgressRange, { short: string; label: string }>,
   },
   history: {
     title: "Historial",

@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ExerciseInfoSheet } from "@/components/exercises/exercise-info-sheet";
 import { ExercisePickerButton } from "@/components/progress/exercise-picker-button";
 import { LineChart } from "@/components/progress/line-chart";
+import { RangeFilter } from "@/components/progress/range-filter";
 import { IconButton } from "@/components/ui/buttons/icon-button";
 import { ExerciseSelectMenu } from "@/components/workout/header/exercise-select";
 
@@ -25,10 +26,12 @@ import { useTranslation } from "@/i18n";
 import { getExerciseInfo } from "@/features/exercises/catalog";
 import { useExerciseList } from "@/features/exercises/queries";
 import { formatMetric } from "@/features/progress/metrics";
+import { pointsInRange } from "@/features/progress/ranges";
 import { SAMPLE_EXERCISES } from "@/features/progress/sample-data";
 
 import type { MenuAnchor } from "@/components/workout/header/exercise-select";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
+import type { ProgressRange } from "@/features/progress/ranges";
 
 import {
   fontsInstrument,
@@ -47,6 +50,7 @@ export default function ProgressScreen() {
   const [info, setInfo] = useState<ExerciseInfo | null>(null);
   const [selectedKey, setSelectedKey] = useState(SAMPLE_EXERCISES[0].key);
   const [menuAnchor, setMenuAnchor] = useState<MenuAnchor>();
+  const [range, setRange] = useState<ProgressRange>("3m");
   const screenRef = useRef<HostInstance>(null);
   const headerRef = useRef<HostInstance>(null);
 
@@ -59,8 +63,9 @@ export default function ProgressScreen() {
   const metric = t.progress.metrics[exercise.trackingType];
   const format = (value: number) =>
     formatMetric(exercise.trackingType, value, units, t, language);
-  const first = exercise.points.at(0);
-  const last = exercise.points.at(-1);
+  const points = pointsInRange(exercise.points, range, new Date());
+  const first = points.at(0);
+  const last = points.at(-1);
 
   // The chart only knows the catalog key; the exercise is looked up in the
   // list for what the sheet shows. An exercise deleted since has none.
@@ -128,6 +133,7 @@ export default function ProgressScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
+        <RangeFilter value={range} onChange={setRange} />
         <Text style={styles.sectionTitle}>{t.progress.strength}</Text>
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
@@ -146,9 +152,12 @@ export default function ProgressScreen() {
             </View>
             <Text style={globalStyles.inputLabel}>{metric}</Text>
           </View>
+          {points.length === 0 && (
+            <Text style={styles.note}>{t.progress.noData}</Text>
+          )}
           <LineChart
-            key={exercise.key}
-            points={exercise.points}
+            key={`${exercise.key}-${range}`}
+            points={points}
             formatValue={format}
             accessibilityLabel={
               first === undefined || last === undefined
@@ -157,7 +166,7 @@ export default function ProgressScreen() {
                     metric,
                     format(first.value),
                     format(last.value),
-                    exercise.points.length,
+                    points.length,
                   )
             }
           />

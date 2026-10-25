@@ -100,6 +100,7 @@ export const fontsInstrument = {
 // Only the weight in use is loaded at startup (see app/_layout.tsx).
 export const fontsJetBrainsMono = {
   medium: "JetBrainsMono_500Medium",
+  bold: "JetBrainsMono_700Bold",
 };
 
 export const spacing = {
