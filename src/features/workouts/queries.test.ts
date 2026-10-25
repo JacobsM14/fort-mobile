@@ -19,6 +19,7 @@ import {
   countExercisesByDay,
   dailyExerciseRowsQuery,
   deleteSet,
+  deleteWorkoutExercise,
   discardWorkout,
   endRest,
   finishWorkout,
@@ -437,6 +438,26 @@ describe("discardWorkout", () => {
 
     expect(readWorkoutRow(workoutId)).toBeUndefined();
     expect(readWorkout(workoutId)).toEqual([]);
+  });
+});
+
+describe("deleteWorkoutExercise", () => {
+  it("removes the exercise with its sets and keeps the others", () => {
+    const { workoutId, bench, plank } = startPushDay();
+    completeSet(bench.sets[0].id, BENCH, at(30));
+
+    deleteWorkoutExercise(bench.id);
+
+    expect(readWorkout(workoutId).map((exercise) => exercise.id)).toEqual([
+      plank.id,
+    ]);
+    expect(
+      db
+        .select()
+        .from(workoutSets)
+        .where(eq(workoutSets.workoutExerciseId, bench.id))
+        .all(),
+    ).toEqual([]);
   });
 });
 

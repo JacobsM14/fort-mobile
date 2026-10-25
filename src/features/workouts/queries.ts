@@ -520,6 +520,13 @@ export function discardWorkout(workoutId: string) {
   db.delete(workouts).where(eq(workouts.id, workoutId)).run();
 }
 
+// Its sets go with it (cascade).
+export function deleteWorkoutExercise(workoutExerciseId: string) {
+  db.delete(workoutExercises)
+    .where(eq(workoutExercises.id, workoutExerciseId))
+    .run();
+}
+
 export type WorkoutExerciseRow = { id: string; exerciseId: string };
 
 export type WorkoutSetRow = WorkoutSet & { workoutExerciseId: string };
@@ -675,9 +682,10 @@ export function toWorkoutHistory(
   });
 }
 
-// Newest first. The done sets come from their own query so the workout in
-// progress updates as sets are marked.
-export function useWorkoutHistory() {
+// Newest first, all of them or only those started within a range. The done
+// sets come from their own query so the workout in progress updates as sets
+// are marked.
+export function useWorkoutHistory(range?: { from: Date; to: Date }) {
   const workoutRows = useLiveQuery(
     db
       .select({
@@ -687,7 +695,16 @@ export function useWorkoutHistory() {
         endedAt: workouts.endedAt,
       })
       .from(workouts)
+      .where(
+        range === undefined
+          ? undefined
+          : and(
+              gte(workouts.startedAt, range.from),
+              lt(workouts.startedAt, range.to),
+            ),
+      )
       .orderBy(desc(workouts.startedAt)),
+    [range?.from.getTime(), range?.to.getTime()],
   );
   const doneSets = useLiveQuery(
     db
