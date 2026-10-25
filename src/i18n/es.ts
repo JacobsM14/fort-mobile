@@ -115,6 +115,17 @@ export const es = {
     reps: (count: number) => `${count} reps`,
     summary: (exercises: number, sets: number) =>
       `${exercises} ${exercises === 1 ? "ejercicio" : "ejercicios"} · ${sets} ${sets === 1 ? "serie" : "series"}`,
+    sampleNotice: "Datos de ejemplo",
+    metrics: {
+      weight_reps: "1RM estimado",
+      bodyweight_reps: "Mejor serie",
+      duration: "Mejor tiempo",
+      distance_duration: "Velocidad",
+    } satisfies Record<TrackingType, string>,
+    speedUnit: { km: "km/h", mi: "mph" },
+    chartSummary: (metric: string, first: string, last: string, days: number) =>
+      `${metric}: de ${first} a ${last} en ${days} ${days === 1 ? "día" : "días"}`,
+    chartHint: "Desliza arriba o abajo para cambiar de día",
   },
   history: {
     title: "Historial",

@@ -104,6 +104,17 @@ export const en: Translations = {
     reps: (count) => `${count} reps`,
     summary: (exercises, sets) =>
       `${exercises} ${exercises === 1 ? "exercise" : "exercises"} · ${sets} ${sets === 1 ? "set" : "sets"}`,
+    sampleNotice: "Sample data",
+    metrics: {
+      weight_reps: "Estimated 1RM",
+      bodyweight_reps: "Best set",
+      duration: "Best time",
+      distance_duration: "Speed",
+    },
+    speedUnit: { km: "km/h", mi: "mph" },
+    chartSummary: (metric, first, last, days) =>
+      `${metric}: from ${first} to ${last} over ${days} ${days === 1 ? "day" : "days"}`,
+    chartHint: "Swipe up or down to change the day",
   },
   history: {
     title: "History",
