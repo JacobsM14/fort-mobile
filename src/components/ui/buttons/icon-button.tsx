@@ -12,13 +12,18 @@ type IconButtonProps = {
   // "muted" is a gray outline that turns to the accent when pressed, for
   // secondary actions such as showing an exercise's info.
   tone?: "primary" | "danger" | "muted";
+  // Width and height; a square of 44 unless a neighbor sets another height.
+  size?: number;
 };
+
+const BOX_SIZE = 44;
 
 export function IconButton({
   icon,
   accessibilityLabel,
   onPress,
   tone = "primary",
+  size = BOX_SIZE,
 }: IconButtonProps) {
   const { colors } = useTheme();
   const styles = useStyles();
@@ -45,7 +50,11 @@ export function IconButton({
     <Pressable
       style={({ pressed }) => {
         const { border, fill } = getColors(pressed);
-        return [styles.box, { borderColor: border, backgroundColor: fill }];
+        return [
+          styles.box,
+          { width: size, height: size },
+          { borderColor: border, backgroundColor: fill },
+        ];
       }}
       onPress={handlePress}
       accessibilityRole="button"
@@ -65,8 +74,8 @@ export function IconButton({
 const useStyles = makeStyles(() =>
   StyleSheet.create({
     box: {
-      width: 44,
-      height: 44,
+      width: BOX_SIZE,
+      height: BOX_SIZE,
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 1,

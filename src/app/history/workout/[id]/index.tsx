@@ -1,10 +1,13 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { DashedButton } from "@/components/ui/buttons/dashed-button";
+import {
+  DASHED_BUTTON_HEIGHT,
+  DashedButton,
+} from "@/components/ui/buttons/dashed-button";
 import { IconButton } from "@/components/ui/buttons/icon-button";
 import { NoContentBox } from "@/components/ui/content/no-content-box";
 import { BackHeader } from "@/components/ui/layout/back-header";
@@ -137,10 +140,16 @@ export default function HistoryWorkoutScreen() {
         showsVerticalScrollIndicator={false}
       >
         {entries.length === 0 && <NoContentBox label={t.workout.noExercises} />}
-        {entries.map((entry) => (
+        {entries.map((entry, index) => (
           <View key={entry.id} style={styles.exercise}>
+            {index > 0 && (
+              <View style={styles.divider} accessibilityElementsHidden>
+                <View style={styles.dividerLine} />
+                <View style={styles.dividerTick} />
+              </View>
+            )}
             <View style={styles.exerciseHeader}>
-              <Text style={styles.name} numberOfLines={1}>
+              <Text style={styles.name} numberOfLines={2} ellipsizeMode="tail">
                 {entry.name}
               </Text>
               <IconButton
@@ -170,30 +179,23 @@ export default function HistoryWorkoutScreen() {
             />
           </View>
         ))}
-        <DashedButton
-          icon={{ ios: "plus", android: "add", web: "add" }}
-          label={t.history.addExercise}
-          onPress={addExercise}
-        />
-        <Pressable
-          style={({ pressed }) => [
-            globalStyles.notPressedButton,
-            styles.deleteWorkout,
-            pressed && styles.deleteWorkoutPressed,
-          ]}
-          onPress={() => setConfirmation({ kind: "deleteWorkout" })}
-          accessibilityRole="button"
-        >
-          <Text
-            style={[
-              globalStyles.notPressedButtonText,
-              styles.deleteWorkoutText,
-            ]}
-          >
-            {t.history.deleteWorkout}
-          </Text>
-        </Pressable>
       </ScrollView>
+      <View style={styles.footer}>
+        <IconButton
+          tone="danger"
+          size={DASHED_BUTTON_HEIGHT}
+          icon={{ ios: "trash", android: "delete", web: "delete" }}
+          accessibilityLabel={t.history.deleteWorkout}
+          onPress={() => setConfirmation({ kind: "deleteWorkout" })}
+        />
+        <View style={styles.addExercise}>
+          <DashedButton
+            icon={{ ios: "plus", android: "add", web: "add" }}
+            label={t.history.addExercise}
+            onPress={addExercise}
+          />
+        </View>
+      </View>
       {confirmation !== undefined && (
         <ConfirmDialog
           visible
@@ -214,11 +216,29 @@ const useStyles = makeStyles(({ colors }) =>
       paddingBottom: 0,
     },
     content: {
-      gap: spacing.lg,
+      gap: spacing.md,
       paddingBottom: spacing.lg,
     },
     exercise: {
-      gap: spacing.sm,
+      gap: spacing.md,
+    },
+    // A hairline across the screen with a short tick through its middle,
+    // between one exercise and the next.
+    divider: {
+      height: spacing.md,
+      justifyContent: "center",
+      marginBottom: spacing.md,
+    },
+    dividerLine: {
+      height: StyleSheet.hairlineWidth,
+      backgroundColor: colors.border,
+    },
+    dividerTick: {
+      position: "absolute",
+      alignSelf: "center",
+      width: StyleSheet.hairlineWidth,
+      height: spacing.md,
+      backgroundColor: colors.border,
     },
     exerciseHeader: {
       flexDirection: "row",
@@ -231,15 +251,15 @@ const useStyles = makeStyles(({ colors }) =>
       fontFamily: fontsInstrument.semiBold,
       color: colors.text,
     },
-    deleteWorkout: {
+    // Stays under the scrolling list, like the workout's own footer.
+    footer: {
+      flexDirection: "row",
       alignItems: "center",
-      borderColor: colors.danger,
+      gap: spacing.sm,
+      paddingVertical: spacing.sm,
     },
-    deleteWorkoutPressed: {
-      opacity: 0.7,
-    },
-    deleteWorkoutText: {
-      color: colors.danger,
+    addExercise: {
+      flex: 1,
     },
   }),
 );

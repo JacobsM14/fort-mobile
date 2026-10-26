@@ -11,6 +11,9 @@ import {
 import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
+// So a button beside it can match its height.
+export const DASHED_BUTTON_HEIGHT = 56;
+
 type DashedButtonProps = {
   label: string;
   onPress: () => void;
@@ -65,7 +68,7 @@ const useStyles = makeStyles(({ colors }) =>
       justifyContent: "center",
       gap: spacing.xs,
       width: "100%",
-      minHeight: 56,
+      minHeight: DASHED_BUTTON_HEIGHT,
       borderRadius: radii.sm,
       borderWidth: 1.5,
       borderStyle: "dashed",
