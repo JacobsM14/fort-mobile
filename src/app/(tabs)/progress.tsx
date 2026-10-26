@@ -162,7 +162,9 @@ export default function ProgressScreen() {
       >
         <RangeFilter value={range} onChange={setRange} />
         <View>
-          <Text style={styles.sectionTitle}>{t.progress.strength}</Text>
+          <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
+            {t.progress.strength}
+          </Text>
           {loaded && exercise === undefined && (
             <View style={[styles.section, styles.emptySection]}>
               <CornerFrame style={styles.emptyFrame}>
@@ -223,7 +225,9 @@ export default function ProgressScreen() {
           )}
         </View>
         <View>
-          <Text style={styles.sectionTitle}>{t.progress.bodyWeight}</Text>
+          <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
+            {t.progress.bodyWeight}
+          </Text>
           <View style={styles.section}>
             {weightPoints.length === 0 && (
               <Text style={styles.note}>{t.progress.noData}</Text>
@@ -276,9 +280,8 @@ const useStyles = makeStyles(({ colors }) =>
       paddingBottom: spacing.lg,
     },
     sectionTitle: {
-      fontSize: fontSizes.lead,
-      fontFamily: fontsInstrument.semiBold,
-      color: colors.text,
+      color: colors.border,
+      paddingBottom: spacing.xs,
     },
     section: {
       gap: spacing.sm,
