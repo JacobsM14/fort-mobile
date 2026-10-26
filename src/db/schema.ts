@@ -203,14 +203,11 @@ export const routineSets = sqliteTable(
   ],
 );
 
-export const bodyWeights = sqliteTable(
-  "body_weights",
-  {
-    id: text("id").primaryKey(),
-    measuredAt: integer("measured_at", { mode: "timestamp_ms" }).notNull(),
-    weightKg: real("weight_kg").notNull(),
-    notes: text("notes"),
-    ...timestamps,
-  },
-  (t) => [index("body_weights_measured_at_idx").on(t.measuredAt)],
-);
+// Mantaining id becasue of potential future api requirements
+// A day, not an instant ("2026-10-24", local time): one weigh-in per day.
+export const bodyWeights = sqliteTable("body_weights", {
+  id: text("id").primaryKey(),
+  measuredOn: text("measured_on").notNull().unique(),
+  weightKg: real("weight_kg").notNull(),
+  ...timestamps,
+});
