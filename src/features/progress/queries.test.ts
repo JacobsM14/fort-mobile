@@ -14,6 +14,7 @@ import {
 
 import {
   exerciseSetsQuery,
+  toDailyPoints,
   toTrainedExercises,
   trainedExercisesQuery,
 } from "./queries";
@@ -195,5 +196,51 @@ describe("toTrainedExercises", () => {
     );
 
     expect(result.map((exercise) => exercise.id)).toEqual(["a"]);
+  });
+});
+
+describe("toDailyPoints", () => {
+  const lift = (startedAt: Date, weightKg: number, reps: number) => ({
+    ...EMPTY,
+    startedAt,
+    weightKg,
+    reps,
+  });
+
+  it("gives a day its best set, even from two workouts", () => {
+    const points = toDailyPoints("weight_reps", [
+      lift(new Date(2026, 9, 20, 10), 60, 5),
+      lift(new Date(2026, 9, 20, 19), 80, 5),
+    ]);
+
+    expect(points).toHaveLength(1);
+    expect(points[0].date).toEqual(new Date(2026, 9, 20));
+    expect(points[0].value).toBeCloseTo(80 * (1 + 5 / 30));
+  });
+
+  it("orders the days, oldest first", () => {
+    const points = toDailyPoints("bodyweight_reps", [
+      { ...EMPTY, startedAt: new Date(2026, 9, 22, 9), reps: 8 },
+      { ...EMPTY, startedAt: new Date(2026, 9, 18, 9), reps: 5 },
+    ]);
+
+    expect(points.map((point) => point.value)).toEqual([5, 8]);
+    expect(points.map((point) => point.date)).toEqual([
+      new Date(2026, 9, 18),
+      new Date(2026, 9, 22),
+    ]);
+  });
+
+  it("leaves out a day with nothing to measure", () => {
+    const points = toDailyPoints("duration", [
+      { ...EMPTY, startedAt: new Date(2026, 9, 18, 9), durationS: null },
+      { ...EMPTY, startedAt: new Date(2026, 9, 19, 9), durationS: 60 },
+    ]);
+
+    expect(points).toEqual([{ date: new Date(2026, 9, 19), value: 60 }]);
+  });
+
+  it("is empty without sets", () => {
+    expect(toDailyPoints("weight_reps", [])).toEqual([]);
   });
 });

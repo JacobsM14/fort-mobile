@@ -4,14 +4,21 @@ import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { db } from "@/db/client";
 import { workoutExercises, workouts, workoutSets } from "@/db/schema";
 import { useExerciseList } from "@/features/exercises/queries";
+import { dailyMetric } from "@/features/progress/metrics";
 import { rangeStart } from "@/features/progress/ranges";
 
+import type { TrackingType } from "@/constants/enums";
 import type { ExerciseSummary } from "@/features/exercises/queries";
+import type { SetValues } from "@/features/workouts/queries";
+import type { ChartPoint } from "@/utils/chart";
 
-type ExerciseSetRow = {
+type TrainedExerciseRow = {
   exerciseId: string;
   lastTrained: Date | null;
 };
+
+// A set done, with the day its workout started.
+type ExerciseSetRow = SetValues & { startedAt: Date };
 
 // Collects all sets for a given exercise that have been completed.
 export function exerciseSetsQuery(exerciseId: string) {
@@ -60,7 +67,7 @@ export function trainedExercisesQuery(since: Date) {
 
 // The picker needs each exercise's name and type: the rows only have ids. Archived exercises have no summary and are left out.
 export function toTrainedExercises(
-  rows: readonly ExerciseSetRow[],
+  rows: readonly TrainedExerciseRow[],
   summaries: readonly ExerciseSummary[],
 ) {
   const byId = new Map(
@@ -89,5 +96,53 @@ export function useTrainedExercises() {
   return {
     exercises: toTrainedExercises(data, exercises),
     loaded: updatedAt !== undefined && loaded,
+  };
+}
+
+// One point per day: the best set of that day, whatever the hour of the
+// workout. Days are the user's own (local time), which is why they are grouped
+// here and not in SQL. Days with no usable set leave no point.
+export function toDailyPoints(
+  trackingType: TrackingType,
+  rows: readonly ExerciseSetRow[],
+): ChartPoint[] {
+  const days = new Map<string, { date: Date; sets: ExerciseSetRow[] }>();
+  for (const row of rows) {
+    const key = row.startedAt.toDateString();
+    const day = days.get(key) ?? {
+      // Midnight, so the day compares like the ranges and "Today" do.
+      date: new Date(
+        row.startedAt.getFullYear(),
+        row.startedAt.getMonth(),
+        row.startedAt.getDate(),
+      ),
+      sets: [],
+    };
+    day.sets.push(row);
+    days.set(key, day);
+  }
+
+  return [...days.values()]
+    .flatMap(({ date, sets }): ChartPoint[] => {
+      const value = dailyMetric(trackingType, sets);
+      return value === null ? [] : [{ date, value }];
+    })
+    .sort((a, b) => a.date.getTime() - b.date.getTime());
+}
+
+// The chart of one exercise. Without one (nothing trained yet) it reads no
+// sets: an empty id matches none, and the hook still runs on every render.
+export function useExerciseProgress(
+  exerciseId: string | undefined,
+  trackingType: TrackingType | undefined,
+) {
+  const { data, updatedAt } = useLiveQuery(
+    exerciseSetsQuery(exerciseId ?? ""),
+    [exerciseId],
+  );
+
+  return {
+    points: trackingType === undefined ? [] : toDailyPoints(trackingType, data),
+    loaded: updatedAt !== undefined,
   };
 }
