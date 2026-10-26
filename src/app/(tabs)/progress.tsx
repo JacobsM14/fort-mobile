@@ -23,18 +23,18 @@ import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
 
-import { getExerciseInfo } from "@/features/exercises/catalog";
-import { useExerciseList } from "@/features/exercises/queries";
+import { getExerciseInfo, getExerciseText } from "@/features/exercises/catalog";
 import {
   formatChange,
   formatMetric,
   progressChange,
 } from "@/features/progress/metrics";
-import { pointsInRange } from "@/features/progress/ranges";
 import {
-  SAMPLE_BODY_WEIGHT,
-  SAMPLE_EXERCISES,
-} from "@/features/progress/sample-data";
+  useExerciseProgress,
+  useTrainedExercises,
+} from "@/features/progress/queries";
+import { pointsInRange } from "@/features/progress/ranges";
+import { SAMPLE_BODY_WEIGHT } from "@/features/progress/sample-data";
 
 import type { MenuAnchor } from "@/components/workout/header/exercise-select";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
@@ -57,9 +57,9 @@ export default function ProgressScreen() {
   const units = useUnits();
   const styles = useStyles();
 
-  const { exercises } = useExerciseList();
+  const { exercises, loaded } = useTrainedExercises();
   const [info, setInfo] = useState<ExerciseInfo | null>(null);
-  const [selectedKey, setSelectedKey] = useState(SAMPLE_EXERCISES[0].key);
+  const [selectedId, setSelectedId] = useState<string>();
   const [menuAnchor, setMenuAnchor] = useState<MenuAnchor>();
   const [range, setRange] = useState<ProgressRange>("3m");
   const screenRef = useRef<HostInstance>(null);
@@ -67,34 +67,41 @@ export default function ProgressScreen() {
 
   const openHistory = useFocusedPress(() => router.push("/history"));
 
+  // The exercise charted: the one picked, or the one trained last. None while
+  // loading or before the first workout.
   const exercise =
-    SAMPLE_EXERCISES.find((sample) => sample.key === selectedKey) ??
-    SAMPLE_EXERCISES[0];
-  const name = t.exerciseCatalog[exercise.key].name;
-  const metric = t.progress.metrics[exercise.trackingType];
+    exercises.find((e) => e.id === selectedId) ?? exercises.at(0);
+  const trackingType = exercise?.trackingType;
+  const { points: allPoints, loaded: pointsLoaded } = useExerciseProgress(
+    exercise?.id,
+    trackingType,
+  );
+  const name = exercise === undefined ? "" : getExerciseText(exercise, t).name;
+  const metric =
+    trackingType === undefined ? "" : t.progress.metrics[trackingType];
   const format = (value: number) =>
-    formatMetric(exercise.trackingType, value, units, t, language);
-  const points = pointsInRange(exercise.points, range, new Date());
+    trackingType === undefined
+      ? String(value)
+      : formatMetric(trackingType, value, units, t, language);
+  const points = pointsInRange(allPoints, range, new Date());
   const first = points.at(0);
   const last = points.at(-1);
   const change = progressChange(points);
   const changeText =
-    change === null
+    change === null || trackingType === undefined
       ? null
-      : formatChange(exercise.trackingType, change, units, t, language);
+      : formatChange(trackingType, change, units, t, language);
 
+  // BODY WEIGHT
   const weightPoints = pointsInRange(SAMPLE_BODY_WEIGHT, range, new Date());
   const firstWeight = weightPoints.at(0);
   const lastWeight = weightPoints.at(-1);
   const formatWeight = (kg: number) =>
     `${formatDecimal(Math.round(weightToUnit(kg, units.weight) * 10) / 10, language)} ${units.weight}`;
 
-  // The chart only knows the catalog key; the exercise is looked up in the
-  // list for what the sheet shows. An exercise deleted since has none.
   function showInfo() {
-    const found = exercises.find((candidate) => candidate.key === exercise.key);
-    if (found !== undefined) {
-      setInfo(getExerciseInfo(found, t));
+    if (exercise !== undefined) {
+      setInfo(getExerciseInfo(exercise, t));
     }
   }
 
@@ -116,12 +123,9 @@ export default function ProgressScreen() {
     });
   }
 
-  function selectExercise(key: string) {
+  function selectExercise(id: string) {
     setMenuAnchor(undefined);
-    const sample = SAMPLE_EXERCISES.find((candidate) => candidate.key === key);
-    if (sample !== undefined) {
-      setSelectedKey(sample.key);
-    }
+    setSelectedId(id);
   }
 
   return (
@@ -158,55 +162,62 @@ export default function ProgressScreen() {
         <RangeFilter value={range} onChange={setRange} />
         <View>
           <Text style={styles.sectionTitle}>{t.progress.strength}</Text>
-          <View style={styles.section}>
-            <View ref={headerRef} style={styles.pickerRow}>
-              <IconButton
-                tone="muted"
-                icon={{ ios: "info.circle", android: "info", web: "info" }}
-                accessibilityLabel={t.exercises.showInfo}
-                onPress={showInfo}
-              />
-              <ExercisePickerButton
-                name={name}
-                open={menuAnchor !== undefined}
-                onPress={toggleMenu}
-              />
+          {loaded && exercise === undefined && (
+            <View style={styles.section}>
+              <Text style={styles.note}>{t.progress.noTrained}</Text>
             </View>
-            {changeText !== null && (
-              <Text
-                style={[
-                  styles.change,
-                  change !== null && change < 0 && styles.changeDown,
-                  change === 0 && styles.changeFlat,
-                ]}
-                numberOfLines={1}
-                accessibilityLabel={t.progress.changeLabel(changeText)}
-              >
-                {changeText}
-              </Text>
-            )}
-            {points.length === 0 && (
-              <Text style={styles.note}>{t.progress.noData}</Text>
-            )}
-            <LineChart
-              key={`${exercise.key}-${range}`}
-              points={points}
-              formatValue={format}
-              accessibilityLabel={
-                first === undefined || last === undefined
-                  ? metric
-                  : t.progress.chartSummary(
-                      metric,
-                      format(first.value),
-                      format(last.value),
-                      points.length,
-                    )
-              }
-            />
-            {exercise.trackingType === "weight_reps" && (
-              <Text style={styles.note}>{t.progress.oneRepMaxNote}</Text>
-            )}
-          </View>
+          )}
+          {exercise !== undefined && (
+            <View style={styles.section}>
+              <View ref={headerRef} style={styles.pickerRow}>
+                <IconButton
+                  tone="muted"
+                  icon={{ ios: "info.circle", android: "info", web: "info" }}
+                  accessibilityLabel={t.exercises.showInfo}
+                  onPress={showInfo}
+                />
+                <ExercisePickerButton
+                  name={name}
+                  open={menuAnchor !== undefined}
+                  onPress={toggleMenu}
+                />
+              </View>
+              {changeText !== null && (
+                <Text
+                  style={[
+                    styles.change,
+                    change !== null && change < 0 && styles.changeDown,
+                    change === 0 && styles.changeFlat,
+                  ]}
+                  numberOfLines={1}
+                  accessibilityLabel={t.progress.changeLabel(changeText)}
+                >
+                  {changeText}
+                </Text>
+              )}
+              {pointsLoaded && points.length === 0 && (
+                <Text style={styles.note}>{t.progress.noData}</Text>
+              )}
+              <LineChart
+                key={`${exercise.id}-${range}`}
+                points={points}
+                formatValue={format}
+                accessibilityLabel={
+                  first === undefined || last === undefined
+                    ? metric
+                    : t.progress.chartSummary(
+                        metric,
+                        format(first.value),
+                        format(last.value),
+                        points.length,
+                      )
+                }
+              />
+              {exercise.trackingType === "weight_reps" && (
+                <Text style={styles.note}>{t.progress.oneRepMaxNote}</Text>
+              )}
+            </View>
+          )}
         </View>
         <View>
           <Text style={styles.sectionTitle}>{t.progress.bodyWeight}</Text>
@@ -235,13 +246,13 @@ export default function ProgressScreen() {
       </ScrollView>
       {menuAnchor !== undefined && (
         <ExerciseSelectMenu
-          items={SAMPLE_EXERCISES.map((sample) => ({
-            id: sample.key,
-            name: t.exerciseCatalog[sample.key].name,
-            trackingType: sample.trackingType,
+          items={exercises.map((item) => ({
+            id: item.id,
+            name: getExerciseText(item, t).name,
+            trackingType: item.trackingType,
             done: false,
           }))}
-          currentId={exercise.key}
+          currentId={exercise?.id}
           anchor={menuAnchor}
           onSelect={selectExercise}
           onClose={() => setMenuAnchor(undefined)}

@@ -131,6 +131,7 @@ export const es = {
       `${metric}: de ${first} a ${last} en ${days} ${days === 1 ? "día" : "días"}`,
     chartHint: "Desliza arriba o abajo para cambiar de día",
     noData: "Sin datos en este periodo",
+    noTrained: "Registra un entreno para ver aquí tu progreso",
     changeLabel: (change: string) => `Cambio en el periodo: ${change}`,
     oneRepMaxShort: "1RM est.",
     ranges: {
