@@ -243,27 +243,38 @@ export default function ProgressScreen() {
           <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
             {t.progress.bodyWeight}
           </Text>
-          <View style={styles.section}>
-            {weightsLoaded && weightPoints.length === 0 && (
-              <Text style={styles.note}>{t.progress.noData}</Text>
-            )}
-            <LineChart
-              key={`body-weight-${range}`}
-              points={weightPoints}
-              color={colors.text}
-              formatValue={formatWeight}
-              accessibilityLabel={
-                firstWeight === undefined || lastWeight === undefined
-                  ? t.progress.bodyWeight
-                  : t.progress.chartSummary(
-                      t.progress.bodyWeight,
-                      formatWeight(firstWeight.value),
-                      formatWeight(lastWeight.value),
-                      weightPoints.length,
-                    )
-              }
-            />
-          </View>
+          {weightsLoaded && weightPoints.length < 3 ? (
+            <View style={[styles.section, styles.emptySection]}>
+              <CornerFrame style={styles.emptyFrame}>
+                <Text style={styles.emptyText}>{t.progress.noWeight}</Text>
+                <Text style={globalStyles.subtitle}>
+                  ({weightPoints.length}/3)
+                </Text>
+              </CornerFrame>
+              <Text style={[styles.note, styles.noteBottom]}>
+                {t.progress.oneWeightPerDay}
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.section}>
+              <LineChart
+                key={`body-weight-${range}`}
+                points={weightPoints}
+                color={colors.text}
+                formatValue={formatWeight}
+                accessibilityLabel={
+                  firstWeight === undefined || lastWeight === undefined
+                    ? t.progress.bodyWeight
+                    : t.progress.chartSummary(
+                        t.progress.bodyWeight,
+                        formatWeight(firstWeight.value),
+                        formatWeight(lastWeight.value),
+                        weightPoints.length,
+                      )
+                }
+              />
+            </View>
+          )}
         </View>
         <View style={styles.entrySection}>
           <View style={styles.entryHeader}>
@@ -339,6 +350,12 @@ const useStyles = makeStyles(({ colors }) =>
       fontFamily: fontsInstrument.medium,
       textAlign: "center",
       color: colors.disabled,
+    },
+    // Stuck to the bottom of the box, so it doesn't push the framed text off center.
+    noteBottom: {
+      position: "absolute",
+      bottom: spacing.sm,
+      left: spacing.sm,
     },
     // As tall as the chart card it stands in for, so the screen doesn't jump
     // when the first workout arrives.

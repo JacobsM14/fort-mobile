@@ -131,6 +131,7 @@ export const es = {
       `${metric}: de ${first} a ${last} en ${days} ${days === 1 ? "día" : "días"}`,
     chartHint: "Desliza arriba o abajo para cambiar de día",
     noData: "Sin datos en este periodo",
+    noWeight: "Necesitas al menos 3 registros",
     noTrained: "Registra un entreno para ver aquí tu progreso",
     changeLabel: (change: string) => `Cambio en el periodo: ${change}`,
     oneRepMaxShort: "1RM est.",
@@ -145,6 +146,7 @@ export const es = {
     decreaseWeight: "Bajar peso",
     increaseWeight: "Subir peso",
     weightInput: "Peso corporal",
+    oneWeightPerDay: "Solo puedes tener un registro de peso por día.",
   },
   history: {
     title: "Historial",
