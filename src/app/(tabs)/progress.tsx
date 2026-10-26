@@ -12,6 +12,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ExerciseInfoSheet } from "@/components/exercises/exercise-info-sheet";
+import { BodyWeightEntry } from "@/components/progress/body-weight-entry";
 import { ExercisePickerButton } from "@/components/progress/exercise-picker-button";
 import { LineChart } from "@/components/progress/line-chart";
 import { RangeFilter } from "@/components/progress/range-filter";
@@ -51,6 +52,9 @@ import {
   iconSizes,
   spacing,
 } from "@/constants/theme";
+
+// Where the weight box starts until there is a weigh-in to start from.
+const DEFAULT_WEIGHT_KG = 70;
 
 export default function ProgressScreen() {
   const { t, language } = useTranslation();
@@ -249,6 +253,15 @@ export default function ProgressScreen() {
               }
             />
           </View>
+        </View>
+        <View style={{ flexDirection: "column", gap: spacing.xs }}>
+          <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
+            {t.progress.registerWeight}
+          </Text>
+          <BodyWeightEntry
+            initialKg={lastWeight?.value ?? DEFAULT_WEIGHT_KG}
+            onSave={() => {}}
+          />
         </View>
       </ScrollView>
       {menuAnchor !== undefined && (

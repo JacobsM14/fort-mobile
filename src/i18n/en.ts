@@ -128,6 +128,11 @@ export const en: Translations = {
       "6m": { short: "6M", label: "6 months" },
       "1y": { short: "1Y", label: "1 year" },
     },
+    registerWeight: "Register weight",
+    saveWeight: "Save weight",
+    decreaseWeight: "Decrease weight",
+    increaseWeight: "Increase weight",
+    weightInput: "Body weight",
   },
   history: {
     title: "History",

@@ -140,6 +140,11 @@ export const es = {
       "6m": { short: "6M", label: "6 meses" },
       "1y": { short: "1A", label: "1 año" },
     } satisfies Record<ProgressRange, { short: string; label: string }>,
+    registerWeight: "Registrar peso",
+    saveWeight: "Guardar peso",
+    decreaseWeight: "Bajar peso",
+    increaseWeight: "Subir peso",
+    weightInput: "Peso corporal",
   },
   history: {
     title: "Historial",
