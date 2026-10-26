@@ -255,10 +255,8 @@ export default function ProgressScreen() {
             />
           </View>
         </View>
-        <View style={{ flexDirection: "column", gap: spacing.xs }}>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+        <View style={styles.entrySection}>
+          <View style={styles.entryHeader}>
             <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
               {t.progress.registerWeight}
             </Text>
@@ -303,6 +301,13 @@ const useStyles = makeStyles(({ colors }) =>
     sectionTitle: {
       color: colors.border,
       paddingBottom: spacing.xs,
+    },
+    entrySection: {
+      gap: spacing.xs,
+    },
+    entryHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
     },
     today: {
       fontSize: fontSizes.caption,
