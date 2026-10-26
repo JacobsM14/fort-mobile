@@ -32,11 +32,13 @@ import {
   progressChange,
 } from "@/features/progress/metrics";
 import {
+  saveBodyWeight,
+  toBodyWeightPoints,
+  useBodyWeights,
   useExerciseProgress,
   useTrainedExercises,
 } from "@/features/progress/queries";
 import { pointsInRange } from "@/features/progress/ranges";
-import { SAMPLE_BODY_WEIGHT } from "@/features/progress/sample-data";
 
 import type { MenuAnchor } from "@/components/workout/header/exercise-select";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
@@ -99,9 +101,17 @@ export default function ProgressScreen() {
       : formatChange(trackingType, change, units, t, language);
 
   // BODY WEIGHT
-  const weightPoints = pointsInRange(SAMPLE_BODY_WEIGHT, range, new Date());
+  const { entries, loaded: weightsLoaded } = useBodyWeights();
+  const weightPoints = pointsInRange(
+    toBodyWeightPoints(entries),
+    range,
+    new Date(),
+  );
+
   const firstWeight = weightPoints.at(0);
   const lastWeight = weightPoints.at(-1);
+  // The box starts from the latest weigh-in, whatever the range filtered.
+  const latestWeightKg = entries.at(-1)?.weightKg ?? DEFAULT_WEIGHT_KG;
   const formatWeight = (kg: number) =>
     `${formatDecimal(Math.round(weightToUnit(kg, units.weight) * 10) / 10, language)} ${units.weight}`;
 
@@ -234,7 +244,7 @@ export default function ProgressScreen() {
             {t.progress.bodyWeight}
           </Text>
           <View style={styles.section}>
-            {weightPoints.length === 0 && (
+            {weightsLoaded && weightPoints.length === 0 && (
               <Text style={styles.note}>{t.progress.noData}</Text>
             )}
             <LineChart
@@ -264,10 +274,13 @@ export default function ProgressScreen() {
               {t.progress.today} · {formatShortDay(new Date(), language)}
             </Text>
           </View>
-          <BodyWeightEntry
-            initialKg={lastWeight?.value ?? DEFAULT_WEIGHT_KG}
-            onSave={() => {}}
-          />
+          {/* Starts from the latest weight, which is only known once loaded. */}
+          {weightsLoaded && (
+            <BodyWeightEntry
+              initialKg={latestWeightKg}
+              onSave={(kg) => saveBodyWeight(new Date(), kg)}
+            />
+          )}
         </View>
       </ScrollView>
       {menuAnchor !== undefined && (
