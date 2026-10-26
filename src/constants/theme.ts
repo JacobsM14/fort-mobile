@@ -120,6 +120,8 @@ export const fontSizes = {
   button: 17,
   lead: 18,
   heading: 28,
+  stepper: 26,
+  entry: 34,
   display: 46,
   timer: 72,
 };
