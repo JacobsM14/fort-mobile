@@ -10,6 +10,11 @@ export function formatDayHeader(date: Date, language: Language) {
 }
 
 // "lun 19 oct · 18:05"
+// "26 oct" / "Oct 26": the day and month, in the language's own order.
+export function formatShortDay(date: Date, language: Language) {
+  return date.toLocaleDateString(language, { day: "numeric", month: "short" });
+}
+
 export function formatDateTime(date: Date, language: Language) {
   const day = date
     .toLocaleDateString(language, {

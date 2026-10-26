@@ -42,6 +42,7 @@ import type { MenuAnchor } from "@/components/workout/header/exercise-select";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
 import type { ProgressRange } from "@/features/progress/ranges";
 
+import { formatShortDay } from "@/utils/date";
 import { formatDecimal } from "@/utils/number";
 import { weightToUnit } from "@/utils/units";
 
@@ -255,9 +256,16 @@ export default function ProgressScreen() {
           </View>
         </View>
         <View style={{ flexDirection: "column", gap: spacing.xs }}>
-          <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
-            {t.progress.registerWeight}
-          </Text>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
+              {t.progress.registerWeight}
+            </Text>
+            <Text style={styles.today}>
+              {t.progress.today} · {formatShortDay(new Date(), language)}
+            </Text>
+          </View>
           <BodyWeightEntry
             initialKg={lastWeight?.value ?? DEFAULT_WEIGHT_KG}
             onSave={() => {}}
@@ -295,6 +303,11 @@ const useStyles = makeStyles(({ colors }) =>
     sectionTitle: {
       color: colors.border,
       paddingBottom: spacing.xs,
+    },
+    today: {
+      fontSize: fontSizes.caption,
+      fontFamily: fontsJetBrainsMono.bold,
+      color: colors.primary,
     },
     section: {
       gap: spacing.sm,
