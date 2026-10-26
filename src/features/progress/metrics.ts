@@ -58,6 +58,19 @@ export function dailyMetric(
   return best;
 }
 
+// How much the last day of a period is above (or below) the first one, in the
+// metric's own base unit. Null with fewer than two days to compare.
+export function progressChange(
+  points: readonly { value: number }[],
+): number | null {
+  const first = points.at(0);
+  const last = points.at(-1);
+  if (points.length < 2 || first === undefined || last === undefined) {
+    return null;
+  }
+  return last.value - first.value;
+}
+
 function roundToTenth(value: number) {
   return Math.round(value * 10) / 10;
 }
@@ -79,6 +92,40 @@ export function formatMetric(
     case "distance_duration": {
       const perHour = distanceToUnit(value * SECONDS_PER_HOUR, units.distance);
       return `${formatDecimal(roundToTenth(perHour), language)} ${t.progress.speedUnit[units.distance]}`;
+    }
+  }
+}
+
+// A change as it reads under the picker: "+16 kg · 1RM est.", "+1,2 km/h".
+// A change that rounds to nothing carries no sign.
+export function formatChange(
+  trackingType: TrackingType,
+  change: number,
+  units: Units,
+  t: Translations,
+  language: Language,
+) {
+  function signed(rounded: number, text: string) {
+    return `${rounded > 0 ? "+" : rounded < 0 ? "-" : ""}${text}`;
+  }
+  switch (trackingType) {
+    case "weight_reps": {
+      const rounded = roundToTenth(weightToUnit(change, units.weight));
+      return `${signed(rounded, formatDecimal(Math.abs(rounded), language))} ${units.weight} · ${t.progress.oneRepMaxShort}`;
+    }
+    case "bodyweight_reps": {
+      const rounded = Math.round(change);
+      return signed(rounded, t.progress.reps(Math.abs(rounded)));
+    }
+    case "duration": {
+      const rounded = Math.round(change);
+      return signed(rounded, formatDuration(Math.abs(rounded)));
+    }
+    case "distance_duration": {
+      const rounded = roundToTenth(
+        distanceToUnit(change * SECONDS_PER_HOUR, units.distance),
+      );
+      return `${signed(rounded, formatDecimal(Math.abs(rounded), language))} ${t.progress.speedUnit[units.distance]}`;
     }
   }
 }

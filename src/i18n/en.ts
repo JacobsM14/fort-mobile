@@ -119,6 +119,8 @@ export const en: Translations = {
       `${metric}: from ${first} to ${last} over ${days} ${days === 1 ? "day" : "days"}`,
     chartHint: "Swipe up or down to change the day",
     noData: "No data in this period",
+    changeLabel: (change) => `Change over the period: ${change}`,
+    oneRepMaxShort: "est. 1RM",
     ranges: {
       "4w": { short: "4W", label: "4 weeks" },
       "3m": { short: "3M", label: "3 months" },

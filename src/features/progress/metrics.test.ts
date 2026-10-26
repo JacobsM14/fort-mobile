@@ -2,7 +2,13 @@ import { describe, expect, it } from "@jest/globals";
 
 import { es } from "@/i18n/es";
 
-import { dailyMetric, estimatedOneRepMax, formatMetric } from "./metrics";
+import {
+  dailyMetric,
+  estimatedOneRepMax,
+  formatChange,
+  formatMetric,
+  progressChange,
+} from "./metrics";
 
 import type { SetValues } from "@/features/workouts/queries";
 
@@ -104,6 +110,51 @@ describe("formatMetric", () => {
     );
     expect(formatMetric("distance_duration", 4, imperial, es, "en")).toBe(
       "8.9 mph",
+    );
+  });
+});
+
+describe("progressChange", () => {
+  it("is the last day minus the first", () => {
+    expect(progressChange([{ value: 80 }, { value: 70 }, { value: 100 }])).toBe(
+      20,
+    );
+    expect(progressChange([{ value: 100 }, { value: 90 }])).toBe(-10);
+  });
+
+  it("is null without two days to compare", () => {
+    expect(progressChange([])).toBeNull();
+    expect(progressChange([{ value: 50 }])).toBeNull();
+  });
+});
+
+describe("formatChange", () => {
+  const metric = { weight: "kg", distance: "km" } as const;
+
+  it("reads each type in its own unit", () => {
+    expect(formatChange("weight_reps", 16, metric, es, "es")).toBe(
+      "+16 kg · 1RM est.",
+    );
+    expect(formatChange("bodyweight_reps", 3, metric, es, "es")).toBe(
+      "+3 reps",
+    );
+    expect(formatChange("duration", 15, metric, es, "es")).toBe("+0:15");
+    expect(formatChange("distance_duration", 0.3, metric, es, "es")).toBe(
+      "+1,1 km/h",
+    );
+  });
+
+  it("shows a drop with a minus and a tie with no sign", () => {
+    expect(formatChange("weight_reps", -2.5, metric, es, "es")).toBe(
+      "-2,5 kg · 1RM est.",
+    );
+    expect(formatChange("bodyweight_reps", 0, metric, es, "es")).toBe("0 reps");
+  });
+
+  it("converts to the user's units", () => {
+    const imperial = { weight: "lb", distance: "mi" } as const;
+    expect(formatChange("weight_reps", 10, imperial, es, "en")).toBe(
+      "+22 lb · 1RM est.",
     );
   });
 });

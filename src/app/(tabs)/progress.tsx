@@ -25,7 +25,11 @@ import { useTranslation } from "@/i18n";
 
 import { getExerciseInfo } from "@/features/exercises/catalog";
 import { useExerciseList } from "@/features/exercises/queries";
-import { formatMetric } from "@/features/progress/metrics";
+import {
+  formatChange,
+  formatMetric,
+  progressChange,
+} from "@/features/progress/metrics";
 import { pointsInRange } from "@/features/progress/ranges";
 import {
   SAMPLE_BODY_WEIGHT,
@@ -42,6 +46,7 @@ import { weightToUnit } from "@/utils/units";
 import {
   fontsInstrument,
   fontSizes,
+  fontsJetBrainsMono,
   iconSizes,
   spacing,
 } from "@/constants/theme";
@@ -72,6 +77,11 @@ export default function ProgressScreen() {
   const points = pointsInRange(exercise.points, range, new Date());
   const first = points.at(0);
   const last = points.at(-1);
+  const change = progressChange(points);
+  const changeText =
+    change === null
+      ? null
+      : formatChange(exercise.trackingType, change, units, t, language);
 
   const weightPoints = pointsInRange(SAMPLE_BODY_WEIGHT, range, new Date());
   const firstWeight = weightPoints.at(0);
@@ -150,18 +160,31 @@ export default function ProgressScreen() {
           <Text style={styles.sectionTitle}>{t.progress.strength}</Text>
           <View style={styles.section}>
             <View ref={headerRef} style={styles.pickerRow}>
-              <ExercisePickerButton
-                name={name}
-                open={menuAnchor !== undefined}
-                onPress={toggleMenu}
-              />
               <IconButton
                 tone="muted"
                 icon={{ ios: "info.circle", android: "info", web: "info" }}
                 accessibilityLabel={t.exercises.showInfo}
                 onPress={showInfo}
               />
+              <ExercisePickerButton
+                name={name}
+                open={menuAnchor !== undefined}
+                onPress={toggleMenu}
+              />
             </View>
+            {changeText !== null && (
+              <Text
+                style={[
+                  styles.change,
+                  change !== null && change < 0 && styles.changeDown,
+                  change === 0 && styles.changeFlat,
+                ]}
+                numberOfLines={1}
+                accessibilityLabel={t.progress.changeLabel(changeText)}
+              >
+                {changeText}
+              </Text>
+            )}
             {points.length === 0 && (
               <Text style={styles.note}>{t.progress.noData}</Text>
             )}
@@ -259,6 +282,19 @@ const useStyles = makeStyles(({ colors }) =>
       flexDirection: "row",
       alignItems: "center",
       gap: spacing.sm,
+    },
+    // How the period went, under the picker and at the right.
+    change: {
+      alignSelf: "flex-end",
+      fontSize: fontSizes.caption,
+      fontFamily: fontsJetBrainsMono.bold,
+      color: colors.primary,
+    },
+    changeDown: {
+      color: colors.danger,
+    },
+    changeFlat: {
+      color: colors.disabled,
     },
   }),
 );

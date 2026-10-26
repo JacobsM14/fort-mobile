@@ -131,6 +131,8 @@ export const es = {
       `${metric}: de ${first} a ${last} en ${days} ${days === 1 ? "día" : "días"}`,
     chartHint: "Desliza arriba o abajo para cambiar de día",
     noData: "Sin datos en este periodo",
+    changeLabel: (change: string) => `Cambio en el periodo: ${change}`,
+    oneRepMaxShort: "1RM est.",
     ranges: {
       "4w": { short: "4S", label: "4 semanas" },
       "3m": { short: "3M", label: "3 meses" },

@@ -18,8 +18,9 @@ type ExercisePickerButtonProps = {
   onPress: () => void;
 };
 
-// The exercise being charted, opening the list to pick another. A long name
-// is cut short so the button never pushes what's beside it off the row.
+// The exercise being charted, opening the list to pick another. The button
+// takes the room it is given whatever the name, which is cut short when it
+// doesn't fit, and the arrow stays at the right end.
 export function ExercisePickerButton({
   name,
   open,
@@ -83,6 +84,7 @@ const useStyles = makeStyles(({ colors }) =>
       minWidth: 0,
       flexDirection: "row",
       alignItems: "center",
+      justifyContent: "space-between",
       gap: spacing.xs,
       height: 44,
       paddingHorizontal: spacing.sm,
@@ -94,7 +96,7 @@ const useStyles = makeStyles(({ colors }) =>
       borderColor: colors.primary,
     },
     name: {
-      flexShrink: 1,
+      flex: 1,
       fontSize: fontSizes.body,
       fontFamily: fontsInstrument.semiBold,
     },
