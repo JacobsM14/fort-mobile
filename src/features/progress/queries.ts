@@ -2,15 +2,23 @@ import { and, asc, desc, eq, gte, isNotNull, max } from "drizzle-orm";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 
 import { db } from "@/db/client";
-import { workoutExercises, workouts, workoutSets } from "@/db/schema";
+import {
+  bodyWeights,
+  workoutExercises,
+  workouts,
+  workoutSets,
+} from "@/db/schema";
 import { useExerciseList } from "@/features/exercises/queries";
 import { dailyMetric } from "@/features/progress/metrics";
 import { rangeStart } from "@/features/progress/ranges";
 
 import type { TrackingType } from "@/constants/enums";
+import { newId } from "@/db/id";
 import type { ExerciseSummary } from "@/features/exercises/queries";
 import type { SetValues } from "@/features/workouts/queries";
 import type { ChartPoint } from "@/utils/chart";
+
+import { parseDateKey, toDateKey } from "@/utils/date";
 
 type TrainedExerciseRow = {
   exerciseId: string;
@@ -145,4 +153,57 @@ export function useExerciseProgress(
     points: trackingType === undefined ? [] : toDailyPoints(trackingType, data),
     loaded: updatedAt !== undefined,
   };
+}
+
+// ? BODY WEIGHT
+export function bodyWeightsQuery() {
+  return db
+    .select({
+      id: bodyWeights.id,
+      measuredOn: bodyWeights.measuredOn,
+      weightKg: bodyWeights.weightKg,
+    })
+    .from(bodyWeights)
+    .orderBy(asc(bodyWeights.measuredOn));
+}
+
+export type BodyWeightEntry = { id: string; date: Date; weightKg: number };
+
+// Each day key becomes midnight of that day, local time, oldest first.
+export function toBodyWeightEntries(
+  rows: readonly { id: string; measuredOn: string; weightKg: number }[],
+): BodyWeightEntry[] {
+  return rows.map((row) => ({
+    id: row.id,
+    date: parseDateKey(row.measuredOn),
+    weightKg: row.weightKg,
+  }));
+}
+
+// The chart only needs the day and the weight.
+export function toBodyWeightPoints(
+  entries: readonly BodyWeightEntry[],
+): ChartPoint[] {
+  return entries.map((entry) => ({ date: entry.date, value: entry.weightKg }));
+}
+
+// One live query for the chart and the list: both read the same entries.
+export function useBodyWeights() {
+  const { data, updatedAt } = useLiveQuery(bodyWeightsQuery(), []);
+
+  return {
+    entries: toBodyWeightEntries(data),
+    loaded: updatedAt !== undefined,
+  };
+}
+
+// One weigh-in per day: saving again the same day replaces its weight.
+export function saveBodyWeight(measuredAt: Date, weightKg: number) {
+  db.insert(bodyWeights)
+    .values({ id: newId(), measuredOn: toDateKey(measuredAt), weightKg })
+    .onConflictDoUpdate({
+      target: bodyWeights.measuredOn,
+      set: { weightKg, updatedAt: new Date() },
+    })
+    .run();
 }

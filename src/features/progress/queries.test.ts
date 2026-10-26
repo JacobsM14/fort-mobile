@@ -13,7 +13,11 @@ import {
 } from "@/features/workouts/queries";
 
 import {
+  bodyWeightsQuery,
   exerciseSetsQuery,
+  saveBodyWeight,
+  toBodyWeightEntries,
+  toBodyWeightPoints,
   toDailyPoints,
   toTrainedExercises,
   trainedExercisesQuery,
@@ -242,5 +246,92 @@ describe("toDailyPoints", () => {
 
   it("is empty without sets", () => {
     expect(toDailyPoints("weight_reps", [])).toEqual([]);
+  });
+});
+
+describe("saveBodyWeight", () => {
+  // Reads back only the days of the test: the database is shared by the file.
+  function savedIn(year: number) {
+    return bodyWeightsQuery()
+      .all()
+      .filter((row) => row.measuredOn.startsWith(`${year}-`));
+  }
+
+  it("saves the weight under its day", () => {
+    saveBodyWeight(new Date(2033, 2, 10, 8), 80.5);
+
+    expect(savedIn(2033)).toEqual([
+      { id: expect.any(String), measuredOn: "2033-03-10", weightKg: 80.5 },
+    ]);
+  });
+
+  it("replaces the weight when saved again the same day, at any hour", () => {
+    saveBodyWeight(new Date(2034, 5, 1, 10), 81);
+    saveBodyWeight(new Date(2034, 5, 1, 19, 30), 80.2);
+
+    const rows = savedIn(2034);
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0].weightKg).toBe(80.2);
+  });
+
+  it("keeps the same row, and its id, when it replaces a weight", () => {
+    saveBodyWeight(new Date(2035, 0, 5, 9), 90);
+    const [before] = savedIn(2035);
+    saveBodyWeight(new Date(2035, 0, 5, 21), 89);
+
+    expect(savedIn(2035)[0].id).toBe(before.id);
+  });
+
+  it("counts the night and the next morning as two days", () => {
+    saveBodyWeight(new Date(2036, 6, 9, 23, 30), 70);
+    saveBodyWeight(new Date(2036, 6, 10, 0, 10), 71);
+
+    expect(savedIn(2036).map((row) => row.measuredOn)).toEqual([
+      "2036-07-09",
+      "2036-07-10",
+    ]);
+  });
+
+  it("is read oldest day first, whatever the order saved", () => {
+    saveBodyWeight(new Date(2037, 8, 20), 75);
+    saveBodyWeight(new Date(2037, 8, 3), 76);
+
+    expect(savedIn(2037).map((row) => row.measuredOn)).toEqual([
+      "2037-09-03",
+      "2037-09-20",
+    ]);
+  });
+});
+
+describe("toBodyWeightEntries", () => {
+  it("turns each day key into midnight of that day, keeping the order", () => {
+    const entries = toBodyWeightEntries([
+      { id: "a", measuredOn: "2026-10-24", weightKg: 82 },
+      { id: "b", measuredOn: "2026-10-26", weightKg: 81.5 },
+    ]);
+
+    expect(entries).toEqual([
+      { id: "a", date: new Date(2026, 9, 24), weightKg: 82 },
+      { id: "b", date: new Date(2026, 9, 26), weightKg: 81.5 },
+    ]);
+  });
+
+  it("is empty without rows", () => {
+    expect(toBodyWeightEntries([])).toEqual([]);
+  });
+});
+
+describe("toBodyWeightPoints", () => {
+  it("keeps the day and the weight of each entry", () => {
+    const points = toBodyWeightPoints([
+      { id: "a", date: new Date(2026, 9, 24), weightKg: 82 },
+      { id: "b", date: new Date(2026, 9, 26), weightKg: 81.5 },
+    ]);
+
+    expect(points).toEqual([
+      { date: new Date(2026, 9, 24), value: 82 },
+      { date: new Date(2026, 9, 26), value: 81.5 },
+    ]);
   });
 });
