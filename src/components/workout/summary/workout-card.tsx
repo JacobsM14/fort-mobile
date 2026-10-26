@@ -45,37 +45,41 @@ export function WorkoutCard({ workout, onPress }: WorkoutCardProps) {
       disabled={onPress === undefined}
       accessibilityRole={onPress === undefined ? undefined : "button"}
     >
-      <View style={styles.info}>
-        {inProgress && (
-          <Text style={[globalStyles.inputLabel, styles.status]}>
-            {t.progress.inProgress}
-          </Text>
-        )}
-        <Text style={styles.name} numberOfLines={1}>
-          {workout.name ?? t.workout.title}
-        </Text>
-        <Text style={styles.detail}>
-          {[
-            formatDateTime(workout.startedAt, language),
-            durationS > 0 ? formatDuration(durationS) : null,
-          ]
-            .filter((part) => part !== null)
-            .join(" · ")}
-        </Text>
-        <Text style={styles.detail}>
-          {t.progress.summary(workout.exercises.length, workout.setCount)}
-        </Text>
-      </View>
-      {onPress !== undefined && (
-        <SymbolView
-          name={{
-            ios: "chevron.right",
-            android: "chevron_right",
-            web: "chevron_right",
-          }}
-          tintColor={colors.disabled}
-          size={iconSizes.md}
-        />
+      {({ pressed }) => (
+        <>
+          <View style={styles.info}>
+            {inProgress && (
+              <Text style={[globalStyles.inputLabel, styles.status]}>
+                {t.progress.inProgress}
+              </Text>
+            )}
+            <Text style={styles.name} numberOfLines={1}>
+              {workout.name ?? t.workout.title}
+            </Text>
+            <Text style={styles.detail}>
+              {[
+                formatDateTime(workout.startedAt, language),
+                durationS > 0 ? formatDuration(durationS) : null,
+              ]
+                .filter((part) => part !== null)
+                .join(" · ")}
+            </Text>
+            <Text style={styles.detail}>
+              {t.progress.summary(workout.exercises.length, workout.setCount)}
+            </Text>
+          </View>
+          {onPress !== undefined && (
+            <SymbolView
+              name={{
+                ios: "chevron.right",
+                android: "chevron_right",
+                web: "chevron_right",
+              }}
+              tintColor={pressed ? colors.primary : colors.disabled}
+              size={iconSizes.md}
+            />
+          )}
+        </>
       )}
     </Pressable>
   );
