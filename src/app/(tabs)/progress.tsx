@@ -16,6 +16,7 @@ import { ExercisePickerButton } from "@/components/progress/exercise-picker-butt
 import { LineChart } from "@/components/progress/line-chart";
 import { RangeFilter } from "@/components/progress/range-filter";
 import { IconButton } from "@/components/ui/buttons/icon-button";
+import { CornerFrame } from "@/components/ui/layout/corner-frame";
 import { ExerciseSelectMenu } from "@/components/workout/header/exercise-select";
 
 import { useFocusedPress } from "@/hooks/use-focused-press";
@@ -163,8 +164,10 @@ export default function ProgressScreen() {
         <View>
           <Text style={styles.sectionTitle}>{t.progress.strength}</Text>
           {loaded && exercise === undefined && (
-            <View style={styles.section}>
-              <Text style={styles.note}>{t.progress.noTrained}</Text>
+            <View style={[styles.section, styles.emptySection]}>
+              <CornerFrame style={styles.emptyFrame}>
+                <Text style={styles.emptyText}>{t.progress.noTrained}</Text>
+              </CornerFrame>
             </View>
           )}
           {exercise !== undefined && (
@@ -287,7 +290,25 @@ const useStyles = makeStyles(({ colors }) =>
     note: {
       fontSize: fontSizes.caption,
       fontFamily: fontsInstrument.medium,
+      textAlign: "center",
       color: colors.disabled,
+    },
+    // As tall as the chart card it stands in for, so the screen doesn't jump
+    // when the first workout arrives.
+    emptySection: {
+      minHeight: 200,
+      justifyContent: "center",
+      paddingHorizontal: spacing.lg,
+    },
+    emptyFrame: {
+      alignItems: "center",
+      paddingVertical: spacing.lg,
+    },
+    emptyText: {
+      textAlign: "center",
+      fontSize: fontSizes.lead,
+      fontFamily: fontsInstrument.semiBold,
+      color: colors.text,
     },
     pickerRow: {
       flexDirection: "row",
