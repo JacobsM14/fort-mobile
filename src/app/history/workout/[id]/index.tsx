@@ -1,6 +1,6 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { useRef, useState } from "react";
+import { Alert, StyleSheet, Text, View, type HostInstance } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -11,12 +11,18 @@ import {
 import { IconButton } from "@/components/ui/buttons/icon-button";
 import { NoContentBox } from "@/components/ui/content/no-content-box";
 import { BackHeader } from "@/components/ui/layout/back-header";
+import {
+  ActionMenu,
+  type ActionMenuAnchor,
+} from "@/components/ui/overlays/action-menu";
 import { ConfirmDialog } from "@/components/ui/overlays/confirm-dialog";
+import { ExerciseInfoSheet } from "@/components/exercises/exercise-info-sheet";
 import { ExerciseTracker } from "@/components/workout/layout/exercise-tracker";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
+import { getExerciseInfo } from "@/features/exercises/catalog";
 import { useWorkoutEntries } from "@/features/workouts/entries";
 import {
   deleteSet,
@@ -24,6 +30,9 @@ import {
   discardWorkout,
   resetSetTimer,
 } from "@/features/workouts/queries";
+
+import type { ExerciseInfo } from "@/features/exercises/catalog";
+import type { WorkoutEntry } from "@/features/workouts/entries";
 
 import { formatDayHeader } from "@/utils/date";
 import { formatDuration } from "@/utils/duration";
@@ -51,6 +60,47 @@ export default function HistoryWorkoutScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { title, found, entries, startedAt, loaded } = useWorkoutEntries(id);
   const [confirmation, setConfirmation] = useState<Confirmation>();
+  const [menu, setMenu] = useState<{
+    entry: WorkoutEntry;
+    anchor: ActionMenuAnchor;
+  }>();
+  const [info, setInfo] = useState<ExerciseInfo | null>(null);
+  const screenRef = useRef<HostInstance>(null);
+  const menuButtons = useRef(new Map<string, HostInstance>());
+
+  // The button scrolls with the list, so where it is on the screen is only
+  // known when the menu opens: measured against the screen the menu covers.
+  function openMenu(entry: WorkoutEntry) {
+    const button = menuButtons.current.get(entry.id);
+    screenRef.current?.measureInWindow((screenX, screenY, screenWidth) => {
+      button?.measureInWindow((x, y, width, height) => {
+        setMenu({
+          entry,
+          anchor: {
+            top: y - screenY + height + spacing.xs,
+            right: screenWidth - (x - screenX + width),
+          },
+        });
+      });
+    });
+  }
+
+  function selectMenuItem(action: string) {
+    if (menu === undefined) {
+      return;
+    }
+    const { entry } = menu;
+    setMenu(undefined);
+    if (action === "info") {
+      setInfo(getExerciseInfo(entry.summary, t));
+    } else {
+      setConfirmation({
+        kind: "deleteExercise",
+        workoutExerciseId: entry.id,
+        name: entry.name,
+      });
+    }
+  }
 
   function addExercise() {
     router.push({
@@ -121,6 +171,7 @@ export default function HistoryWorkoutScreen() {
 
   return (
     <SafeAreaView
+      ref={screenRef}
       style={[globalStyles.modalScreen, styles.screen]}
       edges={["top", "bottom"]}
     >
@@ -152,18 +203,26 @@ export default function HistoryWorkoutScreen() {
               <Text style={styles.name} numberOfLines={2} ellipsizeMode="tail">
                 {entry.name}
               </Text>
-              <IconButton
-                tone="danger"
-                icon={{ ios: "trash", android: "delete", web: "delete" }}
-                accessibilityLabel={t.history.deleteExercise(entry.name)}
-                onPress={() =>
-                  setConfirmation({
-                    kind: "deleteExercise",
-                    workoutExerciseId: entry.id,
-                    name: entry.name,
-                  })
-                }
-              />
+              <View
+                ref={(node) => {
+                  if (node === null) {
+                    menuButtons.current.delete(entry.id);
+                  } else {
+                    menuButtons.current.set(entry.id, node);
+                  }
+                }}
+              >
+                <IconButton
+                  tone="muted"
+                  icon={{
+                    ios: "ellipsis",
+                    android: "more_horiz",
+                    web: "more_horiz",
+                  }}
+                  accessibilityLabel={t.history.exerciseOptions(entry.name)}
+                  onPress={() => openMenu(entry)}
+                />
+              </View>
             </View>
             <ExerciseTracker
               workoutId={id}
@@ -196,6 +255,28 @@ export default function HistoryWorkoutScreen() {
           />
         </View>
       </View>
+      {menu !== undefined && (
+        <ActionMenu
+          items={[
+            {
+              id: "info",
+              label: t.exercises.showInfo,
+              icon: { ios: "info.circle", android: "info", web: "info" },
+            },
+            {
+              id: "remove",
+              label: t.history.removeExercise,
+              icon: { ios: "trash", android: "delete", web: "delete" },
+              tone: "danger",
+            },
+          ]}
+          anchor={menu.anchor}
+          closeLabel={t.history.closeMenu}
+          onSelect={selectMenuItem}
+          onClose={() => setMenu(undefined)}
+        />
+      )}
+      <ExerciseInfoSheet exercise={info} onClose={() => setInfo(null)} />
       {confirmation !== undefined && (
         <ConfirmDialog
           visible
