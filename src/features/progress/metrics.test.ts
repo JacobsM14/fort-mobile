@@ -7,6 +7,7 @@ import {
   estimatedOneRepMax,
   formatChange,
   formatMetric,
+  formatWeightChange,
   progressChange,
 } from "./metrics";
 
@@ -156,5 +157,24 @@ describe("formatChange", () => {
     expect(formatChange("weight_reps", 10, imperial, es, "en")).toBe(
       "+22 lb · 1RM est.",
     );
+  });
+});
+
+describe("formatWeightChange", () => {
+  const metric = { weight: "kg", distance: "km" } as const;
+
+  it("shows a gain with a plus and a loss with a minus", () => {
+    expect(formatWeightChange(0.4, metric, "es")).toBe("+0,4 kg");
+    expect(formatWeightChange(-1.3, metric, "es")).toBe("-1,3 kg");
+  });
+
+  it("carries no sign when it rounds to nothing", () => {
+    expect(formatWeightChange(0.01, metric, "es")).toBe("0 kg");
+    expect(formatWeightChange(0, metric, "es")).toBe("0 kg");
+  });
+
+  it("converts to the user's units", () => {
+    const imperial = { weight: "lb", distance: "mi" } as const;
+    expect(formatWeightChange(1, imperial, "en")).toBe("+2.2 lb");
   });
 });

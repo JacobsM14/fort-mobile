@@ -187,6 +187,24 @@ export function toBodyWeightPoints(
   return entries.map((entry) => ({ date: entry.date, value: entry.weightKg }));
 }
 
+export type RecentBodyWeight = BodyWeightEntry & { changeKg: number | null };
+
+// The last weigh-ins, the latest first, each with what it changed from the
+// one before it. The first ever weigh-in has nothing to compare with.
+export function recentBodyWeights(
+  entries: readonly BodyWeightEntry[],
+  count: number,
+): RecentBodyWeight[] {
+  return entries
+    .map((entry, index) => ({
+      ...entry,
+      changeKg:
+        index === 0 ? null : entry.weightKg - entries[index - 1].weightKg,
+    }))
+    .slice(-count)
+    .reverse();
+}
+
 // One live query for the chart and the list: both read the same entries.
 export function useBodyWeights() {
   const { data, updatedAt } = useLiveQuery(bodyWeightsQuery(), []);

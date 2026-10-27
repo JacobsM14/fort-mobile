@@ -119,7 +119,7 @@ export const en: Translations = {
       `${metric}: from ${first} to ${last} over ${days} ${days === 1 ? "day" : "days"}`,
     chartHint: "Swipe up or down to change the day",
     noData: "No data in this period",
-    noWeight: "You need at least 3 records",
+    noWeight: "No weight recorded yet.",
     noTrained: "Log a workout to see your progress here",
     changeLabel: (change) => `Change over the period: ${change}`,
     oneRepMaxShort: "est. 1RM",
@@ -135,6 +135,8 @@ export const en: Translations = {
     increaseWeight: "Increase weight",
     weightInput: "Body weight",
     oneWeightPerDay: "You can only have one weight entry per day.",
+    weightHistory: "Weight history",
+    openWeightHistory: "View all",
   },
   history: {
     title: "History",

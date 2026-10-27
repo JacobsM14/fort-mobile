@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ExerciseInfoSheet } from "@/components/exercises/exercise-info-sheet";
 import { BodyWeightEntry } from "@/components/progress/body-weight-entry";
+import { DashedArrow } from "@/components/progress/dashed-arrow";
 import { ExercisePickerButton } from "@/components/progress/exercise-picker-button";
 import { LineChart } from "@/components/progress/line-chart";
 import { RangeFilter } from "@/components/progress/range-filter";
@@ -29,9 +30,11 @@ import { getExerciseInfo, getExerciseText } from "@/features/exercises/catalog";
 import {
   formatChange,
   formatMetric,
+  formatWeightChange,
   progressChange,
 } from "@/features/progress/metrics";
 import {
+  recentBodyWeights,
   saveBodyWeight,
   toBodyWeightPoints,
   useBodyWeights,
@@ -58,6 +61,7 @@ import {
 
 // Where the weight box starts until there is a weigh-in to start from.
 const DEFAULT_WEIGHT_KG = 70;
+const RECENT_WEIGHTS = 5;
 
 export default function ProgressScreen() {
   const { t, language } = useTranslation();
@@ -112,8 +116,10 @@ export default function ProgressScreen() {
   const lastWeight = weightPoints.at(-1);
   // The box starts from the latest weigh-in, whatever the range filtered.
   const latestWeightKg = entries.at(-1)?.weightKg ?? DEFAULT_WEIGHT_KG;
+  // The last five weigh-ins, the latest first.
+  const recentWeights = recentBodyWeights(entries, RECENT_WEIGHTS);
   const formatWeight = (kg: number) =>
-    `${formatDecimal(Math.round(weightToUnit(kg, units.weight) * 10) / 10, language)} ${units.weight}`;
+    `${formatDecimal(Math.round(weightToUnit(kg, units.weight) * 10) / 10, language)}${units.weight}`;
 
   function showInfo() {
     if (exercise !== undefined) {
@@ -243,17 +249,14 @@ export default function ProgressScreen() {
           <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
             {t.progress.bodyWeight}
           </Text>
-          {weightsLoaded && weightPoints.length < 3 ? (
+          {weightsLoaded && weightPoints.length === 0 ? (
             <View style={[styles.section, styles.emptySection]}>
-              <CornerFrame style={styles.emptyFrame}>
-                <Text style={styles.emptyText}>{t.progress.noWeight}</Text>
-                <Text style={globalStyles.subtitle}>
-                  ({weightPoints.length}/3)
-                </Text>
-              </CornerFrame>
-              <Text style={[styles.note, styles.noteBottom]}>
-                {t.progress.oneWeightPerDay}
-              </Text>
+              <View style={styles.emptyCenter}>
+                <CornerFrame style={styles.emptyFrame}>
+                  <Text style={styles.emptyText}>{t.progress.noWeight}</Text>
+                </CornerFrame>
+              </View>
+              <Text style={styles.note}>{t.progress.oneWeightPerDay}</Text>
             </View>
           ) : (
             <View style={styles.section}>
@@ -273,6 +276,7 @@ export default function ProgressScreen() {
                       )
                 }
               />
+              <Text style={styles.note}>{t.progress.oneWeightPerDay}</Text>
             </View>
           )}
         </View>
@@ -285,13 +289,47 @@ export default function ProgressScreen() {
               {t.progress.today} · {formatShortDay(new Date(), language)}
             </Text>
           </View>
-          {/* Starts from the latest weight, which is only known once loaded. */}
           {weightsLoaded && (
             <BodyWeightEntry
               initialKg={latestWeightKg}
               onSave={(kg) => saveBodyWeight(new Date(), kg)}
             />
           )}
+        </View>
+        <View style={styles.entrySection}>
+          <View style={styles.entryHeader}>
+            <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
+              {t.progress.weightHistory}
+            </Text>
+            <Text style={styles.today}>{t.progress.openWeightHistory}</Text>
+          </View>
+          <View>
+            {recentWeights.map((entry) => (
+              <View key={entry.id} style={styles.weightRow}>
+                <Text style={styles.weightDate}>
+                  {formatShortDay(entry.date, language)}
+                </Text>
+                <View style={styles.weightArrow}>
+                  <DashedArrow />
+                </View>
+                <View style={styles.weightValues}>
+                  {entry.changeKg !== null && (
+                    <Text
+                      style={[
+                        styles.weightChange,
+                        entry.changeKg === 0 && styles.changeFlat,
+                      ]}
+                    >
+                      {formatWeightChange(entry.changeKg, units, language)}
+                    </Text>
+                  )}
+                  <Text style={styles.weightValue}>
+                    {formatWeight(entry.weightKg)}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </View>
         </View>
       </ScrollView>
       {menuAnchor !== undefined && (
@@ -338,6 +376,35 @@ const useStyles = makeStyles(({ colors }) =>
       fontFamily: fontsJetBrainsMono.bold,
       color: colors.primary,
     },
+    weightRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: spacing.xs,
+    },
+    weightDate: {
+      fontSize: fontSizes.label,
+      fontFamily: fontsInstrument.bold,
+      color: colors.text,
+    },
+    weightArrow: {
+      flex: 1,
+      marginHorizontal: spacing.sm,
+    },
+    weightValues: {
+      flexDirection: "row",
+      alignItems: "baseline",
+      gap: spacing.xs,
+    },
+    weightValue: {
+      fontSize: fontSizes.label,
+      fontFamily: fontsJetBrainsMono.bold,
+      color: colors.text,
+    },
+    weightChange: {
+      fontSize: fontSizes.caption,
+      fontFamily: fontsJetBrainsMono.medium,
+      color: colors.disabled,
+    },
     section: {
       gap: spacing.sm,
       borderWidth: 1,
@@ -348,14 +415,8 @@ const useStyles = makeStyles(({ colors }) =>
     note: {
       fontSize: fontSizes.caption,
       fontFamily: fontsInstrument.medium,
-      textAlign: "center",
+      textAlign: "left",
       color: colors.disabled,
-    },
-    // Stuck to the bottom of the box, so it doesn't push the framed text off center.
-    noteBottom: {
-      position: "absolute",
-      bottom: spacing.sm,
-      left: spacing.sm,
     },
     // As tall as the chart card it stands in for, so the screen doesn't jump
     // when the first workout arrives.
@@ -363,6 +424,11 @@ const useStyles = makeStyles(({ colors }) =>
       minHeight: 200,
       justifyContent: "center",
       paddingHorizontal: spacing.lg,
+    },
+    // Takes the room the note leaves, so the framed text stays centered above it.
+    emptyCenter: {
+      flex: 1,
+      justifyContent: "center",
     },
     emptyFrame: {
       alignItems: "center",

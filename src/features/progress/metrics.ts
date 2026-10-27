@@ -96,6 +96,21 @@ export function formatMetric(
   }
 }
 
+function signed(rounded: number, text: string) {
+  return `${rounded > 0 ? "+" : rounded < 0 ? "-" : ""}${text}`;
+}
+
+// A change in body weight as it reads next to a weigh-in: "+0,4 kg".
+// A change that rounds to nothing carries no sign.
+export function formatWeightChange(
+  changeKg: number,
+  units: Units,
+  language: Language,
+) {
+  const rounded = roundToTenth(weightToUnit(changeKg, units.weight));
+  return `${signed(rounded, formatDecimal(Math.abs(rounded), language))}`;
+}
+
 // A change as it reads under the picker: "+16 kg · 1RM est.", "+1,2 km/h".
 // A change that rounds to nothing carries no sign.
 export function formatChange(
@@ -105,9 +120,6 @@ export function formatChange(
   t: Translations,
   language: Language,
 ) {
-  function signed(rounded: number, text: string) {
-    return `${rounded > 0 ? "+" : rounded < 0 ? "-" : ""}${text}`;
-  }
   switch (trackingType) {
     case "weight_reps": {
       const rounded = roundToTenth(weightToUnit(change, units.weight));

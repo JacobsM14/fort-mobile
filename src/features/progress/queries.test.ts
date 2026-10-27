@@ -14,6 +14,7 @@ import {
 
 import {
   bodyWeightsQuery,
+  recentBodyWeights,
   exerciseSetsQuery,
   saveBodyWeight,
   toBodyWeightEntries,
@@ -333,5 +334,37 @@ describe("toBodyWeightPoints", () => {
       { date: new Date(2026, 9, 24), value: 82 },
       { date: new Date(2026, 9, 26), value: 81.5 },
     ]);
+  });
+});
+
+describe("recentBodyWeights", () => {
+  const entry = (day: number, weightKg: number) => ({
+    id: `d${day}`,
+    date: new Date(2026, 9, day),
+    weightKg,
+  });
+
+  it("lists the latest first, each with its change from the day before", () => {
+    const result = recentBodyWeights(
+      [entry(20, 82), entry(22, 81.5), entry(25, 82.5)],
+      5,
+    );
+
+    expect(result.map((item) => item.id)).toEqual(["d25", "d22", "d20"]);
+    expect(result.map((item) => item.changeKg)).toEqual([1, -0.5, null]);
+  });
+
+  it("keeps the last ones, comparing the oldest shown with the one before", () => {
+    const result = recentBodyWeights(
+      [entry(1, 80), entry(2, 81), entry(3, 79), entry(4, 79)],
+      2,
+    );
+
+    expect(result.map((item) => item.id)).toEqual(["d4", "d3"]);
+    expect(result.map((item) => item.changeKg)).toEqual([0, -2]);
+  });
+
+  it("is empty without weigh-ins", () => {
+    expect(recentBodyWeights([], 5)).toEqual([]);
   });
 });
