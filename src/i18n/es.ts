@@ -7,6 +7,7 @@ import type {
   TrackingType,
 } from "@/constants/enums";
 import type { ExerciseKey, MuscleId } from "@/features/exercises/catalog";
+import type { BmiCategory } from "@/features/progress/bmi";
 import type { ProgressRange } from "@/features/progress/ranges";
 
 export const es = {
@@ -148,6 +149,26 @@ export const es = {
     weightInput: "Peso corporal",
     oneWeightPerDay: "Solo puedes tener un registro de peso por día.",
     weightViews: { chart: "Gráfica", list: "Lista" },
+    bmi: "Índice de masa corporal",
+    bmiCategories: {
+      underweight: "Bajo peso",
+      normal: "Peso normal",
+      overweight: "Sobrepeso",
+      obese: "Obesidad",
+    } satisfies Record<BmiCategory, string>,
+    bmiBands: {
+      underweight: "Bajo",
+      normal: "Normal",
+      overweight: "Sobrepeso",
+      obese: "Obesidad",
+    } satisfies Record<BmiCategory, string>,
+    bmiToIdeal: {
+      over: (weight: string) => `Te sobran ${weight} para tu peso ideal`,
+      under: (weight: string) => `Te faltan ${weight} para tu peso ideal`,
+      inRange: (weight: string) => `En tu peso ideal, a ${weight} del límite`,
+    },
+    bmiSummary: (score: string, category: string) =>
+      `IMC ${score}: ${category}`,
   },
   history: {
     title: "Historial",

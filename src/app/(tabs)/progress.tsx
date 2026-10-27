@@ -12,6 +12,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ExerciseInfoSheet } from "@/components/exercises/exercise-info-sheet";
+import { BmiScale } from "@/components/progress/bmi-scale";
 import { BodyWeightEntry } from "@/components/progress/body-weight-entry";
 import { DashedArrow } from "@/components/progress/dashed-arrow";
 import { ExercisePickerButton } from "@/components/progress/exercise-picker-button";
@@ -28,6 +29,7 @@ import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
 
 import { getExerciseInfo, getExerciseText } from "@/features/exercises/catalog";
+import { bmiCategory } from "@/features/progress/bmi";
 import {
   formatChange,
   formatMetric,
@@ -43,6 +45,7 @@ import {
   useTrainedExercises,
 } from "@/features/progress/queries";
 import { pointsInRange } from "@/features/progress/ranges";
+import { SAMPLE_BMI } from "@/features/progress/sample-data";
 
 import type { WeightView } from "@/components/progress/view-toggle";
 import type { MenuAnchor } from "@/components/workout/header/exercise-select";
@@ -130,6 +133,17 @@ export default function ProgressScreen() {
     (weightView === "chart" ? weightPoints.length : recentWeights.length) === 0;
   const formatWeight = (kg: number) =>
     `${formatDecimal(Math.round(weightToUnit(kg, units.weight) * 10) / 10, language)}${units.weight}`;
+
+  // BMI, sample values until the height is asked.
+  const bmi = bmiCategory(SAMPLE_BMI.value);
+  const bmiScore = formatDecimal(SAMPLE_BMI.value, language);
+  const bmiDistance = formatWeight(SAMPLE_BMI.toIdealKg);
+  const bmiHint =
+    bmi === "normal"
+      ? t.progress.bmiToIdeal.inRange(bmiDistance)
+      : bmi === "underweight"
+        ? t.progress.bmiToIdeal.under(bmiDistance)
+        : t.progress.bmiToIdeal.over(bmiDistance);
 
   function showInfo() {
     if (exercise !== undefined) {
@@ -338,6 +352,29 @@ export default function ProgressScreen() {
             />
           )}
         </View>
+        <View>
+          <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
+            {t.progress.bmi}
+          </Text>
+          <View
+            accessible
+            accessibilityLabel={t.progress.bmiSummary(
+              bmiScore,
+              t.progress.bmiCategories[bmi],
+            )}
+          >
+            <View style={styles.bmiRow}>
+              <BmiScale value={SAMPLE_BMI.value} />
+              <View style={styles.bmiText}>
+                <Text style={styles.bmiScore}>{bmiScore}</Text>
+                <Text style={styles.bmiCategory}>
+                  {t.progress.bmiCategories[bmi]}
+                </Text>
+                <Text style={styles.bmiHint}>{bmiHint}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
       </ScrollView>
       {menuAnchor !== undefined && (
         <ExerciseSelectMenu
@@ -370,6 +407,30 @@ const useStyles = makeStyles(({ colors }) =>
     sectionTitle: {
       color: colors.border,
       paddingBottom: spacing.xs,
+    },
+    bmiRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: spacing.md,
+    },
+    bmiText: {
+      flex: 1,
+      gap: spacing.xs,
+    },
+    bmiScore: {
+      fontSize: fontSizes.score,
+      fontFamily: fontsJetBrainsMono.bold,
+      color: colors.text,
+    },
+    bmiCategory: {
+      fontSize: fontSizes.body,
+      fontFamily: fontsInstrument.semiBold,
+      color: colors.text,
+    },
+    bmiHint: {
+      fontSize: fontSizes.caption,
+      fontFamily: fontsJetBrainsMono.medium,
+      color: colors.disabled,
     },
     entrySection: {
       gap: spacing.xs,

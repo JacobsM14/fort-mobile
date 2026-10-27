@@ -24,10 +24,11 @@ export type Colors = BaseColors &
   AccentShades & {
     // The accent diluted over the background, for highlighted cards.
     primaryTint: string;
+    primarySoft: string;
   };
 
-// Alpha of primaryTint, about 15 %.
 const TINT_ALPHA = "26";
+const SOFT_ALPHA = "80";
 
 const baseColors: Record<ColorScheme, BaseColors> = {
   dark: {
@@ -123,6 +124,7 @@ export const fontSizes = {
   stepper: 26,
   entry: 34,
   display: 46,
+  score: 56,
   timer: 72,
 };
 
@@ -279,6 +281,7 @@ function createTheme(scheme: ColorScheme, accent: AccentColor): Theme {
     ...baseColors[scheme],
     ...shades,
     primaryTint: `${shades.primary}${TINT_ALPHA}`,
+    primarySoft: `${shades.primary}${SOFT_ALPHA}`,
   };
   return { scheme, accent, colors, globalStyles: createGlobalStyles(colors) };
 }

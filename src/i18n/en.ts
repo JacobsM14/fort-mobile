@@ -136,6 +136,26 @@ export const en: Translations = {
     weightInput: "Body weight",
     oneWeightPerDay: "You can only have one weight entry per day.",
     weightViews: { chart: "Chart", list: "List" },
+    bmi: "Body Mass Index",
+    bmiCategories: {
+      underweight: "Underweight",
+      normal: "Normal weight",
+      overweight: "Overweight",
+      obese: "Obesity",
+    },
+    bmiBands: {
+      underweight: "Under",
+      normal: "Normal",
+      overweight: "Overweight",
+      obese: "Obese",
+    },
+    bmiToIdeal: {
+      over: (weight: string) => `${weight} above your ideal weight`,
+      under: (weight: string) => `${weight} below your ideal weight`,
+      inRange: (weight: string) => `Ideal weight, ${weight} from the limit`,
+    },
+    bmiSummary: (score: string, category: string) =>
+      `BMI ${score}: ${category}`,
   },
   history: {
     title: "History",
