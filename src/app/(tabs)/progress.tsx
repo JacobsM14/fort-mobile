@@ -17,6 +17,7 @@ import { DashedArrow } from "@/components/progress/dashed-arrow";
 import { ExercisePickerButton } from "@/components/progress/exercise-picker-button";
 import { LineChart } from "@/components/progress/line-chart";
 import { RangeFilter } from "@/components/progress/range-filter";
+import { ViewToggle } from "@/components/progress/view-toggle";
 import { IconButton } from "@/components/ui/buttons/icon-button";
 import { CornerFrame } from "@/components/ui/layout/corner-frame";
 import { ExerciseSelectMenu } from "@/components/workout/header/exercise-select";
@@ -43,6 +44,7 @@ import {
 } from "@/features/progress/queries";
 import { pointsInRange } from "@/features/progress/ranges";
 
+import type { WeightView } from "@/components/progress/view-toggle";
 import type { MenuAnchor } from "@/components/workout/header/exercise-select";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
 import type { ProgressRange } from "@/features/progress/ranges";
@@ -62,6 +64,9 @@ import {
 // Where the weight box starts until there is a weigh-in to start from.
 const DEFAULT_WEIGHT_KG = 70;
 const RECENT_WEIGHTS = 5;
+// As tall as the box with the chart (padding, toggle, 200 of chart and note),
+// so switching to a short list doesn't make the screen jump.
+const WEIGHT_BOX_MIN_HEIGHT = 300;
 
 export default function ProgressScreen() {
   const { t, language } = useTranslation();
@@ -74,6 +79,7 @@ export default function ProgressScreen() {
   const [selectedId, setSelectedId] = useState<string>();
   const [menuAnchor, setMenuAnchor] = useState<MenuAnchor>();
   const [range, setRange] = useState<ProgressRange>("3m");
+  const [weightView, setWeightView] = useState<WeightView>("chart");
   const screenRef = useRef<HostInstance>(null);
   const headerRef = useRef<HostInstance>(null);
 
@@ -118,6 +124,10 @@ export default function ProgressScreen() {
   const latestWeightKg = entries.at(-1)?.weightKg ?? DEFAULT_WEIGHT_KG;
   // The last five weigh-ins, the latest first.
   const recentWeights = recentBodyWeights(entries, RECENT_WEIGHTS);
+  // The chart follows the range; the list is the latest weigh-ins, whenever.
+  const weightsEmpty =
+    weightsLoaded &&
+    (weightView === "chart" ? weightPoints.length : recentWeights.length) === 0;
   const formatWeight = (kg: number) =>
     `${formatDecimal(Math.round(weightToUnit(kg, units.weight) * 10) / 10, language)}${units.weight}`;
 
@@ -249,36 +259,68 @@ export default function ProgressScreen() {
           <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
             {t.progress.bodyWeight}
           </Text>
-          {weightsLoaded && weightPoints.length === 0 ? (
-            <View style={[styles.section, styles.emptySection]}>
-              <View style={styles.emptyCenter}>
-                <CornerFrame style={styles.emptyFrame}>
-                  <Text style={styles.emptyText}>{t.progress.noWeight}</Text>
-                </CornerFrame>
-              </View>
-              <Text style={styles.note}>{t.progress.oneWeightPerDay}</Text>
+          <View style={[styles.section, styles.weightBox]}>
+            <ViewToggle value={weightView} onChange={setWeightView} />
+            <View style={styles.weightBody}>
+              {weightsEmpty ? (
+                <View style={styles.emptyBody}>
+                  <CornerFrame style={styles.emptyFrame}>
+                    <Text style={styles.emptyText}>{t.progress.noWeight}</Text>
+                  </CornerFrame>
+                </View>
+              ) : weightView === "chart" ? (
+                <LineChart
+                  key={`body-weight-${range}`}
+                  points={weightPoints}
+                  color={colors.text}
+                  formatValue={formatWeight}
+                  accessibilityLabel={
+                    firstWeight === undefined || lastWeight === undefined
+                      ? t.progress.bodyWeight
+                      : t.progress.chartSummary(
+                          t.progress.bodyWeight,
+                          formatWeight(firstWeight.value),
+                          formatWeight(lastWeight.value),
+                          weightPoints.length,
+                        )
+                  }
+                />
+              ) : (
+                <View>
+                  {recentWeights.map((entry) => (
+                    <View key={entry.id} style={styles.weightRow}>
+                      <Text style={styles.weightDate}>
+                        {formatShortDay(entry.date, language)}
+                      </Text>
+                      <View style={styles.weightArrow}>
+                        <DashedArrow />
+                      </View>
+                      <View style={styles.weightValues}>
+                        {entry.changeKg !== null && (
+                          <Text
+                            style={[
+                              styles.weightChange,
+                              entry.changeKg === 0 && styles.changeFlat,
+                            ]}
+                          >
+                            {formatWeightChange(
+                              entry.changeKg,
+                              units,
+                              language,
+                            )}
+                          </Text>
+                        )}
+                        <Text style={styles.weightValue}>
+                          {formatWeight(entry.weightKg)}
+                        </Text>
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              )}
             </View>
-          ) : (
-            <View style={styles.section}>
-              <LineChart
-                key={`body-weight-${range}`}
-                points={weightPoints}
-                color={colors.text}
-                formatValue={formatWeight}
-                accessibilityLabel={
-                  firstWeight === undefined || lastWeight === undefined
-                    ? t.progress.bodyWeight
-                    : t.progress.chartSummary(
-                        t.progress.bodyWeight,
-                        formatWeight(firstWeight.value),
-                        formatWeight(lastWeight.value),
-                        weightPoints.length,
-                      )
-                }
-              />
-              <Text style={styles.note}>{t.progress.oneWeightPerDay}</Text>
-            </View>
-          )}
+            <Text style={styles.note}>{t.progress.oneWeightPerDay}</Text>
+          </View>
         </View>
         <View style={styles.entrySection}>
           <View style={styles.entryHeader}>
@@ -295,41 +337,6 @@ export default function ProgressScreen() {
               onSave={(kg) => saveBodyWeight(new Date(), kg)}
             />
           )}
-        </View>
-        <View style={styles.entrySection}>
-          <View style={styles.entryHeader}>
-            <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
-              {t.progress.weightHistory}
-            </Text>
-            <Text style={styles.today}>{t.progress.openWeightHistory}</Text>
-          </View>
-          <View>
-            {recentWeights.map((entry) => (
-              <View key={entry.id} style={styles.weightRow}>
-                <Text style={styles.weightDate}>
-                  {formatShortDay(entry.date, language)}
-                </Text>
-                <View style={styles.weightArrow}>
-                  <DashedArrow />
-                </View>
-                <View style={styles.weightValues}>
-                  {entry.changeKg !== null && (
-                    <Text
-                      style={[
-                        styles.weightChange,
-                        entry.changeKg === 0 && styles.changeFlat,
-                      ]}
-                    >
-                      {formatWeightChange(entry.changeKg, units, language)}
-                    </Text>
-                  )}
-                  <Text style={styles.weightValue}>
-                    {formatWeight(entry.weightKg)}
-                  </Text>
-                </View>
-              </View>
-            ))}
-          </View>
         </View>
       </ScrollView>
       {menuAnchor !== undefined && (
@@ -412,6 +419,14 @@ const useStyles = makeStyles(({ colors }) =>
       padding: spacing.sm,
       backgroundColor: colors.backgroundSecondary,
     },
+    weightBox: {
+      minHeight: WEIGHT_BOX_MIN_HEIGHT,
+    },
+    // Takes the room the note leaves, so the note stays at the bottom whatever
+    // the view.
+    weightBody: {
+      flex: 1,
+    },
     note: {
       fontSize: fontSizes.caption,
       fontFamily: fontsInstrument.medium,
@@ -425,10 +440,10 @@ const useStyles = makeStyles(({ colors }) =>
       justifyContent: "center",
       paddingHorizontal: spacing.lg,
     },
-    // Takes the room the note leaves, so the framed text stays centered above it.
-    emptyCenter: {
+    emptyBody: {
       flex: 1,
       justifyContent: "center",
+      paddingHorizontal: spacing.lg,
     },
     emptyFrame: {
       alignItems: "center",

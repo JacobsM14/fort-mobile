@@ -100,7 +100,8 @@ function signed(rounded: number, text: string) {
   return `${rounded > 0 ? "+" : rounded < 0 ? "-" : ""}${text}`;
 }
 
-// A change in body weight as it reads next to a weigh-in: "+0,4 kg".
+// A change in body weight as it reads next to a weigh-in, which already shows
+// the unit: "+0,4".
 // A change that rounds to nothing carries no sign.
 export function formatWeightChange(
   changeKg: number,
@@ -108,7 +109,7 @@ export function formatWeightChange(
   language: Language,
 ) {
   const rounded = roundToTenth(weightToUnit(changeKg, units.weight));
-  return `${signed(rounded, formatDecimal(Math.abs(rounded), language))}`;
+  return signed(rounded, formatDecimal(Math.abs(rounded), language));
 }
 
 // A change as it reads under the picker: "+16 kg · 1RM est.", "+1,2 km/h".
