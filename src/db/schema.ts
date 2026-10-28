@@ -203,10 +203,10 @@ export const routineSets = sqliteTable(
   ],
 );
 
-// Mantaining id becasue of potential future api requirements
-// A day, not an instant ("2026-10-24", local time): one weigh-in per day.
 export const bodyWeights = sqliteTable("body_weights", {
+  // The key is an id, not the day: a future API may need one.
   id: text("id").primaryKey(),
+  // A day, not an instant ("2026-10-24", local time): one weigh-in per day.
   measuredOn: text("measured_on").notNull().unique(),
   weightKg: real("weight_kg").notNull(),
   ...timestamps,

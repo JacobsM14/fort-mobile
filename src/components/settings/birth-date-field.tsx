@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+import { ProfileField } from "@/components/settings/profile-field";
+
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import { ProfileField } from "@/components/settings/profile-field";
 import { parseBirthDate } from "@/features/settings/profile-input";
 
 import { parseDateKey } from "@/utils/date";
