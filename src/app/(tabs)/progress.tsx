@@ -127,6 +127,8 @@ export default function ProgressScreen() {
   const latestWeightKg = entries.at(-1)?.weightKg ?? DEFAULT_WEIGHT_KG;
   // The last five weigh-ins, the latest first.
   const recentWeights = recentBodyWeights(entries, RECENT_WEIGHTS);
+  // Nothing to switch between or to filter while there are no weigh-ins.
+  const hasWeights = entries.length > 0;
   // The chart follows the range; the list is the latest weigh-ins, whenever.
   const weightsEmpty =
     weightsLoaded &&
@@ -274,7 +276,9 @@ export default function ProgressScreen() {
             {t.progress.bodyWeight}
           </Text>
           <View style={[styles.section, styles.weightBox]}>
-            <ViewToggle value={weightView} onChange={setWeightView} />
+            {hasWeights && (
+              <ViewToggle value={weightView} onChange={setWeightView} />
+            )}
             <View style={styles.weightBody}>
               {weightsEmpty ? (
                 <View style={styles.emptyBody}>
