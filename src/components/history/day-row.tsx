@@ -20,6 +20,7 @@ import {
   fontSizes,
   fontsJetBrainsMono,
   iconSizes,
+  lineHeights,
   radii,
   spacing,
 } from "@/constants/theme";
@@ -134,11 +135,11 @@ const useStyles = makeStyles(({ colors }) =>
       color: colors.disabled,
     },
     weight: {
-      height: 26,
+      height: lineHeights.lead,
       flexDirection: "row",
       alignItems: "center",
-      gap: 5,
-      paddingHorizontal: 9,
+      gap: spacing.badgeGap,
+      paddingHorizontal: spacing.badgeInset,
       borderWidth: 1,
       borderColor: colors.disabled,
       borderRadius: radii.sm,

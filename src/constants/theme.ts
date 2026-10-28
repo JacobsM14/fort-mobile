@@ -109,6 +109,8 @@ export const spacing = {
   sm: 12,
   md: 16,
   lg: 24,
+  badgeGap: 5,
+  badgeInset: 9,
 };
 
 export const fontSizes = {
