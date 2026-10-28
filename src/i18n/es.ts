@@ -1,5 +1,6 @@
 import type {
   AccentColor,
+  Gender,
   Equipment,
   LanguagePreference,
   MuscleGroup,
@@ -296,6 +297,25 @@ export const es = {
       weight: "Peso",
       distance: "Distancia",
       system: "Sistema",
+    },
+    user: {
+      height: "Altura",
+      cm: "cm",
+      feet: "ft",
+      inches: "in",
+      birthDate: "Fecha de nacimiento",
+      day: "DD",
+      month: "MM",
+      year: "AAAA",
+      intro:
+        "Para un mejor cálculo de tu IMC, completa tu altura y fecha de nacimiento. La altura es obligatoria para calcular el IMC, pero la edad también puede influir en el resultado.",
+      invalidDate: "Esa fecha no existe o aún no ha llegado.",
+      gender: "Género",
+      genders: {
+        female: "Mujer",
+        male: "Hombre",
+        other: "Otro / Prefiero no decirlo",
+      } satisfies Record<Gender, string>,
     },
     sections: {
       user: "Usuario",

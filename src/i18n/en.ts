@@ -282,6 +282,25 @@ export const en: Translations = {
       distance: "Distance",
       system: "System",
     },
+    user: {
+      height: "Height",
+      cm: "cm",
+      feet: "ft",
+      inches: "in",
+      birthDate: "Date of birth",
+      day: "DD",
+      month: "MM",
+      year: "YYYY",
+      intro:
+        "For a better BMI estimate, fill in your height and date of birth. Height is required to work out your BMI, but age can also affect the result.",
+      invalidDate: "That date doesn't exist or hasn't come yet.",
+      gender: "Gender",
+      genders: {
+        female: "Female",
+        male: "Male",
+        other: "Other / Prefer not to say",
+      },
+    },
     sections: {
       user: "User",
       privacy: "Privacy policy and licenses",
