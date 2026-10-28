@@ -136,6 +136,7 @@ export const lineHeights = {
 export const radii = {
   sm: 2,
   md: 8,
+  lg: 16,
 };
 
 export const iconSizes = {
@@ -168,6 +169,10 @@ function createGlobalStyles(colors: Colors) {
       alignItems: "center",
       gap: spacing.sm,
       paddingBottom: spacing.sm,
+    },
+    // A small title above its box: wraps both so the gap is the same everywhere.
+    titledSection: {
+      gap: spacing.xs,
     },
     centered: {
       flex: 1,
