@@ -96,6 +96,27 @@ export function formatMetric(
   }
 }
 
+// A body weight in the user's unit, without it: "72,4".
+export function formatBodyWeightValue(
+  weightKg: number,
+  units: Units,
+  language: Language,
+) {
+  return formatDecimal(
+    roundToTenth(weightToUnit(weightKg, units.weight)),
+    language,
+  );
+}
+
+// The same with the unit after it: "72,4kg".
+export function formatBodyWeight(
+  weightKg: number,
+  units: Units,
+  language: Language,
+) {
+  return `${formatBodyWeightValue(weightKg, units, language)}${units.weight}`;
+}
+
 function signed(rounded: number, text: string) {
   return `${rounded > 0 ? "+" : rounded < 0 ? "-" : ""}${text}`;
 }

@@ -13,12 +13,16 @@ import {
 } from "@/features/workouts/queries";
 
 import {
+  bodyWeightOnDay,
+  deleteBodyWeight,
   bodyWeightsQuery,
+  latestBodyWeightKg,
   recentBodyWeights,
   exerciseSetsQuery,
   saveBodyWeight,
   toBodyWeightEntries,
   toBodyWeightPoints,
+  toBodyWeightsByDay,
   toDailyPoints,
   toTrainedExercises,
   trainedExercisesQuery,
@@ -250,14 +254,14 @@ describe("toDailyPoints", () => {
   });
 });
 
-describe("saveBodyWeight", () => {
-  // Reads back only the days of the test: the database is shared by the file.
-  function savedIn(year: number) {
-    return bodyWeightsQuery()
-      .all()
-      .filter((row) => row.measuredOn.startsWith(`${year}-`));
-  }
+// Reads back only the days of the test: the database is shared by the file.
+function savedIn(year: number) {
+  return bodyWeightsQuery()
+    .all()
+    .filter((row) => row.measuredOn.startsWith(`${year}-`));
+}
 
+describe("saveBodyWeight", () => {
   it("saves the weight under its day", () => {
     saveBodyWeight(new Date(2033, 2, 10, 8), 80.5);
 
@@ -305,6 +309,25 @@ describe("saveBodyWeight", () => {
   });
 });
 
+describe("deleteBodyWeight", () => {
+  it("removes the weigh-in of that day only, whatever the hour", () => {
+    saveBodyWeight(new Date(2038, 3, 4, 8), 70);
+    saveBodyWeight(new Date(2038, 3, 5, 8), 71);
+
+    deleteBodyWeight(new Date(2038, 3, 4, 22));
+
+    expect(savedIn(2038).map((row) => row.measuredOn)).toEqual(["2038-04-05"]);
+  });
+
+  it("does nothing on a day without weigh-in", () => {
+    saveBodyWeight(new Date(2039, 0, 2), 70);
+
+    deleteBodyWeight(new Date(2039, 0, 3));
+
+    expect(savedIn(2039)).toHaveLength(1);
+  });
+});
+
 describe("toBodyWeightEntries", () => {
   it("turns each day key into midnight of that day, keeping the order", () => {
     const entries = toBodyWeightEntries([
@@ -334,6 +357,59 @@ describe("toBodyWeightPoints", () => {
       { date: new Date(2026, 9, 24), value: 82 },
       { date: new Date(2026, 9, 26), value: 81.5 },
     ]);
+  });
+});
+
+describe("toBodyWeightsByDay", () => {
+  it("looks each weigh-in up by its day key", () => {
+    const byDay = toBodyWeightsByDay([
+      { id: "a", date: new Date(2026, 9, 24), weightKg: 82 },
+      { id: "b", date: new Date(2026, 9, 26), weightKg: 81.5 },
+    ]);
+
+    expect(byDay.get("2026-10-24")).toBe(82);
+    expect(byDay.get("2026-10-26")).toBe(81.5);
+    expect(byDay.get("2026-10-25")).toBeUndefined();
+  });
+});
+
+describe("latestBodyWeightKg", () => {
+  it("starts from the latest weigh-in", () => {
+    expect(
+      latestBodyWeightKg([
+        { id: "a", date: new Date(2026, 9, 24), weightKg: 82 },
+        { id: "b", date: new Date(2026, 9, 26), weightKg: 81.5 },
+      ]),
+    ).toBe(81.5);
+  });
+
+  it("starts from a default without weigh-ins", () => {
+    expect(latestBodyWeightKg([])).toBe(70);
+  });
+});
+
+describe("bodyWeightOnDay", () => {
+  const entries = [
+    { id: "a", date: new Date(2026, 9, 24), weightKg: 82 },
+    { id: "b", date: new Date(2026, 9, 26), weightKg: 81.5 },
+  ];
+
+  it("gives the weight and what it changed from the previous weigh-in", () => {
+    expect(bodyWeightOnDay(entries, "2026-10-26")).toMatchObject({
+      weightKg: 81.5,
+      changeKg: -0.5,
+    });
+  });
+
+  it("has no change for the first weigh-in", () => {
+    expect(bodyWeightOnDay(entries, "2026-10-24")).toMatchObject({
+      weightKg: 82,
+      changeKg: null,
+    });
+  });
+
+  it("is empty for a day without weigh-in", () => {
+    expect(bodyWeightOnDay(entries, "2026-10-25")).toBeUndefined();
   });
 });
 

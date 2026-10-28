@@ -187,22 +187,51 @@ export function toBodyWeightPoints(
   return entries.map((entry) => ({ date: entry.date, value: entry.weightKg }));
 }
 
-export type RecentBodyWeight = BodyWeightEntry & { changeKg: number | null };
+// The weight of each day that has a weigh-in, by day key.
+export function toBodyWeightsByDay(
+  entries: readonly BodyWeightEntry[],
+): Map<string, number> {
+  return new Map(
+    entries.map((entry) => [toDateKey(entry.date), entry.weightKg] as const),
+  );
+}
 
-// The last weigh-ins, the latest first, each with what it changed from the
-// one before it. The first ever weigh-in has nothing to compare with.
+// Where a weight entry starts until there is a weigh-in to start from.
+const DEFAULT_WEIGHT_KG = 70;
+
+export function latestBodyWeightKg(entries: readonly BodyWeightEntry[]) {
+  return entries.at(-1)?.weightKg ?? DEFAULT_WEIGHT_KG;
+}
+
+export type BodyWeightWithChange = BodyWeightEntry & {
+  changeKg: number | null;
+};
+
+// Each weigh-in with what it changed from the one before it. The first ever
+// weigh-in has nothing to compare with. Entries come oldest first.
+function withChanges(
+  entries: readonly BodyWeightEntry[],
+): BodyWeightWithChange[] {
+  return entries.map((entry, index) => ({
+    ...entry,
+    changeKg: index === 0 ? null : entry.weightKg - entries[index - 1].weightKg,
+  }));
+}
+
+// The weigh-in of one day, or nothing when the user didn't weigh in that day.
+export function bodyWeightOnDay(
+  entries: readonly BodyWeightEntry[],
+  dayKey: string,
+): BodyWeightWithChange | undefined {
+  return withChanges(entries).find((entry) => toDateKey(entry.date) === dayKey);
+}
+
+// The last weigh-ins, the latest first.
 export function recentBodyWeights(
   entries: readonly BodyWeightEntry[],
   count: number,
-): RecentBodyWeight[] {
-  return entries
-    .map((entry, index) => ({
-      ...entry,
-      changeKg:
-        index === 0 ? null : entry.weightKg - entries[index - 1].weightKg,
-    }))
-    .slice(-count)
-    .reverse();
+): BodyWeightWithChange[] {
+  return withChanges(entries).slice(-count).reverse();
 }
 
 // One live query for the chart and the list: both read the same entries.
@@ -223,5 +252,11 @@ export function saveBodyWeight(measuredAt: Date, weightKg: number) {
       target: bodyWeights.measuredOn,
       set: { weightKg, updatedAt: new Date() },
     })
+    .run();
+}
+
+export function deleteBodyWeight(measuredAt: Date) {
+  db.delete(bodyWeights)
+    .where(eq(bodyWeights.measuredOn, toDateKey(measuredAt)))
     .run();
 }
