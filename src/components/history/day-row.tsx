@@ -5,26 +5,36 @@ import { DayBox } from "@/components/today/day-box";
 
 import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
+import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
+
+import {
+  formatBodyWeight,
+  formatBodyWeightValue,
+} from "@/features/progress/metrics";
 
 import { formatDayHeader } from "@/utils/date";
 
 import {
   fontsInstrument,
   fontSizes,
+  fontsJetBrainsMono,
   iconSizes,
+  radii,
   spacing,
 } from "@/constants/theme";
 
 type DayRowProps = {
   day: Date;
   exerciseCount: number;
+  weightKg?: number;
   onPress: () => void;
 };
 
-export function DayRow({ day, exerciseCount, onPress }: DayRowProps) {
+export function DayRow({ day, exerciseCount, weightKg, onPress }: DayRowProps) {
   const { t, language } = useTranslation();
   const { colors } = useTheme();
+  const units = useUnits();
   const styles = useStyles();
   const open = useFocusedPress(onPress);
   const today = new Date();
@@ -35,13 +45,24 @@ export function DayRow({ day, exerciseCount, onPress }: DayRowProps) {
   const detail = trained
     ? t.history.exerciseCount(exerciseCount)
     : t.history.noWorkout;
+  // The unit is left out of the badge; it is read aloud with the row.
+  const weight =
+    weightKg === undefined
+      ? undefined
+      : formatBodyWeightValue(weightKg, units, language);
+  const spokenWeight =
+    weightKg === undefined
+      ? undefined
+      : formatBodyWeight(weightKg, units, language);
 
   return (
     <Pressable
       style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
       onPress={open}
       accessibilityRole="button"
-      accessibilityLabel={`${title}, ${detail}`}
+      accessibilityLabel={[title, detail, spokenWeight]
+        .filter(Boolean)
+        .join(", ")}
     >
       {({ pressed }) => (
         <>
@@ -55,6 +76,20 @@ export function DayRow({ day, exerciseCount, onPress }: DayRowProps) {
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.detail}>{detail}</Text>
           </View>
+          {weight !== undefined && (
+            <View style={styles.weight}>
+              <SymbolView
+                name={{
+                  ios: "scalemass",
+                  android: "weight",
+                  web: "weight",
+                }}
+                tintColor={colors.text}
+                size={iconSizes.sm}
+              />
+              <Text style={styles.weightText}>{weight}</Text>
+            </View>
+          )}
           <SymbolView
             name={{
               ios: "chevron.right",
@@ -89,7 +124,7 @@ const useStyles = makeStyles(({ colors }) =>
       gap: spacing.xs,
     },
     title: {
-      fontSize: fontSizes.body,
+      fontSize: fontSizes.label,
       fontFamily: fontsInstrument.semiBold,
       color: colors.text,
     },
@@ -97,6 +132,21 @@ const useStyles = makeStyles(({ colors }) =>
       fontSize: fontSizes.detail,
       fontFamily: fontsInstrument.medium,
       color: colors.disabled,
+    },
+    weight: {
+      height: 26,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 5,
+      paddingHorizontal: 9,
+      borderWidth: 1,
+      borderColor: colors.disabled,
+      borderRadius: radii.sm,
+    },
+    weightText: {
+      fontSize: fontSizes.caption,
+      fontFamily: fontsJetBrainsMono.medium,
+      color: colors.text,
     },
   }),
 );

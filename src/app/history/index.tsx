@@ -10,6 +10,10 @@ import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 import {
+  toBodyWeightsByDay,
+  useBodyWeights,
+} from "@/features/progress/queries";
+import {
   useDailyExerciseCounts,
   useFirstWorkoutStart,
 } from "@/features/workouts/queries";
@@ -34,9 +38,14 @@ export default function HistoryScreen() {
   const to = new Date(y, m, d + 1);
   const days = getDaysBetween(from, to);
   const dailyExerciseCounts = useDailyExerciseCounts(from, to);
-  // Going further back than the first workout would only add empty days.
   const firstWorkoutStart = useFirstWorkoutStart();
-  const hasMore = firstWorkoutStart !== undefined && firstWorkoutStart < from;
+  const { entries } = useBodyWeights();
+  const weightsByDay = toBodyWeightsByDay(entries);
+  // Going further back than the first workout and the first weigh-in would
+  // only add empty days.
+  const hasMore = [firstWorkoutStart, entries.at(0)?.date].some(
+    (first) => first !== undefined && first < from,
+  );
 
   function loadMore() {
     if (hasMore) {
@@ -57,6 +66,7 @@ export default function HistoryScreen() {
             <DayRow
               day={day}
               exerciseCount={count}
+              weightKg={weightsByDay.get(toDateKey(day))}
               onPress={() =>
                 router.push({
                   pathname: "/history/day/[date]",
