@@ -19,19 +19,26 @@ import {
 } from "@/constants/theme";
 
 const STEP = 0.1;
-const BUTTON_SIZE = 52;
+// Exported so another button can match it.
+export const ENTRY_BUTTON_SIZE = 52;
 const MIN_INPUT_WIDTH = 60;
 const MAX_INPUT_WIDTH = 150;
 const CHAR_WIDTH = fontSizes.entry * 0.6;
 
 type BodyWeightEntryProps = {
   initialKg: number;
+  // The weight already saved for the day, if any.
+  savedKg?: number;
   onSave: (kg: number) => void;
 };
 
 // Two layers: the weight with its - and + buttons, and the button that saves it.
 // Typed and stepped in the user's unit, saved in kg.
-export function BodyWeightEntry({ initialKg, onSave }: BodyWeightEntryProps) {
+export function BodyWeightEntry({
+  initialKg,
+  savedKg,
+  onSave,
+}: BodyWeightEntryProps) {
   const { t, language } = useTranslation();
   const { colors } = useTheme();
   const units = useUnits();
@@ -41,6 +48,12 @@ export function BodyWeightEntry({ initialKg, onSave }: BodyWeightEntryProps) {
     formatDecimal(round(weightToUnit(initialKg, units.weight)), language),
   );
   const value = parseDecimal(text);
+  // Compared as shown (a tenth), so a saved 72.44 kg isn't "changed" by the
+  // 72.4 the input starts with.
+  const unchanged =
+    savedKg !== undefined &&
+    value !== null &&
+    round(value) === round(weightToUnit(savedKg, units.weight));
 
   function step(delta: number) {
     const next = Math.max(0, round((value ?? 0) + delta));
@@ -80,9 +93,9 @@ export function BodyWeightEntry({ initialKg, onSave }: BodyWeightEntryProps) {
         />
       </View>
       <PrimaryButton
-        label={t.progress.saveWeight}
+        label={unchanged ? t.progress.weightSaved : t.progress.saveWeight}
         onPress={save}
-        disabled={value === null || value <= 0}
+        disabled={value === null || value <= 0 || unchanged}
         style={styles.save}
       />
     </View>
@@ -155,14 +168,14 @@ const useStyles = makeStyles(({ colors }) =>
     step: {
       alignItems: "center",
       justifyContent: "center",
-      width: BUTTON_SIZE,
-      height: BUTTON_SIZE,
+      width: ENTRY_BUTTON_SIZE,
+      height: ENTRY_BUTTON_SIZE,
       borderWidth: 1,
       borderColor: colors.disabled,
       borderRadius: radii.sm,
     },
     save: {
-      minHeight: BUTTON_SIZE,
+      minHeight: ENTRY_BUTTON_SIZE,
     },
     stepPressed: {
       opacity: 0.6,

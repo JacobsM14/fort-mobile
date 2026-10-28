@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import { useRef, useState } from "react";
 import {
+  Alert,
   Pressable,
   StyleSheet,
   Text,
@@ -31,12 +32,15 @@ import { useTranslation } from "@/i18n";
 import { getExerciseInfo, getExerciseText } from "@/features/exercises/catalog";
 import { bmiCategory } from "@/features/progress/bmi";
 import {
+  formatBodyWeight,
   formatChange,
   formatMetric,
   formatWeightChange,
   progressChange,
 } from "@/features/progress/metrics";
 import {
+  bodyWeightOnDay,
+  latestBodyWeightKg,
   recentBodyWeights,
   saveBodyWeight,
   toBodyWeightPoints,
@@ -52,9 +56,8 @@ import type { MenuAnchor } from "@/components/workout/header/exercise-select";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
 import type { ProgressRange } from "@/features/progress/ranges";
 
-import { formatShortDay } from "@/utils/date";
+import { formatShortDay, toDateKey } from "@/utils/date";
 import { formatDecimal } from "@/utils/number";
-import { weightToUnit } from "@/utils/units";
 
 import {
   fontsInstrument,
@@ -64,8 +67,6 @@ import {
   spacing,
 } from "@/constants/theme";
 
-// Where the weight box starts until there is a weigh-in to start from.
-const DEFAULT_WEIGHT_KG = 70;
 const RECENT_WEIGHTS = 5;
 // As tall as the box with the chart (padding, toggle, 200 of chart and note),
 // so switching to a short list doesn't make the screen jump.
@@ -124,7 +125,8 @@ export default function ProgressScreen() {
   const firstWeight = weightPoints.at(0);
   const lastWeight = weightPoints.at(-1);
   // The box starts from the latest weigh-in, whatever the range filtered.
-  const latestWeightKg = entries.at(-1)?.weightKg ?? DEFAULT_WEIGHT_KG;
+  const latestWeightKg = latestBodyWeightKg(entries);
+  const todayWeight = bodyWeightOnDay(entries, toDateKey(new Date()));
   // The last five weigh-ins, the latest first.
   const recentWeights = recentBodyWeights(entries, RECENT_WEIGHTS);
   // Nothing to switch between or to filter while there are no weigh-ins.
@@ -133,8 +135,7 @@ export default function ProgressScreen() {
   const weightsEmpty =
     weightsLoaded &&
     (weightView === "chart" ? weightPoints.length : recentWeights.length) === 0;
-  const formatWeight = (kg: number) =>
-    `${formatDecimal(Math.round(weightToUnit(kg, units.weight) * 10) / 10, language)}${units.weight}`;
+  const formatWeight = (kg: number) => formatBodyWeight(kg, units, language);
 
   // BMI, sample values until the height is asked.
   const bmi = bmiCategory(SAMPLE_BMI.value);
@@ -169,6 +170,14 @@ export default function ProgressScreen() {
         });
       });
     });
+  }
+
+  function saveWeight(kg: number) {
+    try {
+      saveBodyWeight(new Date(), kg);
+    } catch {
+      Alert.alert(t.progress.saveWeightError);
+    }
   }
 
   function selectExercise(id: string) {
@@ -208,7 +217,7 @@ export default function ProgressScreen() {
         showsVerticalScrollIndicator={false}
       >
         <RangeFilter value={range} onChange={setRange} />
-        <View>
+        <View style={globalStyles.titledSection}>
           <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
             {t.progress.strength}
           </Text>
@@ -271,7 +280,7 @@ export default function ProgressScreen() {
             </View>
           )}
         </View>
-        <View>
+        <View style={globalStyles.titledSection}>
           <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
             {t.progress.bodyWeight}
           </Text>
@@ -340,7 +349,7 @@ export default function ProgressScreen() {
             <Text style={styles.note}>{t.progress.oneWeightPerDay}</Text>
           </View>
         </View>
-        <View style={styles.entrySection}>
+        <View style={globalStyles.titledSection}>
           <View style={styles.entryHeader}>
             <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
               {t.progress.registerWeight}
@@ -352,11 +361,12 @@ export default function ProgressScreen() {
           {weightsLoaded && (
             <BodyWeightEntry
               initialKg={latestWeightKg}
-              onSave={(kg) => saveBodyWeight(new Date(), kg)}
+              savedKg={todayWeight?.weightKg}
+              onSave={saveWeight}
             />
           )}
         </View>
-        <View>
+        <View style={globalStyles.titledSection}>
           <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
             {t.progress.bmi}
           </Text>
@@ -405,12 +415,11 @@ const useStyles = makeStyles(({ colors }) =>
       paddingBottom: 0,
     },
     content: {
-      gap: spacing.md,
+      gap: spacing.lg,
       paddingBottom: spacing.lg,
     },
     sectionTitle: {
       color: colors.border,
-      paddingBottom: spacing.xs,
     },
     bmiRow: {
       flexDirection: "row",
@@ -435,9 +444,6 @@ const useStyles = makeStyles(({ colors }) =>
       fontSize: fontSizes.caption,
       fontFamily: fontsJetBrainsMono.medium,
       color: colors.disabled,
-    },
-    entrySection: {
-      gap: spacing.xs,
     },
     entryHeader: {
       flexDirection: "row",
