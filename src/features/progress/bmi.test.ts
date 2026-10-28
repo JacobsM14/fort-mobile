@@ -3,13 +3,18 @@ import { describe, expect, it } from "@jest/globals";
 import {
   ADULT_BMI_BANDS,
   ageInMonths,
+  bmiBandsForAge,
   bmiBlockHeights,
   bmiCategory,
   bmiScaleY,
   bmiValue,
   lmsBmi,
 } from "./bmi";
-import { BMI_FOR_AGE } from "./bmi-for-age";
+import {
+  BMI_FOR_AGE,
+  BMI_FOR_AGE_FIRST_MONTH,
+  BMI_FOR_AGE_LAST_MONTH,
+} from "./bmi-for-age";
 
 import type { BmiBand } from "./bmi";
 
@@ -118,5 +123,35 @@ describe("lmsBmi", () => {
     expect(lmsBmi(row, 0)).toBeCloseTo(15.264, 2);
     expect(lmsBmi(row, 1)).toBeCloseTo(16.645, 2);
     expect(lmsBmi(row, 2)).toBeCloseTo(18.259, 2);
+  });
+});
+
+describe("bmiBandsForAge", () => {
+  it("cuts the bands at the WHO z-scores of the age", () => {
+    // Boys at 61 months: -2, +1 and +2 SD from the WHO table.
+    const [under, normal, over, obese] = bmiBandsForAge("male", 61);
+
+    expect(under.to).toBeCloseTo(13.031, 2);
+    expect(normal.from).toBe(under.to);
+    expect(normal.to).toBeCloseTo(16.645, 2);
+    expect(over.to).toBeCloseTo(18.259, 2);
+    expect(obese.from).toBe(over.to);
+  });
+
+  it("finds the row of every month of the table", () => {
+    for (const sex of ["female", "male"] as const) {
+      for (
+        let months = BMI_FOR_AGE_FIRST_MONTH;
+        months <= BMI_FOR_AGE_LAST_MONTH;
+        months++
+      ) {
+        expect(() => bmiBandsForAge(sex, months)).not.toThrow();
+      }
+    }
+  });
+
+  it("refuses an age the table doesn't cover", () => {
+    expect(() => bmiBandsForAge("male", BMI_FOR_AGE_FIRST_MONTH - 1)).toThrow();
+    expect(() => bmiBandsForAge("male", BMI_FOR_AGE_LAST_MONTH + 1)).toThrow();
   });
 });

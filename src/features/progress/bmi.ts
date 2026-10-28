@@ -1,4 +1,9 @@
-import type { LmsRow } from "@/features/progress/bmi-for-age";
+import {
+  BMI_FOR_AGE,
+  BMI_FOR_AGE_FIRST_MONTH,
+} from "@/features/progress/bmi-for-age";
+
+import type { LmsRow, ReferenceSex } from "@/features/progress/bmi-for-age";
 
 export type BmiCategory = "underweight" | "normal" | "overweight" | "obese";
 
@@ -83,4 +88,23 @@ export function ageInMonths(birthDate: Date, referenceDate: Date = new Date()) {
 export function lmsBmi(row: LmsRow, z: number): number {
   const { l, m, s } = row;
   return m * Math.pow(1 + l * s * z, 1 / l);
+}
+
+export function bmiBandsForAge(
+  sex: ReferenceSex,
+  months: number,
+): readonly BmiBand[] {
+  const row = BMI_FOR_AGE[sex][months - BMI_FOR_AGE_FIRST_MONTH];
+  if (row?.month !== months) {
+    throw new Error(`No BMI-for-age reference for ${months} months`);
+  }
+  const [min, thin, over, obese, max] = [-3, -2, 1, 2, 3].map((z) =>
+    lmsBmi(row, z),
+  );
+  return [
+    { id: "underweight", from: min, to: thin },
+    { id: "normal", from: thin, to: over },
+    { id: "overweight", from: over, to: obese },
+    { id: "obese", from: obese, to: max },
+  ];
 }
