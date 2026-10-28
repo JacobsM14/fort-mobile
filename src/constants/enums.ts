@@ -45,6 +45,9 @@ export type ThemePreference = (typeof THEME_PREFERENCES)[number];
 export const LANGUAGE_PREFERENCES = ["system", "en", "es"] as const;
 export type LanguagePreference = (typeof LANGUAGE_PREFERENCES)[number];
 
+export const GENDERS = ["female", "male", "other"] as const;
+export type Gender = (typeof GENDERS)[number];
+
 export const WEIGHT_UNITS = ["kg", "lb"] as const;
 export type WeightUnit = (typeof WEIGHT_UNITS)[number];
 
