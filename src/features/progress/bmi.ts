@@ -1,3 +1,5 @@
+import type { LmsRow } from "@/features/progress/bmi-for-age";
+
 export type BmiCategory = "underweight" | "normal" | "overweight" | "obese";
 
 // The WHO bands for adults. The scale is cut at 15 and 40: past them the
@@ -56,4 +58,21 @@ export function bmiScaleY(value: number, height: number, gap: number) {
     fromBottom += blockHeight + gap;
   }
   return 0;
+}
+
+export function bmiValue(weight: number, height: number) {
+  const heightM = height / 100;
+  return weight / (heightM * heightM);
+}
+
+export function ageInMonths(birthDate: Date, referenceDate: Date = new Date()) {
+  const years = referenceDate.getFullYear() - birthDate.getFullYear();
+  const months = referenceDate.getMonth() - birthDate.getMonth();
+  const dayNotReached = referenceDate.getDate() < birthDate.getDate() ? 1 : 0;
+  return years * 12 + months - dayNotReached;
+}
+
+export function lmsBmi(row: LmsRow, z: number): number {
+  const { l, m, s } = row;
+  return m * Math.pow(1 + l * s * z, 1 / l);
 }

@@ -1,6 +1,12 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { bmiBlockHeights, bmiCategory, bmiScaleY } from "./bmi";
+import {
+  ageInMonths,
+  bmiBlockHeights,
+  bmiCategory,
+  bmiScaleY,
+  bmiValue,
+} from "./bmi";
 
 const HEIGHT = 200;
 const GAP = 2;
@@ -54,5 +60,35 @@ describe("bmiScaleY", () => {
   it("sticks the values off the scale to its ends", () => {
     expect(bmiScaleY(10, HEIGHT, GAP)).toBe(HEIGHT);
     expect(bmiScaleY(55, HEIGHT, GAP)).toBeCloseTo(0);
+  });
+});
+
+describe("bmiValue", () => {
+  it("divides the weight by the height in metres squared", () => {
+    expect(bmiValue(70, 170)).toBeCloseTo(24.22, 2);
+  });
+});
+
+describe("ageInMonths", () => {
+  it("calculates the age in months correctly", () => {
+    const birthDate = new Date(2020, 0, 15);
+    const referenceDate = new Date(2024, 5, 10);
+    expect(ageInMonths(birthDate, referenceDate)).toBe(52);
+  });
+});
+
+describe("ageInMonths", () => {
+  const birthDate = new Date(2020, 0, 15);
+
+  it("leaves out a month whose day hasn't come yet", () => {
+    expect(ageInMonths(birthDate, new Date(2024, 5, 14))).toBe(52);
+  });
+
+  it("counts the month on the day it is completed", () => {
+    expect(ageInMonths(birthDate, new Date(2024, 5, 15))).toBe(53);
+  });
+
+  it("counts across the turn of the year", () => {
+    expect(ageInMonths(new Date(2020, 10, 15), new Date(2021, 1, 15))).toBe(3);
   });
 });
