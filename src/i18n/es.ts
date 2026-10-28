@@ -157,6 +157,10 @@ export const es = {
     bmiEmptyState:
       "Registra tu peso y completa los datos necesarios para consultar tu índice de masa corporal.",
     bmiEmptyAction: "Completar mis datos",
+    bmiAssumedAdult:
+      "Calculado como adulto. Si tienes menos de 19 años, añade tu fecha de nacimiento.",
+    bmiNoReference:
+      "La referencia de la OMS para menores de 19 años va por sexo, así que solo se muestra el valor.",
     bmiCategories: {
       underweight: "Bajo peso",
       normal: "Peso normal",

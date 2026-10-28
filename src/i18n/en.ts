@@ -143,6 +143,10 @@ export const en: Translations = {
     bmiEmptyState:
       "Log your weight and complete the necessary details to check your Body Mass Index.",
     bmiEmptyAction: "Complete my details",
+    bmiAssumedAdult:
+      "Worked out as an adult. If you are under 19, add your birth date.",
+    bmiNoReference:
+      "The WHO reference for under-19s is by sex, so only the value is shown.",
     bmiCategories: {
       underweight: "Underweight",
       normal: "Normal weight",
