@@ -1,7 +1,7 @@
 import type {
   AccentColor,
-  Gender,
   Equipment,
+  Gender,
   LanguagePreference,
   MuscleGroup,
   ThemePreference,
@@ -153,6 +153,10 @@ export const es = {
     oneWeightPerDay: "Solo puedes tener un registro de peso por día.",
     weightViews: { chart: "Gráfica", list: "Lista" },
     bmi: "Índice de masa corporal",
+    bmiTitleEmpty: "Faltan datos para el IMC",
+    bmiEmptyState:
+      "Registra tu peso y completa los datos necesarios para consultar tu índice de masa corporal.",
+    bmiEmptyAction: "Completar mis datos",
     bmiCategories: {
       underweight: "Bajo peso",
       normal: "Peso normal",

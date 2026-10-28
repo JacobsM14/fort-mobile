@@ -21,12 +21,14 @@ import { LineChart } from "@/components/progress/line-chart";
 import { RangeFilter } from "@/components/progress/range-filter";
 import { ViewToggle } from "@/components/progress/view-toggle";
 import { IconButton } from "@/components/ui/buttons/icon-button";
+import { EmptyStateCard } from "@/components/ui/content/empty-state-card";
 import { CornerFrame } from "@/components/ui/layout/corner-frame";
 import { ExerciseSelectMenu } from "@/components/workout/header/exercise-select";
 
 import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useUnits } from "@/hooks/use-units";
+import { useUserProfile } from "@/hooks/use-user-profile";
 import { useTranslation } from "@/i18n";
 
 import { getExerciseInfo, getExerciseText } from "@/features/exercises/catalog";
@@ -78,6 +80,8 @@ export default function ProgressScreen() {
   const units = useUnits();
   const styles = useStyles();
 
+  const { profile } = useUserProfile();
+
   const { exercises, loaded } = useTrainedExercises();
   const [info, setInfo] = useState<ExerciseInfo | null>(null);
   const [selectedId, setSelectedId] = useState<string>();
@@ -88,6 +92,7 @@ export default function ProgressScreen() {
   const headerRef = useRef<HostInstance>(null);
 
   const openHistory = useFocusedPress(() => router.push("/history"));
+  const openUserProfile = useFocusedPress(() => router.push("/settings/user"));
 
   // The exercise charted: the one picked, or the one trained last. None while
   // loading or before the first workout.
@@ -366,29 +371,39 @@ export default function ProgressScreen() {
             />
           )}
         </View>
-        <View style={globalStyles.titledSection}>
-          <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
-            {t.progress.bmi}
-          </Text>
-          <View
-            accessible
-            accessibilityLabel={t.progress.bmiSummary(
-              bmiScore,
-              t.progress.bmiCategories[bmi],
-            )}
-          >
-            <View style={styles.bmiRow}>
-              <BmiScale value={SAMPLE_BMI.value} />
-              <View style={styles.bmiText}>
-                <Text style={styles.bmiScore}>{bmiScore}</Text>
-                <Text style={styles.bmiCategory}>
-                  {t.progress.bmiCategories[bmi]}
-                </Text>
-                <Text style={styles.bmiHint}>{bmiHint}</Text>
+        {!weightsLoaded ? null : profile.heightCm === null ||
+          entries.length === 0 ? (
+          <EmptyStateCard
+            title={t.progress.bmi}
+            message={t.progress.bmiEmptyState}
+            actionLabel={t.progress.bmiEmptyAction}
+            onAction={openUserProfile}
+          />
+        ) : (
+          <View style={globalStyles.titledSection}>
+            <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
+              {t.progress.bmi}
+            </Text>
+            <View
+              accessible
+              accessibilityLabel={t.progress.bmiSummary(
+                bmiScore,
+                t.progress.bmiCategories[bmi],
+              )}
+            >
+              <View style={styles.bmiRow}>
+                <BmiScale value={SAMPLE_BMI.value} />
+                <View style={styles.bmiText}>
+                  <Text style={styles.bmiScore}>{bmiScore}</Text>
+                  <Text style={styles.bmiCategory}>
+                    {t.progress.bmiCategories[bmi]}
+                  </Text>
+                  <Text style={styles.bmiHint}>{bmiHint}</Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
+        )}
       </ScrollView>
       {menuAnchor !== undefined && (
         <ExerciseSelectMenu

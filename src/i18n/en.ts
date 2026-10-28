@@ -139,6 +139,10 @@ export const en: Translations = {
     oneWeightPerDay: "You can only have one weight entry per day.",
     weightViews: { chart: "Chart", list: "List" },
     bmi: "Body Mass Index",
+    bmiTitleEmpty: "Missing BMI data",
+    bmiEmptyState:
+      "Log your weight and complete the necessary details to check your Body Mass Index.",
+    bmiEmptyAction: "Complete my details",
     bmiCategories: {
       underweight: "Underweight",
       normal: "Normal weight",
