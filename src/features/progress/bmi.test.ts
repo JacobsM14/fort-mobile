@@ -3,11 +3,13 @@ import { describe, expect, it } from "@jest/globals";
 import {
   ADULT_BMI_BANDS,
   ageInMonths,
+  assessBmi,
   bmiBandsForAge,
   bmiBlockHeights,
   bmiCategory,
   bmiScaleY,
   bmiValue,
+  kilosToIdeal,
   lmsBmi,
 } from "./bmi";
 import {
@@ -15,8 +17,11 @@ import {
   BMI_FOR_AGE_FIRST_MONTH,
   BMI_FOR_AGE_LAST_MONTH,
 } from "./bmi-for-age";
+import { EMPTY_PROFILE } from "@/features/settings/user-profile";
 
 import type { BmiBand } from "./bmi";
+import type { BodyWeightEntry } from "./queries";
+import type { UserProfile } from "@/features/settings/user-profile";
 
 const HEIGHT = 200;
 const GAP = 2;
@@ -153,5 +158,114 @@ describe("bmiBandsForAge", () => {
   it("refuses an age the table doesn't cover", () => {
     expect(() => bmiBandsForAge("male", BMI_FOR_AGE_FIRST_MONTH - 1)).toThrow();
     expect(() => bmiBandsForAge("male", BMI_FOR_AGE_LAST_MONTH + 1)).toThrow();
+  });
+});
+
+describe("kilosToIdeal", () => {
+  // At 175 cm the normal band goes from 56.66 to 76.56 kg.
+  const ideal = (weightKg: number, category: BmiBand["id"]) =>
+    kilosToIdeal(weightKg, 175, ADULT_BMI_BANDS, category);
+
+  it("measures what is over the band while above it", () => {
+    expect(ideal(85, "overweight")).toBeCloseTo(8.44, 2);
+  });
+
+  it("measures what is missing to the band while below it", () => {
+    expect(ideal(50, "underweight")).toBeCloseTo(6.66, 2);
+  });
+
+  it("measures to the nearest limit while inside the band", () => {
+    expect(ideal(70, "normal")).toBeCloseTo(6.56, 2);
+  });
+
+  it("never goes below zero when the rounding crosses a limit", () => {
+    // 76.5 kg is a BMI of 24.98, shown and classed as 25.0.
+    expect(ideal(76.5, "overweight")).toBe(0);
+  });
+});
+
+describe("assessBmi", () => {
+  const weighIn: BodyWeightEntry = {
+    id: "w",
+    date: new Date(2026, 0, 1),
+    weightKg: 70,
+  };
+  const adult = (changes: Partial<UserProfile> = {}): UserProfile => ({
+    ...EMPTY_PROFILE,
+    heightCm: 175,
+    birthDate: "1990-05-10",
+    gender: "male",
+    ...changes,
+  });
+  // Ten years old on the day of the weigh-in, with a BMI of 20: normal for an
+  // adult, overweight for a ten-year-old boy.
+  const child = (gender: UserProfile["gender"]) =>
+    assessBmi(
+      { heightCm: 140, birthDate: "2016-01-01", gender },
+      { ...weighIn, weightKg: 39.2 },
+    );
+
+  it("reads an adult on the adult bands", () => {
+    expect(assessBmi(adult(), weighIn)).toEqual({
+      status: "ready",
+      value: 22.9,
+      category: "normal",
+      bands: ADULT_BMI_BANDS,
+      toIdealKg: expect.closeTo(6.56, 2),
+      assumedAdult: false,
+    });
+  });
+
+  it("takes the user for an adult without a birth date", () => {
+    expect(assessBmi(adult({ birthDate: null }), weighIn)).toMatchObject({
+      status: "ready",
+      bands: ADULT_BMI_BANDS,
+      assumedAdult: true,
+    });
+  });
+
+  it("asks for the height and a weigh-in when they are missing", () => {
+    expect(assessBmi(adult({ heightCm: null }), weighIn)).toEqual({
+      status: "missing",
+      missing: ["height"],
+    });
+    expect(assessBmi(adult(), undefined)).toEqual({
+      status: "missing",
+      missing: ["weight"],
+    });
+    expect(assessBmi(adult({ heightCm: null }), undefined)).toEqual({
+      status: "missing",
+      missing: ["height", "weight"],
+    });
+  });
+
+  it("reads a child on the WHO reference for their age and sex", () => {
+    expect(child("male")).toMatchObject({
+      status: "ready",
+      value: 20,
+      category: "overweight",
+      bands: bmiBandsForAge("male", 120),
+    });
+  });
+
+  it("gives only the value for a child whose gender has no reference", () => {
+    expect(child("other")).toEqual({ status: "uncategorized", value: 20 });
+  });
+
+  it("asks for the gender of a child", () => {
+    expect(child(null)).toEqual({ status: "missing", missing: ["gender"] });
+  });
+
+  it("has nothing to say under five years old", () => {
+    expect(assessBmi(adult({ birthDate: "2022-01-01" }), weighIn)).toEqual({
+      status: "unsupported",
+    });
+  });
+
+  it("goes back to the adult bands past the last month of the reference", () => {
+    // 229 months on the day of the weigh-in.
+    expect(
+      assessBmi(adult({ birthDate: "2006-12-01" }), weighIn),
+    ).toMatchObject({ bands: ADULT_BMI_BANDS });
   });
 });

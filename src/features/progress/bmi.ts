@@ -1,9 +1,14 @@
 import {
   BMI_FOR_AGE,
   BMI_FOR_AGE_FIRST_MONTH,
+  BMI_FOR_AGE_LAST_MONTH,
 } from "@/features/progress/bmi-for-age";
 
 import type { LmsRow, ReferenceSex } from "@/features/progress/bmi-for-age";
+import type { BodyWeightEntry } from "@/features/progress/queries";
+import type { UserProfile } from "@/features/settings/user-profile";
+
+import { parseDateKey } from "@/utils/date";
 
 export type BmiCategory = "underweight" | "normal" | "overweight" | "obese";
 
@@ -107,4 +112,93 @@ export function bmiBandsForAge(
     { id: "overweight", from: over, to: obese },
     { id: "obese", from: obese, to: max },
   ];
+}
+
+// How far the weight is from the normal band: what is over it while above,
+// what is missing while below, and to the nearest limit while inside. The
+// category decides the side, not the weight, so the hint agrees with the
+// rounded BMI shown; the rounding can leave a hair past the limit, hence 0.
+export function kilosToIdeal(
+  weightKg: number,
+  heightCm: number,
+  bands: readonly BmiBand[],
+  category: BmiCategory,
+): number {
+  const normal = bands.find((band) => band.id === "normal");
+  if (normal === undefined) {
+    throw new Error("The BMI bands have no normal band");
+  }
+  const heightM2 = (heightCm / 100) ** 2;
+  const minKg = normal.from * heightM2;
+  const maxKg = normal.to * heightM2;
+  const distance =
+    category === "underweight"
+      ? minKg - weightKg
+      : category === "normal"
+        ? Math.min(weightKg - minKg, maxKg - weightKg)
+        : weightKg - maxKg;
+  return Math.max(0, distance);
+}
+
+export type BmiAssessment =
+  | {
+      status: "ready";
+      value: number;
+      category: BmiCategory;
+      bands: readonly BmiBand[];
+      toIdealKg: number;
+      // No birth date: worked out as an adult.
+      assumedAdult: boolean;
+    }
+  // A minor whose gender has no WHO reference: the value alone.
+  | { status: "uncategorized"; value: number }
+  | { status: "missing"; missing: readonly ("height" | "weight" | "gender")[] }
+  | { status: "unsupported" };
+
+// The BMI of the latest weigh-in, read for the user's age on that day: adults
+// on the fixed WHO bands, from 5 to 19 years on the WHO reference for their
+// sex. Without a birth date the user is taken for an adult.
+export function assessBmi(
+  profile: UserProfile,
+  latest: BodyWeightEntry | undefined,
+): BmiAssessment {
+  const { heightCm, birthDate, gender } = profile;
+  if (heightCm === null || latest === undefined) {
+    return {
+      status: "missing",
+      missing: [
+        ...(heightCm === null ? (["height"] as const) : []),
+        ...(latest === undefined ? (["weight"] as const) : []),
+      ],
+    };
+  }
+
+  // Rounded as shown, so the category agrees with the number.
+  const value = Math.round(bmiValue(latest.weightKg, heightCm) * 10) / 10;
+  let bands = ADULT_BMI_BANDS;
+  if (birthDate !== null) {
+    const months = ageInMonths(parseDateKey(birthDate), latest.date);
+    if (months < BMI_FOR_AGE_FIRST_MONTH) {
+      return { status: "unsupported" };
+    }
+    if (months <= BMI_FOR_AGE_LAST_MONTH) {
+      if (gender === null) {
+        return { status: "missing", missing: ["gender"] };
+      }
+      if (gender === "other") {
+        return { status: "uncategorized", value };
+      }
+      bands = bmiBandsForAge(gender, months);
+    }
+  }
+
+  const category = bmiCategory(value, bands);
+  return {
+    status: "ready",
+    value,
+    category,
+    bands,
+    toIdealKg: kilosToIdeal(latest.weightKg, heightCm, bands, category),
+    assumedAdult: birthDate === null,
+  };
 }
