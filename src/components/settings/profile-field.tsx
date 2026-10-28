@@ -5,6 +5,7 @@ import { TextInput } from "react-native-gesture-handler";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 import {
+  controlHeights,
   fontSizes,
   fontsJetBrainsMono,
   radii,
@@ -54,7 +55,7 @@ export function ProfileField({
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
     input: {
-      height: 44,
+      height: controlHeights.md,
       paddingHorizontal: spacing.xs,
       paddingVertical: 0,
       backgroundColor: colors.backgroundSecondary,

@@ -5,9 +5,10 @@ import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { DashedButton } from "@/components/ui/buttons/dashed-button";
 import type { TrackingType } from "@/constants/enums";
 import {
+  controlHeights,
   fontsInstrument,
-  fontsJetBrainsMono,
   fontSizes,
+  fontsJetBrainsMono,
   iconSizes,
   radii,
   spacing,
@@ -197,7 +198,7 @@ const useStyles = makeStyles(({ colors }) =>
       flexDirection: "row",
       alignItems: "center",
       gap: spacing.xs,
-      height: 44,
+      height: controlHeights.md,
       paddingHorizontal: spacing.sm,
       borderWidth: 1,
       borderColor: colors.border,
@@ -228,7 +229,7 @@ const useStyles = makeStyles(({ colors }) =>
       flexDirection: "row",
       alignItems: "center",
       gap: spacing.sm,
-      minHeight: 48,
+      minHeight: controlHeights.lg,
       paddingHorizontal: spacing.sm,
       paddingVertical: spacing.xs,
     },

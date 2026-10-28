@@ -5,6 +5,7 @@ import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 import {
+  controlHeights,
   fontsInstrument,
   fontSizes,
   iconSizes,
@@ -86,7 +87,7 @@ const useStyles = makeStyles(({ colors }) =>
       alignItems: "center",
       justifyContent: "space-between",
       gap: spacing.xs,
-      height: 44,
+      height: controlHeights.md,
       paddingHorizontal: spacing.sm,
       borderWidth: 1,
       borderColor: colors.border,

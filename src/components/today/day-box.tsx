@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 import {
+  controlHeights,
   fontsInstrument,
   fontSizes,
   iconSizes,
@@ -57,8 +58,8 @@ export function DayBox({ dayOfMonth, trained, isToday, missed }: DayBoxProps) {
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
     box: {
-      width: 36,
-      height: 36,
+      width: controlHeights.sm,
+      height: controlHeights.sm,
       borderRadius: radii.sm,
       // Always set: trained days arrive after a first render as missed, and a
       // dashed border left out of the style isn't reset back to solid.

@@ -2,15 +2,17 @@ import { SymbolView, type SymbolViewProps } from "expo-symbols";
 import { Pressable, StyleSheet, Text } from "react-native";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
+import { useCloseOnBack } from "@/hooks/use-close-on-back";
+import { makeStyles, useTheme } from "@/hooks/use-theme";
+
 import {
+  controlHeights,
   fontsInstrument,
   fontSizes,
   iconSizes,
   radii,
   spacing,
 } from "@/constants/theme";
-import { useCloseOnBack } from "@/hooks/use-close-on-back";
-import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 const ANIMATION_MS = 150;
 const MENU_WIDTH = 240;
@@ -109,7 +111,7 @@ const useStyles = makeStyles(({ colors }) =>
       flexDirection: "row",
       alignItems: "center",
       gap: spacing.sm,
-      minHeight: 48,
+      minHeight: controlHeights.lg,
       paddingHorizontal: spacing.sm,
     },
     itemPressed: {

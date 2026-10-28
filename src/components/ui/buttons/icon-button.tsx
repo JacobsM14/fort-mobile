@@ -1,9 +1,10 @@
 import { SymbolView, type SymbolViewProps } from "expo-symbols";
 import { Pressable, StyleSheet } from "react-native";
 
-import { iconSizes, radii } from "@/constants/theme";
 import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
+
+import { controlHeights, iconSizes, radii } from "@/constants/theme";
 
 type IconButtonProps = {
   icon: SymbolViewProps["name"];
@@ -12,18 +13,16 @@ type IconButtonProps = {
   // "muted" is a gray outline that turns to the accent when pressed, for
   // secondary actions such as showing an exercise's info.
   tone?: "primary" | "danger" | "muted";
-  // Width and height; a square of 44 unless a neighbor sets another height.
+  // Width and height; a control height square unless a neighbor sets another.
   size?: number;
 };
-
-const BOX_SIZE = 44;
 
 export function IconButton({
   icon,
   accessibilityLabel,
   onPress,
   tone = "primary",
-  size = BOX_SIZE,
+  size = controlHeights.md,
 }: IconButtonProps) {
   const { colors } = useTheme();
   const styles = useStyles();
@@ -74,8 +73,8 @@ export function IconButton({
 const useStyles = makeStyles(() =>
   StyleSheet.create({
     box: {
-      width: BOX_SIZE,
-      height: BOX_SIZE,
+      width: controlHeights.md,
+      height: controlHeights.md,
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 1,

@@ -14,6 +14,7 @@ import { formatDecimal, parseDecimal } from "@/utils/number";
 import { distanceFromUnit, distanceToUnit } from "@/utils/units";
 
 import {
+  controlHeights,
   fontSizes,
   fontsJetBrainsMono,
   radii,
@@ -85,7 +86,7 @@ const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
     input: {
       flex: 1,
-      height: 44,
+      height: controlHeights.md,
       paddingHorizontal: spacing.xs,
       paddingVertical: 0,
       backgroundColor: colors.backgroundSecondary,

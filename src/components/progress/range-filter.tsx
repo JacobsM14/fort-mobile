@@ -8,6 +8,7 @@ import { PROGRESS_RANGES } from "@/features/progress/ranges";
 import type { ProgressRange } from "@/features/progress/ranges";
 
 import {
+  controlHeights,
   fontSizes,
   fontsJetBrainsMono,
   radii,
@@ -62,7 +63,7 @@ const useStyles = makeStyles(({ colors }) =>
     },
     option: {
       flex: 1,
-      height: 44,
+      height: controlHeights.md,
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 1,

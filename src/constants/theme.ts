@@ -24,9 +24,12 @@ export type Colors = BaseColors &
   AccentShades & {
     // The accent diluted over the background, for highlighted cards.
     primaryTint: string;
+    // The accent at half strength, between the faint and the full one (the
+    // BMI scale).
     primarySoft: string;
   };
 
+// Hex alphas over the accent: primaryTint about 15 %, primarySoft 50 %.
 const TINT_ALPHA = "26";
 const SOFT_ALPHA = "80";
 
@@ -149,6 +152,14 @@ export const iconSizes = {
   hero: 64,
 };
 
+// The height of a control: md is the smallest comfortable to tap, sm for
+// compact ones beside other content, lg for the rows of a menu.
+export const controlHeights = {
+  sm: 36,
+  md: 44,
+  lg: 48,
+};
+
 function createGlobalStyles(colors: Colors) {
   return StyleSheet.create({
     screen: {
@@ -176,6 +187,21 @@ function createGlobalStyles(colors: Colors) {
     titledSection: {
       gap: spacing.xs,
     },
+    // The title of a titledSection in Progress: dimmer than a subtitle, so the
+    // boxes stand out.
+    sectionTitle: {
+      fontSize: fontSizes.caption,
+      fontFamily: fontsJetBrainsMono.medium,
+      color: colors.border,
+    },
+    // A bordered box on the secondary background, for a chart and its notes.
+    panel: {
+      gap: spacing.sm,
+      padding: spacing.sm,
+      backgroundColor: colors.backgroundSecondary,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
     centered: {
       flex: 1,
       alignItems: "center",
@@ -192,7 +218,7 @@ function createGlobalStyles(colors: Colors) {
       color: colors.disabled,
     },
     breadCrumbPress: {
-      minHeight: 44,
+      minHeight: controlHeights.md,
       display: "flex",
       flexDirection: "row",
       alignItems: "center",
@@ -227,7 +253,7 @@ function createGlobalStyles(colors: Colors) {
       color: colors.text,
     },
     notPressedButton: {
-      minHeight: 44,
+      minHeight: controlHeights.md,
       paddingHorizontal: 14,
       justifyContent: "center",
       backgroundColor: "transparent",
@@ -236,7 +262,7 @@ function createGlobalStyles(colors: Colors) {
       borderRadius: radii.sm,
     },
     pressedButton: {
-      minHeight: 44,
+      minHeight: controlHeights.md,
       paddingHorizontal: 14,
       justifyContent: "center",
       backgroundColor: colors.primary,
