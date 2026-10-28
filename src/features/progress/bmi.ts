@@ -2,26 +2,26 @@ import type { LmsRow } from "@/features/progress/bmi-for-age";
 
 export type BmiCategory = "underweight" | "normal" | "overweight" | "obese";
 
+// One band of the scale, lowest first. The first band's start and the last
+// band's end are where the scale is cut.
+export type BmiBand = { id: BmiCategory; from: number; to: number };
+
 // The WHO bands for adults. The scale is cut at 15 and 40: past them the
 // column has nothing more to tell.
-export const BMI_CATEGORIES: readonly {
-  id: BmiCategory;
-  from: number;
-  to: number;
-}[] = [
+export const ADULT_BMI_BANDS: readonly BmiBand[] = [
   { id: "underweight", from: 15, to: 18.5 },
   { id: "normal", from: 18.5, to: 25 },
   { id: "overweight", from: 25, to: 30 },
   { id: "obese", from: 30, to: 40 },
 ];
 
-const SCALE_MIN = BMI_CATEGORIES[0].from;
-const SCALE_MAX = BMI_CATEGORIES[BMI_CATEGORIES.length - 1].to;
-
 // A band starts at its own threshold: 25 is already overweight.
-export function bmiCategory(value: number): BmiCategory {
-  let category = BMI_CATEGORIES[0].id;
-  for (const band of BMI_CATEGORIES) {
+export function bmiCategory(
+  value: number,
+  bands: readonly BmiBand[],
+): BmiCategory {
+  let category = bands[0].id;
+  for (const band of bands) {
     if (value >= band.from) {
       category = band.id;
     }
@@ -31,22 +31,30 @@ export function bmiCategory(value: number): BmiCategory {
 
 // Each block's height in a column of the given height, lowest band first, as
 // tall as the stretch of the scale it covers.
-export function bmiBlockHeights(height: number, gap: number) {
-  const room = height - gap * (BMI_CATEGORIES.length - 1);
-  return BMI_CATEGORIES.map(
-    (band) => (room * (band.to - band.from)) / (SCALE_MAX - SCALE_MIN),
-  );
+export function bmiBlockHeights(
+  bands: readonly BmiBand[],
+  height: number,
+  gap: number,
+) {
+  const room = height - gap * (bands.length - 1);
+  const span = bands[bands.length - 1].to - bands[0].from;
+  return bands.map((band) => (room * (band.to - band.from)) / span);
 }
 
 // Where a value sits in the column, from the top: the highest band is drawn
 // on top. A threshold falls in the middle of the gap between its two blocks,
 // and values off the scale stick to its ends.
-export function bmiScaleY(value: number, height: number, gap: number) {
-  const clamped = Math.min(Math.max(value, SCALE_MIN), SCALE_MAX);
-  const heights = bmiBlockHeights(height, gap);
-  const last = BMI_CATEGORIES.length - 1;
+export function bmiScaleY(
+  value: number,
+  bands: readonly BmiBand[],
+  height: number,
+  gap: number,
+) {
+  const last = bands.length - 1;
+  const clamped = Math.min(Math.max(value, bands[0].from), bands[last].to);
+  const heights = bmiBlockHeights(bands, height, gap);
   let fromBottom = 0;
-  for (const [index, band] of BMI_CATEGORIES.entries()) {
+  for (const [index, band] of bands.entries()) {
     const blockHeight = heights[index];
     if (clamped === band.to && index < last) {
       return height - (fromBottom + blockHeight + gap / 2);

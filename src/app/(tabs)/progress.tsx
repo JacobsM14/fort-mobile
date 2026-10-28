@@ -32,7 +32,7 @@ import { useUserProfile } from "@/hooks/use-user-profile";
 import { useTranslation } from "@/i18n";
 
 import { getExerciseInfo, getExerciseText } from "@/features/exercises/catalog";
-import { bmiCategory } from "@/features/progress/bmi";
+import { ADULT_BMI_BANDS, bmiCategory } from "@/features/progress/bmi";
 import {
   formatBodyWeight,
   formatChange,
@@ -143,7 +143,7 @@ export default function ProgressScreen() {
   const formatWeight = (kg: number) => formatBodyWeight(kg, units, language);
 
   // BMI, sample values until the height is asked.
-  const bmi = bmiCategory(SAMPLE_BMI.value);
+  const bmi = bmiCategory(SAMPLE_BMI.value, ADULT_BMI_BANDS);
   const bmiScore = formatDecimal(SAMPLE_BMI.value, language);
   const bmiDistance = formatWeight(SAMPLE_BMI.toIdealKg);
   const bmiHint =
@@ -392,7 +392,7 @@ export default function ProgressScreen() {
               )}
             >
               <View style={styles.bmiRow}>
-                <BmiScale value={SAMPLE_BMI.value} />
+                <BmiScale value={SAMPLE_BMI.value} bands={ADULT_BMI_BANDS} />
                 <View style={styles.bmiText}>
                   <Text style={styles.bmiScore}>{bmiScore}</Text>
                   <Text style={styles.bmiCategory}>

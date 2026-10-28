@@ -4,13 +4,9 @@ import Svg, { Polygon } from "react-native-svg";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import {
-  BMI_CATEGORIES,
-  bmiBlockHeights,
-  bmiScaleY,
-} from "@/features/progress/bmi";
+import { bmiBlockHeights, bmiScaleY } from "@/features/progress/bmi";
 
-import type { BmiCategory } from "@/features/progress/bmi";
+import type { BmiBand, BmiCategory } from "@/features/progress/bmi";
 
 import { fontSizes, fontsJetBrainsMono, spacing } from "@/constants/theme";
 
@@ -27,11 +23,12 @@ const PAD = CONE_HEIGHT / 2;
 
 type BmiScaleProps = {
   value: number;
+  bands: readonly BmiBand[];
 };
 
 // The BMI bands as a column, the highest on top, each with its name, and the
 // user's BMI pointed at from the left. It only draws: the numbers go next to it.
-export function BmiScale({ value }: BmiScaleProps) {
+export function BmiScale({ value, bands }: BmiScaleProps) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const styles = useStyles();
@@ -43,12 +40,11 @@ export function BmiScale({ value }: BmiScaleProps) {
     overweight: colors.primarySoft,
     obese: colors.primary,
   };
-  const heights = bmiBlockHeights(HEIGHT, GAP);
-  const blocks = BMI_CATEGORIES.map((band, index) => ({
-    id: band.id,
-    height: heights[index],
-  })).reverse();
-  const valueY = PAD + bmiScaleY(value, HEIGHT, GAP);
+  const heights = bmiBlockHeights(bands, HEIGHT, GAP);
+  const blocks = bands
+    .map((band, index) => ({ id: band.id, height: heights[index] }))
+    .reverse();
+  const valueY = PAD + bmiScaleY(value, bands, HEIGHT, GAP);
 
   return (
     <View
@@ -68,7 +64,6 @@ export function BmiScale({ value }: BmiScaleProps) {
           </View>
         ))}
       </View>
-      {/* Drawn last, over the blocks. The cone narrows into the column. */}
       <View style={[styles.indicator, { top: valueY - CONE_HEIGHT / 2 }]}>
         <Svg width={CONE_LENGTH} height={CONE_HEIGHT}>
           <Polygon
