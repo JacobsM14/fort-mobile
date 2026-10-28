@@ -35,6 +35,7 @@ import {
   type ChartPoint,
   type PlottedPoint,
 } from "@/utils/chart";
+import { formatShortDay } from "@/utils/date";
 
 import {
   fontSizes,
@@ -67,17 +68,11 @@ type LineChartProps = {
   accessibilityLabel: string;
 };
 
-function formatShortDate(date: Date, language: Language) {
-  return date
-    .toLocaleDateString(language, { day: "numeric", month: "short" })
-    .replace(".", "");
-}
-
 // Under the chart, the latest day reads "Today" when it is.
 function formatAxisDate(date: Date, today: string, language: Language) {
   return date.toDateString() === new Date().toDateString()
     ? today
-    : formatShortDate(date, language);
+    : formatShortDay(date, language);
 }
 
 // A triangle pointing up, centered on the point.
@@ -102,8 +97,13 @@ export function LineChart({
   // SVG ids can't hold the colons useId makes.
   const hatchId = `hatch${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   const [width, setWidth] = useState(0);
-  const [selected, setSelected] = useState(points.length - 1);
-  const index = Math.min(selected, points.length - 1);
+  // Null follows the last day, so one saved while the chart is open is the one
+  // shown; a day picked by hand stays picked.
+  const [selected, setSelected] = useState<number | null>(null);
+  const index =
+    selected === null
+      ? points.length - 1
+      : Math.min(selected, points.length - 1);
 
   const baseline = CHART_HEIGHT - 1;
   const plotted = scalePoints(
@@ -159,7 +159,7 @@ export function LineChart({
   const selectedText =
     currentPoint === undefined
       ? ""
-      : `${formatValue(currentPoint.value)}, ${formatShortDate(currentPoint.date, language)}`;
+      : `${formatValue(currentPoint.value)}, ${formatShortDay(currentPoint.date, language)}`;
   const blockTop =
     current === undefined
       ? 0
@@ -295,7 +295,7 @@ export function LineChart({
                 {formatValue(currentPoint.value)}
               </Text>
               <Text style={styles.blockDate} numberOfLines={1}>
-                {formatShortDate(currentPoint.date, language)}
+                {formatShortDay(currentPoint.date, language)}
               </Text>
             </View>
           )}

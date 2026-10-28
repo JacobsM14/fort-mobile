@@ -2,6 +2,7 @@ import { describe, expect, it } from "@jest/globals";
 
 import {
   formatDayHeader,
+  formatShortDay,
   getDaysBetween,
   getWeekDays,
   parseDateKey,
@@ -45,6 +46,14 @@ describe("formatDayHeader", () => {
     const monday = new Date(2026, 9, 19);
     expect(formatDayHeader(monday, "es")).toBe("LUNES 19 OCT");
     expect(formatDayHeader(monday, "en")).toBe("MONDAY 19 OCT");
+  });
+});
+
+describe("formatShortDay", () => {
+  it("shows the day and the short month in the language's order", () => {
+    const monday = new Date(2026, 9, 19);
+    expect(formatShortDay(monday, "es")).toBe("19 oct");
+    expect(formatShortDay(monday, "en")).toBe("Oct 19");
   });
 });
 

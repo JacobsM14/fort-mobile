@@ -9,12 +9,15 @@ export function formatDayHeader(date: Date, language: Language) {
   return `${weekday} ${date.getDate()} ${month}`.toLocaleUpperCase(language);
 }
 
-// "lun 19 oct · 18:05"
-// "26 oct" / "Oct 26": the day and month, in the language's own order.
+// "26 oct" / "Oct 26": the day and month, in the language's own order and
+// without the month's dot, like the header.
 export function formatShortDay(date: Date, language: Language) {
-  return date.toLocaleDateString(language, { day: "numeric", month: "short" });
+  return date
+    .toLocaleDateString(language, { day: "numeric", month: "short" })
+    .replace(".", "");
 }
 
+// "lun 19 oct · 18:05"
 export function formatDateTime(date: Date, language: Language) {
   const day = date
     .toLocaleDateString(language, {
