@@ -9,10 +9,7 @@ import { BackHeader } from "@/components/ui/layout/back-header";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import {
-  toBodyWeightsByDay,
-  useBodyWeights,
-} from "@/features/progress/queries";
+import { toBodyWeightsByDay, useBodyWeights } from "@/features/body/queries";
 import {
   useDailyExerciseCounts,
   useFirstWorkoutStart,

@@ -50,7 +50,7 @@ export function WorkoutCard({ workout, onPress }: WorkoutCardProps) {
           <View style={styles.info}>
             {inProgress && (
               <Text style={[globalStyles.inputLabel, styles.status]}>
-                {t.progress.inProgress}
+                {t.history.inProgress}
               </Text>
             )}
             <Text style={styles.name} numberOfLines={1}>
@@ -65,7 +65,10 @@ export function WorkoutCard({ workout, onPress }: WorkoutCardProps) {
                 .join(" · ")}
             </Text>
             <Text style={styles.detail}>
-              {t.progress.summary(workout.exercises.length, workout.setCount)}
+              {t.history.workoutSummary(
+                workout.exercises.length,
+                workout.setCount,
+              )}
             </Text>
           </View>
           {onPress !== undefined && (

@@ -11,7 +11,7 @@ import { useTranslation } from "@/i18n";
 import {
   formatBodyWeight,
   formatBodyWeightValue,
-} from "@/features/progress/metrics";
+} from "@/features/body/format";
 
 import { formatDayHeader } from "@/utils/date";
 

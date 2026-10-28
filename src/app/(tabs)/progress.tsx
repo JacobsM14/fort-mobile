@@ -14,14 +14,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ExerciseInfoSheet } from "@/components/exercises/exercise-info-sheet";
 import { BmiCard } from "@/components/progress/bmi-card";
+import { BodyWeightCard } from "@/components/progress/body-weight-card";
 import { BodyWeightEntry } from "@/components/progress/body-weight-entry";
-import { DashedArrow } from "@/components/progress/dashed-arrow";
+import { EmptyChart } from "@/components/progress/empty-chart";
 import { ExercisePickerButton } from "@/components/progress/exercise-picker-button";
 import { LineChart } from "@/components/progress/line-chart";
 import { RangeFilter } from "@/components/progress/range-filter";
-import { ViewToggle } from "@/components/progress/view-toggle";
 import { IconButton } from "@/components/ui/buttons/icon-button";
-import { CornerFrame } from "@/components/ui/layout/corner-frame";
 import { ExerciseSelectMenu } from "@/components/workout/header/exercise-select";
 
 import { useFocusedPress } from "@/hooks/use-focused-press";
@@ -30,28 +29,25 @@ import { useUnits } from "@/hooks/use-units";
 import { useUserProfile } from "@/hooks/use-user-profile";
 import { useTranslation } from "@/i18n";
 
-import { getExerciseInfo, getExerciseText } from "@/features/exercises/catalog";
-import { assessBmi } from "@/features/progress/bmi";
-import {
-  formatBodyWeight,
-  formatChange,
-  formatMetric,
-  formatWeightChange,
-  progressChange,
-} from "@/features/progress/metrics";
+import { assessBmi } from "@/features/body/bmi";
 import {
   bodyWeightOnDay,
   latestBodyWeightKg,
-  recentBodyWeights,
   saveBodyWeight,
-  toBodyWeightPoints,
   useBodyWeights,
+} from "@/features/body/queries";
+import { getExerciseInfo, getExerciseText } from "@/features/exercises/catalog";
+import {
+  formatChange,
+  formatMetric,
+  progressChange,
+} from "@/features/progress/metrics";
+import {
   useExerciseProgress,
   useTrainedExercises,
 } from "@/features/progress/queries";
 import { pointsInRange } from "@/features/progress/ranges";
 
-import type { WeightView } from "@/components/progress/view-toggle";
 import type { MenuAnchor } from "@/components/workout/header/exercise-select";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
 import type { ProgressRange } from "@/features/progress/ranges";
@@ -66,11 +62,6 @@ import {
   spacing,
 } from "@/constants/theme";
 
-const RECENT_WEIGHTS = 5;
-// As tall as the box with the chart (padding, toggle, 200 of chart and note),
-// so switching to a short list doesn't make the screen jump.
-const WEIGHT_BOX_MIN_HEIGHT = 300;
-
 export default function ProgressScreen() {
   const { t, language } = useTranslation();
   const { globalStyles, colors } = useTheme();
@@ -84,7 +75,6 @@ export default function ProgressScreen() {
   const [selectedId, setSelectedId] = useState<string>();
   const [menuAnchor, setMenuAnchor] = useState<MenuAnchor>();
   const [range, setRange] = useState<ProgressRange>("3m");
-  const [weightView, setWeightView] = useState<WeightView>("chart");
   const screenRef = useRef<HostInstance>(null);
   const headerRef = useRef<HostInstance>(null);
 
@@ -116,28 +106,10 @@ export default function ProgressScreen() {
       ? null
       : formatChange(trackingType, change, units, t, language);
 
-  // BODY WEIGHT
   const { entries, loaded: weightsLoaded } = useBodyWeights();
-  const weightPoints = pointsInRange(
-    toBodyWeightPoints(entries),
-    range,
-    new Date(),
-  );
-
-  const firstWeight = weightPoints.at(0);
-  const lastWeight = weightPoints.at(-1);
   // The box starts from the latest weigh-in, whatever the range filtered.
   const latestWeightKg = latestBodyWeightKg(entries);
   const todayWeight = bodyWeightOnDay(entries, toDateKey(new Date()));
-  // The last five weigh-ins, the latest first.
-  const recentWeights = recentBodyWeights(entries, RECENT_WEIGHTS);
-  // Nothing to switch between or to filter while there are no weigh-ins.
-  const hasWeights = entries.length > 0;
-  // The chart follows the range; the list is the latest weigh-ins, whenever.
-  const weightsEmpty =
-    weightsLoaded &&
-    (weightView === "chart" ? weightPoints.length : recentWeights.length) === 0;
-  const formatWeight = (kg: number) => formatBodyWeight(kg, units, language);
 
   function showInfo() {
     if (exercise !== undefined) {
@@ -209,18 +181,14 @@ export default function ProgressScreen() {
       >
         <RangeFilter value={range} onChange={setRange} />
         <View style={globalStyles.titledSection}>
-          <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
-            {t.progress.strength}
-          </Text>
+          <Text style={globalStyles.sectionTitle}>{t.progress.strength}</Text>
           {loaded && exercise === undefined && (
-            <View style={[styles.section, styles.emptySection]}>
-              <CornerFrame style={styles.emptyFrame}>
-                <Text style={styles.emptyText}>{t.progress.noTrained}</Text>
-              </CornerFrame>
+            <View style={[globalStyles.panel, styles.emptySection]}>
+              <EmptyChart label={t.progress.noTrained} />
             </View>
           )}
           {exercise !== undefined && (
-            <View style={styles.section}>
+            <View style={globalStyles.panel}>
               <View ref={headerRef} style={styles.pickerRow}>
                 <IconButton
                   tone="muted"
@@ -271,78 +239,14 @@ export default function ProgressScreen() {
             </View>
           )}
         </View>
-        <View style={globalStyles.titledSection}>
-          <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
-            {t.progress.bodyWeight}
-          </Text>
-          <View style={[styles.section, styles.weightBox]}>
-            {hasWeights && (
-              <ViewToggle value={weightView} onChange={setWeightView} />
-            )}
-            <View style={styles.weightBody}>
-              {weightsEmpty ? (
-                <View style={styles.emptyBody}>
-                  <CornerFrame style={styles.emptyFrame}>
-                    <Text style={styles.emptyText}>{t.progress.noWeight}</Text>
-                  </CornerFrame>
-                </View>
-              ) : weightView === "chart" ? (
-                <LineChart
-                  key={`body-weight-${range}`}
-                  points={weightPoints}
-                  color={colors.text}
-                  formatValue={formatWeight}
-                  accessibilityLabel={
-                    firstWeight === undefined || lastWeight === undefined
-                      ? t.progress.bodyWeight
-                      : t.progress.chartSummary(
-                          t.progress.bodyWeight,
-                          formatWeight(firstWeight.value),
-                          formatWeight(lastWeight.value),
-                          weightPoints.length,
-                        )
-                  }
-                />
-              ) : (
-                <View>
-                  {recentWeights.map((entry) => (
-                    <View key={entry.id} style={styles.weightRow}>
-                      <Text style={styles.weightDate}>
-                        {formatShortDay(entry.date, language)}
-                      </Text>
-                      <View style={styles.weightArrow}>
-                        <DashedArrow />
-                      </View>
-                      <View style={styles.weightValues}>
-                        {entry.changeKg !== null && (
-                          <Text
-                            style={[
-                              styles.weightChange,
-                              entry.changeKg === 0 && styles.changeFlat,
-                            ]}
-                          >
-                            {formatWeightChange(
-                              entry.changeKg,
-                              units,
-                              language,
-                            )}
-                          </Text>
-                        )}
-                        <Text style={styles.weightValue}>
-                          {formatWeight(entry.weightKg)}
-                        </Text>
-                      </View>
-                    </View>
-                  ))}
-                </View>
-              )}
-            </View>
-            <Text style={styles.note}>{t.progress.oneWeightPerDay}</Text>
-          </View>
-        </View>
+        <BodyWeightCard
+          entries={entries}
+          range={range}
+          loaded={weightsLoaded}
+        />
         <View style={globalStyles.titledSection}>
           <View style={styles.entryHeader}>
-            <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
+            <Text style={globalStyles.sectionTitle}>
               {t.progress.registerWeight}
             </Text>
             <Text style={styles.today}>
@@ -350,7 +254,10 @@ export default function ProgressScreen() {
             </Text>
           </View>
           {weightsLoaded && (
+            // Remounted on a unit change: the text typed is in the old unit,
+            // and saving it as the new one would store another weight.
             <BodyWeightEntry
+              key={units.weight}
               initialKg={latestWeightKg}
               savedKg={todayWeight?.weightKg}
               onSave={saveWeight}
@@ -392,9 +299,6 @@ const useStyles = makeStyles(({ colors }) =>
       gap: spacing.lg,
       paddingBottom: spacing.lg,
     },
-    sectionTitle: {
-      color: colors.border,
-    },
     entryHeader: {
       flexDirection: "row",
       justifyContent: "space-between",
@@ -404,54 +308,9 @@ const useStyles = makeStyles(({ colors }) =>
       fontFamily: fontsJetBrainsMono.bold,
       color: colors.primary,
     },
-    weightRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingVertical: spacing.xs,
-    },
-    weightDate: {
-      fontSize: fontSizes.label,
-      fontFamily: fontsInstrument.bold,
-      color: colors.text,
-    },
-    weightArrow: {
-      flex: 1,
-      marginHorizontal: spacing.sm,
-    },
-    weightValues: {
-      flexDirection: "row",
-      alignItems: "baseline",
-      gap: spacing.xs,
-    },
-    weightValue: {
-      fontSize: fontSizes.label,
-      fontFamily: fontsJetBrainsMono.bold,
-      color: colors.text,
-    },
-    weightChange: {
-      fontSize: fontSizes.caption,
-      fontFamily: fontsJetBrainsMono.medium,
-      color: colors.disabled,
-    },
-    section: {
-      gap: spacing.sm,
-      borderWidth: 1,
-      borderColor: colors.border,
-      padding: spacing.sm,
-      backgroundColor: colors.backgroundSecondary,
-    },
-    weightBox: {
-      minHeight: WEIGHT_BOX_MIN_HEIGHT,
-    },
-    // Takes the room the note leaves, so the note stays at the bottom whatever
-    // the view.
-    weightBody: {
-      flex: 1,
-    },
     note: {
       fontSize: fontSizes.caption,
       fontFamily: fontsInstrument.medium,
-      textAlign: "left",
       color: colors.disabled,
     },
     // As tall as the chart card it stands in for, so the screen doesn't jump
@@ -460,21 +319,6 @@ const useStyles = makeStyles(({ colors }) =>
       minHeight: 200,
       justifyContent: "center",
       paddingHorizontal: spacing.lg,
-    },
-    emptyBody: {
-      flex: 1,
-      justifyContent: "center",
-      paddingHorizontal: spacing.lg,
-    },
-    emptyFrame: {
-      alignItems: "center",
-      paddingVertical: spacing.lg,
-    },
-    emptyText: {
-      textAlign: "center",
-      fontSize: fontSizes.lead,
-      fontFamily: fontsInstrument.semiBold,
-      color: colors.text,
     },
     pickerRow: {
       flexDirection: "row",

@@ -12,9 +12,9 @@ import {
   formatBodyWeight,
   formatBodyWeightValue,
   formatWeightChange,
-} from "@/features/progress/metrics";
+} from "@/features/body/format";
 
-import type { BodyWeightWithChange } from "@/features/progress/queries";
+import type { BodyWeightWithChange } from "@/features/body/queries";
 
 import {
   fontsInstrument,

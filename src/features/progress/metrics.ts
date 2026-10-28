@@ -4,7 +4,7 @@ import type { Language } from "@/i18n";
 import type { Translations } from "@/i18n/es";
 
 import { formatDuration } from "@/utils/duration";
-import { formatDecimal } from "@/utils/number";
+import { formatDecimal, roundToTenth, withSign } from "@/utils/number";
 import { distanceToUnit, weightToUnit, type Units } from "@/utils/units";
 
 const SECONDS_PER_HOUR = 3600;
@@ -71,10 +71,6 @@ export function progressChange(
   return last.value - first.value;
 }
 
-function roundToTenth(value: number) {
-  return Math.round(value * 10) / 10;
-}
-
 export function formatMetric(
   trackingType: TrackingType,
   value: number,
@@ -96,43 +92,6 @@ export function formatMetric(
   }
 }
 
-// A body weight in the user's unit, without it: "72,4".
-export function formatBodyWeightValue(
-  weightKg: number,
-  units: Units,
-  language: Language,
-) {
-  return formatDecimal(
-    roundToTenth(weightToUnit(weightKg, units.weight)),
-    language,
-  );
-}
-
-// The same with the unit after it: "72,4kg".
-export function formatBodyWeight(
-  weightKg: number,
-  units: Units,
-  language: Language,
-) {
-  return `${formatBodyWeightValue(weightKg, units, language)}${units.weight}`;
-}
-
-function signed(rounded: number, text: string) {
-  return `${rounded > 0 ? "+" : rounded < 0 ? "-" : ""}${text}`;
-}
-
-// A change in body weight as it reads next to a weigh-in, which already shows
-// the unit: "+0,4".
-// A change that rounds to nothing carries no sign.
-export function formatWeightChange(
-  changeKg: number,
-  units: Units,
-  language: Language,
-) {
-  const rounded = roundToTenth(weightToUnit(changeKg, units.weight));
-  return signed(rounded, formatDecimal(Math.abs(rounded), language));
-}
-
 // A change as it reads under the picker: "+16 kg · 1RM est.", "+1,2 km/h".
 // A change that rounds to nothing carries no sign.
 export function formatChange(
@@ -145,21 +104,21 @@ export function formatChange(
   switch (trackingType) {
     case "weight_reps": {
       const rounded = roundToTenth(weightToUnit(change, units.weight));
-      return `${signed(rounded, formatDecimal(Math.abs(rounded), language))} ${units.weight} · ${t.progress.oneRepMaxShort}`;
+      return `${withSign(rounded, formatDecimal(Math.abs(rounded), language))} ${units.weight} · ${t.progress.oneRepMaxShort}`;
     }
     case "bodyweight_reps": {
       const rounded = Math.round(change);
-      return signed(rounded, t.progress.reps(Math.abs(rounded)));
+      return withSign(rounded, t.progress.reps(Math.abs(rounded)));
     }
     case "duration": {
       const rounded = Math.round(change);
-      return signed(rounded, formatDuration(Math.abs(rounded)));
+      return withSign(rounded, formatDuration(Math.abs(rounded)));
     }
     case "distance_duration": {
       const rounded = roundToTenth(
         distanceToUnit(change * SECONDS_PER_HOUR, units.distance),
       );
-      return `${signed(rounded, formatDecimal(Math.abs(rounded), language))} ${t.progress.speedUnit[units.distance]}`;
+      return `${withSign(rounded, formatDecimal(Math.abs(rounded), language))} ${t.progress.speedUnit[units.distance]}`;
     }
   }
 }

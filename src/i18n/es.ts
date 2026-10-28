@@ -8,7 +8,7 @@ import type {
   TrackingType,
 } from "@/constants/enums";
 import type { ExerciseKey, MuscleId } from "@/features/exercises/catalog";
-import type { BmiCategory } from "@/features/progress/bmi";
+import type { BmiCategory } from "@/features/body/bmi";
 import type { ProgressRange } from "@/features/progress/ranges";
 
 export const es = {
@@ -112,10 +112,7 @@ export const es = {
     close: "Cerrar",
   },
   progress: {
-    inProgress: "En curso",
     reps: (count: number) => `${count} reps`,
-    summary: (exercises: number, sets: number) =>
-      `${exercises} ${exercises === 1 ? "ejercicio" : "ejercicios"} · ${sets} ${sets === 1 ? "serie" : "series"}`,
     strength: "Fuerza",
     bodyWeight: "Peso corporal",
     oneRepMaxNote:
@@ -154,8 +151,14 @@ export const es = {
     weightViews: { chart: "Gráfica", list: "Lista" },
     bmi: "Índice de masa corporal",
     bmiTitleEmpty: "Faltan datos para el IMC",
-    bmiEmptyState:
-      "Registra tu peso y completa los datos necesarios para consultar tu índice de masa corporal.",
+    bmiMissing: {
+      height: "Añade tu altura en tus datos para calcular tu IMC.",
+      weight: "Registra tu peso arriba para calcular tu IMC.",
+      heightAndWeight:
+        "Añade tu altura en tus datos y registra tu peso arriba para calcular tu IMC.",
+      gender:
+        "En menores de 19 años el IMC se lee según el sexo: indícalo en tus datos.",
+    },
     bmiEmptyAction: "Completar mis datos",
     bmiAssumedAdult:
       "Calculado como adulto. Si tienes menos de 19 años, añade tu fecha de nacimiento.",
@@ -184,6 +187,9 @@ export const es = {
   history: {
     title: "Historial",
     day: "Día",
+    inProgress: "En curso",
+    workoutSummary: (exercises: number, sets: number) =>
+      `${exercises} ${exercises === 1 ? "ejercicio" : "ejercicios"} · ${sets} ${sets === 1 ? "serie" : "series"}`,
     exerciseCount: (count: number) =>
       `${count} ${count === 1 ? "ejercicio" : "ejercicios"}`,
     noWorkout: "Sin entreno",

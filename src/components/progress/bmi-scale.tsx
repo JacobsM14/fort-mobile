@@ -4,9 +4,9 @@ import Svg, { Polygon } from "react-native-svg";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import { bmiBlockHeights, bmiScaleY } from "@/features/progress/bmi";
+import { bmiBlockHeights, bmiScaleY } from "@/features/body/bmi";
 
-import type { BmiBand, BmiCategory } from "@/features/progress/bmi";
+import type { BmiBand, BmiCategory } from "@/features/body/bmi";
 
 import { fontSizes, fontsJetBrainsMono, spacing } from "@/constants/theme";
 

@@ -19,7 +19,7 @@ import {
   latestBodyWeightKg,
   saveBodyWeight,
   useBodyWeights,
-} from "@/features/progress/queries";
+} from "@/features/body/queries";
 import { useWorkoutHistory } from "@/features/workouts/queries";
 
 import { formatDayHeader, parseDateKey } from "@/utils/date";

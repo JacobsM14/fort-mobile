@@ -2,13 +2,14 @@ import {
   BMI_FOR_AGE,
   BMI_FOR_AGE_FIRST_MONTH,
   BMI_FOR_AGE_LAST_MONTH,
-} from "@/features/progress/bmi-for-age";
+} from "@/features/body/bmi-for-age";
 
-import type { LmsRow, ReferenceSex } from "@/features/progress/bmi-for-age";
-import type { BodyWeightEntry } from "@/features/progress/queries";
+import type { LmsRow, ReferenceSex } from "@/features/body/bmi-for-age";
+import type { BodyWeightEntry } from "@/features/body/queries";
 import type { UserProfile } from "@/features/settings/user-profile";
 
 import { parseDateKey } from "@/utils/date";
+import { roundToTenth } from "@/utils/number";
 
 export type BmiCategory = "underweight" | "normal" | "overweight" | "obese";
 
@@ -140,6 +141,9 @@ export function kilosToIdeal(
   return Math.max(0, distance);
 }
 
+// What the BMI can still be waiting for.
+export type BmiMissing = "height" | "weight" | "gender";
+
 export type BmiAssessment =
   | {
       status: "ready";
@@ -152,7 +156,7 @@ export type BmiAssessment =
     }
   // A minor whose gender has no WHO reference: the value alone.
   | { status: "uncategorized"; value: number }
-  | { status: "missing"; missing: readonly ("height" | "weight" | "gender")[] }
+  | { status: "missing"; missing: readonly BmiMissing[] }
   | { status: "unsupported" };
 
 // The BMI of the latest weigh-in, read for the user's age on that day: adults
@@ -174,7 +178,7 @@ export function assessBmi(
   }
 
   // Rounded as shown, so the category agrees with the number.
-  const value = Math.round(bmiValue(latest.weightKg, heightCm) * 10) / 10;
+  const value = roundToTenth(bmiValue(latest.weightKg, heightCm));
   let bands = ADULT_BMI_BANDS;
   if (birthDate !== null) {
     const months = ageInMonths(parseDateKey(birthDate), latest.date);

@@ -8,7 +8,7 @@ import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
 
-import { formatDecimal, parseDecimal } from "@/utils/number";
+import { formatDecimal, parseDecimal, roundToTenth } from "@/utils/number";
 import { weightFromUnit, weightToUnit } from "@/utils/units";
 
 import {
@@ -45,7 +45,10 @@ export function BodyWeightEntry({
   const styles = useStyles();
 
   const [text, setText] = useState(() =>
-    formatDecimal(round(weightToUnit(initialKg, units.weight)), language),
+    formatDecimal(
+      roundToTenth(weightToUnit(initialKg, units.weight)),
+      language,
+    ),
   );
   const value = parseDecimal(text);
   // Compared as shown (a tenth), so a saved 72.44 kg isn't "changed" by the
@@ -53,10 +56,10 @@ export function BodyWeightEntry({
   const unchanged =
     savedKg !== undefined &&
     value !== null &&
-    round(value) === round(weightToUnit(savedKg, units.weight));
+    roundToTenth(value) === roundToTenth(weightToUnit(savedKg, units.weight));
 
   function step(delta: number) {
-    const next = Math.max(0, round((value ?? 0) + delta));
+    const next = Math.max(0, roundToTenth((value ?? 0) + delta));
     setText(formatDecimal(next, language));
   }
 
@@ -109,11 +112,6 @@ function inputWidth(text: string) {
     MAX_INPUT_WIDTH,
     Math.max(MIN_INPUT_WIDTH, Math.ceil(text.length * CHAR_WIDTH)),
   );
-}
-
-// One decimal, which also hides the float noise of repeated steps.
-function round(value: number) {
-  return Math.round(value * 10) / 10;
 }
 
 type StepButtonProps = {

@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 
 import { PrimaryButton } from "@/components/ui/buttons/primary-button";
+
+import { makeStyles } from "@/hooks/use-theme";
+
 import {
   fontsInstrument,
   fontSizes,
@@ -8,13 +11,13 @@ import {
   radii,
   spacing,
 } from "@/constants/theme";
-import { makeStyles } from "@/hooks/use-theme";
 
 type EmptyStateCardProps = {
   title: string;
   message: string;
-  actionLabel: string;
-  onAction: () => void;
+  // Without them the card only explains: the way out isn't a button.
+  actionLabel?: string;
+  onAction?: () => void;
 };
 
 export function EmptyStateCard({
@@ -29,7 +32,9 @@ export function EmptyStateCard({
     <View style={styles.card}>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.message}>{message}</Text>
-      <PrimaryButton label={actionLabel} onPress={onAction} />
+      {actionLabel !== undefined && onAction !== undefined && (
+        <PrimaryButton label={actionLabel} onPress={onAction} />
+      )}
     </View>
   );
 }

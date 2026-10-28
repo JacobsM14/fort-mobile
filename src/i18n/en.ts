@@ -98,10 +98,7 @@ export const en: Translations = {
     close: "Close",
   },
   progress: {
-    inProgress: "In progress",
     reps: (count) => `${count} reps`,
-    summary: (exercises, sets) =>
-      `${exercises} ${exercises === 1 ? "exercise" : "exercises"} · ${sets} ${sets === 1 ? "set" : "sets"}`,
     strength: "Strength",
     bodyWeight: "Body weight",
     oneRepMaxNote:
@@ -140,8 +137,13 @@ export const en: Translations = {
     weightViews: { chart: "Chart", list: "List" },
     bmi: "Body Mass Index",
     bmiTitleEmpty: "Missing BMI data",
-    bmiEmptyState:
-      "Log your weight and complete the necessary details to check your Body Mass Index.",
+    bmiMissing: {
+      height: "Add your height to your details to work out your BMI.",
+      weight: "Log your weight above to work out your BMI.",
+      heightAndWeight:
+        "Add your height to your details and log your weight above to work out your BMI.",
+      gender: "Under 19, the BMI is read by sex: add it to your details.",
+    },
     bmiEmptyAction: "Complete my details",
     bmiAssumedAdult:
       "Worked out as an adult. If you are under 19, add your birth date.",
@@ -170,6 +172,9 @@ export const en: Translations = {
   history: {
     title: "History",
     day: "Day",
+    inProgress: "In progress",
+    workoutSummary: (exercises, sets) =>
+      `${exercises} ${exercises === 1 ? "exercise" : "exercises"} · ${sets} ${sets === 1 ? "set" : "sets"}`,
     exerciseCount: (count) =>
       `${count} ${count === 1 ? "exercise" : "exercises"}`,
     noWorkout: "No workout",

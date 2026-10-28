@@ -22,3 +22,15 @@ export function formatDecimal(value: number, language: Language) {
     useGrouping: false,
   });
 }
+
+// One decimal, as weights and speeds are shown. Also hides the float noise of
+// repeated steps of 0.1.
+export function roundToTenth(value: number) {
+  return Math.round(value * 10) / 10;
+}
+
+// The sign of a rounded change before its text, which shows it unsigned: a
+// change that rounds to nothing carries none.
+export function withSign(rounded: number, text: string) {
+  return `${rounded > 0 ? "+" : rounded < 0 ? "-" : ""}${text}`;
+}

@@ -7,9 +7,13 @@ import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
 
-import { formatBodyWeight } from "@/features/progress/metrics";
+import { formatBodyWeight } from "@/features/body/format";
 
-import type { BmiAssessment, BmiCategory } from "@/features/progress/bmi";
+import type {
+  BmiAssessment,
+  BmiCategory,
+  BmiMissing,
+} from "@/features/body/bmi";
 import type { Translations } from "@/i18n/es";
 
 import { formatDecimal } from "@/utils/number";
@@ -39,12 +43,16 @@ export function BmiCard({ assessment, onCompleteProfile }: BmiCardProps) {
     return null;
   }
   if (assessment.status === "missing") {
+    // The weight is logged right above: only what the settings ask sends there.
+    const inSettings = assessment.missing.some(
+      (item) => item === "height" || item === "gender",
+    );
     return (
       <EmptyStateCard
         title={t.progress.bmiTitleEmpty}
-        message={t.progress.bmiEmptyState}
-        actionLabel={t.progress.bmiEmptyAction}
-        onAction={onCompleteProfile}
+        message={t.progress.bmiMissing[missingMessage(assessment.missing)]}
+        actionLabel={inSettings ? t.progress.bmiEmptyAction : undefined}
+        onAction={inSettings ? onCompleteProfile : undefined}
       />
     );
   }
@@ -53,9 +61,7 @@ export function BmiCard({ assessment, onCompleteProfile }: BmiCardProps) {
 
   return (
     <View style={globalStyles.titledSection}>
-      <Text style={[globalStyles.subtitle, styles.sectionTitle]}>
-        {t.progress.bmi}
-      </Text>
+      <Text style={globalStyles.sectionTitle}>{t.progress.bmi}</Text>
       {assessment.status === "uncategorized" ? (
         <View style={styles.text}>
           <Text style={styles.score}>{score}</Text>
@@ -94,6 +100,19 @@ export function BmiCard({ assessment, onCompleteProfile }: BmiCardProps) {
   );
 }
 
+// assessBmi only asks for the gender once the height and a weigh-in are there.
+function missingMessage(
+  missing: readonly BmiMissing[],
+): keyof Translations["progress"]["bmiMissing"] {
+  if (missing.includes("gender")) {
+    return "gender";
+  }
+  if (missing.includes("height")) {
+    return missing.includes("weight") ? "heightAndWeight" : "height";
+  }
+  return "weight";
+}
+
 function idealHint(t: Translations, category: BmiCategory, distance: string) {
   return category === "normal"
     ? t.progress.bmiToIdeal.inRange(distance)
@@ -104,9 +123,6 @@ function idealHint(t: Translations, category: BmiCategory, distance: string) {
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
-    sectionTitle: {
-      color: colors.border,
-    },
     row: {
       flexDirection: "row",
       alignItems: "center",
