@@ -1,0 +1,116 @@
+import type {
+  AccentColor,
+  Gender,
+  LanguagePreference,
+  ThemePreference,
+} from "@/constants/enums";
+
+export const settingsTexts = {
+  settings: {
+    breadCrumb: "Perfil",
+    title: "Ajustes",
+    appearance: "Apariencia",
+    themeOptions: {
+      system: "Sistema",
+      light: "Claro",
+      dark: "Oscuro",
+    } satisfies Record<ThemePreference, string>,
+    language: "Idioma",
+    // Each language in its own name, so it can be found from any of them.
+    languageOptions: {
+      system: "Sistema",
+      es: "Español",
+      en: "English",
+    } satisfies Record<LanguagePreference, string>,
+    units: {
+      weight: "Peso",
+      distance: "Distancia",
+      system: "Sistema",
+    },
+    user: {
+      height: "Altura",
+      cm: "cm",
+      feet: "ft",
+      inches: "in",
+      birthDate: "Fecha de nacimiento",
+      day: "DD",
+      month: "MM",
+      year: "AAAA",
+      intro:
+        "Para un mejor cálculo de tu IMC, completa tu altura y fecha de nacimiento. La altura es obligatoria para calcular el IMC, pero la edad también puede influir en el resultado.",
+      invalidDate: "Esa fecha no existe o aún no ha llegado.",
+      gender: "Género",
+      genders: {
+        female: "Mujer",
+        male: "Hombre",
+        other: "Otro / Prefiero no decirlo",
+      } satisfies Record<Gender, string>,
+    },
+    sections: {
+      user: "Usuario",
+      privacy: "Política de privacidad y licencias",
+      permissions: "Permisos",
+      data: "Exportar / Importar",
+      preferences: "Preferencias",
+      exercises: "Gestión de ejercicios",
+      about: "Acerca de",
+    },
+    accent: {
+      label: "Color",
+      names: {
+        orange: "Naranja",
+        blue: "Azul",
+        green: "Verde",
+        purple: "Morado",
+        pink: "Rosa",
+        amber: "Ámbar",
+      } satisfies Record<AccentColor, string>,
+    },
+  },
+  about: {
+    version: "Versión",
+    contact: "Contacto",
+    rate: "Valorar la app",
+    disclaimer: (appName: string) =>
+      `${appName} no es un dispositivo médico y no diagnostica, trata, cura ni previene ninguna enfermedad. Consulta con un profesional sanitario antes de empezar un programa de ejercicio.`,
+  },
+  privacy: {
+    summary: (appName: string) =>
+      `${appName} guarda todo lo que registras solo en este dispositivo. No hay cuentas, servidores, anuncios ni analíticas.`,
+    storedTitle: "Qué se guarda",
+    storedIntro: "En la base de datos de la app, dentro de este dispositivo:",
+    stored: [
+      "Tus rutinas y los ejercicios que añades",
+      "Tus entrenamientos, series y pesos",
+      "Tu peso corporal, si lo registras",
+      "Tus preferencias de apariencia (tema y color)",
+    ],
+    security:
+      "Estos datos están en el almacenamiento privado de la app, al que el sistema no deja acceder a otras apps.",
+    notDoneTitle: "Lo que no hace la app",
+    notDone: [
+      "Pedirte una cuenta o datos personales",
+      "Enviar nada a internet",
+      "Usar analíticas ni rastreo",
+      "Mostrar anuncios",
+    ],
+    backupsTitle: "Copias de seguridad",
+    backups:
+      "Si tienes activadas las copias de seguridad del sistema (iCloud o Google), tus datos pueden incluirse en ellas, como los de cualquier otra app. Esas copias dependen de tu cuenta, no de esta app.",
+    deleteTitle: "Borrar tus datos",
+    delete:
+      "Desinstalar la app borra todo lo que tenía guardado en este dispositivo.",
+    changesTitle: "Cambios",
+    changes:
+      "Si una versión futura cambia cómo se tratan tus datos (por ejemplo, para sincronizarlos entre dispositivos), se explicará aquí antes de que ocurra.",
+    contactTitle: "Contacto",
+    contact: "Dudas sobre privacidad",
+    licenseTitle: "Licencia",
+    rightsReserved: "Todos los derechos reservados.",
+    thirdParty: "Software de terceros",
+    imagesTitle: "Imágenes de ejercicios",
+    images:
+      "Las fotos de los ejercicios proceden del proyecto free-exercise-db.",
+    lastUpdated: "Última actualización",
+  },
+};

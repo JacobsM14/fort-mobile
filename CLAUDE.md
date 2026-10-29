@@ -8,7 +8,7 @@ Mobile app to track gym routines and workouts. Offline-first: all data lives in 
 - Local DB: SQLite via expo-sqlite, accessed through Drizzle ORM
 - Navigation: Expo Router (file-based routes in `src/app`)
 - Styles: design tokens (colors, `spacing`, `fontSizes`, `lineHeights`, `radii`, `iconSizes`, `controlHeights`) live in `src/constants/theme.ts`; never hardcode them elsewhere
-- Translations: `src/i18n` (`es.ts` defines the `Translations` type, `en.ts` must match it)
+- Translations: `src/i18n`, one file per area in `es/` and `en/` (`es/index.ts` defines the `Translations` type; `en/` must match it with the same file names). Exercise names and descriptions live in each `catalog.ts`
 
 ## Commands
 
