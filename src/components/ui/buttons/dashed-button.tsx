@@ -2,6 +2,7 @@ import { SymbolView, type SymbolViewProps } from "expo-symbols";
 import { Pressable, StyleSheet, Text } from "react-native";
 
 import {
+  controlHeights,
   fontsInstrument,
   fontSizes,
   iconSizes,
@@ -19,6 +20,8 @@ type DashedButtonProps = {
   onPress: () => void;
   icon?: SymbolViewProps["name"];
   tone?: "primary" | "muted";
+  // Shorter, for a secondary action tucked between other content.
+  compact?: boolean;
 };
 
 export function DashedButton({
@@ -26,6 +29,7 @@ export function DashedButton({
   onPress,
   icon,
   tone = "primary",
+  compact = false,
 }: DashedButtonProps) {
   const { colors } = useTheme();
   const styles = useStyles();
@@ -35,6 +39,7 @@ export function DashedButton({
     <Pressable
       style={({ pressed }) => [
         styles.button,
+        compact && styles.buttonCompact,
         {
           borderColor:
             pressed || tone === "primary" ? colors.primary : colors.disabled,
@@ -72,6 +77,9 @@ const useStyles = makeStyles(({ colors }) =>
       borderRadius: radii.sm,
       borderWidth: 1.5,
       borderStyle: "dashed",
+    },
+    buttonCompact: {
+      minHeight: controlHeights.md,
     },
     buttonPressed: {
       backgroundColor: colors.backgroundSecondary,

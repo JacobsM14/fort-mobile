@@ -189,39 +189,46 @@ export function ExercisePickerScreen({
           onPress={() => setFiltersOpen(true)}
         />
       </View>
-      {onCreateCustom !== undefined && (
-        <DashedButton
-          icon={{ ios: "plus", android: "add", web: "add" }}
-          label={t.newExercises.createCustom}
-          onPress={onCreateCustom}
-        />
-      )}
-      <FlatList
-        ref={listRef}
-        style={styles.list}
-        contentContainerStyle={styles.listContent}
-        data={pagedItems}
-        extraData={selectedIds}
-        onEndReached={loadMore}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <ExerciseRow
-            name={item.label}
-            detail={item.detail}
-            trackingType={item.trackingType}
-            selected={selectedIds.includes(item.id)}
-            onToggle={() => toggleExercise(item.id)}
-            infoLabel={t.exercises.showInfo}
-            onInfo={() => setInfo(getExerciseInfo(item, t))}
+      {/* Together so the button sits closer to the list than the screen's gap. */}
+      <View style={styles.results}>
+        {onCreateCustom !== undefined && (
+          <DashedButton
+            icon={{ ios: "plus", android: "add", web: "add" }}
+            label={t.newExercises.createCustom}
+            tone="muted"
+            compact
+            onPress={onCreateCustom}
           />
         )}
-        ListEmptyComponent={
-          loaded ? <NoContentBox label={t.newExercises.noResults} /> : undefined
-        }
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="on-drag"
-        showsVerticalScrollIndicator={false}
-      />
+        <FlatList
+          ref={listRef}
+          style={styles.list}
+          contentContainerStyle={styles.listContent}
+          data={pagedItems}
+          extraData={selectedIds}
+          onEndReached={loadMore}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <ExerciseRow
+              name={item.label}
+              detail={item.detail}
+              trackingType={item.trackingType}
+              selected={selectedIds.includes(item.id)}
+              onToggle={() => toggleExercise(item.id)}
+              infoLabel={t.exercises.showInfo}
+              onInfo={() => setInfo(getExerciseInfo(item, t))}
+            />
+          )}
+          ListEmptyComponent={
+            loaded ? (
+              <NoContentBox label={t.newExercises.noResults} />
+            ) : undefined
+          }
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
       <PrimaryButton
         label={doneLabel(selectedIds.length)}
         onPress={() => onDone(selectedIds)}
@@ -253,6 +260,10 @@ const styles = StyleSheet.create({
   },
   search: {
     flex: 1,
+  },
+  results: {
+    flex: 1,
+    gap: spacing.sm,
   },
   list: {
     flex: 1,
