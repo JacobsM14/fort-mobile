@@ -85,7 +85,9 @@ export default function FinishedWorkoutScreen() {
             style={styles.heading}
             entering={FadeInDown.delay(TEXT_DELAY_MS)}
           >
-            <Text style={[globalStyles.inputLabel, styles.routine]}>
+            <Text
+              style={[globalStyles.inputLabel, styles.routine, styles.centered]}
+            >
               {title}
             </Text>
             <Text style={[globalStyles.title, styles.centered]}>
@@ -100,8 +102,18 @@ export default function FinishedWorkoutScreen() {
         >
           {stats.map((stat) => (
             <View key={stat.label} style={[globalStyles.card, styles.stat]}>
-              <Text style={styles.statValue}>{stat.value}</Text>
-              <Text style={[globalStyles.inputLabel, styles.statLabel]}>
+              <Text
+                style={styles.statValue}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+              >
+                {stat.value}
+              </Text>
+              <Text
+                style={[globalStyles.inputLabel, styles.statLabel]}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+              >
                 {stat.label}
               </Text>
             </View>
@@ -187,12 +199,18 @@ const useStyles = makeStyles(({ colors }) =>
       gap: spacing.sm,
     },
     // The card style is a row; each stat stacks its value over its label.
+    // Three share the width, so they keep less side padding than a card: a
+    // duration over an hour ("1:02:05") or "EJERCICIOS" wrapped otherwise.
+    // Stretched, the texts take the card's width and shrink to fit in it.
     stat: {
       flex: 1,
       flexDirection: "column",
+      alignItems: "stretch",
       gap: spacing.xs,
+      paddingHorizontal: spacing.sm,
     },
     statValue: {
+      textAlign: "center",
       fontSize: fontSizes.lead,
       fontFamily: fontsJetBrainsMono.medium,
       color: colors.text,
