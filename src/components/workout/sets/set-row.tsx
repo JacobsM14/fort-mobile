@@ -1,6 +1,9 @@
 import { SymbolView } from "expo-symbols";
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+// Gesture handler's input, with its scroll view on the screen, lets a drag
+// that starts on it scroll the list; on Android the plain one keeps the touch.
+import { TextInput } from "react-native-gesture-handler";
 
 import {
   DELETE_SET_WIDTH,

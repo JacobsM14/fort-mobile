@@ -24,10 +24,14 @@ export type Colors = BaseColors &
   AccentShades & {
     // The accent diluted over the background, for highlighted cards.
     primaryTint: string;
+    // The accent at half strength, between the faint and the full one (the
+    // BMI scale).
+    primarySoft: string;
   };
 
-// Alpha of primaryTint, about 15 %.
+// Hex alphas over the accent: primaryTint about 15 %, primarySoft 50 %.
 const TINT_ALPHA = "26";
+const SOFT_ALPHA = "80";
 
 const baseColors: Record<ColorScheme, BaseColors> = {
   dark: {
@@ -100,6 +104,7 @@ export const fontsInstrument = {
 // Only the weight in use is loaded at startup (see app/_layout.tsx).
 export const fontsJetBrainsMono = {
   medium: "JetBrainsMono_500Medium",
+  bold: "JetBrainsMono_700Bold",
 };
 
 export const spacing = {
@@ -107,6 +112,8 @@ export const spacing = {
   sm: 12,
   md: 16,
   lg: 24,
+  badgeGap: 5,
+  badgeInset: 9,
 };
 
 export const fontSizes = {
@@ -119,7 +126,10 @@ export const fontSizes = {
   button: 17,
   lead: 18,
   heading: 28,
+  stepper: 26,
+  entry: 34,
   display: 46,
+  score: 56,
   timer: 72,
 };
 
@@ -131,6 +141,7 @@ export const lineHeights = {
 export const radii = {
   sm: 2,
   md: 8,
+  lg: 16,
 };
 
 export const iconSizes = {
@@ -139,6 +150,14 @@ export const iconSizes = {
   lg: 22,
   xl: 24,
   hero: 64,
+};
+
+// The height of a control: md is the smallest comfortable to tap, sm for
+// compact ones beside other content, lg for the rows of a menu.
+export const controlHeights = {
+  sm: 36,
+  md: 44,
+  lg: 48,
 };
 
 function createGlobalStyles(colors: Colors) {
@@ -164,6 +183,25 @@ function createGlobalStyles(colors: Colors) {
       gap: spacing.sm,
       paddingBottom: spacing.sm,
     },
+    // A small title above its box: wraps both so the gap is the same everywhere.
+    titledSection: {
+      gap: spacing.xs,
+    },
+    // The title of a titledSection in Progress: dimmer than a subtitle, so the
+    // boxes stand out.
+    sectionTitle: {
+      fontSize: fontSizes.caption,
+      fontFamily: fontsJetBrainsMono.medium,
+      color: colors.border,
+    },
+    // A bordered box on the secondary background, for a chart and its notes.
+    panel: {
+      gap: spacing.sm,
+      padding: spacing.sm,
+      backgroundColor: colors.backgroundSecondary,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
     centered: {
       flex: 1,
       alignItems: "center",
@@ -180,7 +218,7 @@ function createGlobalStyles(colors: Colors) {
       color: colors.disabled,
     },
     breadCrumbPress: {
-      minHeight: 44,
+      minHeight: controlHeights.md,
       display: "flex",
       flexDirection: "row",
       alignItems: "center",
@@ -215,7 +253,7 @@ function createGlobalStyles(colors: Colors) {
       color: colors.text,
     },
     notPressedButton: {
-      minHeight: 44,
+      minHeight: controlHeights.md,
       paddingHorizontal: 14,
       justifyContent: "center",
       backgroundColor: "transparent",
@@ -224,7 +262,7 @@ function createGlobalStyles(colors: Colors) {
       borderRadius: radii.sm,
     },
     pressedButton: {
-      minHeight: 44,
+      minHeight: controlHeights.md,
       paddingHorizontal: 14,
       justifyContent: "center",
       backgroundColor: colors.primary,
@@ -276,6 +314,7 @@ function createTheme(scheme: ColorScheme, accent: AccentColor): Theme {
     ...baseColors[scheme],
     ...shades,
     primaryTint: `${shades.primary}${TINT_ALPHA}`,
+    primarySoft: `${shades.primary}${SOFT_ALPHA}`,
   };
   return { scheme, accent, colors, globalStyles: createGlobalStyles(colors) };
 }

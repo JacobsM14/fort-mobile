@@ -5,9 +5,10 @@ import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { DashedButton } from "@/components/ui/buttons/dashed-button";
 import type { TrackingType } from "@/constants/enums";
 import {
+  controlHeights,
   fontsInstrument,
-  fontsJetBrainsMono,
   fontSizes,
+  fontsJetBrainsMono,
   iconSizes,
   radii,
   spacing,
@@ -98,7 +99,8 @@ type ExerciseSelectMenuProps = {
   // the button, as wide as it.
   anchor: MenuAnchor;
   onSelect: (id: string) => void;
-  onAddExercise: () => void;
+  // Without it, the menu only picks among the items (no "extra exercise").
+  onAddExercise?: () => void;
   onClose: () => void;
 };
 
@@ -174,13 +176,15 @@ export function ExerciseSelectMenu({
             );
           })}
         </ScrollView>
-        <View style={styles.footer}>
-          <DashedButton
-            icon={{ ios: "plus", android: "add", web: "add" }}
-            label={t.workout.extraExercise}
-            onPress={onAddExercise}
-          />
-        </View>
+        {onAddExercise !== undefined && (
+          <View style={styles.footer}>
+            <DashedButton
+              icon={{ ios: "plus", android: "add", web: "add" }}
+              label={t.workout.extraExercise}
+              onPress={onAddExercise}
+            />
+          </View>
+        )}
       </Animated.View>
     </>
   );
@@ -194,7 +198,7 @@ const useStyles = makeStyles(({ colors }) =>
       flexDirection: "row",
       alignItems: "center",
       gap: spacing.xs,
-      height: 44,
+      height: controlHeights.md,
       paddingHorizontal: spacing.sm,
       borderWidth: 1,
       borderColor: colors.border,
@@ -225,7 +229,7 @@ const useStyles = makeStyles(({ colors }) =>
       flexDirection: "row",
       alignItems: "center",
       gap: spacing.sm,
-      minHeight: 48,
+      minHeight: controlHeights.lg,
       paddingHorizontal: spacing.sm,
       paddingVertical: spacing.xs,
     },

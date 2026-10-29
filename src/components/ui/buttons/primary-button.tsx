@@ -1,4 +1,10 @@
-import { Pressable, StyleSheet, Text } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  type StyleProp,
+  type ViewStyle,
+} from "react-native";
 
 import { fontsInstrument, fontSizes, radii } from "@/constants/theme";
 import { useFocusedPress } from "@/hooks/use-focused-press";
@@ -8,12 +14,14 @@ type PrimaryButtonProps = {
   label: string;
   onPress: () => void;
   disabled?: boolean;
+  style?: StyleProp<ViewStyle>;
 };
 
 export function PrimaryButton({
   label,
   onPress,
   disabled = false,
+  style,
 }: PrimaryButtonProps) {
   const styles = useStyles();
   const handlePress = useFocusedPress(onPress);
@@ -24,6 +32,7 @@ export function PrimaryButton({
         styles.button,
         pressed && styles.buttonPressed,
         disabled && styles.buttonDisabled,
+        style,
       ]}
       onPress={handlePress}
       disabled={disabled}

@@ -1,6 +1,13 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { formatDayHeader, getWeekDays } from "./date";
+import {
+  formatDayHeader,
+  formatShortDay,
+  getDaysBetween,
+  getWeekDays,
+  parseDateKey,
+  toDateKey,
+} from "./date";
 
 // expo-localization numbers weekdays from 1 (Sunday).
 const SUNDAY = 1;
@@ -39,5 +46,38 @@ describe("formatDayHeader", () => {
     const monday = new Date(2026, 9, 19);
     expect(formatDayHeader(monday, "es")).toBe("LUNES 19 OCT");
     expect(formatDayHeader(monday, "en")).toBe("MONDAY 19 OCT");
+  });
+});
+
+describe("formatShortDay", () => {
+  it("shows the day and the short month in the language's order", () => {
+    const monday = new Date(2026, 9, 19);
+    expect(formatShortDay(monday, "es")).toBe("19 oct");
+    expect(formatShortDay(monday, "en")).toBe("Oct 19");
+  });
+});
+
+describe("getDaysBetween", () => {
+  it("lists the days from the newest to the oldest, leaving out the end", () => {
+    const days = getDaysBetween(new Date(2026, 9, 29), new Date(2026, 10, 2));
+    expect(days.map((day) => [day.getMonth(), day.getDate()])).toEqual([
+      [10, 1],
+      [9, 31],
+      [9, 30],
+      [9, 29],
+    ]);
+  });
+});
+
+describe("toDateKey", () => {
+  it("pads month and day, using the local date", () => {
+    expect(toDateKey(new Date(2026, 0, 5, 23, 59))).toBe("2026-01-05");
+  });
+});
+
+describe("parseDateKey", () => {
+  it("reads back the local day written by toDateKey", () => {
+    const day = new Date(2026, 0, 5);
+    expect(parseDateKey(toDateKey(day))).toEqual(day);
   });
 });

@@ -146,11 +146,11 @@ const useStyles = makeStyles(({ colors }) =>
     panel: {
       flexShrink: 1,
       gap: spacing.md,
-      paddingTop: spacing.sm,
+      paddingTop: spacing.md,
       paddingHorizontal: spacing.lg,
       backgroundColor: colors.backgroundSecondary,
-      borderTopWidth: 1,
-      borderColor: colors.border,
+      borderTopRightRadius: radii.lg,
+      borderTopLeftRadius: radii.lg,
     },
     dragZone: {
       gap: spacing.sm,

@@ -4,16 +4,21 @@ import {
   InstrumentSans_600SemiBold,
   InstrumentSans_700Bold,
 } from "@expo-google-fonts/instrument-sans";
-import { JetBrainsMono_500Medium } from "@expo-google-fonts/jetbrains-mono";
+import {
+  JetBrainsMono_500Medium,
+  JetBrainsMono_700Bold,
+} from "@expo-google-fonts/jetbrains-mono";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { useDatabase } from "@/db/use-database";
 import { LanguageProvider } from "@/hooks/use-language";
 import { UnitsProvider } from "@/hooks/use-units";
+import { UserProfileProvider } from "@/hooks/use-user-profile";
 import { makeStyles, ThemeProvider, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
@@ -32,13 +37,17 @@ const MODAL_OPTIONS = {
 
 export default function RootLayout() {
   return (
-    <LanguageProvider>
-      <UnitsProvider>
-        <ThemeProvider>
-          <RootNavigator />
-        </ThemeProvider>
-      </UnitsProvider>
-    </LanguageProvider>
+    <GestureHandlerRootView style={rootStyles.root}>
+      <LanguageProvider>
+        <UnitsProvider>
+          <UserProfileProvider>
+            <ThemeProvider>
+              <RootNavigator />
+            </ThemeProvider>
+          </UserProfileProvider>
+        </UnitsProvider>
+      </LanguageProvider>
+    </GestureHandlerRootView>
   );
 }
 
@@ -52,6 +61,7 @@ function RootNavigator() {
     InstrumentSans_600SemiBold,
     InstrumentSans_700Bold,
     JetBrainsMono_500Medium,
+    JetBrainsMono_700Bold,
   });
   const { t } = useTranslation();
 
@@ -86,10 +96,19 @@ function RootNavigator() {
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="routine/[id]" options={MODAL_OPTIONS} />
       <Stack.Screen name="workout/[id]" options={MODAL_OPTIONS} />
+      <Stack.Screen name="history" options={MODAL_OPTIONS} />
       <Stack.Screen name="settings" options={MODAL_OPTIONS} />
     </Stack>
   );
 }
+
+// Gesture handler's components (the scroll views and inputs of the workout)
+// only work inside it.
+const rootStyles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+});
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({

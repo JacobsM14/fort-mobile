@@ -1,9 +1,10 @@
 import { SymbolView, type SymbolViewProps } from "expo-symbols";
 import { Pressable, StyleSheet } from "react-native";
 
-import { iconSizes, radii } from "@/constants/theme";
 import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
+
+import { controlHeights, iconSizes, radii } from "@/constants/theme";
 
 type IconButtonProps = {
   icon: SymbolViewProps["name"];
@@ -12,6 +13,8 @@ type IconButtonProps = {
   // "muted" is a gray outline that turns to the accent when pressed, for
   // secondary actions such as showing an exercise's info.
   tone?: "primary" | "danger" | "muted";
+  // Width and height; a control height square unless a neighbor sets another.
+  size?: number;
 };
 
 export function IconButton({
@@ -19,6 +22,7 @@ export function IconButton({
   accessibilityLabel,
   onPress,
   tone = "primary",
+  size = controlHeights.md,
 }: IconButtonProps) {
   const { colors } = useTheme();
   const styles = useStyles();
@@ -45,7 +49,11 @@ export function IconButton({
     <Pressable
       style={({ pressed }) => {
         const { border, fill } = getColors(pressed);
-        return [styles.box, { borderColor: border, backgroundColor: fill }];
+        return [
+          styles.box,
+          { width: size, height: size },
+          { borderColor: border, backgroundColor: fill },
+        ];
       }}
       onPress={handlePress}
       accessibilityRole="button"
@@ -65,8 +73,8 @@ export function IconButton({
 const useStyles = makeStyles(() =>
   StyleSheet.create({
     box: {
-      width: 44,
-      height: 44,
+      width: controlHeights.md,
+      height: controlHeights.md,
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 1,

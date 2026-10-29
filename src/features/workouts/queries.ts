@@ -10,6 +10,7 @@ import {
   isNull,
   lt,
   max,
+  min,
   ne,
   notInArray,
 } from "drizzle-orm";
@@ -246,6 +247,21 @@ function insertWorkoutExercises(
 }
 
 export function startWorkout(routineId: string, now = new Date()) {
+  return createWorkout(routineId, now, null);
+}
+
+// A workout done on another day and not logged then: it is created already
+// finished, so it never becomes the workout in progress, and its sets are
+// filled in from the history.
+export function logWorkout(routineId: string, startedAt: Date) {
+  return createWorkout(routineId, startedAt, startedAt);
+}
+
+function createWorkout(
+  routineId: string,
+  startedAt: Date,
+  endedAt: Date | null,
+) {
   const workoutId = newId();
   db.transaction((tx) => {
     const routine = tx
@@ -267,7 +283,13 @@ export function startWorkout(routineId: string, now = new Date()) {
     // The name is copied so the workout keeps it if the routine is renamed
     // or deleted later.
     tx.insert(workouts)
-      .values({ id: workoutId, routineId, name: routine.name, startedAt: now })
+      .values({
+        id: workoutId,
+        routineId,
+        name: routine.name,
+        startedAt,
+        endedAt,
+      })
       .run();
     insertWorkoutExercises(tx, workoutId, exerciseIds, 0);
   });
@@ -520,6 +542,13 @@ export function discardWorkout(workoutId: string) {
   db.delete(workouts).where(eq(workouts.id, workoutId)).run();
 }
 
+// Its sets go with it (cascade).
+export function deleteWorkoutExercise(workoutExerciseId: string) {
+  db.delete(workoutExercises)
+    .where(eq(workoutExercises.id, workoutExerciseId))
+    .run();
+}
+
 export type WorkoutExerciseRow = { id: string; exerciseId: string };
 
 export type WorkoutSetRow = WorkoutSet & { workoutExerciseId: string };
@@ -675,9 +704,39 @@ export function toWorkoutHistory(
   });
 }
 
-// Newest first. The done sets come from their own query so the workout in
-// progress updates as sets are marked.
-export function useWorkoutHistory() {
+// The sets done, in order, of every workout or only of those started within
+// a range, so a single day doesn't read the whole history.
+export function doneSetsQuery(range?: { from: Date; to: Date }) {
+  return db
+    .select({
+      workoutId: workoutExercises.workoutId,
+      workoutExerciseId: workoutSets.workoutExerciseId,
+      exerciseId: workoutExercises.exerciseId,
+      weightKg: workoutSets.weightKg,
+      reps: workoutSets.reps,
+      durationS: workoutSets.durationS,
+      distanceM: workoutSets.distanceM,
+    })
+    .from(workoutSets)
+    .innerJoin(
+      workoutExercises,
+      eq(workoutExercises.id, workoutSets.workoutExerciseId),
+    )
+    .innerJoin(workouts, eq(workouts.id, workoutExercises.workoutId))
+    .where(
+      and(
+        isNotNull(workoutSets.completedAt),
+        range === undefined ? undefined : gte(workouts.startedAt, range.from),
+        range === undefined ? undefined : lt(workouts.startedAt, range.to),
+      ),
+    )
+    .orderBy(asc(workoutExercises.position), asc(workoutSets.position));
+}
+
+// Newest first, all of them or only those started within a range. The done
+// sets come from their own query so the workout in progress updates as sets
+// are marked.
+export function useWorkoutHistory(range?: { from: Date; to: Date }) {
   const workoutRows = useLiveQuery(
     db
       .select({
@@ -687,27 +746,21 @@ export function useWorkoutHistory() {
         endedAt: workouts.endedAt,
       })
       .from(workouts)
-      .orderBy(desc(workouts.startedAt)),
-  );
-  const doneSets = useLiveQuery(
-    db
-      .select({
-        workoutId: workoutExercises.workoutId,
-        workoutExerciseId: workoutSets.workoutExerciseId,
-        exerciseId: workoutExercises.exerciseId,
-        weightKg: workoutSets.weightKg,
-        reps: workoutSets.reps,
-        durationS: workoutSets.durationS,
-        distanceM: workoutSets.distanceM,
-      })
-      .from(workoutSets)
-      .innerJoin(
-        workoutExercises,
-        eq(workoutExercises.id, workoutSets.workoutExerciseId),
+      .where(
+        range === undefined
+          ? undefined
+          : and(
+              gte(workouts.startedAt, range.from),
+              lt(workouts.startedAt, range.to),
+            ),
       )
-      .where(isNotNull(workoutSets.completedAt))
-      .orderBy(asc(workoutExercises.position), asc(workoutSets.position)),
+      .orderBy(desc(workouts.startedAt)),
+    [range?.from.getTime(), range?.to.getTime()],
   );
+  const doneSets = useLiveQuery(doneSetsQuery(range), [
+    range?.from.getTime(),
+    range?.to.getTime(),
+  ]);
 
   return {
     workouts: toWorkoutHistory(workoutRows.data, doneSets.data),
@@ -802,4 +855,55 @@ export function useActiveWorkout() {
   );
 
   return { activeWorkout: data.at(0), loaded: updatedAt !== undefined };
+}
+
+// When the first workout started; undefined while there is none. Tells the
+// history how far back it can go.
+export function firstWorkoutStartQuery() {
+  return db.select({ startedAt: min(workouts.startedAt) }).from(workouts);
+}
+
+export function useFirstWorkoutStart() {
+  const { data } = useLiveQuery(firstWorkoutStartQuery());
+
+  return data.at(0)?.startedAt ?? undefined;
+}
+
+export function dailyExerciseRowsQuery(from: Date, to: Date) {
+  return db
+    .selectDistinct({
+      startedAt: workouts.startedAt,
+      workoutExerciseId: workoutExercises.id,
+    })
+    .from(workoutSets)
+    .innerJoin(
+      workoutExercises,
+      eq(workoutExercises.id, workoutSets.workoutExerciseId),
+    )
+    .innerJoin(workouts, eq(workouts.id, workoutExercises.workoutId))
+    .where(
+      and(
+        isNotNull(workoutSets.completedAt),
+        gte(workouts.startedAt, from),
+        lt(workouts.startedAt, to),
+      ),
+    );
+}
+
+export function countExercisesByDay(rows: { startedAt: Date }[]) {
+  const counts = new Map<string, number>();
+  for (const row of rows) {
+    const key = row.startedAt.toDateString();
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  return counts;
+}
+
+export function useDailyExerciseCounts(from: Date, to: Date) {
+  const { data } = useLiveQuery(dailyExerciseRowsQuery(from, to), [
+    from.getTime(),
+    to.getTime(),
+  ]);
+
+  return countExercisesByDay(data);
 }

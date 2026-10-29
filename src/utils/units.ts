@@ -30,3 +30,19 @@ export function distanceToUnit(meters: number, unit: DistanceUnit) {
 export function distanceFromUnit(value: number, unit: DistanceUnit) {
   return Math.round(value * METERS_PER_UNIT[unit]);
 }
+
+const CM_PER_INCH = 2.54;
+const INCHES_PER_FOOT = 12;
+
+// Heights are kept in cm; feet and inches are only for typing and showing.
+export function feetInchesToCm(feet: number, inches: number) {
+  return Math.round((feet * INCHES_PER_FOOT + inches) * CM_PER_INCH);
+}
+
+export function cmToFeetInches(cm: number) {
+  const totalInches = Math.round(cm / CM_PER_INCH);
+  return {
+    feet: Math.floor(totalInches / INCHES_PER_FOOT),
+    inches: totalInches % INCHES_PER_FOOT,
+  };
+}

@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet } from "react-native";
+// See SetRow: lets a drag that starts here scroll the list.
+import { TextInput } from "react-native-gesture-handler";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
@@ -11,8 +13,9 @@ import {
 } from "@/utils/duration";
 
 import {
-  fontsJetBrainsMono,
+  controlHeights,
   fontSizes,
+  fontsJetBrainsMono,
   radii,
   spacing,
 } from "@/constants/theme";
@@ -71,7 +74,7 @@ const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
     input: {
       flex: 1,
-      height: 44,
+      height: controlHeights.md,
       paddingHorizontal: spacing.xs,
       paddingVertical: 0,
       backgroundColor: colors.backgroundSecondary,

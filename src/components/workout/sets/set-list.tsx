@@ -40,6 +40,9 @@ type SetListProps = {
   // The screen asks for confirmation; its dialog has to cover the whole
   // screen, not just this list.
   onDeleteSet: (setId: string, number: number) => void;
+  // "edit" corrects a finished workout: rests are shown as saved but no
+  // longer chosen or timed.
+  mode?: "live" | "edit";
 };
 
 export function SetList({
@@ -47,6 +50,7 @@ export function SetList({
   trackingType,
   previousSets,
   onDeleteSet,
+  mode = "live",
 }: SetListProps) {
   const { t } = useTranslation();
   const showPrevious = previousSets.length > 0;
@@ -70,7 +74,7 @@ export function SetList({
 
   // A rest skipped ("straight on") leaves the rows together.
   function renderRest(set: WorkoutSet) {
-    if (set.restStartedAt !== null && set.restS === null) {
+    if (mode === "live" && set.restStartedAt !== null && set.restS === null) {
       return (
         <RestDivider
           startedAt={set.restStartedAt}
@@ -111,7 +115,7 @@ export function SetList({
                 {rest}
               </Animated.View>
             )}
-            {needsRestChoice(exercise.sets, index) && (
+            {mode === "live" && needsRestChoice(exercise.sets, index) && (
               <Animated.View entering={FadeIn} layout={LinearTransition}>
                 <RestChoice
                   onTimed={() => run(() => chooseRest(set.id, "timed"))}

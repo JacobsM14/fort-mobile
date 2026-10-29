@@ -16,10 +16,16 @@ import {
   addWorkoutExercises,
   chooseRest,
   completeSet,
+  countExercisesByDay,
+  dailyExerciseRowsQuery,
   deleteSet,
+  deleteWorkoutExercise,
   discardWorkout,
+  doneSetsQuery,
   endRest,
   finishWorkout,
+  firstWorkoutStartQuery,
+  logWorkout,
   pauseSetTimer,
   previousSetsQuery,
   resetSetTimer,
@@ -132,6 +138,25 @@ describe("startWorkout", () => {
         completedAt: null,
       });
     }
+  });
+});
+
+describe("logWorkout", () => {
+  it("creates the routine's workout already finished, with empty sets", () => {
+    const routineId = createRoutine({
+      name: "Legs",
+      exerciseIds: [catalogId("bench_press")],
+    });
+
+    const workoutId = logWorkout(routineId, START);
+
+    const workout = readWorkoutRow(workoutId);
+    expect(workout?.name).toBe("Legs");
+    expect(workout?.startedAt).toEqual(START);
+    expect(workout?.endedAt).toEqual(START);
+    const [bench] = readWorkout(workoutId);
+    expect(bench.sets).toHaveLength(1);
+    expect(bench.sets[0].completedAt).toBeNull();
   });
 });
 
@@ -438,6 +463,61 @@ describe("discardWorkout", () => {
   });
 });
 
+describe("deleteWorkoutExercise", () => {
+  it("removes the exercise with its sets and keeps the others", () => {
+    const { workoutId, bench, plank } = startPushDay();
+    completeSet(bench.sets[0].id, BENCH, at(30));
+
+    deleteWorkoutExercise(bench.id);
+
+    expect(readWorkout(workoutId).map((exercise) => exercise.id)).toEqual([
+      plank.id,
+    ]);
+    expect(
+      db
+        .select()
+        .from(workoutSets)
+        .where(eq(workoutSets.workoutExerciseId, bench.id))
+        .all(),
+    ).toEqual([]);
+  });
+});
+
+describe("doneSetsQuery", () => {
+  it("reads only the done sets of the workouts started in the range", () => {
+    const benchId = catalogId("bench_press");
+    const routineId = createRoutine({ name: "Bench", exerciseIds: [benchId] });
+    const inside = logWorkout(routineId, new Date(2031, 2, 10, 10));
+    const outside = logWorkout(routineId, new Date(2031, 2, 11, 10));
+    for (const workoutId of [inside, outside]) {
+      completeSet(readWorkout(workoutId)[0].sets[0].id, BENCH);
+    }
+
+    const rows = doneSetsQuery({
+      from: new Date(2031, 2, 10),
+      to: new Date(2031, 2, 11),
+    }).all();
+
+    expect(rows.map((row) => row.workoutId)).toEqual([inside]);
+  });
+});
+
+describe("firstWorkoutStartQuery", () => {
+  it("reads when the earliest workout started, as a date", () => {
+    const routineId = createRoutine({
+      name: "Old",
+      exerciseIds: [catalogId("bench_press")],
+    });
+    const earliest = new Date(2001, 0, 1, 9);
+    logWorkout(routineId, new Date(2001, 5, 1, 9));
+    logWorkout(routineId, earliest);
+
+    const [row] = firstWorkoutStartQuery().all();
+
+    expect(row.startedAt).toEqual(earliest);
+  });
+});
+
 describe("toWorkoutHistory", () => {
   it("groups each workout's done sets by exercise, in order", () => {
     const workout = { name: "Push", startedAt: START, endedAt: null };
@@ -527,5 +607,105 @@ describe("toWorkoutExercises", () => {
       ["s1", "s2"],
       [],
     ]);
+  });
+});
+
+describe("countExercisesByDay", () => {
+  it("counts the rows of each day", () => {
+    const rows = [
+      { startedAt: at(0) },
+      { startedAt: at(60) },
+      { startedAt: at(24 * 60 * 60) },
+    ];
+    expect(countExercisesByDay(rows)).toEqual(
+      new Map([
+        [at(0).toDateString(), 2],
+        [at(24 * 60 * 60).toDateString(), 1],
+      ]),
+    );
+  });
+});
+
+describe("dailyExerciseRowsQuery", () => {
+  // A day no other test uses: the database is shared by the whole file.
+  const DAY = new Date(2030, 0, 15, 10, 0, 0);
+
+  function onDay(seconds: number) {
+    return new Date(DAY.getTime() + seconds * 1000);
+  }
+
+  it("returns one row per exercise with a set done in the range", () => {
+    const benchId = catalogId("bench_press");
+    const routineId = createRoutine({ name: "Bench", exerciseIds: [benchId] });
+    const workoutId = startWorkout(routineId, onDay(0));
+    const [bench] = readWorkout(workoutId);
+    completeSet(bench.sets[0].id, BENCH, onDay(30));
+    addSet(bench.id);
+    completeSet(readWorkout(workoutId)[0].sets[1].id, BENCH, onDay(90));
+
+    const rows = dailyExerciseRowsQuery(
+      new Date(2030, 0, 15),
+      new Date(2030, 0, 16),
+    ).all();
+
+    expect(rows).toEqual([
+      { startedAt: onDay(0), workoutExerciseId: bench.id },
+    ]);
+  });
+
+  // Each test below uses its own days so the shared database doesn't mix them.
+  function benchWorkout(startedAt: Date, done: boolean) {
+    const benchId = catalogId("bench_press");
+    const routineId = createRoutine({ name: "Bench", exerciseIds: [benchId] });
+    const workoutId = startWorkout(routineId, startedAt);
+    const [bench] = readWorkout(workoutId);
+    if (done) {
+      completeSet(
+        bench.sets[0].id,
+        BENCH,
+        new Date(startedAt.getTime() + 30_000),
+      );
+    }
+    return bench.id;
+  }
+
+  it("ignores exercises with no set done", () => {
+    benchWorkout(new Date(2030, 0, 20, 10), false);
+
+    const rows = dailyExerciseRowsQuery(
+      new Date(2030, 0, 20),
+      new Date(2030, 0, 21),
+    ).all();
+
+    expect(rows).toEqual([]);
+  });
+
+  it("includes the start of the range and leaves out its end", () => {
+    const from = new Date(2030, 0, 25, 10);
+    const to = new Date(2030, 0, 26, 10);
+    const atStart = benchWorkout(from, true);
+    benchWorkout(to, true);
+    benchWorkout(new Date(2030, 0, 24, 9), true);
+
+    const rows = dailyExerciseRowsQuery(from, to).all();
+
+    expect(rows).toEqual([{ startedAt: from, workoutExerciseId: atStart }]);
+  });
+
+  it("returns the exercises of every workout on the same day", () => {
+    const first = benchWorkout(new Date(2030, 0, 30, 8), true);
+    const second = benchWorkout(new Date(2030, 0, 30, 18), true);
+
+    const rows = dailyExerciseRowsQuery(
+      new Date(2030, 0, 30),
+      new Date(2030, 0, 31),
+    ).all();
+
+    expect(rows.map((row) => row.workoutExerciseId).sort()).toEqual(
+      [first, second].sort(),
+    );
+    expect(countExercisesByDay(rows)).toEqual(
+      new Map([[new Date(2030, 0, 30).toDateString(), 2]]),
+    );
   });
 });
