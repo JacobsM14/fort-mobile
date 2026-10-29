@@ -110,7 +110,7 @@ export const settingsTexts = {
     thirdParty: "Software de terceros",
     imagesTitle: "Imágenes de ejercicios",
     images:
-      "Las fotos de los ejercicios proceden del proyecto free-exercise-db.",
+      "Las imágenes de los ejercicios están generadas con inteligencia artificial (OpenAI).",
     lastUpdated: "Última actualización",
   },
 };

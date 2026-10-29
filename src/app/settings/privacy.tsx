@@ -9,7 +9,6 @@ import {
   APP_NAME,
   CONTACT_EMAIL,
   COPYRIGHT,
-  EXERCISE_IMAGES_SOURCE,
   PRIVACY_UPDATED_AT,
 } from "@/constants/app-info";
 import {
@@ -102,11 +101,6 @@ export default function PrivacyScreen() {
           </View>
           <Text style={globalStyles.inputLabel}>{t.privacy.imagesTitle}</Text>
           <Text style={styles.body}>{t.privacy.images}</Text>
-          <SettingsRow
-            icon={{ ios: "photo", android: "image", web: "image" }}
-            label={EXERCISE_IMAGES_SOURCE.name}
-            onPress={() => openUrl(EXERCISE_IMAGES_SOURCE.url)}
-          />
         </Section>
 
         <Text style={globalStyles.subtitle}>

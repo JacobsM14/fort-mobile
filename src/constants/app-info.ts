@@ -9,10 +9,5 @@ export const STORE_URLS: { ios?: string; android?: string } = {};
 
 export const COPYRIGHT = { year: 2026, holder: "Marcel" };
 
-export const EXERCISE_IMAGES_SOURCE = {
-  name: "free-exercise-db",
-  url: "https://github.com/yuhonas/free-exercise-db",
-};
-
 // Update it whenever the privacy text changes.
-export const PRIVACY_UPDATED_AT = new Date(2026, 9, 18);
+export const PRIVACY_UPDATED_AT = new Date(2026, 9, 29);

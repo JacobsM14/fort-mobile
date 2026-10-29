@@ -105,7 +105,8 @@ export const settingsTexts: Pick<
     rightsReserved: "All rights reserved.",
     thirdParty: "Third-party software",
     imagesTitle: "Exercise images",
-    images: "Exercise photos come from the free-exercise-db project.",
+    images:
+      "The exercise images are generated with artificial intelligence (OpenAI).",
     lastUpdated: "Last updated",
   },
 };
