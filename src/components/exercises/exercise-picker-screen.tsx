@@ -5,8 +5,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ExerciseFiltersSheet } from "@/components/exercises/exercise-filters-sheet";
 import { ExerciseInfoSheet } from "@/components/exercises/exercise-info-sheet";
 import { ExerciseRow } from "@/components/exercises/exercise-row";
+import { DashedButton } from "@/components/ui/buttons/dashed-button";
 import { FilterButton } from "@/components/ui/buttons/filter-button";
-import { IconButton } from "@/components/ui/buttons/icon-button";
 import { PrimaryButton } from "@/components/ui/buttons/primary-button";
 import { NoContentBox } from "@/components/ui/content/no-content-box";
 import { SearchInput } from "@/components/ui/inputs/search-input";
@@ -173,19 +173,7 @@ export function ExercisePickerScreen({
       style={[globalStyles.modalScreen, styles.screen]}
       edges={["top", "bottom"]}
     >
-      <BackHeader
-        backLabel={backLabel}
-        title={t.newExercises.title}
-        action={
-          onCreateCustom !== undefined && (
-            <IconButton
-              icon={{ ios: "plus", android: "add", web: "add" }}
-              accessibilityLabel={t.newExercises.createCustom}
-              onPress={onCreateCustom}
-            />
-          )
-        }
-      />
+      <BackHeader backLabel={backLabel} title={t.newExercises.title} />
       <View style={styles.searchRow}>
         <View style={styles.search}>
           <SearchInput
@@ -201,6 +189,13 @@ export function ExercisePickerScreen({
           onPress={() => setFiltersOpen(true)}
         />
       </View>
+      {onCreateCustom !== undefined && (
+        <DashedButton
+          icon={{ ios: "plus", android: "add", web: "add" }}
+          label={t.newExercises.createCustom}
+          onPress={onCreateCustom}
+        />
+      )}
       <FlatList
         ref={listRef}
         style={styles.list}
