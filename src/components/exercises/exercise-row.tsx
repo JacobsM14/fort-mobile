@@ -1,13 +1,14 @@
 import { SymbolView } from "expo-symbols";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
+import { IconButton } from "@/components/ui/buttons/icon-button";
+import { CheckBox } from "@/components/ui/inputs/check-box";
 import { TRACKING_TYPE_ICONS } from "@/constants/tracking-type-icons";
 import type { TrackingType } from "@/constants/enums";
 import {
   fontsInstrument,
   fontSizes,
   iconSizes,
-  radii,
   spacing,
 } from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
@@ -16,12 +17,14 @@ type ExerciseRowProps = {
   name: string;
   detail: string;
   trackingType: TrackingType;
-  onInfo?: () => void;
-  infoLabel?: string;
 } & (
-  | { selected: boolean; onToggle: () => void }
-  | { removeLabel: string; onRemove: () => void }
-);
+  | { onInfo?: undefined; infoLabel?: undefined }
+  | { onInfo: () => void; infoLabel: string }
+) &
+  (
+    | { selected: boolean; onToggle: () => void }
+    | { removeLabel: string; onRemove: () => void }
+  );
 
 export function ExerciseRow(props: ExerciseRowProps) {
   const { colors } = useTheme();
@@ -45,72 +48,32 @@ export function ExerciseRow(props: ExerciseRowProps) {
         </Text>
       </View>
       {props.onInfo !== undefined && (
-        <Pressable
-          style={({ pressed }) => [
-            styles.box,
-            styles.outlineBox,
-            pressed && styles.outlineBoxPressed,
-          ]}
-          onPress={props.onInfo}
-          accessibilityRole="button"
+        <IconButton
+          tone="muted"
+          icon={{ ios: "info.circle", android: "info", web: "info" }}
           accessibilityLabel={props.infoLabel}
-        >
-          {({ pressed }) => (
-            <SymbolView
-              name={{ ios: "info.circle", android: "info", web: "info" }}
-              tintColor={pressed ? colors.primary : colors.disabled}
-              size={iconSizes.md}
-            />
-          )}
-        </Pressable>
+          onPress={props.onInfo}
+        />
       )}
       {"onRemove" in props ? (
-        <Pressable
-          style={({ pressed }) => [
-            styles.box,
-            styles.outlineBox,
-            pressed && styles.outlineBoxPressed,
-          ]}
-          onPress={props.onRemove}
-          accessibilityRole="button"
+        <IconButton
+          tone="muted"
+          icon={{ ios: "xmark", android: "close", web: "close" }}
+          iconSize={iconSizes.sm}
           accessibilityLabel={props.removeLabel}
-        >
-          {({ pressed }) => (
-            <SymbolView
-              name={{ ios: "xmark", android: "close", web: "close" }}
-              tintColor={pressed ? colors.primary : colors.disabled}
-              size={iconSizes.sm}
-            />
-          )}
-        </Pressable>
+          onPress={props.onRemove}
+        />
       ) : (
-        <Pressable
-          style={({ pressed }) => [
-            styles.box,
-            props.selected ? styles.addedBox : styles.addBox,
-            pressed && styles.togglePressed,
-          ]}
-          onPress={props.onToggle}
-          accessibilityRole="checkbox"
-          accessibilityState={{ checked: props.selected }}
+        <CheckBox
+          checked={props.selected}
+          uncheckedIcon={{ ios: "plus", android: "add", web: "add" }}
           accessibilityLabel={props.name}
-        >
-          <SymbolView
-            name={
-              props.selected
-                ? { ios: "checkmark", android: "check", web: "check" }
-                : { ios: "plus", android: "add", web: "add" }
-            }
-            tintColor={props.selected ? colors.onPrimary : colors.primary}
-            size={iconSizes.md}
-          />
-        </Pressable>
+          onPress={props.onToggle}
+        />
       )}
     </View>
   );
 }
-
-const BOX_SIZE = 44;
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
@@ -132,30 +95,6 @@ const useStyles = makeStyles(({ colors }) =>
       fontSize: fontSizes.detail,
       fontFamily: fontsInstrument.medium,
       color: colors.disabled,
-    },
-    box: {
-      width: BOX_SIZE,
-      height: BOX_SIZE,
-      alignItems: "center",
-      justifyContent: "center",
-      borderWidth: 1,
-      borderRadius: radii.sm,
-    },
-    outlineBox: {
-      borderColor: colors.border,
-    },
-    outlineBoxPressed: {
-      borderColor: colors.primary,
-    },
-    addBox: {
-      borderColor: colors.primary,
-    },
-    addedBox: {
-      backgroundColor: colors.primary,
-      borderColor: colors.primary,
-    },
-    togglePressed: {
-      opacity: 0.7,
     },
   }),
 );

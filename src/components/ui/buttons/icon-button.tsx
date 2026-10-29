@@ -15,6 +15,8 @@ type IconButtonProps = {
   tone?: "primary" | "danger" | "muted";
   // Width and height; a control height square unless a neighbor sets another.
   size?: number;
+  // Some glyphs, like the xmark, look bigger than the rest and go a size down.
+  iconSize?: number;
 };
 
 export function IconButton({
@@ -23,6 +25,7 @@ export function IconButton({
   onPress,
   tone = "primary",
   size = controlHeights.md,
+  iconSize = iconSizes.md,
 }: IconButtonProps) {
   const { colors } = useTheme();
   const styles = useStyles();
@@ -63,7 +66,7 @@ export function IconButton({
         <SymbolView
           name={icon}
           tintColor={getColors(pressed).icon}
-          size={iconSizes.md}
+          size={iconSize}
         />
       )}
     </Pressable>

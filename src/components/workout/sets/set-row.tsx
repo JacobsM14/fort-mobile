@@ -1,10 +1,10 @@
-import { SymbolView } from "expo-symbols";
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 // Gesture handler's input, with its scroll view on the screen, lets a drag
 // that starts on it scroll the list; on Android the plain one keeps the touch.
 import { TextInput } from "react-native-gesture-handler";
 
+import { CheckBox } from "@/components/ui/inputs/check-box";
 import {
   DELETE_SET_WIDTH,
   DeleteSetButton,
@@ -26,10 +26,10 @@ import { formatDecimal, parseDecimal, parseInteger } from "@/utils/number";
 import { weightFromUnit, weightToUnit } from "@/utils/units";
 
 import {
+  controlHeights,
   fontsInstrument,
   fontSizes,
   fontsJetBrainsMono,
-  iconSizes,
   radii,
   spacing,
 } from "@/constants/theme";
@@ -229,35 +229,19 @@ export function SetRow({
         </Text>
       )}
       {FIELDS[trackingType].map(renderField)}
-      <Pressable
-        style={({ pressed }) => [
-          styles.box,
-          styles.checkBox,
-          done && styles.boxFilled,
-          !done && checkDisabled && styles.boxDisabled,
-          pressed && styles.checkPressed,
-        ]}
-        onPress={() => onComplete(values)}
+      <CheckBox
+        checked={done}
         disabled={checkDisabled}
-        accessibilityRole="checkbox"
-        accessibilityState={{ checked: done, disabled: checkDisabled }}
         accessibilityLabel={t.workout.completeSet(number)}
         accessibilityHint={
           locked && !done ? t.workout.previousSetFirst : undefined
         }
-      >
-        <SymbolView
-          name={{ ios: "checkmark", android: "check", web: "check" }}
-          tintColor={done ? colors.onPrimary : colors.primary}
-          size={iconSizes.md}
-        />
-      </Pressable>
+        onPress={() => onComplete(values)}
+      />
       <DeleteSetButton number={number} onPress={onDelete} />
     </View>
   );
 }
-
-const BOX_SIZE = 44;
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
@@ -269,7 +253,7 @@ const useStyles = makeStyles(({ colors }) =>
     // Fits the "SERIE" label above the set numbers. The label keeps its own
     // font size: the numbers' one is too big for it.
     numberColumn: {
-      width: BOX_SIZE,
+      width: controlHeights.md,
       textAlign: "center",
       color: colors.text,
     },
@@ -285,7 +269,7 @@ const useStyles = makeStyles(({ colors }) =>
       textAlign: "center",
     },
     input: {
-      height: BOX_SIZE,
+      height: controlHeights.md,
       paddingHorizontal: spacing.xs,
       paddingVertical: 0,
       borderRadius: radii.sm,
@@ -297,8 +281,9 @@ const useStyles = makeStyles(({ colors }) =>
       // borderWidth: 1,
       // borderColor: colors.border,
     },
+    // The check box's width, so the labels line up with the rows.
     boxSpace: {
-      width: BOX_SIZE,
+      width: controlHeights.md,
     },
     deleteSpace: {
       width: DELETE_SET_WIDTH,
@@ -308,26 +293,6 @@ const useStyles = makeStyles(({ colors }) =>
       fontSize: fontSizes.caption,
       fontFamily: fontsJetBrainsMono.medium,
       color: colors.disabled,
-    },
-    box: {
-      width: BOX_SIZE,
-      height: BOX_SIZE,
-      alignItems: "center",
-      justifyContent: "center",
-      borderRadius: radii.sm,
-    },
-    checkBox: {
-      borderWidth: 1,
-      borderColor: colors.primary,
-    },
-    boxFilled: {
-      backgroundColor: colors.primary,
-    },
-    boxDisabled: {
-      opacity: 0.4,
-    },
-    checkPressed: {
-      opacity: 0.7,
     },
   }),
 );
