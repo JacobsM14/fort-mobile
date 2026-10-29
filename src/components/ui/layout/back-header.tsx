@@ -15,40 +15,59 @@ type BackHeaderProps = {
   action?: ReactNode;
 };
 
-export function BackHeader({ backLabel, title, action }: BackHeaderProps) {
+// The way back. Apart from the title so a long screen can pin it above the
+// scroll and let the title scroll away, which BackHeader doesn't.
+export function BackBreadcrumb({ label }: { label: string }) {
   const { colors, globalStyles } = useTheme();
-  const lines = typeof title === "string" ? [title] : title;
   const goBack = useFocusedPress(() => router.back());
 
   return (
-    <View>
-      <Pressable
-        style={globalStyles.breadCrumbPress}
-        onPress={goBack}
-        hitSlop={spacing.sm}
-        accessibilityRole="button"
-      >
-        <SymbolView
-          name={{
-            ios: "chevron.left",
-            android: "chevron_left",
-            web: "chevron_left",
-          }}
-          tintColor={colors.primary}
-          size={iconSizes.lg}
-        />
-        <Text style={globalStyles.breadCrumbText}>{backLabel}</Text>
-      </Pressable>
-      <View style={globalStyles.dualheader}>
-        <View style={styles.title}>
-          {lines.map((line) => (
-            <Text key={line} style={globalStyles.title}>
-              {line}
-            </Text>
-          ))}
-        </View>
-        {action}
+    <Pressable
+      style={globalStyles.breadCrumbPress}
+      onPress={goBack}
+      hitSlop={spacing.sm}
+      accessibilityRole="button"
+    >
+      <SymbolView
+        name={{
+          ios: "chevron.left",
+          android: "chevron_left",
+          web: "chevron_left",
+        }}
+        tintColor={colors.primary}
+        size={iconSizes.lg}
+      />
+      <Text style={globalStyles.breadCrumbText}>{label}</Text>
+    </Pressable>
+  );
+}
+
+export function HeaderTitle({
+  title,
+  action,
+}: Pick<BackHeaderProps, "title" | "action">) {
+  const { globalStyles } = useTheme();
+  const lines = typeof title === "string" ? [title] : title;
+
+  return (
+    <View style={globalStyles.dualheader}>
+      <View style={styles.title}>
+        {lines.map((line) => (
+          <Text key={line} style={globalStyles.title}>
+            {line}
+          </Text>
+        ))}
       </View>
+      {action}
+    </View>
+  );
+}
+
+export function BackHeader({ backLabel, title, action }: BackHeaderProps) {
+  return (
+    <View>
+      <BackBreadcrumb label={backLabel} />
+      <HeaderTitle title={title} action={action} />
     </View>
   );
 }

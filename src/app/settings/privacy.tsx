@@ -3,7 +3,10 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { SettingsRow } from "@/components/settings/settings-row";
-import { BackHeader } from "@/components/ui/layout/back-header";
+import {
+  BackBreadcrumb,
+  HeaderTitle,
+} from "@/components/ui/layout/back-header";
 import { CornerFrame } from "@/components/ui/layout/corner-frame";
 import {
   APP_NAME,
@@ -39,15 +42,13 @@ export default function PrivacyScreen() {
   const openUrl = useOpenUrl();
 
   return (
-    <SafeAreaView style={globalStyles.screen} edges={["top"]}>
-      <BackHeader
-        backLabel={t.settings.title}
-        title={t.settings.sections.privacy}
-      />
+    <SafeAreaView style={[globalStyles.screen, styles.screen]} edges={["top"]}>
+      <BackBreadcrumb label={t.settings.title} />
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
+        <HeaderTitle title={t.settings.sections.privacy} />
         <CornerFrame style={styles.summary}>
           <Text style={styles.summaryText}>{t.privacy.summary(APP_NAME)}</Text>
         </CornerFrame>
@@ -143,6 +144,10 @@ const BULLET_SIZE = 6;
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
+    // The breadcrumb sits right above the scroll, without the screen's gap.
+    screen: {
+      gap: 0,
+    },
     content: {
       gap: spacing.lg,
       paddingBottom: spacing.lg,
