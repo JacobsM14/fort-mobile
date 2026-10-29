@@ -22,7 +22,7 @@ export const settingsTexts: Pick<
     units: {
       weight: "Weight",
       distance: "Distance",
-      system: "System",
+      system: "Auto",
     },
     user: {
       height: "Height",

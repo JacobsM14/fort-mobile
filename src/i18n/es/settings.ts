@@ -25,7 +25,7 @@ export const settingsTexts = {
     units: {
       weight: "Peso",
       distance: "Distancia",
-      system: "Sistema",
+      system: "Auto",
     },
     user: {
       height: "Altura",

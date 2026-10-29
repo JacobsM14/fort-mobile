@@ -71,36 +71,40 @@ export default function PreferencesScreen() {
             ))}
           </View>
         </View>
-        <View style={globalStyles.formCage}>
-          <Text style={globalStyles.inputLabel}>{t.settings.units.weight}</Text>
-          <View style={styles.options} accessibilityRole="radiogroup">
-            {WEIGHT_UNIT_PREFERENCES.map((option) => (
-              <Chip
-                key={option}
-                role="radio"
-                label={unitLabel(option)}
-                selected={option === weightPreference}
-                onPress={() => setWeightPreference(option)}
-                style={styles.option}
-              />
-            ))}
+        <View style={styles.units}>
+          <View style={[globalStyles.formCage, styles.unitGroup]}>
+            <Text style={globalStyles.inputLabel}>
+              {t.settings.units.weight}
+            </Text>
+            <View style={styles.unitOptions} accessibilityRole="radiogroup">
+              {WEIGHT_UNIT_PREFERENCES.map((option) => (
+                <Chip
+                  key={option}
+                  role="radio"
+                  label={unitLabel(option)}
+                  selected={option === weightPreference}
+                  onPress={() => setWeightPreference(option)}
+                  style={[styles.option, styles.unitOption]}
+                />
+              ))}
+            </View>
           </View>
-        </View>
-        <View style={globalStyles.formCage}>
-          <Text style={globalStyles.inputLabel}>
-            {t.settings.units.distance}
-          </Text>
-          <View style={styles.options} accessibilityRole="radiogroup">
-            {DISTANCE_UNIT_PREFERENCES.map((option) => (
-              <Chip
-                key={option}
-                role="radio"
-                label={unitLabel(option)}
-                selected={option === distancePreference}
-                onPress={() => setDistancePreference(option)}
-                style={styles.option}
-              />
-            ))}
+          <View style={[globalStyles.formCage, styles.unitGroup]}>
+            <Text style={globalStyles.inputLabel}>
+              {t.settings.units.distance}
+            </Text>
+            <View style={styles.unitOptions} accessibilityRole="radiogroup">
+              {DISTANCE_UNIT_PREFERENCES.map((option) => (
+                <Chip
+                  key={option}
+                  role="radio"
+                  label={unitLabel(option)}
+                  selected={option === distancePreference}
+                  onPress={() => setDistancePreference(option)}
+                  style={[styles.option, styles.unitOption]}
+                />
+              ))}
+            </View>
           </View>
         </View>
         <View style={globalStyles.formCage}>
@@ -176,6 +180,21 @@ const useStyles = makeStyles(({ colors }) =>
     option: {
       flex: 1,
       alignItems: "center",
+    },
+    units: {
+      flexDirection: "row",
+      gap: spacing.sm,
+    },
+    unitGroup: {
+      flex: 1,
+    },
+    // Three chips fit in half the width only with a tighter gap and padding.
+    unitOptions: {
+      flexDirection: "row",
+      gap: spacing.xs,
+    },
+    unitOption: {
+      paddingHorizontal: spacing.xs,
     },
     swatches: {
       flexDirection: "row",
