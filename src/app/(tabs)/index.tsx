@@ -187,6 +187,6 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   manage: {
-    alignSelf: "center",
+    alignSelf: "flex-start",
   },
 });
