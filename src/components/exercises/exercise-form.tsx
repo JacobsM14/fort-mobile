@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
-import { Chip } from "@/components/ui/inputs/chip";
 import { PrimaryButton } from "@/components/ui/buttons/primary-button";
+import { Chip } from "@/components/ui/inputs/chip";
 import {
   EQUIPMENT,
   TRACKING_TYPES,
@@ -75,7 +75,6 @@ export function ExerciseForm({
           placeholderTextColor={colors.disabled}
         />
       </View>
-
       <View style={globalStyles.formCage}>
         <Text style={globalStyles.inputLabel}>
           {t.exerciseForm.trackingLabel}
@@ -92,7 +91,6 @@ export function ExerciseForm({
           ))}
         </View>
       </View>
-
       <View style={globalStyles.formCage}>
         <Text style={globalStyles.inputLabel}>
           {t.exercises.equipmentLabel}
@@ -109,7 +107,6 @@ export function ExerciseForm({
           ))}
         </View>
       </View>
-
       <View style={globalStyles.formCage}>
         <Text style={globalStyles.inputLabel}>
           {t.exerciseForm.musclesLabel}
@@ -125,7 +122,6 @@ export function ExerciseForm({
           ))}
         </View>
       </View>
-
       <View style={globalStyles.formCage}>
         <Text style={globalStyles.inputLabel}>
           {t.exerciseForm.descriptionLabel}
