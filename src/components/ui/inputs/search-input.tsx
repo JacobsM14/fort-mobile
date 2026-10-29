@@ -2,6 +2,7 @@ import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
 
 import {
+  controlHeights,
   fontsInstrument,
   fontSizes,
   iconSizes,
@@ -72,7 +73,7 @@ const useStyles = makeStyles(({ colors }) =>
       flexDirection: "row",
       alignItems: "center",
       gap: spacing.sm,
-      height: 48,
+      height: controlHeights.lg,
       paddingHorizontal: spacing.sm,
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,

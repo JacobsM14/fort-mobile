@@ -1,7 +1,7 @@
 import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet } from "react-native";
 
-import { iconSizes, radii, spacing } from "@/constants/theme";
+import { controlHeights, iconSizes, radii, spacing } from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 type FilterButtonProps = {
@@ -50,7 +50,7 @@ const useStyles = makeStyles(({ colors }) =>
       flexDirection: "row",
       alignItems: "center",
       gap: spacing.xs,
-      height: 48,
+      height: controlHeights.lg,
       paddingHorizontal: spacing.sm,
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,

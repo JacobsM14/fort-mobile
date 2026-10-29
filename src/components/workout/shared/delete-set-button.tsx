@@ -4,7 +4,7 @@ import { Pressable, StyleSheet } from "react-native";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import { iconSizes } from "@/constants/theme";
+import { controlHeights, iconSizes } from "@/constants/theme";
 
 export const DELETE_SET_WIDTH = 28;
 
@@ -41,7 +41,7 @@ export function DeleteSetButton({ number, onPress }: DeleteSetButtonProps) {
 const styles = StyleSheet.create({
   button: {
     width: DELETE_SET_WIDTH,
-    height: 44,
+    height: controlHeights.md,
     alignItems: "center",
     justifyContent: "center",
   },

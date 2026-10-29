@@ -153,7 +153,8 @@ export const iconSizes = {
 };
 
 // The height of a control: md is the smallest comfortable to tap, sm for
-// compact ones beside other content, lg for the rows of a menu.
+// compact ones beside other content, lg for the rows of a menu and the
+// search box.
 export const controlHeights = {
   sm: 36,
   md: 44,
