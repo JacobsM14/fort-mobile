@@ -51,7 +51,7 @@ const useStyles = makeStyles(({ colors }) =>
       justifyContent: "center",
       width: "100%",
       minHeight: 64,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
       backgroundColor: colors.primary,
     },
     buttonPressed: {

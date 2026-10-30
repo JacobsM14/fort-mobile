@@ -81,7 +81,7 @@ const useStyles = makeStyles(() =>
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 1,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
   }),
 );

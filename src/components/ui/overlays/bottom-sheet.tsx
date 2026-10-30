@@ -162,7 +162,7 @@ const useStyles = makeStyles(({ colors }) =>
     grabber: {
       width: 36,
       height: 4,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
       backgroundColor: colors.border,
     },
   }),

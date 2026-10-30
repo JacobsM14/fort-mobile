@@ -91,7 +91,7 @@ const useStyles = makeStyles(({ colors }) =>
       paddingHorizontal: spacing.sm,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     buttonActive: {
       borderColor: colors.primary,

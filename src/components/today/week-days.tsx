@@ -1,9 +1,9 @@
-import { useCalendars } from "expo-localization";
 import { router } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { DayBox } from "@/components/today/day-box";
 
+import { useFirstWeekday } from "@/hooks/use-first-weekday";
 import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
@@ -14,14 +14,12 @@ import { formatDayHeader, getWeekDays, toDateKey } from "@/utils/date";
 
 import { fontsInstrument, fontSizes, spacing } from "@/constants/theme";
 
-const MONDAY = 2;
-
 export function WeekDays() {
   const { language } = useTranslation();
   const styles = useStyles();
-  const [calendar] = useCalendars();
+  const firstWeekday = useFirstWeekday();
   const today = new Date();
-  const days = getWeekDays(today, calendar.firstWeekday ?? MONDAY);
+  const days = getWeekDays(today, firstWeekday);
   const weekEnd = new Date(days[6]);
   weekEnd.setDate(weekEnd.getDate() + 1);
   // A day counts as trained when a workout started that day has a set done.

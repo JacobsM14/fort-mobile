@@ -209,7 +209,7 @@ const useStyles = makeStyles(({ colors }) =>
       paddingVertical: spacing.xs,
       borderWidth: 1,
       borderColor: colors.primary,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
       backgroundColor: colors.background,
     },
     muscleText: {
@@ -230,7 +230,7 @@ const useStyles = makeStyles(({ colors }) =>
     image: {
       width: "100%",
       aspectRatio: IMAGE_ASPECT_RATIO,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
       backgroundColor: colors.background,
     },
     zoomBackdrop: {

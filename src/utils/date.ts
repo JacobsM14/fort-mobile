@@ -49,6 +49,25 @@ export function getWeekDays(date: Date, firstWeekday: number) {
   );
 }
 
+// The first day of each of the last `count` weeks, the oldest first and the
+// week of `today` last. Weeks start on `firstWeekday` (1 is Sunday), as in the
+// week shown in Today.
+export function lastWeekStarts(
+  today: Date,
+  firstWeekday: number,
+  count: number,
+): Date[] {
+  const [thisWeek] = getWeekDays(today, firstWeekday);
+  return Array.from({ length: count }, (_, index) => {
+    const weeksBack = count - 1 - index;
+    return new Date(
+      thisWeek.getFullYear(),
+      thisWeek.getMonth(),
+      thisWeek.getDate() - weeksBack * 7,
+    );
+  });
+}
+
 // Every local day from `from` up to (not including) `to`, newest first.
 export function getDaysBetween(from: Date, to: Date) {
   const days: Date[] = [];

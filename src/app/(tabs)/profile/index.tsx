@@ -1,20 +1,34 @@
 import { router } from "expo-router";
 import { SymbolView } from "expo-symbols";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { iconSizes, spacing } from "@/constants/theme";
+import { ActivityCalendarCard } from "@/components/profile/activity-calendar-card";
+import { AthleteTypeCard } from "@/components/profile/athlete-type-card";
+import { EmptyStateCard } from "@/components/ui/content/empty-state-card";
+
+import { useFirstWeekday } from "@/hooks/use-first-weekday";
 import { useFocusedPress } from "@/hooks/use-focused-press";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
+
+import {
+  useActivityCalendar,
+  useAthleteType,
+} from "@/features/profile/queries";
+
+import { iconSizes, spacing } from "@/constants/theme";
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
   const { colors, globalStyles } = useTheme();
   const openSettings = useFocusedPress(() => router.push("/settings"));
+  const firstWeekday = useFirstWeekday();
+  const { athleteType, loaded } = useAthleteType(firstWeekday);
+  const calendar = useActivityCalendar(firstWeekday);
 
   return (
-    <SafeAreaView style={globalStyles.screen} edges={["top"]}>
+    <SafeAreaView style={[globalStyles.screen, styles.screen]} edges={["top"]}>
       <View style={globalStyles.dualheader}>
         <Text style={globalStyles.title}>{t.tabs.profile}</Text>
         <Pressable
@@ -36,6 +50,36 @@ export default function ProfileScreen() {
           )}
         </Pressable>
       </View>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        {loaded &&
+          (athleteType === null ? (
+            <EmptyStateCard
+              title={t.profile.athleteType.title}
+              message={t.profile.athleteType.empty}
+            />
+          ) : (
+            <AthleteTypeCard athleteType={athleteType} />
+          ))}
+        {calendar.loaded && (
+          <ActivityCalendarCard
+            weekStarts={calendar.weekStarts}
+            levels={calendar.levels}
+          />
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    paddingBottom: 0,
+  },
+  content: {
+    gap: spacing.lg,
+    paddingBottom: spacing.lg,
+  },
+});

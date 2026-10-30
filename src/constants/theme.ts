@@ -10,6 +10,8 @@ type BaseColors = {
   text: string;
   disabled: string;
   border: string;
+  // The day with nothing done in an activity calendar: a step off the card.
+  intensityEmpty: string;
   scrim: string;
   danger: string;
   onDanger: string;
@@ -27,11 +29,16 @@ export type Colors = BaseColors &
     // The accent at half strength, between the faint and the full one (the
     // BMI scale).
     primarySoft: string;
+    // The accent from faint to full in four steps, for the levels of an
+    // activity calendar.
+    intensity: readonly [string, string, string, string];
   };
 
 // Hex alphas over the accent: primaryTint about 15 %, primarySoft 50 %.
 const TINT_ALPHA = "26";
 const SOFT_ALPHA = "80";
+// The four intensity steps: 25, 50, 75 and 100 %.
+const INTENSITY_ALPHAS = ["40", "80", "BF", "FF"] as const;
 
 const baseColors: Record<ColorScheme, BaseColors> = {
   dark: {
@@ -40,6 +47,7 @@ const baseColors: Record<ColorScheme, BaseColors> = {
     text: "#F2F2F0",
     disabled: "#A0A0A8",
     border: "#6A6A72",
+    intensityEmpty: "#1F1F22",
     scrim: "#00000099",
     danger: "#FF5A5F",
     onDanger: "#0C0C0D",
@@ -50,6 +58,7 @@ const baseColors: Record<ColorScheme, BaseColors> = {
     text: "#121214",
     disabled: "#64646C",
     border: "#85858D",
+    intensityEmpty: "#ECECE9",
     scrim: "#00000066",
     danger: "#C62828",
     onDanger: "#FFFFFF",
@@ -139,7 +148,8 @@ export const lineHeights = {
 };
 
 export const radii = {
-  sm: 2,
+  xs: 2,
+  sm: 4,
   md: 8,
   lg: 16,
 };
@@ -246,7 +256,7 @@ function createGlobalStyles(colors: Colors) {
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
       paddingHorizontal: 14,
       boxSizing: "border-box",
       fontSize: fontSizes.lead,
@@ -260,7 +270,7 @@ function createGlobalStyles(colors: Colors) {
       backgroundColor: "transparent",
       borderWidth: 1,
       borderColor: colors.disabled,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     pressedButton: {
       minHeight: controlHeights.md,
@@ -269,7 +279,7 @@ function createGlobalStyles(colors: Colors) {
       backgroundColor: colors.primary,
       borderWidth: 1,
       borderColor: colors.primary,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     notPressedButtonText: {
       fontSize: fontSizes.label,
@@ -292,7 +302,7 @@ function createGlobalStyles(colors: Colors) {
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     cardPressed: {
       borderColor: colors.primary,
@@ -311,11 +321,15 @@ export type Theme = {
 
 function createTheme(scheme: ColorScheme, accent: AccentColor): Theme {
   const shades = accentColors[accent][scheme];
-  const colors = {
+  const [quarter, half, threeQuarters, full] = INTENSITY_ALPHAS.map(
+    (alpha) => `${shades.primary}${alpha}`,
+  );
+  const colors: Colors = {
     ...baseColors[scheme],
     ...shades,
     primaryTint: `${shades.primary}${TINT_ALPHA}`,
     primarySoft: `${shades.primary}${SOFT_ALPHA}`,
+    intensity: [quarter, half, threeQuarters, full],
   };
   return { scheme, accent, colors, globalStyles: createGlobalStyles(colors) };
 }

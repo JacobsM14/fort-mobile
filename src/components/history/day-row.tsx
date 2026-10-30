@@ -142,7 +142,7 @@ const useStyles = makeStyles(({ colors }) =>
       paddingHorizontal: spacing.badgeInset,
       borderWidth: 1,
       borderColor: colors.disabled,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     weightText: {
       fontSize: fontSizes.caption,

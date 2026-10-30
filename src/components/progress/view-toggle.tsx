@@ -97,7 +97,7 @@ const useStyles = makeStyles(({ colors }) =>
       justifyContent: "center",
       borderWidth: 1,
       borderColor: colors.disabled,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     optionSelected: {
       backgroundColor: colors.primary,

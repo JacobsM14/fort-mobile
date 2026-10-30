@@ -5,6 +5,7 @@ import {
   formatShortDay,
   getDaysBetween,
   getWeekDays,
+  lastWeekStarts,
   parseDateKey,
   toDateKey,
 } from "./date";
@@ -38,6 +39,40 @@ describe("getWeekDays", () => {
     const sunday = new Date(2026, 10, 1);
     const [first] = getWeekDays(sunday, MONDAY);
     expect([first.getMonth(), first.getDate()]).toEqual([9, 26]);
+  });
+});
+
+describe("lastWeekStarts", () => {
+  // A Sunday.
+  const today = new Date(2026, 9, 25, 18, 30);
+
+  it("ends with the week of today, the oldest week first", () => {
+    expect(lastWeekStarts(today, MONDAY, 3)).toEqual([
+      new Date(2026, 9, 5),
+      new Date(2026, 9, 12),
+      new Date(2026, 9, 19),
+    ]);
+  });
+
+  it("starts the weeks on the first weekday of the calendar", () => {
+    expect(lastWeekStarts(today, SUNDAY, 3)).toEqual([
+      new Date(2026, 9, 11),
+      new Date(2026, 9, 18),
+      new Date(2026, 9, 25),
+    ]);
+  });
+
+  it("crosses into the previous year", () => {
+    expect(lastWeekStarts(new Date(2027, 0, 6), MONDAY, 3)).toEqual([
+      new Date(2026, 11, 21),
+      new Date(2026, 11, 28),
+      new Date(2027, 0, 4),
+    ]);
+  });
+
+  it("gives as many weeks as asked", () => {
+    expect(lastWeekStarts(today, MONDAY, 12)).toHaveLength(12);
+    expect(lastWeekStarts(today, MONDAY, 1)).toEqual([new Date(2026, 9, 19)]);
   });
 });
 

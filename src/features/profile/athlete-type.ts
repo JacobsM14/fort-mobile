@@ -1,0 +1,193 @@
+import type { TrackingType } from "@/constants/enums";
+
+// What most of the training goes into, read from the exercises done most.
+export type TrainingStyle =
+  "strength" | "calisthenics" | "endurance" | "allRound";
+
+// Lowest first: each level is reached from the one before.
+export const CONSISTENCY_LEVELS = [
+  "sporadic",
+  "regular",
+  "steady",
+  "unstoppable",
+] as const;
+export type ConsistencyLevel = (typeof CONSISTENCY_LEVELS)[number];
+
+// Sessions a week to reach each level: on average over the weeks looked at,
+// except unstoppable, which asks for them in each of the latest weeks.
+export const LEVEL_SESSIONS: Record<
+  Exclude<ConsistencyLevel, "sporadic">,
+  number
+> = {
+  regular: 2,
+  steady: 3,
+  unstoppable: 4,
+};
+export const UNSTOPPABLE_WEEKS = 2;
+
+// The share of the sets that decides the style.
+const STYLE_SHARE = 0.6;
+
+// The complete weeks the consistency looks back over.
+export const ATHLETE_TYPE_WEEKS = 12;
+
+export type FrequentExercise = {
+  id: string;
+  // As stored: a catalog exercise has no name of its own, and the screen
+  // gets it translated from its key.
+  key: string | null;
+  name: string | null;
+  description: string | null;
+  trackingType: TrackingType;
+  // The workouts it was done in.
+  workoutCount: number;
+};
+
+export type AthleteType = {
+  style: TrainingStyle;
+  frequentExercises: FrequentExercise[];
+  weeklySessions: number[];
+};
+
+export type AthleteTypeRow = {
+  workoutId: string;
+  startedAt: Date;
+  exerciseId: string;
+  key: string | null;
+  name: string | null;
+  description: string | null;
+  trackingType: TrackingType;
+};
+
+export function averageSessions(weeklySessions: readonly number[]): number {
+  if (weeklySessions.length === 0) {
+    return 0;
+  }
+  const total = weeklySessions.reduce((sum, sessions) => sum + sessions, 0);
+  return total / weeklySessions.length;
+}
+
+export function consistencyLevel(
+  weeklySessions: readonly number[],
+): ConsistencyLevel {
+  const latest = weeklySessions.slice(-UNSTOPPABLE_WEEKS);
+  if (
+    latest.length === UNSTOPPABLE_WEEKS &&
+    latest.every((sessions) => sessions >= LEVEL_SESSIONS.unstoppable)
+  ) {
+    return "unstoppable";
+  }
+  const average = averageSessions(weeklySessions);
+  if (average >= LEVEL_SESSIONS.steady) {
+    return "steady";
+  }
+  if (average >= LEVEL_SESSIONS.regular) {
+    return "regular";
+  }
+  return "sporadic";
+}
+
+export function nextConsistencyLevel(
+  level: ConsistencyLevel,
+): Exclude<ConsistencyLevel, "sporadic"> | null {
+  switch (level) {
+    case "sporadic":
+      return "regular";
+    case "regular":
+      return "steady";
+    case "steady":
+      return "unstoppable";
+    case "unstoppable":
+      return null;
+  }
+}
+
+// When the week that starts on `weekStart` is over: a week is [start, end).
+function weekEnd(weekStart: Date) {
+  return new Date(
+    weekStart.getFullYear(),
+    weekStart.getMonth(),
+    weekStart.getDate() + 7,
+  );
+}
+
+// The weeks the consistency is read from, out of `weekStarts` (this week
+// last). The week in progress is left out, so the level never drops halfway
+// through it; so are the weeks before the first workout, so a new user isn't
+// averaged over weeks without the app.
+export function consistencyWeeks(
+  weekStarts: readonly Date[],
+  firstWorkoutStart: Date | undefined,
+): Date[] {
+  const complete = weekStarts.slice(0, -1);
+  if (firstWorkoutStart === undefined) {
+    return complete;
+  }
+  return complete.filter((weekStart) => weekEnd(weekStart) > firstWorkoutStart);
+}
+
+export function toWeeklySessions(
+  rows: readonly AthleteTypeRow[],
+  weekStarts: readonly Date[],
+): number[] {
+  return weekStarts.map((weekStart) => {
+    const end = weekEnd(weekStart);
+    const workoutIds = new Set(
+      rows
+        .filter((row) => row.startedAt >= weekStart && row.startedAt < end)
+        .map((row) => row.workoutId),
+    );
+
+    return workoutIds.size;
+  });
+}
+
+// The exercises done in the most workouts. A row is a set, so the workouts are
+// counted apart: twenty sets in one workout are one workout.
+export function toFrequentExercises(
+  rows: readonly AthleteTypeRow[],
+  limit: number,
+): FrequentExercise[] {
+  const workoutsByExercise = new Map<string, Set<string>>();
+  const exercises = new Map<string, AthleteTypeRow>();
+  for (const row of rows) {
+    const workoutIds = workoutsByExercise.get(row.exerciseId) ?? new Set();
+    workoutIds.add(row.workoutId);
+    workoutsByExercise.set(row.exerciseId, workoutIds);
+    exercises.set(row.exerciseId, row);
+  }
+
+  return [...exercises.values()]
+    .map((row) => ({
+      id: row.exerciseId,
+      key: row.key,
+      name: row.name,
+      description: row.description,
+      trackingType: row.trackingType,
+      workoutCount: workoutsByExercise.get(row.exerciseId)?.size ?? 0,
+    }))
+    .sort((a, b) => b.workoutCount - a.workoutCount || a.id.localeCompare(b.id))
+    .slice(0, limit);
+}
+
+// The style most of the sets belong to; if none has enough of them, all-round.
+export function trainingStyle(rows: readonly AthleteTypeRow[]): TrainingStyle {
+  function shareOf(types: readonly TrackingType[]) {
+    const sets = rows.filter((row) => types.includes(row.trackingType));
+    return sets.length / rows.length;
+  }
+
+  if (rows.length === 0) {
+    return "allRound";
+  }
+  if (shareOf(["weight_reps"]) >= STYLE_SHARE) {
+    return "strength";
+  }
+  if (shareOf(["bodyweight_reps"]) >= STYLE_SHARE) {
+    return "calisthenics";
+  }
+  if (shareOf(["duration", "distance_duration"]) >= STYLE_SHARE) {
+    return "endurance";
+  }
+  return "allRound";
+}

@@ -272,7 +272,7 @@ const useStyles = makeStyles(({ colors }) =>
       height: controlHeights.md,
       paddingHorizontal: spacing.xs,
       paddingVertical: 0,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
       textAlign: "center",
       fontSize: fontSizes.body,
       fontFamily: fontsInstrument.semiBold,

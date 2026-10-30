@@ -144,7 +144,7 @@ const useStyles = makeStyles(({ colors }) =>
       justifyContent: "center",
       gap: spacing.xs,
       borderWidth: 1,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     filled: {
       backgroundColor: colors.primary,
