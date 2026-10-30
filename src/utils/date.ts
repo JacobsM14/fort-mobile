@@ -91,3 +91,12 @@ export function parseDateKey(key: string) {
   const [year, month, day] = key.split("-").map(Number);
   return new Date(year, month - 1, day);
 }
+
+// The backup file keeps instants as ISO 8601 strings.
+export function toIso(date: Date) {
+  return date.toISOString();
+}
+
+export function toIsoOrNull(date: Date | null) {
+  return date === null ? null : date.toISOString();
+}
