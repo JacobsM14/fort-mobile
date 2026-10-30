@@ -1,11 +1,12 @@
 import type {
-  Equipment,
-  Gender,
-  MuscleRole,
-  SetType,
-  TrackingType,
+    Equipment,
+    Gender,
+    MuscleRole,
+    SetType,
+    TrackingType,
 } from "@/constants/enums";
 import type { MuscleId } from "@/features/exercises/catalog";
+import { toDateKey } from "@/utils/date";
 
 export const BACKUP_FORMAT_VERSION = 1;
 
@@ -120,3 +121,8 @@ export type BackupFile = {
   workouts: BackupWorkout[];
   bodyWeights: BackupBodyWeight[];
 };
+
+// The local day, with no colons: not every system accepts them in file names.
+export function backupFileName(date: Date) {
+  return `fortapp-backup-${toDateKey(date)}.json`;
+}
