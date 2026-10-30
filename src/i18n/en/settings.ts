@@ -147,8 +147,11 @@ export const settingsTexts: Pick<
     backupsTitle: "Backups",
     backups:
       "If system backups are on (iCloud or Google), your data may be included in them, like any other app's. Those backups belong to your account, not to this app.",
+    exports:
+      "You can also export your data from Settings. It creates a file with everything you log, your profile included, and you choose where to save it or whom to send it to. The app keeps only the last exported copy, in its private storage. When importing, the app reads only the file you pick.",
     deleteTitle: "Deleting your data",
-    delete: "Uninstalling the app deletes everything it stored on this device.",
+    delete:
+      "Uninstalling the app deletes everything it stored on this device. Copies you exported and saved elsewhere are not deleted.",
     changesTitle: "Changes",
     changes:
       "If a future version changes how your data is handled (for example, to sync it across devices), it will be explained here before it happens.",

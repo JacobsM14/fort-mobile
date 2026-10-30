@@ -153,9 +153,11 @@ export const settingsTexts = {
     backupsTitle: "Copias de seguridad",
     backups:
       "Si tienes activadas las copias de seguridad del sistema (iCloud o Google), tus datos pueden incluirse en ellas, como los de cualquier otra app. Esas copias dependen de tu cuenta, no de esta app.",
+    exports:
+      "También puedes exportar tus datos desde Ajustes. Se crea un archivo con todo lo que registras, incluido tu perfil, y tú decides dónde guardarlo o a quién enviarlo. La app solo guarda la última copia exportada, en su almacenamiento privado. Al importar, la app lee únicamente el archivo que elijas.",
     deleteTitle: "Borrar tus datos",
     delete:
-      "Desinstalar la app borra todo lo que tenía guardado en este dispositivo.",
+      "Desinstalar la app borra todo lo que tenía guardado en este dispositivo. Las copias que hayas exportado y guardado en otro sitio no se borran.",
     changesTitle: "Cambios",
     changes:
       "Si una versión futura cambia cómo se tratan tus datos (por ejemplo, para sincronizarlos entre dispositivos), se explicará aquí antes de que ocurra.",

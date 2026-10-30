@@ -69,6 +69,7 @@ export default function PrivacyScreen() {
 
         <Section title={t.privacy.backupsTitle}>
           <Text style={styles.body}>{t.privacy.backups}</Text>
+          <Text style={styles.body}>{t.privacy.exports}</Text>
         </Section>
 
         <Section title={t.privacy.deleteTitle}>
