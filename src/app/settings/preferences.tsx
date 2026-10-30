@@ -1,4 +1,4 @@
-import { SymbolView } from "expo-symbols";
+import { SymbolView, type SymbolViewProps } from "expo-symbols";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -15,8 +15,19 @@ import {
   LANGUAGE_PREFERENCES,
   THEME_PREFERENCES,
   WEIGHT_UNIT_PREFERENCES,
+  type ThemePreference,
 } from "@/constants/enums";
 import { accentColors, iconSizes, spacing } from "@/constants/theme";
+
+const THEME_ICONS: Record<ThemePreference, SymbolViewProps["name"]> = {
+  system: {
+    ios: "circle.lefthalf.filled",
+    android: "contrast",
+    web: "contrast",
+  },
+  light: { ios: "sun.max", android: "light_mode", web: "light_mode" },
+  dark: { ios: "moon", android: "dark_mode", web: "dark_mode" },
+};
 
 export default function PreferencesScreen() {
   const {
@@ -84,7 +95,7 @@ export default function PreferencesScreen() {
                   label={unitLabel(option)}
                   selected={option === weightPreference}
                   onPress={() => setWeightPreference(option)}
-                  style={[styles.option, styles.unitOption]}
+                  style={[styles.option, styles.compactOption]}
                 />
               ))}
             </View>
@@ -101,7 +112,7 @@ export default function PreferencesScreen() {
                   label={unitLabel(option)}
                   selected={option === distancePreference}
                   onPress={() => setDistancePreference(option)}
-                  style={[styles.option, styles.unitOption]}
+                  style={[styles.option, styles.compactOption]}
                 />
               ))}
             </View>
@@ -115,9 +126,10 @@ export default function PreferencesScreen() {
                 key={option}
                 role="radio"
                 label={t.settings.themeOptions[option]}
+                icon={THEME_ICONS[option]}
                 selected={option === themePreference}
                 onPress={() => setThemePreference(option)}
-                style={styles.option}
+                style={[styles.option, styles.compactOption]}
               />
             ))}
           </View>
@@ -193,7 +205,8 @@ const useStyles = makeStyles(({ colors }) =>
       flexDirection: "row",
       gap: spacing.xs,
     },
-    unitOption: {
+    // For chips short on room: in half the width, or with an icon.
+    compactOption: {
       paddingHorizontal: spacing.xs,
     },
     swatches: {
