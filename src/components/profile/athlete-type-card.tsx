@@ -114,11 +114,9 @@ export function AthleteTypeCard({ athleteType }: AthleteTypeCardProps) {
             accessibilityLabel={`${texts.consistency}, ${texts.averageSessions(average)}`}
           >
             <Text style={globalStyles.inputLabel}>{texts.consistency}</Text>
-            <View style={styles.average}>
-              <Text style={styles.averageUnit}>
-                {average} {texts.sessionsPerWeek}
-              </Text>
-            </View>
+            <Text style={styles.averageUnit}>
+              {average} {texts.sessionsPerWeek}
+            </Text>
           </View>
           <View
             style={styles.levels}
@@ -239,11 +237,6 @@ const useStyles = makeStyles(({ colors }) =>
       justifyContent: "space-between",
       alignItems: "baseline",
     },
-    average: {
-      flexDirection: "row",
-      alignItems: "baseline",
-      gap: spacing.xs,
-    },
     averageUnit: {
       fontSize: fontSizes.caption,
       fontFamily: fontsJetBrainsMono.medium,
@@ -269,7 +262,6 @@ const useStyles = makeStyles(({ colors }) =>
       backgroundColor: colors.primary,
     },
     levelLabel: {
-      textAlign: "left",
       fontSize: fontSizes.lowFont,
       fontFamily: fontsJetBrainsMono.medium,
       color: colors.disabled,
