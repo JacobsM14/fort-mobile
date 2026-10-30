@@ -3,6 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import {
   formatDayHeader,
   formatShortDay,
+  fromIso,
+  fromIsoOrNull,
   getDaysBetween,
   getWeekDays,
   isDateKey,
@@ -159,5 +161,18 @@ describe("isIsoDate", () => {
   it("rejects values that aren't text", () => {
     expect(isIsoDate(Date.now())).toBe(false);
     expect(isIsoDate(null)).toBe(false);
+  });
+});
+
+describe("fromIso and fromIsoOrNull", () => {
+  it("read back the instant toIso wrote", () => {
+    const moment = new Date(2026, 9, 30, 18, 5, 7, 123);
+
+    expect(fromIso(toIso(moment))).toEqual(moment);
+    expect(fromIsoOrNull(toIso(moment))).toEqual(moment);
+  });
+
+  it("keep a missing date missing", () => {
+    expect(fromIsoOrNull(null)).toBeNull();
   });
 });

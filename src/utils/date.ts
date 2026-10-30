@@ -117,6 +117,14 @@ export function toIsoOrNull(date: Date | null) {
   return date === null ? null : date.toISOString();
 }
 
+export function fromIso(iso: string) {
+  return new Date(iso);
+}
+
+export function fromIsoOrNull(iso: string | null) {
+  return iso === null ? null : new Date(iso);
+}
+
 // Exactly what toISOString writes: parsing anything looser would accept
 // formats that differ from one JavaScript engine to another.
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
