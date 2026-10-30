@@ -75,7 +75,13 @@ function readCustomExercises(): BackupExercise[] {
   const musclesByExercise = groupBy(
     muscleRows.flatMap((row) =>
       isMuscleId(row.muscleId)
-        ? [{ exerciseId: row.exerciseId, muscleId: row.muscleId, role: row.role }]
+        ? [
+            {
+              exerciseId: row.exerciseId,
+              muscleId: row.muscleId,
+              role: row.role,
+            },
+          ]
         : [],
     ),
     (row) => row.exerciseId,
