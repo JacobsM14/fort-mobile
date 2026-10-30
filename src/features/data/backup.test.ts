@@ -5,6 +5,7 @@ import {
   BackupError,
   backupFileName,
   parseBackupFile,
+  summarizeBackup,
   type BackupFile,
 } from "./backup";
 
@@ -298,5 +299,28 @@ describe("backupFileName", () => {
     expect(backupFileName(new Date(2026, 9, 30, 23, 50))).toBe(
       "fortapp-backup-2026-10-30.json",
     );
+  });
+});
+
+describe("summarizeBackup", () => {
+  it("counts what the file carries at the top level", () => {
+    expect(summarizeBackup(validFile())).toEqual({
+      exercises: 1,
+      routines: 1,
+      workouts: 1,
+      bodyWeights: 1,
+    });
+  });
+
+  it("counts zero for an empty file", () => {
+    expect(
+      summarizeBackup({
+        ...validFile(),
+        exercises: [],
+        routines: [],
+        workouts: [],
+        bodyWeights: [],
+      }),
+    ).toEqual({ exercises: 0, routines: 0, workouts: 0, bodyWeights: 0 });
   });
 });

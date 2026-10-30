@@ -147,6 +147,23 @@ export class BackupError extends Error {
   }
 }
 
+// What a file carries, to show before importing it.
+export type BackupSummary = {
+  exercises: number;
+  routines: number;
+  workouts: number;
+  bodyWeights: number;
+};
+
+export function summarizeBackup(file: BackupFile): BackupSummary {
+  return {
+    exercises: file.exercises.length,
+    routines: file.routines.length,
+    workouts: file.workouts.length,
+    bodyWeights: file.bodyWeights.length,
+  };
+}
+
 // The local day, with no colons: not every system accepts them in file names.
 export function backupFileName(date: Date) {
   return `fortapp-backup-${toDateKey(date)}.json`;
