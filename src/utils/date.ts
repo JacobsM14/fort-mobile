@@ -92,6 +92,22 @@ export function parseDateKey(key: string) {
   return new Date(year, month - 1, day);
 }
 
+// Whether a value is a key toDateKey could have written. The round trip
+// through Date rejects days that don't exist, like February 30th, without
+// depending on how an engine parses them.
+export function isDateKey(value: unknown): value is string {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day
+  );
+}
+
 // The backup file keeps instants as ISO 8601 strings.
 export function toIso(date: Date) {
   return date.toISOString();
@@ -99,4 +115,16 @@ export function toIso(date: Date) {
 
 export function toIsoOrNull(date: Date | null) {
   return date === null ? null : date.toISOString();
+}
+
+// Exactly what toISOString writes: parsing anything looser would accept
+// formats that differ from one JavaScript engine to another.
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+
+export function isIsoDate(value: unknown): value is string {
+  return (
+    typeof value === "string" &&
+    ISO_DATE.test(value) &&
+    !Number.isNaN(Date.parse(value))
+  );
 }
