@@ -77,7 +77,6 @@ function readRoutines(
     .select({
       id: routines.id,
       name: routines.name,
-      notes: routines.notes,
       createdAt: routines.createdAt,
       updatedAt: routines.updatedAt,
     })
@@ -92,7 +91,6 @@ function readRoutines(
       exerciseId: routineExercises.exerciseId,
       position: routineExercises.position,
       restS: routineExercises.restS,
-      notes: routineExercises.notes,
       createdAt: routineExercises.createdAt,
       updatedAt: routineExercises.updatedAt,
     })
@@ -123,7 +121,6 @@ function readRoutines(
   return routineRows.map((routine) => ({
     id: routine.id,
     name: routine.name,
-    notes: routine.notes,
     createdAt: toIso(routine.createdAt),
     updatedAt: toIso(routine.updatedAt),
     exercises: (exercisesByRoutine.get(routine.id) ?? []).map((exercise) => ({
@@ -131,7 +128,6 @@ function readRoutines(
       exercise: exerciseRef(exercise.exerciseId),
       position: exercise.position,
       restS: exercise.restS,
-      notes: exercise.notes,
       createdAt: toIso(exercise.createdAt),
       updatedAt: toIso(exercise.updatedAt),
       sets: (setsByExercise.get(exercise.id) ?? []).map((set) => ({

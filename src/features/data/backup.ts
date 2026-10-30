@@ -46,7 +46,6 @@ export type BackupRoutineExercise = {
   exercise: BackupExerciseRef;
   position: number;
   restS: number | null;
-  notes: string | null;
   createdAt: string;
   updatedAt: string;
   sets: BackupRoutineSet[];
@@ -55,7 +54,6 @@ export type BackupRoutineExercise = {
 export type BackupRoutine = {
   id: string;
   name: string;
-  notes: string | null;
   createdAt: string;
   updatedAt: string;
   exercises: BackupRoutineExercise[];
@@ -81,7 +79,6 @@ export type BackupWorkoutExercise = {
   id: string;
   exercise: BackupExerciseRef;
   position: number;
-  notes: string | null;
   createdAt: string;
   updatedAt: string;
   sets: BackupWorkoutSet[];
@@ -94,7 +91,6 @@ export type BackupWorkout = {
   name: string | null;
   startedAt: string;
   endedAt: string;
-  notes: string | null;
   createdAt: string;
   updatedAt: string;
   exercises: BackupWorkoutExercise[];
