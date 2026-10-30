@@ -178,6 +178,11 @@ function hasTimestamps(value: Record<string, unknown>) {
   return isIsoDate(value.createdAt) && isIsoDate(value.updatedAt);
 }
 
+// A routine or a custom exercise always has a name to show in its row.
+function isName(value: unknown): value is string {
+  return isString(value) && value.trim() !== "";
+}
+
 // Either a catalog key or the id of a custom exercise, never both.
 function isExerciseRef(value: unknown): value is BackupExerciseRef {
   return isRecord(value) && isString(value.key) !== isString(value.id);
@@ -208,12 +213,14 @@ function isExercise(value: unknown): value is BackupExercise {
   return (
     isRecord(value) &&
     isString(value.id) &&
-    isString(value.name) &&
+    isName(value.name) &&
     isNullableString(value.description) &&
     (value.equipment === null || isOneOf(EQUIPMENT, value.equipment)) &&
     isOneOf(TRACKING_TYPES, value.trackingType) &&
     isNullableIsoDate(value.archivedAt) &&
     isArrayOf(value.muscles, isExerciseMuscle) &&
+    // A muscle appears once per exercise: the table's key is the pair.
+    areUnique(value.muscles.map((muscle) => muscle.muscleId)) &&
     hasTimestamps(value)
   );
 }
@@ -251,7 +258,7 @@ function isRoutine(value: unknown): value is BackupRoutine {
   return (
     isRecord(value) &&
     isString(value.id) &&
-    isString(value.name) &&
+    isName(value.name) &&
     isArrayOf(value.exercises, isRoutineExercise) &&
     hasTimestamps(value)
   );

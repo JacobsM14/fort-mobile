@@ -217,6 +217,39 @@ describe("parseBackupFile", () => {
     expect(errorCode(text)).toBe("invalid");
   });
 
+  it("rejects a muscle repeated in one exercise", () => {
+    const [exercise] = validFile().exercises;
+    const text = textWith({
+      exercises: [
+        {
+          ...exercise,
+          muscles: [
+            { muscleId: "chest", role: "primary" },
+            { muscleId: "chest", role: "secondary" },
+          ],
+        },
+      ],
+    });
+
+    expect(errorCode(text)).toBe("invalid");
+  });
+
+  it.each(["", "   "])("rejects a routine named %p", (name) => {
+    const [routine] = validFile().routines;
+
+    expect(errorCode(textWith({ routines: [{ ...routine, name }] }))).toBe(
+      "invalid",
+    );
+  });
+
+  it.each(["", "   "])("rejects a custom exercise named %p", (name) => {
+    const [exercise] = validFile().exercises;
+
+    expect(errorCode(textWith({ exercises: [{ ...exercise, name }] }))).toBe(
+      "invalid",
+    );
+  });
+
   it("rejects a set type it does not know, deep inside a routine", () => {
     const [routine] = validFile().routines;
     const [exercise] = routine.exercises;
