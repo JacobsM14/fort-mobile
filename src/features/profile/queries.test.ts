@@ -86,7 +86,9 @@ describe("athleteTypeSetsQuery", () => {
   it("reads a row for each done set, with its workout and its exercise", () => {
     const workoutId = train("bench_press", new Date(2033, 1, 3, 18), 3);
 
-    const rows = athleteTypeSetsQuery(SINCE).all();
+    const rows = athleteTypeSetsQuery(SINCE)
+      .all()
+      .filter((row) => row.workoutId === workoutId);
 
     expect(rows).toHaveLength(3);
     expect(rows[0]).toEqual({
@@ -125,14 +127,19 @@ describe("athleteTypeSetsQuery", () => {
   });
 
   it("feeds what the profile works out from the sets", () => {
-    const rows = athleteTypeSetsQuery(SINCE).all();
-    const weekStarts = [new Date(2033, 1, 1), new Date(2033, 1, 8)];
+    // A year of its own, so no other test's workouts are read.
+    const since = new Date(2034, 0, 1);
+    train("deadlift", new Date(2034, 1, 3, 18), 3);
+    train("push_up", new Date(2034, 1, 10, 18), 1);
+
+    const rows = athleteTypeSetsQuery(since).all();
+    const weekStarts = [new Date(2034, 1, 1), new Date(2034, 1, 8)];
 
     // Three sets in one workout are one session.
-    expect(toWeeklySessions(rows, weekStarts)).toEqual([1, 0]);
+    expect(toWeeklySessions(rows, weekStarts)).toEqual([1, 1]);
     expect(
-      toFrequentExercises(rows, 1).map((exercise) => exercise.workoutCount),
-    ).toEqual([1]);
+      toFrequentExercises(rows, 2).map((exercise) => exercise.workoutCount),
+    ).toEqual([1, 1]);
     expect(trainingStyle(rows)).toBe("strength");
   });
 });
