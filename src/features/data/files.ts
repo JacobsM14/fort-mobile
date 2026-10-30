@@ -1,8 +1,12 @@
 import { File, Paths } from "expo-file-system";
 import * as Sharing from "expo-sharing";
 
-import { backupFileName } from "./backup";
+import { BackupError, backupFileName } from "./backup";
 import { readBackup } from "./queries";
+
+// A backup of years of workouts is a few megabytes: a file far bigger is not
+// one, and reading it into memory would only freeze the app.
+const MAX_BACKUP_BYTES = 50 * 1024 * 1024;
 
 export async function writeBackupFile(): Promise<File> {
   const file = new File(Paths.cache, backupFileName(new Date()));
@@ -22,4 +26,18 @@ export async function shareBackupFile() {
     mimeType: "application/json",
     UTI: "public.json",
   });
+}
+
+// The text of the file the user picks, or null if they cancel. Every type of
+// file can be picked: some providers (Drive, for one) report a .json file as
+// plain text or as a generic one, and parseBackupFile is what checks it.
+export async function pickBackupText(): Promise<string | null> {
+  const picked = await File.pickFileAsync();
+  if (picked.canceled) {
+    return null;
+  }
+  if (picked.result.size > MAX_BACKUP_BYTES) {
+    throw new BackupError("not_a_backup");
+  }
+  return picked.result.text();
 }

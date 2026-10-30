@@ -4,6 +4,7 @@ import type {
   LanguagePreference,
   ThemePreference,
 } from "@/constants/enums";
+import type { BackupErrorCode } from "@/features/data/backup";
 
 export const settingsTexts = {
   settings: {
@@ -53,6 +54,46 @@ export const settingsTexts = {
           "Guarda una copia de tus datos en un archivo. Incluye tu perfil, así que guárdalo en un lugar seguro.",
         button: "Exportar",
         error: "No se han podido exportar los datos. Inténtalo de nuevo.",
+      },
+      import: {
+        title: "Importar datos",
+        description:
+          "Recupera una copia exportada antes. Se combina con tus datos y no se borra nada.",
+        button: "Elegir archivo",
+        confirmTitle: "Importar este archivo",
+        confirmMessage: (counts: {
+          workouts: number;
+          routines: number;
+          exercises: number;
+          bodyWeights: number;
+        }) =>
+          `El archivo trae:\nEntrenamientos: ${counts.workouts}\nRutinas: ${counts.routines}\nEjercicios propios: ${counts.exercises}\nPesos corporales: ${counts.bodyWeights}\n\nSe combinará con tus datos y no se borrará nada.`,
+        confirm: "Importar",
+        cancel: "Cancelar",
+        done: (counts: {
+          workouts: number;
+          routines: number;
+          exercises: number;
+          bodyWeights: number;
+        }) =>
+          counts.workouts +
+            counts.routines +
+            counts.exercises +
+            counts.bodyWeights ===
+          0
+            ? "No había nada nuevo que importar."
+            : `Importado. Entrenamientos: ${counts.workouts}, rutinas: ${counts.routines}, ejercicios propios: ${counts.exercises}, pesos: ${counts.bodyWeights}.`,
+        skipped: (count: number) =>
+          `Ejercicios sin importar por no existir en esta versión: ${count}.`,
+        errors: {
+          not_a_backup: "Ese archivo no es una copia de esta app.",
+          unsupported_version:
+            "Esa copia es de una versión más nueva de la app. Actualiza la app para poder importarla.",
+          invalid:
+            "Ese archivo está dañado o incompleto. No se ha importado nada.",
+          failed:
+            "No se han podido importar los datos. No se ha cambiado nada.",
+        } satisfies Record<BackupErrorCode | "failed", string>,
       },
     },
     sections: {

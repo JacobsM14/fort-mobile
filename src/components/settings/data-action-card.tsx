@@ -2,7 +2,6 @@ import { SymbolView, type SymbolViewProps } from "expo-symbols";
 import { StyleSheet, Text, View } from "react-native";
 
 import { PrimaryButton } from "@/components/ui/buttons/primary-button";
-import { CornerFrame } from "@/components/ui/layout/corner-frame";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 import {
@@ -19,12 +18,13 @@ type DataActionCardProps = {
   buttonLabel: string;
   onPress: () => void;
   disabled?: boolean;
-  // Shown above the button when the last attempt failed.
+  // How the last attempt went, shown above the button.
+  message?: string;
   error?: string;
 };
 
 // One action of the data screen (export, import): what it does and a button
-// to run it.
+// to run it. The screen frames the actions together.
 export function DataActionCard({
   icon,
   title,
@@ -32,13 +32,14 @@ export function DataActionCard({
   buttonLabel,
   onPress,
   disabled = false,
+  message,
   error,
 }: DataActionCardProps) {
   const { colors } = useTheme();
   const styles = useStyles();
 
   return (
-    <CornerFrame style={styles.card}>
+    <View style={styles.card}>
       <View style={styles.header}>
         <SymbolView
           name={icon}
@@ -50,6 +51,7 @@ export function DataActionCard({
           <Text style={styles.description}>{description}</Text>
         </View>
       </View>
+      {message !== undefined && <Text style={styles.message}>{message}</Text>}
       {error !== undefined && (
         <Text style={styles.error} accessibilityRole="alert">
           {error}
@@ -60,18 +62,14 @@ export function DataActionCard({
         onPress={onPress}
         disabled={disabled}
       />
-    </CornerFrame>
+    </View>
   );
 }
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
-    // The margin keeps the floating corners inside the ScrollView, which
-    // clips anything drawn outside its bounds.
     card: {
       gap: spacing.md,
-      margin: spacing.sm,
-      padding: spacing.md,
     },
     header: {
       flexDirection: "row",
@@ -91,6 +89,11 @@ const useStyles = makeStyles(({ colors }) =>
       fontSize: fontSizes.detail,
       fontFamily: fontsInstrument.regular,
       color: colors.disabled,
+    },
+    message: {
+      fontSize: fontSizes.detail,
+      fontFamily: fontsInstrument.semiBold,
+      color: colors.primary,
     },
     error: {
       fontSize: fontSizes.detail,

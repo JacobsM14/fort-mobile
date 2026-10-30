@@ -51,6 +51,44 @@ export const settingsTexts: Pick<
         button: "Export",
         error: "The data could not be exported. Try again.",
       },
+      import: {
+        title: "Import data",
+        description:
+          "Restore a copy you exported before. It merges with your data and nothing is deleted.",
+        button: "Choose file",
+        confirmTitle: "Import this file",
+        confirmMessage: (counts: {
+          workouts: number;
+          routines: number;
+          exercises: number;
+          bodyWeights: number;
+        }) =>
+          `The file has:\nWorkouts: ${counts.workouts}\nRoutines: ${counts.routines}\nCustom exercises: ${counts.exercises}\nBody weights: ${counts.bodyWeights}\n\nIt will be merged with your data and nothing will be deleted.`,
+        confirm: "Import",
+        cancel: "Cancel",
+        done: (counts: {
+          workouts: number;
+          routines: number;
+          exercises: number;
+          bodyWeights: number;
+        }) =>
+          counts.workouts +
+            counts.routines +
+            counts.exercises +
+            counts.bodyWeights ===
+          0
+            ? "There was nothing new to import."
+            : `Imported. Workouts: ${counts.workouts}, routines: ${counts.routines}, custom exercises: ${counts.exercises}, weights: ${counts.bodyWeights}.`,
+        skipped: (count: number) =>
+          `Exercises not imported because this version doesn't have them: ${count}.`,
+        errors: {
+          not_a_backup: "That file is not a backup of this app.",
+          unsupported_version:
+            "That backup comes from a newer version of the app. Update the app to import it.",
+          invalid: "That file is damaged or incomplete. Nothing was imported.",
+          failed: "The data could not be imported. Nothing was changed.",
+        },
+      },
     },
     sections: {
       user: "User",
