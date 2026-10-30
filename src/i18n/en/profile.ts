@@ -52,5 +52,11 @@ export const profileTexts: Pick<Translations, "profile"> = {
       topLevel: (sessions) =>
         `You're at the top: keep to ${sessions} sessions a week to stay there.`,
     },
+    activity: {
+      title: "Activity",
+      less: "Less",
+      more: "More",
+      summary: (weeks) => `Activity calendar of the last ${weeks} weeks`,
+    },
   },
 };

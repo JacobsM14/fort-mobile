@@ -10,6 +10,8 @@ type BaseColors = {
   text: string;
   disabled: string;
   border: string;
+  // The day with nothing done in an activity calendar: a step off the card.
+  intensityEmpty: string;
   scrim: string;
   danger: string;
   onDanger: string;
@@ -45,6 +47,7 @@ const baseColors: Record<ColorScheme, BaseColors> = {
     text: "#F2F2F0",
     disabled: "#A0A0A8",
     border: "#6A6A72",
+    intensityEmpty: "#1F1F22",
     scrim: "#00000099",
     danger: "#FF5A5F",
     onDanger: "#0C0C0D",
@@ -55,6 +58,7 @@ const baseColors: Record<ColorScheme, BaseColors> = {
     text: "#121214",
     disabled: "#64646C",
     border: "#85858D",
+    intensityEmpty: "#ECECE9",
     scrim: "#00000066",
     danger: "#C62828",
     onDanger: "#FFFFFF",

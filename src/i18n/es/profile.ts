@@ -57,5 +57,12 @@ export const profileTexts = {
       topLevel: (sessions: number) =>
         `Estás en lo más alto: sigue con ${sessions} sesiones por semana para no bajar.`,
     },
+    activity: {
+      title: "Actividad",
+      less: "Menos",
+      more: "Más",
+      summary: (weeks: number) =>
+        `Calendario de actividad de las últimas ${weeks} semanas`,
+    },
   },
 };
