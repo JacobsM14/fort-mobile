@@ -1,23 +1,31 @@
+import { eq, isNotNull, isNull, sql } from "drizzle-orm";
+
 import { db } from "@/db/client";
 import {
+  bodyWeights,
+  exerciseMuscles,
   exercises,
   routineExercises,
   routines,
   routineSets,
+  workoutExercises,
+  workoutSets,
+  workouts,
 } from "@/db/schema";
-import { isNull } from "drizzle-orm";
+import { isMuscleId } from "@/features/exercises/catalog";
+import { loadUserProfile } from "@/features/settings/user-profile";
 
 import { groupBy } from "@/utils/array";
 import { toIso, toIsoOrNull } from "@/utils/date";
 
-import { loadUserProfile } from "@/features/settings/user-profile";
-
 import {
   BACKUP_FORMAT_VERSION,
+  type BackupBodyWeight,
   type BackupExercise,
   type BackupExerciseRef,
   type BackupFile,
   type BackupRoutine,
+  type BackupWorkout,
 } from "./backup";
 
 // Maps an exercise id to its reference in the file.
@@ -51,6 +59,28 @@ function readCustomExercises(): BackupExercise[] {
     .orderBy(exercises.createdAt)
     .all();
 
+  // Rowid order is insertion order, which keeps each exercise's main muscle
+  // first (the same order syncCatalog relies on).
+  const muscleRows = db
+    .select({
+      exerciseId: exerciseMuscles.exerciseId,
+      muscleId: exerciseMuscles.muscleId,
+      role: exerciseMuscles.role,
+    })
+    .from(exerciseMuscles)
+    .innerJoin(exercises, eq(exercises.id, exerciseMuscles.exerciseId))
+    .where(isNull(exercises.key))
+    .orderBy(sql`${exerciseMuscles}.rowid`)
+    .all();
+  const musclesByExercise = groupBy(
+    muscleRows.flatMap((row) =>
+      isMuscleId(row.muscleId)
+        ? [{ exerciseId: row.exerciseId, muscleId: row.muscleId, role: row.role }]
+        : [],
+    ),
+    (row) => row.exerciseId,
+  );
+
   return customExercises.flatMap((row) =>
     row.name === null
       ? []
@@ -62,7 +92,10 @@ function readCustomExercises(): BackupExercise[] {
             equipment: row.equipment,
             trackingType: row.trackingType,
             archivedAt: toIsoOrNull(row.archivedAt),
-            muscles: [], // pendiente: leer exercise_muscles
+            muscles: (musclesByExercise.get(row.id) ?? []).map((muscle) => ({
+              muscleId: muscle.muscleId,
+              role: muscle.role,
+            })),
             createdAt: toIso(row.createdAt),
             updatedAt: toIso(row.updatedAt),
           },
@@ -145,6 +178,133 @@ function readRoutines(
   }));
 }
 
+// Finished workouts only: the one in progress stays on its device. The joins
+// leave out the exercises and sets of that workout too.
+function readWorkouts(
+  exerciseRef: (exerciseId: string) => BackupExerciseRef,
+): BackupWorkout[] {
+  const workoutRows = db
+    .select({
+      id: workouts.id,
+      routineId: workouts.routineId,
+      name: workouts.name,
+      startedAt: workouts.startedAt,
+      endedAt: workouts.endedAt,
+      createdAt: workouts.createdAt,
+      updatedAt: workouts.updatedAt,
+    })
+    .from(workouts)
+    .where(isNotNull(workouts.endedAt))
+    .orderBy(workouts.startedAt)
+    .all();
+
+  const exerciseRows = db
+    .select({
+      id: workoutExercises.id,
+      workoutId: workoutExercises.workoutId,
+      exerciseId: workoutExercises.exerciseId,
+      position: workoutExercises.position,
+      createdAt: workoutExercises.createdAt,
+      updatedAt: workoutExercises.updatedAt,
+    })
+    .from(workoutExercises)
+    .innerJoin(workouts, eq(workouts.id, workoutExercises.workoutId))
+    .where(isNotNull(workouts.endedAt))
+    .orderBy(workoutExercises.position)
+    .all();
+
+  const setRows = db
+    .select({
+      id: workoutSets.id,
+      workoutExerciseId: workoutSets.workoutExerciseId,
+      position: workoutSets.position,
+      setType: workoutSets.setType,
+      weightKg: workoutSets.weightKg,
+      reps: workoutSets.reps,
+      durationS: workoutSets.durationS,
+      distanceM: workoutSets.distanceM,
+      startedAt: workoutSets.startedAt,
+      completedAt: workoutSets.completedAt,
+      restStartedAt: workoutSets.restStartedAt,
+      restS: workoutSets.restS,
+      createdAt: workoutSets.createdAt,
+      updatedAt: workoutSets.updatedAt,
+    })
+    .from(workoutSets)
+    .innerJoin(
+      workoutExercises,
+      eq(workoutExercises.id, workoutSets.workoutExerciseId),
+    )
+    .innerJoin(workouts, eq(workouts.id, workoutExercises.workoutId))
+    .where(isNotNull(workouts.endedAt))
+    .orderBy(workoutSets.position)
+    .all();
+
+  const setsByExercise = groupBy(setRows, (row) => row.workoutExerciseId);
+  const exercisesByWorkout = groupBy(exerciseRows, (row) => row.workoutId);
+
+  return workoutRows.flatMap((workout) =>
+    workout.endedAt === null
+      ? []
+      : [
+          {
+            id: workout.id,
+            routineId: workout.routineId,
+            name: workout.name,
+            startedAt: toIso(workout.startedAt),
+            endedAt: toIso(workout.endedAt),
+            createdAt: toIso(workout.createdAt),
+            updatedAt: toIso(workout.updatedAt),
+            exercises: (exercisesByWorkout.get(workout.id) ?? []).map(
+              (exercise) => ({
+                id: exercise.id,
+                exercise: exerciseRef(exercise.exerciseId),
+                position: exercise.position,
+                createdAt: toIso(exercise.createdAt),
+                updatedAt: toIso(exercise.updatedAt),
+                sets: (setsByExercise.get(exercise.id) ?? []).map((set) => ({
+                  id: set.id,
+                  position: set.position,
+                  setType: set.setType,
+                  weightKg: set.weightKg,
+                  reps: set.reps,
+                  durationS: set.durationS,
+                  distanceM: set.distanceM,
+                  startedAt: toIsoOrNull(set.startedAt),
+                  completedAt: toIsoOrNull(set.completedAt),
+                  restStartedAt: toIsoOrNull(set.restStartedAt),
+                  restS: set.restS,
+                  createdAt: toIso(set.createdAt),
+                  updatedAt: toIso(set.updatedAt),
+                })),
+              }),
+            ),
+          },
+        ],
+  );
+}
+
+function readBodyWeights(): BackupBodyWeight[] {
+  return db
+    .select({
+      id: bodyWeights.id,
+      measuredOn: bodyWeights.measuredOn,
+      weightKg: bodyWeights.weightKg,
+      createdAt: bodyWeights.createdAt,
+      updatedAt: bodyWeights.updatedAt,
+    })
+    .from(bodyWeights)
+    .orderBy(bodyWeights.measuredOn)
+    .all()
+    .map((row) => ({
+      id: row.id,
+      measuredOn: row.measuredOn,
+      weightKg: row.weightKg,
+      createdAt: toIso(row.createdAt),
+      updatedAt: toIso(row.updatedAt),
+    }));
+}
+
 export function readBackup(now = new Date()): BackupFile {
   const exerciseRef = makeExerciseRef();
 
@@ -155,7 +315,7 @@ export function readBackup(now = new Date()): BackupFile {
     profile: loadUserProfile(),
     exercises: readCustomExercises(),
     routines: readRoutines(exerciseRef),
-    workouts: [],
-    bodyWeights: [],
+    workouts: readWorkouts(exerciseRef),
+    bodyWeights: readBodyWeights(),
   };
 }

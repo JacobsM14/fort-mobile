@@ -2,7 +2,15 @@ import { beforeAll, describe, expect, it, jest } from "@jest/globals";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db/client";
-import { exercises, routineExercises, routineSets } from "@/db/schema";
+import {
+  exercises,
+  routineExercises,
+  routineSets,
+  workoutExercises,
+  workoutSets,
+  workouts,
+} from "@/db/schema";
+import { saveBodyWeight } from "@/features/body/queries";
 import { createExercise } from "@/features/exercises/queries";
 import { syncCatalog } from "@/features/exercises/sync-catalog";
 import { createRoutine } from "@/features/routines/queries";
@@ -33,6 +41,35 @@ function routineNamed(name: string) {
     throw new Error(`Routine ${name} not found in the backup`);
   }
   return routine;
+}
+
+// One bench press exercise with two sets, saved out of order on purpose.
+function insertWorkout(id: string, endedAt: Date | null) {
+  db.insert(workouts)
+    .values({ id, startedAt: new Date(2041, 0, 5, 18), endedAt })
+    .run();
+  db.insert(workoutExercises)
+    .values({
+      id: `${id}-exercise`,
+      workoutId: id,
+      exerciseId: catalogId("bench_press"),
+      position: 0,
+    })
+    .run();
+  db.insert(workoutSets)
+    .values([
+      { id: `${id}-set-2`, workoutExerciseId: `${id}-exercise`, position: 1, reps: 8 },
+      {
+        id: `${id}-set-1`,
+        workoutExerciseId: `${id}-exercise`,
+        position: 0,
+        reps: 10,
+        weightKg: 60,
+        completedAt: new Date(2041, 0, 5, 18, 5),
+        restS: 90,
+      },
+    ])
+    .run();
 }
 
 beforeAll(() => {
@@ -121,5 +158,87 @@ describe("readBackup routines", () => {
 
     expect(new Date(routine.createdAt).toISOString()).toBe(routine.createdAt);
     expect(routine.exercises).toEqual([]);
+  });
+});
+
+describe("readBackup custom exercises", () => {
+  it("carries the muscles of a custom exercise in order", () => {
+    const customId = createExercise({
+      name: "Backup muscles",
+      description: "",
+      trackingType: "weight_reps",
+      equipment: null,
+      primaryMuscles: ["lats", "biceps"],
+    });
+
+    const custom = readBackup().exercises.find((item) => item.id === customId);
+
+    expect(custom?.muscles).toEqual([
+      { muscleId: "lats", role: "primary" },
+      { muscleId: "biceps", role: "primary" },
+    ]);
+  });
+
+  it("leaves the catalog exercises out", () => {
+    const ids = readBackup().exercises.map((item) => item.id);
+
+    expect(ids).not.toContain(catalogId("bench_press"));
+  });
+});
+
+describe("readBackup workouts", () => {
+  it("nests the exercises and the sets of a finished workout", () => {
+    insertWorkout("backup-finished", new Date(2041, 0, 5, 19));
+
+    const workout = readBackup().workouts.find(
+      (item) => item.id === "backup-finished",
+    );
+
+    expect(workout).toMatchObject({
+      routineId: null,
+      name: null,
+      startedAt: new Date(2041, 0, 5, 18).toISOString(),
+      endedAt: new Date(2041, 0, 5, 19).toISOString(),
+    });
+    expect(workout?.exercises.map((item) => item.exercise)).toEqual([
+      { key: "bench_press" },
+    ]);
+    expect(workout?.exercises[0].sets.map((set) => set.id)).toEqual([
+      "backup-finished-set-1",
+      "backup-finished-set-2",
+    ]);
+    expect(workout?.exercises[0].sets[0]).toMatchObject({
+      reps: 10,
+      weightKg: 60,
+      restS: 90,
+      completedAt: new Date(2041, 0, 5, 18, 5).toISOString(),
+      startedAt: null,
+      restStartedAt: null,
+    });
+  });
+
+  it("leaves out a workout in progress", () => {
+    insertWorkout("backup-in-progress", null);
+
+    const ids = readBackup().workouts.map((item) => item.id);
+
+    expect(ids).not.toContain("backup-in-progress");
+  });
+});
+
+describe("readBackup body weights", () => {
+  it("carries each weigh-in under its day, oldest first", () => {
+    saveBodyWeight(new Date(2042, 2, 20, 9), 79);
+    saveBodyWeight(new Date(2042, 2, 10, 9), 80.5);
+
+    const days = readBackup().bodyWeights.filter((item) =>
+      item.measuredOn.startsWith("2042-"),
+    );
+
+    expect(days).toEqual([
+      expect.objectContaining({ measuredOn: "2042-03-10", weightKg: 80.5 }),
+      expect.objectContaining({ measuredOn: "2042-03-20", weightKg: 79 }),
+    ]);
+    expect(new Date(days[0].createdAt).toISOString()).toBe(days[0].createdAt);
   });
 });
