@@ -32,7 +32,7 @@ const MONTH_LABEL_SPAN = 2;
 // Only these days are named, as in GitHub's: Monday, Wednesday and Friday.
 const NAMED_WEEKDAYS = [1, 3, 5];
 
-type GithubCalCardProps = {
+type ActivityCalendarCardProps = {
   // The first day of each week, the oldest first.
   weekStarts: readonly Date[];
   // The level of each day of each week; null for a day still to come.
@@ -41,7 +41,10 @@ type GithubCalCardProps = {
 
 // The days trained as a calendar of squares, a column per week, each as dark
 // as the day was intense.
-export function GithubCalCard({ weekStarts, levels }: GithubCalCardProps) {
+export function ActivityCalendarCard({
+  weekStarts,
+  levels,
+}: ActivityCalendarCardProps) {
   const { t, language } = useTranslation();
   const { colors, globalStyles } = useTheme();
   const styles = useStyles();

@@ -4,7 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { AthleteTypeCard } from "@/components/profile/athlete-type-card";
-import { GithubCalCard } from "@/components/profile/github-cal-card";
+import { ActivityCalendarCard } from "@/components/profile/activity-calendar-card";
 import { EmptyStateCard } from "@/components/ui/content/empty-state-card";
 
 import { useFirstWeekday } from "@/hooks/use-first-weekday";
@@ -12,10 +12,11 @@ import { useFocusedPress } from "@/hooks/use-focused-press";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import { lastWeekStarts } from "@/features/profile/athlete-type";
 import { useAthleteType } from "@/features/profile/queries";
 
 import type { IntensityLevel } from "@/features/profile/activity-calendar";
+
+import { lastWeekStarts } from "@/utils/date";
 
 import { iconSizes, spacing } from "@/constants/theme";
 
@@ -110,7 +111,7 @@ export default function ProfileScreen() {
           ) : (
             <AthleteTypeCard athleteType={athleteType} />
           ))}
-        <GithubCalCard
+        <ActivityCalendarCard
           weekStarts={lastWeekStarts(today, firstWeekday, CALENDAR_WEEKS)}
           levels={sampleLevels(CALENDAR_WEEKS, today, firstWeekday)}
         />
