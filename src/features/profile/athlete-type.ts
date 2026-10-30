@@ -1,7 +1,5 @@
 import type { TrackingType } from "@/constants/enums";
 
-import { getWeekDays } from "@/utils/date";
-
 // What most of the training goes into, read from the exercises done most.
 export type TrainingStyle =
   "strength" | "calisthenics" | "endurance" | "allRound";
@@ -27,6 +25,12 @@ export const LEVEL_SESSIONS: Record<
 };
 export const UNSTOPPABLE_WEEKS = 2;
 
+// The share of the sets that decides the style.
+const STYLE_SHARE = 0.6;
+
+// The complete weeks the consistency looks back over.
+export const ATHLETE_TYPE_WEEKS = 12;
+
 export type FrequentExercise = {
   id: string;
   // As stored: a catalog exercise has no name of its own, and the screen
@@ -39,13 +43,20 @@ export type FrequentExercise = {
   workoutCount: number;
 };
 
-// The share of the sets that decides the style.
-const STYLE_SHARE = 0.6;
-
 export type AthleteType = {
   style: TrainingStyle;
   frequentExercises: FrequentExercise[];
   weeklySessions: number[];
+};
+
+export type AthleteTypeRow = {
+  workoutId: string;
+  startedAt: Date;
+  exerciseId: string;
+  key: string | null;
+  name: string | null;
+  description: string | null;
+  trackingType: TrackingType;
 };
 
 export function averageSessions(weeklySessions: readonly number[]): number {
@@ -91,48 +102,39 @@ export function nextConsistencyLevel(
   }
 }
 
-// The weeks the athlete type looks back over.
-export const ATHLETE_TYPE_WEEKS = 12;
-
-// The first day of each of the last `count` weeks, the oldest first and the
-// week of `today` last. Weeks start on `firstWeekday` (1 is Sunday), as in the
-// week shown in Today.
-export function lastWeekStarts(
-  today: Date,
-  firstWeekday: number,
-  count: number,
-): Date[] {
-  const [thisWeek] = getWeekDays(today, firstWeekday);
-  return Array.from({ length: count }, (_, index) => {
-    const weeksBack = count - 1 - index;
-    return new Date(
-      thisWeek.getFullYear(),
-      thisWeek.getMonth(),
-      thisWeek.getDate() - weeksBack * 7,
-    );
-  });
+// When the week that starts on `weekStart` is over: a week is [start, end).
+function weekEnd(weekStart: Date) {
+  return new Date(
+    weekStart.getFullYear(),
+    weekStart.getMonth(),
+    weekStart.getDate() + 7,
+  );
 }
 
-export type AthleteTypeRow = {
-  workoutId: string;
-  startedAt: Date;
-  exerciseId: string;
-  key: string | null;
-  name: string | null;
-  description: string | null;
-  trackingType: TrackingType;
-};
+// The weeks the consistency is read from, out of `weekStarts` (this week
+// last). The week in progress is left out, so the level never drops halfway
+// through it; so are the weeks before the first workout, so a new user isn't
+// averaged over weeks without the app.
+export function consistencyWeeks(
+  weekStarts: readonly Date[],
+  firstWorkoutStart: Date | undefined,
+): Date[] {
+  const complete = weekStarts.slice(0, -1);
+  if (firstWorkoutStart === undefined) {
+    return complete;
+  }
+  return complete.filter((weekStart) => weekEnd(weekStart) > firstWorkoutStart);
+}
 
 export function toWeeklySessions(
   rows: readonly AthleteTypeRow[],
   weekStarts: readonly Date[],
 ): number[] {
   return weekStarts.map((weekStart) => {
-    const weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekEnd.getDate() + 7);
+    const end = weekEnd(weekStart);
     const workoutIds = new Set(
       rows
-        .filter((row) => row.startedAt >= weekStart && row.startedAt < weekEnd)
+        .filter((row) => row.startedAt >= weekStart && row.startedAt < end)
         .map((row) => row.workoutId),
     );
 

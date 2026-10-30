@@ -3,7 +3,7 @@ import { describe, expect, it } from "@jest/globals";
 import {
   averageSessions,
   consistencyLevel,
-  lastWeekStarts,
+  consistencyWeeks,
   nextConsistencyLevel,
   toFrequentExercises,
   toWeeklySessions,
@@ -215,36 +215,40 @@ describe("trainingStyle", () => {
   });
 });
 
-describe("lastWeekStarts", () => {
-  // A Sunday.
-  const TODAY = new Date(2026, 9, 25, 18, 30);
+describe("consistencyWeeks", () => {
+  // Mondays; the last is the week in progress.
+  const weekStarts = [
+    new Date(2026, 9, 5),
+    new Date(2026, 9, 12),
+    new Date(2026, 9, 19),
+    new Date(2026, 9, 26),
+  ];
 
-  it("ends with the week of today, the oldest week first", () => {
-    expect(lastWeekStarts(TODAY, 2, 3)).toEqual([
+  it("leaves out the week in progress", () => {
+    expect(consistencyWeeks(weekStarts, undefined)).toEqual([
       new Date(2026, 9, 5),
       new Date(2026, 9, 12),
       new Date(2026, 9, 19),
     ]);
   });
 
-  it("starts the weeks on the first weekday of the calendar", () => {
-    expect(lastWeekStarts(TODAY, 1, 3)).toEqual([
-      new Date(2026, 9, 11),
-      new Date(2026, 9, 18),
-      new Date(2026, 9, 25),
+  it("starts at the week of the first workout", () => {
+    expect(consistencyWeeks(weekStarts, new Date(2026, 9, 14, 18))).toEqual([
+      new Date(2026, 9, 12),
+      new Date(2026, 9, 19),
+    ]);
+    // On the very first instant of a week, the one before is left out.
+    expect(consistencyWeeks(weekStarts, new Date(2026, 9, 12))).toEqual([
+      new Date(2026, 9, 12),
+      new Date(2026, 9, 19),
     ]);
   });
 
-  it("crosses into the previous year", () => {
-    expect(lastWeekStarts(new Date(2027, 0, 6), 2, 3)).toEqual([
-      new Date(2026, 11, 21),
-      new Date(2026, 11, 28),
-      new Date(2027, 0, 4),
-    ]);
+  it("keeps every complete week when the first workout is older", () => {
+    expect(consistencyWeeks(weekStarts, new Date(2026, 0, 10))).toHaveLength(3);
   });
 
-  it("gives as many weeks as asked", () => {
-    expect(lastWeekStarts(TODAY, 2, 12)).toHaveLength(12);
-    expect(lastWeekStarts(TODAY, 2, 1)).toEqual([new Date(2026, 9, 19)]);
+  it("is empty while the first workout is in the week in progress", () => {
+    expect(consistencyWeeks(weekStarts, new Date(2026, 9, 27, 9))).toEqual([]);
   });
 });
