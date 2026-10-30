@@ -1,4 +1,4 @@
-import { File, Paths } from "expo-file-system";
+import { Directory, File, Paths } from "expo-file-system";
 import * as Sharing from "expo-sharing";
 
 import { BackupError, backupFileName } from "./backup";
@@ -8,15 +8,21 @@ import { readBackup } from "./queries";
 // one, and reading it into memory would only freeze the app.
 const MAX_BACKUP_BYTES = 50 * 1024 * 1024;
 
-export async function writeBackupFile(): Promise<File> {
-  const file = new File(Paths.cache, backupFileName(new Date()));
+// A backup holds all the user's data, profile included, so only the last one
+// stays on the device: exports go to a folder of their own, emptied first.
+async function writeBackupFile(): Promise<File> {
+  const directory = new Directory(Paths.cache, "backup");
+  if (directory.exists) {
+    directory.delete();
+  }
+  directory.create();
+  const file = new File(directory, backupFileName(new Date()));
   await file.write(JSON.stringify(readBackup()));
   return file;
 }
 
-// The file stays in the cache instead of being deleted once shared: the
-// receiving app may read it after the share sheet has resolved. The next
-// export overwrites it, and the system clears the cache on its own.
+// The file isn't deleted once shared: the receiving app may read it after the
+// share sheet has resolved. The next export removes it.
 export async function shareBackupFile() {
   if (!(await Sharing.isAvailableAsync())) {
     throw new Error("Sharing is not available on this device");
