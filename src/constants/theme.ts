@@ -31,14 +31,14 @@ export type Colors = BaseColors &
     primarySoft: string;
     // The accent from faint to full in four steps, for the levels of an
     // activity calendar.
-    intensity: string[];
+    intensity: readonly [string, string, string, string];
   };
 
 // Hex alphas over the accent: primaryTint about 15 %, primarySoft 50 %.
 const TINT_ALPHA = "26";
 const SOFT_ALPHA = "80";
 // The four intensity steps: 25, 50, 75 and 100 %.
-const INTENSITY_ALPHAS = ["40", "80", "BF", "FF"];
+const INTENSITY_ALPHAS = ["40", "80", "BF", "FF"] as const;
 
 const baseColors: Record<ColorScheme, BaseColors> = {
   dark: {
@@ -321,12 +321,15 @@ export type Theme = {
 
 function createTheme(scheme: ColorScheme, accent: AccentColor): Theme {
   const shades = accentColors[accent][scheme];
-  const colors = {
+  const [quarter, half, threeQuarters, full] = INTENSITY_ALPHAS.map(
+    (alpha) => `${shades.primary}${alpha}`,
+  );
+  const colors: Colors = {
     ...baseColors[scheme],
     ...shades,
     primaryTint: `${shades.primary}${TINT_ALPHA}`,
     primarySoft: `${shades.primary}${SOFT_ALPHA}`,
-    intensity: INTENSITY_ALPHAS.map((alpha) => `${shades.primary}${alpha}`),
+    intensity: [quarter, half, threeQuarters, full],
   };
   return { scheme, accent, colors, globalStyles: createGlobalStyles(colors) };
 }
