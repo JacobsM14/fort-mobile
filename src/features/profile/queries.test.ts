@@ -13,12 +13,15 @@ import {
   type SetValues,
 } from "@/features/workouts/queries";
 
+import { toCalendarLevels, toDailySets } from "./activity-calendar";
 import {
   toFrequentExercises,
   toWeeklySessions,
   trainingStyle,
 } from "./athlete-type";
-import { athleteTypeSetsQuery } from "./queries";
+import { athleteTypeSetsQuery, dailySetsQuery } from "./queries";
+
+import { lastWeekStarts } from "@/utils/date";
 
 const REPS: SetValues = {
   weightKg: 60,
@@ -141,5 +144,56 @@ describe("athleteTypeSetsQuery", () => {
       toFrequentExercises(rows, 2).map((exercise) => exercise.workoutCount),
     ).toEqual([1, 1]);
     expect(trainingStyle(rows)).toBe("strength");
+  });
+});
+
+describe("dailySetsQuery", () => {
+  // Each test has a year of its own: the database is shared by the file.
+  it("reads a row for each set done, with the day its workout started", () => {
+    const startedAt = new Date(2035, 1, 3, 18);
+    train("bench_press", startedAt, 3);
+
+    const rows = dailySetsQuery(new Date(2035, 0, 1)).all();
+
+    expect(rows).toEqual([{ startedAt }, { startedAt }, { startedAt }]);
+  });
+
+  it("leaves out the sets not done and the workouts before the day", () => {
+    const startedAt = new Date(2036, 2, 3, 18);
+    train("pull_up", startedAt, 1, 2);
+    train("running", new Date(2035, 11, 31, 23), 2);
+
+    const rows = dailySetsQuery(new Date(2036, 0, 1)).all();
+
+    expect(rows).toEqual([{ startedAt }]);
+  });
+
+  it("reads a workout not finished yet, so today lights up while training", () => {
+    const startedAt = new Date(2037, 3, 3, 18);
+    const routineId = createRoutine({
+      name: "plank",
+      exerciseIds: [catalogId("plank")],
+    });
+    const workoutId = startWorkout(routineId, startedAt);
+    const [id] = setIds(workoutId).all();
+    completeSet(id, { ...REPS, durationS: 60 }, startedAt);
+
+    const rows = dailySetsQuery(new Date(2037, 0, 1)).all();
+
+    expect(rows).toEqual([{ startedAt }]);
+  });
+
+  it("feeds the calendar with the sets of each day added up", () => {
+    // Wednesday 3 February 2038: two workouts, 9 and 14 sets.
+    train("bench_press", new Date(2038, 1, 3, 0, 30), 9);
+    train("deadlift", new Date(2038, 1, 3, 18), 14);
+    const today = new Date(2038, 1, 5, 12);
+    const weekStarts = lastWeekStarts(today, 2, 1);
+
+    const rows = dailySetsQuery(weekStarts[0]).all();
+    const levels = toCalendarLevels(weekStarts, toDailySets(rows), today);
+
+    // 23 sets on the Wednesday is the top level; the Friday is today.
+    expect(levels).toEqual([[0, 0, 4, 0, 0, null, null]]);
   });
 });

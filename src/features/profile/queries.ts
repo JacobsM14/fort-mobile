@@ -10,6 +10,11 @@ import {
 } from "@/db/schema";
 import { firstWorkoutStartQuery } from "@/features/workouts/queries";
 import {
+  ACTIVITY_CALENDAR_WEEKS,
+  toCalendarLevels,
+  toDailySets,
+} from "./activity-calendar";
+import {
   ATHLETE_TYPE_WEEKS,
   consistencyWeeks,
   toFrequentExercises,
@@ -80,5 +85,42 @@ export function useAthleteType(firstWeekday: number) {
     // Both: with only the sets, the consistency would show first over every
     // week and change once the first workout is known.
     loaded: sets.updatedAt !== undefined && first.updatedAt !== undefined,
+  };
+}
+
+// A row per set done, in a finished workout or not: today lights up while
+// training. Unlike the athlete type, which waits for the workout to end.
+export function dailySetsQuery(from: Date) {
+  return db
+    .select({
+      startedAt: workouts.startedAt,
+    })
+    .from(workoutSets)
+    .innerJoin(
+      workoutExercises,
+      eq(workoutExercises.id, workoutSets.workoutExerciseId),
+    )
+    .innerJoin(workouts, eq(workouts.id, workoutExercises.workoutId))
+    .where(
+      and(isNotNull(workoutSets.completedAt), gte(workouts.startedAt, from)),
+    );
+}
+
+export function useActivityCalendar(firstWeekday: number) {
+  const today = new Date();
+  const weekStarts = lastWeekStarts(
+    today,
+    firstWeekday,
+    ACTIVITY_CALENDAR_WEEKS,
+  );
+  const from = weekStarts[0];
+  const { data, updatedAt } = useLiveQuery(dailySetsQuery(from), [
+    from.getTime(),
+  ]);
+
+  return {
+    weekStarts,
+    levels: toCalendarLevels(weekStarts, toDailySets(data), today),
+    loaded: updatedAt !== undefined,
   };
 }
