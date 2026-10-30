@@ -230,8 +230,8 @@ const useStyles = makeStyles(({ colors }) =>
     },
     exerciseBar: {
       height: EXERCISE_BAR_HEIGHT,
-      borderTopRightRadius: radii.sm,
-      borderBottomRightRadius: radii.sm,
+      borderTopRightRadius: radii.xs,
+      borderBottomRightRadius: radii.xs,
       backgroundColor: colors.primary,
     },
     consistencyHeader: {

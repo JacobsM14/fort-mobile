@@ -202,7 +202,7 @@ const useStyles = makeStyles(({ colors }) =>
       paddingHorizontal: spacing.sm,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     buttonActive: {
       borderColor: colors.primary,
@@ -223,7 +223,7 @@ const useStyles = makeStyles(({ colors }) =>
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,
       borderColor: colors.primary,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     item: {
       flexDirection: "row",
@@ -242,7 +242,7 @@ const useStyles = makeStyles(({ colors }) =>
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 1,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     typeBox: {
       borderColor: colors.border,

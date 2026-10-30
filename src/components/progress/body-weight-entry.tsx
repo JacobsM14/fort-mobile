@@ -170,7 +170,7 @@ const useStyles = makeStyles(({ colors }) =>
       height: ENTRY_BUTTON_SIZE,
       borderWidth: 1,
       borderColor: colors.disabled,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     save: {
       minHeight: ENTRY_BUTTON_SIZE,

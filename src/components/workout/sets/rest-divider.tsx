@@ -3,8 +3,8 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { ElapsedTime } from "@/components/workout/shared/elapsed-time";
 import {
   fontsInstrument,
-  fontsJetBrainsMono,
   fontSizes,
+  fontsJetBrainsMono,
   radii,
   spacing,
 } from "@/constants/theme";
@@ -90,7 +90,7 @@ const useStyles = makeStyles(({ colors }) =>
       paddingVertical: spacing.xs,
       borderWidth: 1,
       borderColor: colors.primary,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     stopPressed: {
       backgroundColor: colors.primary,

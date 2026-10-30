@@ -47,7 +47,7 @@ const useStyles = makeStyles(({ colors }) =>
       borderWidth: 1,
       borderStyle: "dashed",
       borderColor: colors.border,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     title: {
       fontSize: fontSizes.heading,

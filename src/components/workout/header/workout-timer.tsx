@@ -7,8 +7,8 @@ import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 import {
-  fontsJetBrainsMono,
   fontSizes,
+  fontsJetBrainsMono,
   iconSizes,
   radii,
   spacing,
@@ -51,7 +51,7 @@ const useStyles = makeStyles(({ colors }) =>
       paddingVertical: spacing.xs,
       borderWidth: 1,
       borderColor: colors.primary,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
       backgroundColor: colors.primaryTint,
     },
     time: {

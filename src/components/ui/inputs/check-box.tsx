@@ -67,7 +67,7 @@ const useStyles = makeStyles(({ colors }) =>
       justifyContent: "center",
       borderWidth: 1,
       borderColor: colors.primary,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     boxChecked: {
       backgroundColor: colors.primary,

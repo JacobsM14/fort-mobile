@@ -130,7 +130,7 @@ const useStyles = makeStyles(({ colors }) =>
       minHeight: ENTRY_BUTTON_SIZE,
       borderWidth: 1,
       borderColor: colors.disabled,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     pressed: {
       opacity: 0.6,

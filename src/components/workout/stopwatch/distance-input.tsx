@@ -92,7 +92,7 @@ const useStyles = makeStyles(({ colors }) =>
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
       textAlign: "center",
       fontSize: fontSizes.body,
       fontFamily: fontsJetBrainsMono.medium,

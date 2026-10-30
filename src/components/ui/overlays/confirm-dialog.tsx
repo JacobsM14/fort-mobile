@@ -117,7 +117,7 @@ const useStyles = makeStyles(({ colors }) =>
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     content: {
       paddingVertical: spacing.md,
@@ -147,7 +147,7 @@ const useStyles = makeStyles(({ colors }) =>
       justifyContent: "center",
       paddingHorizontal: spacing.sm,
       borderWidth: 1,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     cancelButton: {
       borderColor: colors.border,

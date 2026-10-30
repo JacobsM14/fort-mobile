@@ -331,7 +331,7 @@ const useStyles = makeStyles(({ colors }) =>
       height: BLOCK_HEIGHT,
       justifyContent: "center",
       paddingHorizontal: spacing.xs,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
       // Same ring as the markers, to lift it off the hatching and the line.
       borderWidth: 2,
       borderColor: colors.background,

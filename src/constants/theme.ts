@@ -27,11 +27,16 @@ export type Colors = BaseColors &
     // The accent at half strength, between the faint and the full one (the
     // BMI scale).
     primarySoft: string;
+    // The accent from faint to full in four steps, for the levels of an
+    // activity calendar.
+    intensity: string[];
   };
 
 // Hex alphas over the accent: primaryTint about 15 %, primarySoft 50 %.
 const TINT_ALPHA = "26";
 const SOFT_ALPHA = "80";
+// The four intensity steps: 25, 50, 75 and 100 %.
+const INTENSITY_ALPHAS = ["40", "80", "BF", "FF"];
 
 const baseColors: Record<ColorScheme, BaseColors> = {
   dark: {
@@ -139,7 +144,8 @@ export const lineHeights = {
 };
 
 export const radii = {
-  sm: 2,
+  xs: 2,
+  sm: 4,
   md: 8,
   lg: 16,
 };
@@ -246,7 +252,7 @@ function createGlobalStyles(colors: Colors) {
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
       paddingHorizontal: 14,
       boxSizing: "border-box",
       fontSize: fontSizes.lead,
@@ -260,7 +266,7 @@ function createGlobalStyles(colors: Colors) {
       backgroundColor: "transparent",
       borderWidth: 1,
       borderColor: colors.disabled,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     pressedButton: {
       minHeight: controlHeights.md,
@@ -269,7 +275,7 @@ function createGlobalStyles(colors: Colors) {
       backgroundColor: colors.primary,
       borderWidth: 1,
       borderColor: colors.primary,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     notPressedButtonText: {
       fontSize: fontSizes.label,
@@ -292,7 +298,7 @@ function createGlobalStyles(colors: Colors) {
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
     },
     cardPressed: {
       borderColor: colors.primary,
@@ -316,6 +322,7 @@ function createTheme(scheme: ColorScheme, accent: AccentColor): Theme {
     ...shades,
     primaryTint: `${shades.primary}${TINT_ALPHA}`,
     primarySoft: `${shades.primary}${SOFT_ALPHA}`,
+    intensity: INTENSITY_ALPHAS.map((alpha) => `${shades.primary}${alpha}`),
   };
   return { scheme, accent, colors, globalStyles: createGlobalStyles(colors) };
 }

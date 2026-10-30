@@ -74,7 +74,7 @@ const useStyles = makeStyles(({ colors }) =>
       gap: spacing.xs,
       width: "100%",
       minHeight: DASHED_BUTTON_HEIGHT,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
       borderWidth: 1.5,
       borderStyle: "dashed",
     },

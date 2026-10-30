@@ -60,7 +60,7 @@ const useStyles = makeStyles(({ colors }) =>
     box: {
       width: controlHeights.sm,
       height: controlHeights.sm,
-      borderRadius: radii.sm,
+      borderRadius: radii.xs,
       // Always set: trained days arrive after a first render as missed, and a
       // dashed border left out of the style isn't reset back to solid.
       borderStyle: "solid",
