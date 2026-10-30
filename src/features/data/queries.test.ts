@@ -15,6 +15,7 @@ import { createExercise } from "@/features/exercises/queries";
 import { syncCatalog } from "@/features/exercises/sync-catalog";
 import { createRoutine } from "@/features/routines/queries";
 
+import { parseBackupFile } from "./backup";
 import { readBackup } from "./queries";
 
 // The profile lives in expo-sqlite's key-value store, which needs the native app.
@@ -58,7 +59,12 @@ function insertWorkout(id: string, endedAt: Date | null) {
     .run();
   db.insert(workoutSets)
     .values([
-      { id: `${id}-set-2`, workoutExerciseId: `${id}-exercise`, position: 1, reps: 8 },
+      {
+        id: `${id}-set-2`,
+        workoutExerciseId: `${id}-exercise`,
+        position: 1,
+        reps: 8,
+      },
       {
         id: `${id}-set-1`,
         workoutExerciseId: `${id}-exercise`,
@@ -132,8 +138,19 @@ describe("readBackup routines", () => {
       .all();
     db.insert(routineSets)
       .values([
-        { id: "backup-set-2", routineExerciseId: routineExercise.id, position: 1, reps: 8 },
-        { id: "backup-set-1", routineExerciseId: routineExercise.id, position: 0, reps: 10, weightKg: 60 },
+        {
+          id: "backup-set-2",
+          routineExerciseId: routineExercise.id,
+          position: 1,
+          reps: 8,
+        },
+        {
+          id: "backup-set-1",
+          routineExerciseId: routineExercise.id,
+          position: 0,
+          reps: 10,
+          weightKg: 60,
+        },
       ])
       .run();
 
@@ -240,5 +257,13 @@ describe("readBackup body weights", () => {
       expect.objectContaining({ measuredOn: "2042-03-20", weightKg: 79 }),
     ]);
     expect(new Date(days[0].createdAt).toISOString()).toBe(days[0].createdAt);
+  });
+});
+
+describe("readBackup and parseBackupFile", () => {
+  it("parses back, unchanged, what readBackup writes", () => {
+    const backup = readBackup();
+
+    expect(parseBackupFile(JSON.stringify(backup))).toEqual(backup);
   });
 });
