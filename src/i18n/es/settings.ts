@@ -46,6 +46,15 @@ export const settingsTexts = {
         other: "Otro / Prefiero no decirlo",
       } satisfies Record<Gender, string>,
     },
+    data: {
+      export: {
+        title: "Exportar datos",
+        description:
+          "Guarda una copia de tus datos en un archivo. Incluye tu perfil, así que guárdalo en un lugar seguro.",
+        button: "Exportar",
+        error: "No se han podido exportar los datos. Inténtalo de nuevo.",
+      },
+    },
     sections: {
       user: "Usuario",
       privacy: "Política de privacidad y licencias",

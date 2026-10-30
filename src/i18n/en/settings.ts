@@ -43,6 +43,15 @@ export const settingsTexts: Pick<
         other: "Other / Prefer not to say",
       },
     },
+    data: {
+      export: {
+        title: "Export data",
+        description:
+          "Save a copy of your data to a file. It includes your profile, so keep it somewhere safe.",
+        button: "Export",
+        error: "The data could not be exported. Try again.",
+      },
+    },
     sections: {
       user: "User",
       privacy: "Privacy policy and licenses",
