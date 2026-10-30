@@ -7,7 +7,6 @@ export const profileTexts = {
   profile: {
     athleteType: {
       title: "Tu tipo de deportista",
-      // Gender-neutral on purpose: "atleta" and "polivalente" don't change.
       styles: {
         strength: {
           name: "Atleta de fuerza",
@@ -30,6 +29,8 @@ export const profileTexts = {
             "Combinas fuerza, peso corporal y cardio sin que ninguno mande sobre los demás.",
         },
       } satisfies Record<TrainingStyle, { name: string; description: string }>,
+      empty:
+        "Termina un entreno y aquí verás qué tipo de deportista eres y cuánta constancia tienes.",
       frequentExercises: "Ejercicios más frecuentes",
       workoutCount: (count: number) =>
         count === 1 ? "1 entreno" : `${count} entrenos`,

@@ -26,6 +26,8 @@ export const profileTexts: Pick<Translations, "profile"> = {
             "You mix strength, bodyweight and cardio without any one taking over.",
         },
       },
+      empty:
+        "Finish a workout and you'll see here what kind of athlete you are and how consistent you are.",
       frequentExercises: "Most frequent exercises",
       workoutCount: (count) =>
         count === 1 ? "1 workout" : `${count} workouts`,

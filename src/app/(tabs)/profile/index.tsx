@@ -4,49 +4,22 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { AthleteTypeCard } from "@/components/profile/athlete-type-card";
+import { EmptyStateCard } from "@/components/ui/content/empty-state-card";
 
+import { useFirstWeekday } from "@/hooks/use-first-weekday";
 import { useFocusedPress } from "@/hooks/use-focused-press";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import type { AthleteType } from "@/features/profile/athlete-type";
-import type { Translations } from "@/i18n/es";
+import { useAthleteType } from "@/features/profile/queries";
 
 import { iconSizes, spacing } from "@/constants/theme";
-
-// Sample data to lay the block out with: it isn't worked out from the
-// workouts yet.
-function sampleAthleteType(t: Translations): AthleteType {
-  return {
-    style: "strength",
-    frequentExercises: [
-      {
-        id: "bench_press",
-        name: t.exerciseCatalog.bench_press.name,
-        trackingType: "weight_reps",
-        workoutCount: 18,
-      },
-      {
-        id: "back_squat",
-        name: t.exerciseCatalog.back_squat.name,
-        trackingType: "weight_reps",
-        workoutCount: 15,
-      },
-      {
-        id: "pull_up",
-        name: t.exerciseCatalog.pull_up.name,
-        trackingType: "bodyweight_reps",
-        workoutCount: 9,
-      },
-    ],
-    weeklySessions: [3, 4, 3, 4, 2, 0, 3, 4, 4, 3, 5, 2],
-  };
-}
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
   const { colors, globalStyles } = useTheme();
   const openSettings = useFocusedPress(() => router.push("/settings"));
+  const { athleteType, loaded } = useAthleteType(useFirstWeekday());
 
   return (
     <SafeAreaView style={[globalStyles.screen, styles.screen]} edges={["top"]}>
@@ -75,7 +48,15 @@ export default function ProfileScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <AthleteTypeCard athleteType={sampleAthleteType(t)} />
+        {loaded &&
+          (athleteType === null ? (
+            <EmptyStateCard
+              title={t.profile.athleteType.title}
+              message={t.profile.athleteType.empty}
+            />
+          ) : (
+            <AthleteTypeCard athleteType={athleteType} />
+          ))}
       </ScrollView>
     </SafeAreaView>
   );

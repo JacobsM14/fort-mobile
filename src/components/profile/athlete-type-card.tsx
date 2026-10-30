@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
+import { getExerciseText } from "@/features/exercises/catalog";
 import {
   averageSessions,
   CONSISTENCY_LEVELS,
@@ -72,13 +73,14 @@ export function AthleteTypeCard({ athleteType }: AthleteTypeCardProps) {
         <View style={styles.section}>
           <Text style={globalStyles.inputLabel}>{texts.frequentExercises}</Text>
           {frequentExercises.map((exercise) => {
+            const name = getExerciseText(exercise, t).name;
             const count = texts.workoutCount(exercise.workoutCount);
             return (
               <View
                 key={exercise.id}
                 style={styles.exercise}
                 accessible
-                accessibilityLabel={`${exercise.name}, ${count}`}
+                accessibilityLabel={`${name}, ${count}`}
               >
                 <SymbolView
                   name={TRACKING_TYPE_ICONS[exercise.trackingType]}
@@ -88,7 +90,7 @@ export function AthleteTypeCard({ athleteType }: AthleteTypeCardProps) {
                 <View style={styles.exerciseInfo}>
                   <View style={styles.exerciseText}>
                     <Text style={styles.exerciseName} numberOfLines={1}>
-                      {exercise.name}
+                      {name}
                     </Text>
                     <Text style={styles.count}>{count}</Text>
                   </View>
