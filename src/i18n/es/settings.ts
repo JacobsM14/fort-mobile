@@ -75,14 +75,20 @@ export const settingsTexts = {
           routines: number;
           exercises: number;
           bodyWeights: number;
-        }) =>
-          counts.workouts +
+          details: number;
+        }) => {
+          const items =
+            counts.workouts +
             counts.routines +
             counts.exercises +
-            counts.bodyWeights ===
-          0
-            ? "No había nada nuevo que importar."
-            : `Importado. Entrenamientos: ${counts.workouts}, rutinas: ${counts.routines}, ejercicios propios: ${counts.exercises}, pesos: ${counts.bodyWeights}.`,
+            counts.bodyWeights;
+          if (items > 0) {
+            return `Importado. Entrenamientos: ${counts.workouts}, rutinas: ${counts.routines}, ejercicios propios: ${counts.exercises}, pesos: ${counts.bodyWeights}.`;
+          }
+          return counts.details > 0
+            ? "Se han actualizado ejercicios o series de rutinas y entrenamientos que ya tenías."
+            : "No había nada nuevo que importar.";
+        },
         skipped: (count: number) =>
           `Ejercicios sin importar por no existir en esta versión: ${count}.`,
         errors: {

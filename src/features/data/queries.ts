@@ -337,6 +337,10 @@ export type ImportResult = {
   routines: number;
   workouts: number;
   bodyWeights: number;
+  // Rows written inside routines and workouts (their exercises and sets).
+  // They change on their own, as when a set is edited in the history, so a
+  // file may bring nothing else.
+  details: number;
   // Exercises of a routine or workout that this app's catalog doesn't know,
   // left out with their sets.
   skippedExercises: number;
@@ -378,6 +382,7 @@ export function importBackup(file: BackupFile): ImportResult {
       routines: 0,
       workouts: 0,
       bodyWeights: 0,
+      details: 0,
       skippedExercises: 0,
     };
 
@@ -489,7 +494,7 @@ export function importBackup(file: BackupFile): ImportResult {
           })
           .run().changes,
     );
-    inBatches(
+    result.details += inBatches(
       routineExerciseRows,
       (batch) =>
         tx
@@ -502,7 +507,7 @@ export function importBackup(file: BackupFile): ImportResult {
           })
           .run().changes,
     );
-    inBatches(
+    result.details += inBatches(
       routineSetRows,
       (batch) =>
         tx
@@ -588,7 +593,7 @@ export function importBackup(file: BackupFile): ImportResult {
           })
           .run().changes,
     );
-    inBatches(
+    result.details += inBatches(
       workoutExerciseRows,
       (batch) =>
         tx
@@ -601,7 +606,7 @@ export function importBackup(file: BackupFile): ImportResult {
           })
           .run().changes,
     );
-    inBatches(
+    result.details += inBatches(
       workoutSetRows,
       (batch) =>
         tx

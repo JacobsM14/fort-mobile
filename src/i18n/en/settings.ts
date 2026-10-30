@@ -71,14 +71,20 @@ export const settingsTexts: Pick<
           routines: number;
           exercises: number;
           bodyWeights: number;
-        }) =>
-          counts.workouts +
+          details: number;
+        }) => {
+          const items =
+            counts.workouts +
             counts.routines +
             counts.exercises +
-            counts.bodyWeights ===
-          0
-            ? "There was nothing new to import."
-            : `Imported. Workouts: ${counts.workouts}, routines: ${counts.routines}, custom exercises: ${counts.exercises}, weights: ${counts.bodyWeights}.`,
+            counts.bodyWeights;
+          if (items > 0) {
+            return `Imported. Workouts: ${counts.workouts}, routines: ${counts.routines}, custom exercises: ${counts.exercises}, weights: ${counts.bodyWeights}.`;
+          }
+          return counts.details > 0
+            ? "Exercises or sets of routines and workouts you already had were updated."
+            : "There was nothing new to import.";
+        },
         skipped: (count: number) =>
           `Exercises not imported because this version doesn't have them: ${count}.`,
         errors: {

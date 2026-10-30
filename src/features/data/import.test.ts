@@ -25,6 +25,8 @@ import { createExercise } from "@/features/exercises/queries";
 import { syncCatalog } from "@/features/exercises/sync-catalog";
 import { createRoutine } from "@/features/routines/queries";
 
+import { toDateKey } from "@/utils/date";
+
 import type { BackupFile } from "./backup";
 import { importBackup, readBackup } from "./queries";
 
@@ -230,11 +232,14 @@ describe("importBackup", () => {
     emptyTables();
     const result = importBackup(backup);
 
+    // Inside: two routine exercises, one routine set, one workout exercise
+    // and one workout set.
     expect(result).toEqual({
       exercises: 1,
       routines: 1,
       workouts: 1,
       bodyWeights: 1,
+      details: 5,
       skippedExercises: 0,
     });
     expect(readBackup(new Date(backup.exportedAt))).toEqual(backup);
@@ -256,6 +261,7 @@ describe("importBackup", () => {
       routines: 0,
       workouts: 0,
       bodyWeights: 0,
+      details: 0,
       skippedExercises: 0,
     });
     expect(readBackup(new Date(LATE))).toEqual(afterFirst);
@@ -430,6 +436,118 @@ describe("importBackup", () => {
     expect(rows).toHaveLength(1);
     expect(rows[0].id).toBe(stored.id);
     expect(rows[0].weightKg).toBe(78);
+  });
+
+  it("counts the sets it updates inside a workout it already had", () => {
+    const original = workoutWith("workout-a", null);
+    importBackup({ ...emptyBackup(), workouts: [original] });
+    const [exercise] = original.exercises;
+    const [set] = exercise.sets;
+
+    // Only the set changed later, as editing a set in the history does.
+    const result = importBackup({
+      ...emptyBackup(),
+      workouts: [
+        {
+          ...original,
+          exercises: [
+            { ...exercise, sets: [{ ...set, reps: 12, updatedAt: LATE }] },
+          ],
+        },
+      ],
+    });
+
+    expect(result).toEqual({
+      exercises: 0,
+      routines: 0,
+      workouts: 0,
+      bodyWeights: 0,
+      details: 1,
+      skippedExercises: 0,
+    });
+    expect(
+      db
+        .select({ reps: workoutSets.reps })
+        .from(workoutSets)
+        .where(eq(workoutSets.id, set.id))
+        .get()?.reps,
+    ).toBe(12);
+  });
+
+  it("writes more rows than fit in one batch", () => {
+    const weighIns = Array.from({ length: 120 }, (_, index) => ({
+      id: `weight-${index}`,
+      measuredOn: toDateKey(new Date(2045, 0, 1 + index)),
+      weightKg: 80,
+      createdAt: EARLY,
+      updatedAt: EARLY,
+    }));
+    const workout = workoutWith("workout-a", null);
+    const [exercise] = workout.exercises;
+    const sets = Array.from({ length: 60 }, (_, index) => ({
+      ...exercise.sets[0],
+      id: `workout-a-set-${index}`,
+      position: index,
+    }));
+
+    const result = importBackup({
+      ...emptyBackup(),
+      workouts: [{ ...workout, exercises: [{ ...exercise, sets }] }],
+      bodyWeights: weighIns,
+    });
+
+    expect(result.bodyWeights).toBe(120);
+    // The workout exercise and its sets.
+    expect(result.details).toBe(61);
+    expect(db.select().from(bodyWeights).all()).toHaveLength(120);
+    expect(db.select().from(workoutSets).all()).toHaveLength(60);
+  });
+
+  it("leaves a custom exercise and its muscles alone when the file's is not newer", () => {
+    const exercise: BackupFile["exercises"][number] = {
+      id: "custom-a",
+      name: "Cable fly",
+      description: null,
+      equipment: "cable",
+      trackingType: "weight_reps",
+      archivedAt: null,
+      muscles: [
+        { muscleId: "chest", role: "primary" },
+        { muscleId: "front_delts", role: "primary" },
+      ],
+      createdAt: EARLY,
+      updatedAt: LATE,
+    };
+    importBackup({ ...emptyBackup(), exercises: [exercise] });
+
+    const result = importBackup({
+      ...emptyBackup(),
+      exercises: [
+        {
+          ...exercise,
+          name: "Older name",
+          muscles: [{ muscleId: "biceps", role: "primary" }],
+          updatedAt: EARLY,
+        },
+      ],
+    });
+
+    expect(result.exercises).toBe(0);
+    expect(
+      db
+        .select({ name: exercises.name })
+        .from(exercises)
+        .where(eq(exercises.id, "custom-a"))
+        .get()?.name,
+    ).toBe("Cable fly");
+    expect(
+      db
+        .select({ muscleId: exerciseMuscles.muscleId })
+        .from(exerciseMuscles)
+        .where(eq(exerciseMuscles.exerciseId, "custom-a"))
+        .all()
+        .map((row) => row.muscleId),
+    ).toEqual(["chest", "front_delts"]);
   });
 
   it("leaves nothing half done when a row fails", () => {
