@@ -3,11 +3,16 @@ import { describe, expect, it } from "@jest/globals";
 import {
   formatDayHeader,
   formatShortDay,
+  fromIso,
+  fromIsoOrNull,
   getDaysBetween,
   getWeekDays,
+  isDateKey,
+  isIsoDate,
   lastWeekStarts,
   parseDateKey,
   toDateKey,
+  toIso,
 } from "./date";
 
 // expo-localization numbers weekdays from 1 (Sunday).
@@ -114,5 +119,60 @@ describe("parseDateKey", () => {
   it("reads back the local day written by toDateKey", () => {
     const day = new Date(2026, 0, 5);
     expect(parseDateKey(toDateKey(day))).toEqual(day);
+  });
+});
+
+describe("isDateKey", () => {
+  it("accepts what toDateKey writes", () => {
+    expect(isDateKey(toDateKey(new Date(2026, 9, 24)))).toBe(true);
+  });
+
+  it("accepts February 29th only in a leap year", () => {
+    expect(isDateKey("2028-02-29")).toBe(true);
+    expect(isDateKey("2026-02-29")).toBe(false);
+  });
+
+  it("rejects days and months that don't exist", () => {
+    expect(isDateKey("2026-02-30")).toBe(false);
+    expect(isDateKey("2026-13-01")).toBe(false);
+    expect(isDateKey("2026-00-10")).toBe(false);
+  });
+
+  it("rejects other formats and values that aren't text", () => {
+    expect(isDateKey("2026-1-5")).toBe(false);
+    expect(isDateKey("24/10/2026")).toBe(false);
+    expect(isDateKey("2026-10-24T10:00:00.000Z")).toBe(false);
+    expect(isDateKey(20261024)).toBe(false);
+  });
+});
+
+describe("isIsoDate", () => {
+  it("accepts what toIso writes", () => {
+    expect(isIsoDate(toIso(new Date(2026, 9, 30, 18, 5)))).toBe(true);
+  });
+
+  it("rejects dates written any other way, even valid ones", () => {
+    expect(isIsoDate("2026-10-30")).toBe(false);
+    expect(isIsoDate("2026-10-30T18:05:00Z")).toBe(false);
+    expect(isIsoDate("2026-10-30T18:05:00.000+02:00")).toBe(false);
+    expect(isIsoDate("Fri Oct 30 2026")).toBe(false);
+  });
+
+  it("rejects values that aren't text", () => {
+    expect(isIsoDate(Date.now())).toBe(false);
+    expect(isIsoDate(null)).toBe(false);
+  });
+});
+
+describe("fromIso and fromIsoOrNull", () => {
+  it("read back the instant toIso wrote", () => {
+    const moment = new Date(2026, 9, 30, 18, 5, 7, 123);
+
+    expect(fromIso(toIso(moment))).toEqual(moment);
+    expect(fromIsoOrNull(toIso(moment))).toEqual(moment);
+  });
+
+  it("keep a missing date missing", () => {
+    expect(fromIsoOrNull(null)).toBeNull();
   });
 });

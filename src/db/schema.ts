@@ -89,7 +89,6 @@ export const exerciseMuscles = sqliteTable(
 export const routines = sqliteTable("routines", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
-  notes: text("notes"),
   ...timestamps,
 });
 
@@ -103,7 +102,6 @@ export const workouts = sqliteTable(
     name: text("name"),
     startedAt: integer("started_at", { mode: "timestamp_ms" }).notNull(),
     endedAt: integer("ended_at", { mode: "timestamp_ms" }),
-    notes: text("notes"),
     ...timestamps,
   },
   (t) => [
@@ -123,7 +121,6 @@ export const workoutExercises = sqliteTable(
       .notNull()
       .references(() => exercises.id, { onDelete: "restrict" }),
     position: integer("position").notNull(),
-    notes: text("notes"),
     ...timestamps,
   },
   (t) => [
@@ -173,7 +170,6 @@ export const routineExercises = sqliteTable(
       .references(() => exercises.id, { onDelete: "restrict" }),
     position: integer("position").notNull(),
     restS: integer("rest_s"),
-    notes: text("notes"),
     ...timestamps,
   },
   (t) => [

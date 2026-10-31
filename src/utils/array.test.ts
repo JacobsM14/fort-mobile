@@ -1,6 +1,33 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { toggleItem } from "./array";
+import { areUnique, groupBy, toggleItem } from "./array";
+
+describe("areUnique", () => {
+  it("is true when no item repeats, and for an empty list", () => {
+    expect(areUnique(["a", "b", "c"])).toBe(true);
+    expect(areUnique([])).toBe(true);
+  });
+
+  it("is false when an item repeats", () => {
+    expect(areUnique(["a", "b", "a"])).toBe(false);
+  });
+});
+
+describe("groupBy", () => {
+  it("groups the items by key, keeping their order", () => {
+    const groups = groupBy(
+      ["apple", "avocado", "banana", "apricot"],
+      (item) => item[0],
+    );
+
+    expect(groups.get("a")).toEqual(["apple", "avocado", "apricot"]);
+    expect(groups.get("b")).toEqual(["banana"]);
+  });
+
+  it("has no group for a key nobody gave", () => {
+    expect(groupBy(["a"], (item) => item).get("z")).toBeUndefined();
+  });
+});
 
 describe("toggleItem", () => {
   it("adds a missing item at the end", () => {

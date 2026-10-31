@@ -4,6 +4,7 @@ import type {
   LanguagePreference,
   ThemePreference,
 } from "@/constants/enums";
+import type { BackupErrorCode } from "@/features/data/backup";
 
 export const settingsTexts = {
   settings: {
@@ -45,6 +46,61 @@ export const settingsTexts = {
         male: "Hombre",
         other: "Otro / Prefiero no decirlo",
       } satisfies Record<Gender, string>,
+    },
+    data: {
+      export: {
+        title: "Exportar datos",
+        description:
+          "Guarda una copia de tus datos en un archivo. Incluye tu perfil, así que guárdalo en un lugar seguro.",
+        button: "Exportar",
+        error: "No se han podido exportar los datos. Inténtalo de nuevo.",
+      },
+      import: {
+        title: "Importar datos",
+        description:
+          "Recupera una copia exportada antes. Se combina con tus datos y no se borra nada.",
+        button: "Elegir archivo",
+        confirmTitle: "Importar este archivo",
+        confirmMessage: (counts: {
+          workouts: number;
+          routines: number;
+          exercises: number;
+          bodyWeights: number;
+        }) =>
+          `El archivo trae:\nEntrenamientos: ${counts.workouts}\nRutinas: ${counts.routines}\nEjercicios propios: ${counts.exercises}\nPesos corporales: ${counts.bodyWeights}\n\nSe combinará con tus datos y no se borrará nada.`,
+        confirm: "Importar",
+        cancel: "Cancelar",
+        done: (counts: {
+          workouts: number;
+          routines: number;
+          exercises: number;
+          bodyWeights: number;
+          details: number;
+        }) => {
+          const items =
+            counts.workouts +
+            counts.routines +
+            counts.exercises +
+            counts.bodyWeights;
+          if (items > 0) {
+            return `Importado. Entrenamientos: ${counts.workouts}, rutinas: ${counts.routines}, ejercicios propios: ${counts.exercises}, pesos: ${counts.bodyWeights}.`;
+          }
+          return counts.details > 0
+            ? "Se han actualizado ejercicios o series de rutinas y entrenamientos que ya tenías."
+            : "No había nada nuevo que importar.";
+        },
+        skipped: (count: number) =>
+          `Ejercicios sin importar por no existir en esta versión: ${count}.`,
+        errors: {
+          not_a_backup: "Ese archivo no es una copia de esta app.",
+          unsupported_version:
+            "Esa copia es de una versión más nueva de la app. Actualiza la app para poder importarla.",
+          invalid:
+            "Ese archivo está dañado o incompleto. No se ha importado nada.",
+          failed:
+            "No se han podido importar los datos. No se ha cambiado nada.",
+        } satisfies Record<BackupErrorCode | "failed", string>,
+      },
     },
     sections: {
       user: "Usuario",
@@ -97,9 +153,11 @@ export const settingsTexts = {
     backupsTitle: "Copias de seguridad",
     backups:
       "Si tienes activadas las copias de seguridad del sistema (iCloud o Google), tus datos pueden incluirse en ellas, como los de cualquier otra app. Esas copias dependen de tu cuenta, no de esta app.",
+    exports:
+      "También puedes exportar tus datos desde Ajustes. Se crea un archivo con todo lo que registras, incluido tu perfil, y tú decides dónde guardarlo o a quién enviarlo. La app solo guarda la última copia exportada, en su almacenamiento privado. Al importar, la app lee únicamente el archivo que elijas.",
     deleteTitle: "Borrar tus datos",
     delete:
-      "Desinstalar la app borra todo lo que tenía guardado en este dispositivo.",
+      "Desinstalar la app borra todo lo que tenía guardado en este dispositivo. Las copias que hayas exportado y guardado en otro sitio no se borran.",
     changesTitle: "Cambios",
     changes:
       "Si una versión futura cambia cómo se tratan tus datos (por ejemplo, para sincronizarlos entre dispositivos), se explicará aquí antes de que ocurra.",
