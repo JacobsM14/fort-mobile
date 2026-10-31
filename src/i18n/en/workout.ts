@@ -41,6 +41,8 @@ export const workoutTexts: Pick<Translations, "workout" | "finished"> = {
     extraExercise: "Extra exercise",
     addExercises: (count) => (count === 0 ? "Add" : `Add · ${count}`),
     finish: "Finish routine",
+    previousExercise: "Previous",
+    nextExercise: "Next",
     finishTitle: "Finish the workout?",
     finishMessage:
       "The sets you marked will be saved. The ones you didn't are discarded.",

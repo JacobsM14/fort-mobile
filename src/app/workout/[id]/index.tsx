@@ -92,6 +92,9 @@ export default function WorkoutScreen() {
     (entry) => entry.id === currentId,
   );
   const current = currentIndex === -1 ? undefined : view.entries[currentIndex];
+  const previous =
+    currentIndex > 0 ? view.entries[currentIndex - 1] : undefined;
+  const next = currentIndex === -1 ? undefined : view.entries[currentIndex + 1];
 
   useWorkoutNotification({
     workoutId,
@@ -277,6 +280,10 @@ export default function WorkoutScreen() {
         )}
       </ScrollView>
       <WorkoutFooter
+        previousName={previous?.name}
+        nextName={next?.name}
+        onPrevious={() => previous !== undefined && selectExercise(previous.id)}
+        onNext={() => next !== undefined && selectExercise(next.id)}
         onCancel={() => setConfirmation({ kind: "cancel" })}
         onFinish={() => setConfirmation({ kind: "finish" })}
       />
