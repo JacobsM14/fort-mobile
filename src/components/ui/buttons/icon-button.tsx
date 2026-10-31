@@ -17,6 +17,8 @@ type IconButtonProps = {
   size?: number;
   // Some glyphs, like the xmark, look bigger than the rest and go a size down.
   iconSize?: number;
+  // Without the outline the icon stands alone, for a quiet action next to text.
+  bordered?: boolean;
 };
 
 export function IconButton({
@@ -26,6 +28,7 @@ export function IconButton({
   tone = "primary",
   size = controlHeights.md,
   iconSize = iconSizes.md,
+  bordered = true,
 }: IconButtonProps) {
   const { colors } = useTheme();
   const styles = useStyles();
@@ -55,9 +58,15 @@ export function IconButton({
         return [
           styles.box,
           { width: size, height: size },
-          { borderColor: border, backgroundColor: fill },
+          bordered
+            ? { borderColor: border, backgroundColor: fill }
+            : styles.bare,
         ];
       }}
+      // A small bare icon keeps a comfortable area to tap.
+      hitSlop={
+        bordered ? undefined : Math.max(0, (controlHeights.md - size) / 2)
+      }
       onPress={handlePress}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
@@ -82,6 +91,9 @@ const useStyles = makeStyles(() =>
       justifyContent: "center",
       borderWidth: 1,
       borderRadius: radii.xs,
+    },
+    bare: {
+      borderColor: "transparent",
     },
   }),
 );

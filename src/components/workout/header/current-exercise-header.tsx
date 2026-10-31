@@ -8,7 +8,12 @@ import { useTranslation } from "@/i18n";
 
 import type { MuscleId } from "@/features/exercises/catalog";
 
-import { fontsInstrument, fontSizes, spacing } from "@/constants/theme";
+import {
+  fontsInstrument,
+  fontSizes,
+  iconSizes,
+  spacing,
+} from "@/constants/theme";
 
 type CurrentExerciseHeaderProps = {
   name: string;
@@ -34,6 +39,15 @@ export function CurrentExerciseHeader({
 
   return (
     <View style={styles.row}>
+      <IconButton
+        tone="muted"
+        bordered={false}
+        size={iconSizes.sm}
+        iconSize={iconSizes.sm}
+        icon={{ ios: "info.circle", android: "info", web: "info" }}
+        accessibilityLabel={t.exercises.showInfo}
+        onPress={onShowInfo}
+      />
       <View style={styles.text}>
         <Text style={styles.name}>{name}</Text>
         {muscles.length > 0 && (
@@ -42,12 +56,6 @@ export function CurrentExerciseHeader({
           </Text>
         )}
       </View>
-      <IconButton
-        tone="muted"
-        icon={{ ios: "info.circle", android: "info", web: "info" }}
-        accessibilityLabel={t.exercises.showInfo}
-        onPress={onShowInfo}
-      />
       <ExerciseSelectButton
         position={position}
         total={total}
