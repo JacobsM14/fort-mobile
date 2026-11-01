@@ -4,16 +4,13 @@ import { useEffect } from "react";
 import { useTranslation } from "@/i18n";
 
 import {
+  ensureNotificationPermission,
   hasAskedNotificationPermission,
   markNotificationPermissionAsked,
 } from "@/features/settings/notification-permission";
 import { useActiveWorkout } from "@/features/workouts/queries";
 
-import {
-  dismiss,
-  ensureNotificationPermission,
-  show,
-} from "@/modules/workout-notification";
+import { dismiss, show } from "@/modules/workout-notification";
 
 type UseWorkoutNotificationOptions = {
   workoutId: string;
