@@ -12,6 +12,11 @@ export const commonTexts: Pick<
   },
   notifications: {
     channel: "Workout in progress",
+    weightReminder: {
+      channel: "Weigh-in reminder",
+      title: "Time to weigh yourself",
+      text: "Log your weight to track your progress",
+    },
   },
   errors: {
     database: "Couldn't load your data. Close the app and open it again.",

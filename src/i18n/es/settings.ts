@@ -105,7 +105,7 @@ export const settingsTexts = {
     sections: {
       user: "Usuario",
       privacy: "Política de privacidad y licencias",
-      permissions: "Permisos",
+      permissions: "Notificaciones",
       data: "Exportar / Importar",
       preferences: "Preferencias",
       exercises: "Gestión de ejercicios",
@@ -121,6 +121,25 @@ export const settingsTexts = {
         pink: "Rosa",
         amber: "Ámbar",
       } satisfies Record<AccentColor, string>,
+    },
+    notifications: {
+      enabled: "Recibir notificaciones",
+      enabledDescription: "Apágalas para no recibir ninguna",
+      blocked:
+        "Las notificaciones de la app están bloqueadas en los ajustes del móvil.",
+      openSystemSettings: "Abrir ajustes del móvil",
+      types: "Qué notificaciones recibir",
+      workout: "Entrenamiento en curso",
+      workoutDescription: "El ejercicio en el que estás y el tiempo que llevas",
+      weightReminder: "Recordatorio de pesaje",
+      weightReminderDescription:
+        "Un aviso a la semana para pesarte. Si ese día ya te has pesado, no suena.",
+      day: "Día",
+      time: "Hora",
+      hourEarlier: "Una hora antes",
+      hourLater: "Una hora después",
+      minutesEarlier: (minutes: number) => `${minutes} minutos antes`,
+      minutesLater: (minutes: number) => `${minutes} minutos después`,
     },
   },
   about: {
@@ -139,7 +158,7 @@ export const settingsTexts = {
       "Tus rutinas y los ejercicios que añades",
       "Tus entrenamientos, series y pesos",
       "Tu peso corporal, si lo registras",
-      "Tus preferencias de apariencia (tema y color)",
+      "Tus preferencias: apariencia, unidades, idioma y notificaciones, con el día y la hora del recordatorio de pesaje",
     ],
     security:
       "Estos datos están en el almacenamiento privado de la app, al que el sistema no deja acceder a otras apps.",

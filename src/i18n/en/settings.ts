@@ -99,7 +99,7 @@ export const settingsTexts: Pick<
     sections: {
       user: "User",
       privacy: "Privacy policy and licenses",
-      permissions: "Permissions",
+      permissions: "Notifications",
       data: "Export / Import",
       preferences: "Preferences",
       exercises: "Manage exercises",
@@ -115,6 +115,25 @@ export const settingsTexts: Pick<
         pink: "Pink",
         amber: "Amber",
       },
+    },
+    notifications: {
+      enabled: "Get notifications",
+      enabledDescription: "Turn them off to get none at all",
+      blocked: "The app's notifications are blocked in your phone's settings.",
+      openSystemSettings: "Open phone settings",
+      types: "Which notifications to get",
+      workout: "Workout in progress",
+      workoutDescription:
+        "The exercise you're on and how long you've been at it",
+      weightReminder: "Weigh-in reminder",
+      weightReminderDescription:
+        "A weekly nudge to weigh yourself. If you've already weighed in that day, it stays quiet.",
+      day: "Day",
+      time: "Time",
+      hourEarlier: "One hour earlier",
+      hourLater: "One hour later",
+      minutesEarlier: (minutes) => `${minutes} minutes earlier`,
+      minutesLater: (minutes) => `${minutes} minutes later`,
     },
   },
   about: {
@@ -133,7 +152,7 @@ export const settingsTexts: Pick<
       "Your routines and the exercises you add",
       "Your workouts, sets and weights",
       "Your body weight, if you log it",
-      "Your appearance preferences (theme and color)",
+      "Your preferences: appearance, units, language and notifications, with the day and time of the weigh-in reminder",
     ],
     security:
       "This data lives in the app's private storage, which the system keeps other apps from accessing.",

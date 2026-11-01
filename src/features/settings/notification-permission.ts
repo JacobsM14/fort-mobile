@@ -15,10 +15,18 @@ export function markNotificationPermissionAsked() {
 // unless turned off in the system settings, which the native side checks.
 const NOTIFICATION_PERMISSION_API = 33;
 
+const permission = PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS;
+
 let pending: Promise<boolean> | null = null;
 
+function needsPermission(): boolean {
+  return (
+    Platform.OS === "android" &&
+    Number(Platform.Version) >= NOTIFICATION_PERMISSION_API
+  );
+}
+
 async function requestPermission(): Promise<boolean> {
-  const permission = PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS;
   try {
     if (await PermissionsAndroid.check(permission)) {
       return true;
@@ -30,13 +38,22 @@ async function requestPermission(): Promise<boolean> {
   }
 }
 
+// Whether notifications are allowed, without asking.
+export async function hasNotificationPermission(): Promise<boolean> {
+  if (!needsPermission()) {
+    return true;
+  }
+  try {
+    return await PermissionsAndroid.check(permission);
+  } catch {
+    return false;
+  }
+}
+
 // Resolves to whether notifications are allowed. Calls made while the dialog
 // is open share it, so it is never shown twice at once.
 export function ensureNotificationPermission(): Promise<boolean> {
-  if (
-    Platform.OS !== "android" ||
-    Number(Platform.Version) < NOTIFICATION_PERMISSION_API
-  ) {
+  if (!needsPermission()) {
     return Promise.resolve(true);
   }
   pending ??= requestPermission().finally(() => {
