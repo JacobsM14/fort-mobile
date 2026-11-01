@@ -10,4 +10,4 @@ export const STORE_URLS: { ios?: string; android?: string } = {};
 export const COPYRIGHT = { year: 2026, holder: "Marcel" };
 
 // Update it whenever the privacy text changes.
-export const PRIVACY_UPDATED_AT = new Date(2026, 9, 30);
+export const PRIVACY_UPDATED_AT = new Date(2026, 10, 1);
