@@ -21,8 +21,10 @@ export type ActionMenuItem = {
   id: string;
   label: string;
   icon: SymbolViewProps["name"];
-  // "danger" for what deletes.
-  tone?: "default" | "danger";
+  // "danger" for what deletes, "primary" for the action the menu leads to.
+  tone?: "default" | "primary" | "danger";
+  // Starts a group of its own, under a line.
+  separated?: boolean;
 };
 
 // Where the menu goes within the screen: just below the button that opened
@@ -68,12 +70,18 @@ export function ActionMenu({
         style={[styles.menu, anchor]}
       >
         {items.map((item) => {
-          const color = item.tone === "danger" ? colors.danger : colors.text;
+          const color =
+            item.tone === "danger"
+              ? colors.danger
+              : item.tone === "primary"
+                ? colors.primary
+                : colors.text;
           return (
             <Pressable
               key={item.id}
               style={({ pressed }) => [
                 styles.item,
+                item.separated && styles.itemSeparated,
                 pressed && styles.itemPressed,
               ]}
               onPress={() => onSelect(item.id)}
@@ -104,7 +112,7 @@ const useStyles = makeStyles(({ colors }) =>
       paddingVertical: spacing.xs,
       backgroundColor: colors.backgroundSecondary,
       borderWidth: 1,
-      borderColor: colors.primary,
+      borderColor: colors.disabled,
       borderRadius: radii.xs,
     },
     item: {
@@ -113,6 +121,11 @@ const useStyles = makeStyles(({ colors }) =>
       gap: spacing.sm,
       minHeight: controlHeights.lg,
       paddingHorizontal: spacing.sm,
+    },
+    itemSeparated: {
+      marginTop: spacing.xs,
+      borderTopWidth: 1,
+      borderTopColor: colors.disabled,
     },
     itemPressed: {
       backgroundColor: colors.background,

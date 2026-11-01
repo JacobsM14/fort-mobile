@@ -41,6 +41,12 @@ export const workoutTexts = {
     addExercises: (count: number) =>
       count === 0 ? "Añadir" : `Añadir · ${count}`,
     finish: "Terminar rutina",
+    moreOptions: "Más opciones",
+    closeOptions: "Cerrar opciones",
+    exerciseInfo: "Ficha del ejercicio",
+    addExtraExercise: "Añadir ejercicio extra",
+    finishNow: "Terminar ahora",
+    cancelSession: "Cancelar sesión",
     previousExercise: "Anterior",
     nextExercise: "Siguiente",
     finishTitle: "¿Terminar el entrenamiento?",

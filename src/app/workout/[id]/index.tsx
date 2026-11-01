@@ -1,13 +1,24 @@
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
-import { Alert, StyleSheet, View, type LayoutChangeEvent } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import {
+  Alert,
+  StyleSheet,
+  View,
+  type HostInstance,
+  type LayoutChangeEvent,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ExerciseInfoSheet } from "@/components/exercises/exercise-info-sheet";
 import { DashedButton } from "@/components/ui/buttons/dashed-button";
+import { IconButton } from "@/components/ui/buttons/icon-button";
 import { NoContentBox } from "@/components/ui/content/no-content-box";
-import { BackHeader } from "@/components/ui/layout/back-header";
+import {
+  BackBreadcrumb,
+  HeaderTitle,
+} from "@/components/ui/layout/back-header";
+import { ActionMenu } from "@/components/ui/overlays/action-menu";
 import { ConfirmDialog } from "@/components/ui/overlays/confirm-dialog";
 import { CurrentExerciseHeader } from "@/components/workout/header/current-exercise-header";
 import { ExerciseSelectMenu } from "@/components/workout/header/exercise-select";
@@ -30,6 +41,10 @@ import {
 } from "@/features/workouts/queries";
 import { getDefaultExerciseId, isExerciseDone } from "@/features/workouts/sets";
 
+import type {
+  ActionMenuAnchor,
+  ActionMenuItem,
+} from "@/components/ui/overlays/action-menu";
 import type { MenuAnchor } from "@/components/workout/header/exercise-select";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
 import type { WorkoutEntry } from "@/features/workouts/entries";
@@ -70,9 +85,12 @@ export default function WorkoutScreen() {
     left: 0,
     width: 0,
   });
+  const [actionsAnchor, setActionsAnchor] = useState<ActionMenuAnchor>();
   const [info, setInfo] = useState<ExerciseInfo | null>(null);
   const [confirmation, setConfirmation] = useState<Confirmation>();
   const [closingView, setClosingView] = useState<WorkoutView>();
+  const screenRef = useRef<HostInstance>(null);
+  const actionsButtonRef = useRef<HostInstance>(null);
 
   useEffect(
     () => subscribeExerciseAdded(setCurrentId),
@@ -107,6 +125,72 @@ export default function WorkoutScreen() {
   function measureHeader(event: LayoutChangeEvent) {
     const { x, y, width, height } = event.nativeEvent.layout;
     setMenuAnchor({ top: y + height, left: x, width });
+  }
+
+  // Measured against the screen the menu covers, its right edge lined up with
+  // the button's.
+  function openActions() {
+    setMenuOpen(false);
+    screenRef.current?.measureInWindow((screenX, screenY, screenWidth) => {
+      actionsButtonRef.current?.measureInWindow((x, y, width, height) => {
+        setActionsAnchor({
+          top: y - screenY + height + spacing.xs,
+          right: screenWidth - (x - screenX + width),
+        });
+      });
+    });
+  }
+
+  function getActionItems(): ActionMenuItem[] {
+    const items: ActionMenuItem[] = [];
+    if (current !== undefined) {
+      items.push({
+        id: "info",
+        label: t.workout.exerciseInfo,
+        icon: { ios: "info.circle", android: "info", web: "info" },
+      });
+    }
+    items.push(
+      {
+        id: "addExercise",
+        label: t.workout.addExtraExercise,
+        icon: { ios: "plus", android: "add", web: "add" },
+      },
+      {
+        id: "finish",
+        label: t.workout.finishNow,
+        icon: { ios: "checkmark", android: "check", web: "check" },
+        tone: "primary",
+        separated: true,
+      },
+      {
+        id: "cancel",
+        label: t.workout.cancelSession,
+        icon: { ios: "trash", android: "delete", web: "delete" },
+        tone: "danger",
+      },
+    );
+    return items;
+  }
+
+  function selectAction(id: string) {
+    setActionsAnchor(undefined);
+    switch (id) {
+      case "info":
+        if (current !== undefined) {
+          showInfo(current);
+        }
+        break;
+      case "addExercise":
+        addExtraExercise();
+        break;
+      case "finish":
+        setConfirmation({ kind: "finish" });
+        break;
+      case "cancel":
+        setConfirmation({ kind: "cancel" });
+        break;
+    }
   }
 
   function selectExercise(id: string) {
@@ -224,12 +308,28 @@ export default function WorkoutScreen() {
 
   return (
     <SafeAreaView
+      ref={screenRef}
       style={[globalStyles.modalScreen, styles.screen]}
       edges={["top", "bottom"]}
     >
       <View onLayout={measureHeader}>
-        <BackHeader
-          backLabel={t.workout.breadCrumb}
+        <View style={styles.breadcrumbRow}>
+          <BackBreadcrumb label={t.workout.breadCrumb} />
+          <View ref={actionsButtonRef}>
+            <IconButton
+              tone="muted"
+              bordered={false}
+              icon={{
+                ios: "ellipsis",
+                android: "more_horiz",
+                web: "more_horiz",
+              }}
+              accessibilityLabel={t.workout.moreOptions}
+              onPress={openActions}
+            />
+          </View>
+        </View>
+        <HeaderTitle
           title={view.title}
           action={
             startedAt !== undefined && <WorkoutTimer startedAt={startedAt} />
@@ -302,6 +402,15 @@ export default function WorkoutScreen() {
           onClose={() => setMenuOpen(false)}
         />
       )}
+      {actionsAnchor !== undefined && (
+        <ActionMenu
+          items={getActionItems()}
+          anchor={actionsAnchor}
+          closeLabel={t.workout.closeOptions}
+          onSelect={selectAction}
+          onClose={() => setActionsAnchor(undefined)}
+        />
+      )}
       <ExerciseInfoSheet exercise={info} onClose={() => setInfo(null)} />
       {confirmation !== undefined && (
         <ConfirmDialog
@@ -318,6 +427,11 @@ export default function WorkoutScreen() {
 const styles = StyleSheet.create({
   screen: {
     paddingBottom: 0,
+  },
+  breadcrumbRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   content: {
     gap: spacing.lg,
