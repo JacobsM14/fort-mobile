@@ -1,25 +1,26 @@
-// The hour of the day the reminder goes off, local time.
-const REMINDER_HOUR = 9;
+import type { WeightReminder } from "@/features/settings/weight-reminder";
 
 // When to remind the user to weigh in next, or null when the reminder is off.
-// Today counts while its hour hasn't passed, unless they already weighed in.
+// Today counts while the chosen time hasn't passed, unless they already
+// weighed in.
 export function nextWeightReminder(
-  weekday: number | null,
+  reminder: WeightReminder | null,
   now: Date,
   weighedToday: boolean,
 ): Date | null {
-  if (weekday === null) {
+  if (reminder === null) {
     return null;
   }
-  const daysAhead = (weekday - now.getDay() + 7) % 7;
+  const daysAhead = (reminder.weekday - now.getDay() + 7) % 7;
   // Built from the calendar day, not by adding milliseconds, so it stays at
-  // the same local hour across a clock change.
+  // the same local time across a clock change.
   const at = (days: number) =>
     new Date(
       now.getFullYear(),
       now.getMonth(),
       now.getDate() + days,
-      REMINDER_HOUR,
+      reminder.hour,
+      reminder.minute,
     );
 
   const next = at(daysAhead);
