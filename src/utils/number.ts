@@ -34,3 +34,9 @@ export function roundToTenth(value: number) {
 export function withSign(rounded: number, text: string) {
   return `${rounded > 0 ? "+" : rounded < 0 ? "-" : ""}${text}`;
 }
+
+// Like value % size, but never negative: on a clock face one step back from 0
+// is size - 1.
+export function wrap(value: number, size: number) {
+  return ((value % size) + size) % size;
+}

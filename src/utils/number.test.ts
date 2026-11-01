@@ -6,6 +6,7 @@ import {
   parseInteger,
   roundToTenth,
   withSign,
+  wrap,
 } from "./number";
 
 describe("parseDecimal", () => {
@@ -58,5 +59,23 @@ describe("withSign", () => {
 
   it("carries no sign for nothing", () => {
     expect(withSign(0, "0")).toBe("0");
+  });
+});
+
+describe("wrap", () => {
+  it("leaves a value inside the range as it is", () => {
+    expect(wrap(0, 24)).toBe(0);
+    expect(wrap(23, 24)).toBe(23);
+  });
+
+  it("goes back to the start past the end", () => {
+    expect(wrap(24, 24)).toBe(0);
+    expect(wrap(60, 60)).toBe(0);
+    expect(wrap(75, 60)).toBe(15);
+  });
+
+  it("goes round to the end before the start", () => {
+    expect(wrap(-1, 24)).toBe(23);
+    expect(wrap(-15, 60)).toBe(45);
   });
 });
