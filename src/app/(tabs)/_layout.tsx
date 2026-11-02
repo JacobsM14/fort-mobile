@@ -23,11 +23,9 @@ import { fontsInstrument, spacing } from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import { useWeightReminderSchedule } from "@/features/body/notification";
-import {
-  useAskNotificationPermissionOnFirstOpen,
-  useDismissEndedWorkoutNotification,
-} from "@/features/workouts/notification";
+import { useAskNotificationPermissionOnFirstOpen } from "@/features/notifications/permission";
+import { useWeightReminderSchedule } from "@/features/notifications/weight-reminder-schedule";
+import { useDismissEndedWorkoutNotification } from "@/features/notifications/workout-notification";
 
 const TAB_BAR_HEIGHT = 70;
 const INDICATOR_WIDTH = 24;

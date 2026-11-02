@@ -1,4 +1,4 @@
-import type { WeightReminder } from "@/features/settings/weight-reminder";
+import type { WeightReminder } from "./weight-reminder";
 
 // When to remind the user to weigh in next, or null when the reminder is off.
 // Today counts while the chosen time hasn't passed, unless they already

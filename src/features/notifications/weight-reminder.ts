@@ -3,7 +3,7 @@ import Storage from "expo-sqlite/kv-store";
 const KEY = "weight_reminder";
 
 // When the user wants to be reminded to weigh in, local time. Whether the
-// reminder is on is a notification preference (notification-preferences.ts).
+// reminder is on is a notification preference (preferences.ts).
 export type WeightReminder = {
   // 0 (Sunday) to 6 (Saturday), as Date.getDay() counts them.
   weekday: number;

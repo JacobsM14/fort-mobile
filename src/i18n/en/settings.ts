@@ -99,7 +99,7 @@ export const settingsTexts: Pick<
     sections: {
       user: "User",
       privacy: "Privacy policy and licenses",
-      permissions: "Notifications",
+      notifications: "Notifications",
       data: "Export / Import",
       preferences: "Preferences",
       exercises: "Manage exercises",

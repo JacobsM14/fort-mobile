@@ -1,23 +1,22 @@
 import { useEffect, useState } from "react";
 import { AppState } from "react-native";
 
-import { useRescheduleWeightReminder } from "@/features/body/notification";
-import { dismissWorkoutNotification } from "@/features/workouts/notification";
-
 import {
   ensureNotificationPermission,
   hasNotificationPermission,
-} from "./notification-permission";
+} from "./permission";
 import {
   loadNotificationPreferences,
   saveNotificationPreferences,
   type NotificationPreferences,
-} from "./notification-preferences";
+} from "./preferences";
 import {
   loadWeightReminder,
   saveWeightReminder,
   type WeightReminder,
 } from "./weight-reminder";
+import { useRescheduleWeightReminder } from "./weight-reminder-schedule";
+import { dismissWorkoutNotification } from "./workout-notification";
 
 // The notifications screen. Every change is saved and applied at once: the
 // weigh-in reminder is scheduled again, and the workout notification removed
