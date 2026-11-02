@@ -45,18 +45,28 @@ export function SelectField({
         accessibilityLabel={`${label}: ${valueLabel}`}
         accessibilityState={{ expanded: open }}
       >
-        <Text style={styles.value} numberOfLines={1}>
-          {valueLabel}
-        </Text>
-        <SymbolView
-          name={{
-            ios: "chevron.down",
-            android: "expand_more",
-            web: "expand_more",
-          }}
-          tintColor={open ? colors.primary : colors.disabled}
-          size={iconSizes.sm}
-        />
+        {({ pressed }) => (
+          <>
+            <Text style={styles.value} numberOfLines={1}>
+              {valueLabel}
+            </Text>
+            <SymbolView
+              name={{
+                ios: "chevron.down",
+                android: "expand_more",
+                web: "expand_more",
+              }}
+              tintColor={
+                open
+                  ? colors.primary
+                  : pressed
+                    ? colors.primary
+                    : colors.disabled
+              }
+              size={iconSizes.sm}
+            />
+          </>
+        )}
       </Pressable>
     </View>
   );
