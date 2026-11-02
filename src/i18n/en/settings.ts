@@ -19,6 +19,10 @@ export const settingsTexts: Pick<
       system: "System",
       es: "Español",
       en: "English",
+      ca: "Català",
+      eu: "Euskara",
+      fr: "Français",
+      pt: "Português",
     },
     units: {
       weight: "Weight",

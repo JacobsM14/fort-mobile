@@ -23,6 +23,10 @@ export const settingsTexts = {
       system: "Sistema",
       es: "Español",
       en: "English",
+      ca: "Català",
+      eu: "Euskara",
+      fr: "Français",
+      pt: "Português",
     } satisfies Record<LanguagePreference, string>,
     units: {
       weight: "Peso",

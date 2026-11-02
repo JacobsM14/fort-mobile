@@ -42,7 +42,15 @@ export type MuscleRole = (typeof MUSCLE_ROLES)[number];
 export const THEME_PREFERENCES = ["system", "light", "dark"] as const;
 export type ThemePreference = (typeof THEME_PREFERENCES)[number];
 
-export const LANGUAGE_PREFERENCES = ["system", "en", "es"] as const;
+export const LANGUAGE_PREFERENCES = [
+  "system",
+  "en",
+  "es",
+  "fr",
+  "ca",
+  "eu",
+  "pt",
+] as const;
 export type LanguagePreference = (typeof LANGUAGE_PREFERENCES)[number];
 
 export const GENDERS = ["female", "male", "other"] as const;
