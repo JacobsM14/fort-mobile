@@ -1,13 +1,14 @@
 import Storage from "expo-sqlite/kv-store";
+import { useEffect } from "react";
 import { PermissionsAndroid, Platform } from "react-native";
 
 const KEY = "notification_permission_asked";
 
-export function hasAskedNotificationPermission(): boolean {
+function hasAskedNotificationPermission(): boolean {
   return Storage.getItemSync(KEY) !== null;
 }
 
-export function markNotificationPermissionAsked() {
+function markNotificationPermissionAsked() {
   Storage.setItemSync(KEY, "1");
 }
 
@@ -60,4 +61,16 @@ export function ensureNotificationPermission(): Promise<boolean> {
     pending = null;
   });
   return pending;
+}
+
+// Asked the first time the app opens, so the dialog doesn't interrupt a
+// workout later. A denial isn't asked again: Android would stop showing the
+// dialog after two anyway, and the app works the same without it.
+export function useAskNotificationPermissionOnFirstOpen() {
+  useEffect(() => {
+    if (hasAskedNotificationPermission()) {
+      return;
+    }
+    void ensureNotificationPermission().then(markNotificationPermissionAsked);
+  }, []);
 }

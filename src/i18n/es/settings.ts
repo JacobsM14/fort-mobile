@@ -105,7 +105,7 @@ export const settingsTexts = {
     sections: {
       user: "Usuario",
       privacy: "Política de privacidad y licencias",
-      permissions: "Notificaciones",
+      notifications: "Notificaciones",
       data: "Exportar / Importar",
       preferences: "Preferencias",
       exercises: "Gestión de ejercicios",

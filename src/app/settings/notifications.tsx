@@ -17,11 +17,11 @@ import { BackHeader } from "@/components/ui/layout/back-header";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import { useNotificationSettings } from "@/features/settings/use-notification-settings";
+import { useNotificationSettings } from "@/features/notifications/use-notification-settings";
 
 import { fontsInstrument, fontSizes, spacing } from "@/constants/theme";
 
-export default function PermissionsScreen() {
+export default function NotificationsScreen() {
   const { t } = useTranslation();
   const { globalStyles } = useTheme();
   const styles = useStyles();
@@ -33,7 +33,7 @@ export default function PermissionsScreen() {
     <SafeAreaView style={globalStyles.screen} edges={["top"]}>
       <BackHeader
         backLabel={t.settings.title}
-        title={t.settings.sections.permissions}
+        title={t.settings.sections.notifications}
       />
       <ScrollView
         contentContainerStyle={styles.content}

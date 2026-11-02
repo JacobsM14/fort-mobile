@@ -37,8 +37,8 @@ const SECTIONS: Section[] = [
     },
   },
   {
-    key: "permissions",
-    href: "/settings/permissions",
+    key: "notifications",
+    href: "/settings/notifications",
     icon: {
       ios: "bell.badge",
       android: "notifications",
