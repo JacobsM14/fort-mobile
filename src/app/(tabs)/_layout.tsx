@@ -23,6 +23,7 @@ import { fontsInstrument, spacing } from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
+import { useWeightReminderSchedule } from "@/features/body/notification";
 import {
   useAskNotificationPermissionOnFirstOpen,
   useDismissEndedWorkoutNotification,
@@ -75,6 +76,7 @@ export default function TabsLayout() {
   // database is ready.
   useDismissEndedWorkoutNotification();
   useAskNotificationPermissionOnFirstOpen();
+  useWeightReminderSchedule();
 
   return (
     <Tabs

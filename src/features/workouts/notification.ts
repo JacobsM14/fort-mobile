@@ -4,16 +4,14 @@ import { useEffect } from "react";
 import { useTranslation } from "@/i18n";
 
 import {
+  ensureNotificationPermission,
   hasAskedNotificationPermission,
   markNotificationPermissionAsked,
 } from "@/features/settings/notification-permission";
+import { loadNotificationPreferences } from "@/features/settings/notification-preferences";
 import { useActiveWorkout } from "@/features/workouts/queries";
 
-import {
-  dismiss,
-  ensureNotificationPermission,
-  show,
-} from "@/modules/workout-notification";
+import { dismiss, show } from "@/modules/workout-notification";
 
 type UseWorkoutNotificationOptions = {
   workoutId: string;
@@ -39,7 +37,10 @@ export function useWorkoutNotification({
   const inProgress = endedAt === undefined;
 
   useEffect(() => {
+    const { enabled, workout } = loadNotificationPreferences();
     if (
+      !enabled ||
+      !workout ||
       startedAtMs === undefined ||
       exerciseName === undefined ||
       !inProgress
@@ -61,6 +62,11 @@ export function useWorkoutNotification({
     inProgress,
     channelName,
   ]);
+}
+
+// For when the user turns the notification off with a workout going on.
+export function dismissWorkoutNotification() {
+  dismiss();
 }
 
 // Asked the first time the app opens, so the dialog doesn't interrupt a

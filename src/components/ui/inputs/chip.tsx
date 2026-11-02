@@ -18,6 +18,8 @@ type ChipProps = {
   role?: "checkbox" | "radio";
   icon?: SymbolViewProps["name"];
   style?: StyleProp<ViewStyle>;
+  // For a label too short to be read aloud on its own, like a day's initial.
+  accessibilityLabel?: string;
 };
 
 export function Chip({
@@ -27,6 +29,7 @@ export function Chip({
   role = "checkbox",
   icon,
   style,
+  accessibilityLabel,
 }: ChipProps) {
   const { colors, globalStyles } = useTheme();
 
@@ -40,6 +43,7 @@ export function Chip({
       onPress={onPress}
       accessibilityRole={role}
       accessibilityState={{ checked: selected }}
+      accessibilityLabel={accessibilityLabel}
     >
       {icon !== undefined && (
         <SymbolView

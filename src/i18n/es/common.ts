@@ -7,6 +7,11 @@ export const commonTexts = {
   },
   notifications: {
     channel: "Entrenamiento en curso",
+    weightReminder: {
+      channel: "Recordatorio de pesaje",
+      title: "Hora de pesarte",
+      text: "Apunta tu peso para seguir tu progreso",
+    },
   },
   errors: {
     database:
