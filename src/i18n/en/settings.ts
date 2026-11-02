@@ -14,6 +14,7 @@ export const settingsTexts: Pick<
       dark: "Dark",
     },
     language: "Language",
+    closeLanguage: "Close languages",
     languageOptions: {
       system: "System",
       es: "Español",

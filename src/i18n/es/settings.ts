@@ -17,6 +17,7 @@ export const settingsTexts = {
       dark: "Oscuro",
     } satisfies Record<ThemePreference, string>,
     language: "Idioma",
+    closeLanguage: "Cerrar idiomas",
     // Each language in its own name, so it can be found from any of them.
     languageOptions: {
       system: "Sistema",
