@@ -56,7 +56,7 @@ export const progressTexts: Pick<Translations, "progress"> = {
     bmiNoReference:
       "La référence de l'OMS pour les moins de 19 ans dépend du sexe, donc seule la valeur est affichée.",
     bmiCategories: {
-      underweight: "Insuffisance pondérale",
+      underweight: "Maigreur",
       normal: "Poids normal",
       overweight: "Surpoids",
       obese: "Obésité",

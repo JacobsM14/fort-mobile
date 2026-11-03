@@ -42,7 +42,7 @@ export const profileTexts: Pick<Translations, "profile"> = {
         sporadic: "Occasionnel",
         regular: "Régulier",
         steady: "Assidu",
-        unstoppable: "Inarrêtable",
+        unstoppable: "Imparable",
       },
       levelSummary: (level, position, total) =>
         `Niveau ${level}, ${position} sur ${total}`,
@@ -52,7 +52,7 @@ export const profileTexts: Pick<Translations, "profile"> = {
         steady: (count) =>
           `Fais ${sessions(count)} par semaine pour atteindre le niveau Assidu.`,
         unstoppable: (count, weeks) =>
-          `Fais ${sessions(count)} par semaine pendant ${weeks} semaines d'affilée pour atteindre le niveau Inarrêtable.`,
+          `Fais ${sessions(count)} par semaine pendant ${weeks} semaines d'affilée pour atteindre le niveau Imparable.`,
       },
       topLevel: (count) =>
         `Tu es au sommet : garde le rythme de ${sessions(count)} par semaine pour y rester.`,

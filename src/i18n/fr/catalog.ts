@@ -5,7 +5,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     bench_press: {
       name: "Développé couché",
       description:
-        "Allongé sur le banc, descends la barre jusqu'à la poitrine et pousse jusqu'à tendre les bras.",
+        "Allonge-toi sur le banc, descends la barre jusqu'à la poitrine et pousse jusqu'à tendre les bras.",
     },
     incline_bench_press: {
       name: "Développé incliné à la barre",
@@ -20,7 +20,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     dumbbell_bench_press: {
       name: "Développé couché aux haltères",
       description:
-        "Allongé sur le banc, descends les haltères de chaque côté de la poitrine et pousse-les jusqu'à tendre les bras.",
+        "Allonge-toi sur le banc, descends les haltères de chaque côté de la poitrine et pousse-les jusqu'à tendre les bras.",
     },
     incline_dumbbell_press: {
       name: "Développé incliné aux haltères",
@@ -35,17 +35,17 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     floor_press: {
       name: "Développé au sol à la barre",
       description:
-        "Allongé au sol, descends la barre jusqu'à ce que tes coudes touchent le sol et pousse jusqu'à tendre les bras.",
+        "Allonge-toi au sol, descends la barre jusqu'à ce que tes coudes touchent le sol et pousse jusqu'à tendre les bras.",
     },
     dumbbell_floor_press: {
       name: "Développé au sol aux haltères",
       description:
-        "Allongé au sol, descends les haltères jusqu'à ce que tes coudes touchent le sol et pousse-les jusqu'à tendre les bras.",
+        "Allonge-toi au sol, descends les haltères jusqu'à ce que tes coudes touchent le sol et pousse-les jusqu'à tendre les bras.",
     },
     smith_machine_bench_press: {
       name: "Développé couché à la Smith machine",
       description:
-        "Allongé sous la barre guidée de la Smith machine, descends-la jusqu'à la poitrine et pousse jusqu'à tendre les bras.",
+        "Allonge-toi sous la barre guidée de la Smith machine, descends-la jusqu'à la poitrine et pousse jusqu'à tendre les bras.",
     },
     smith_machine_incline_press: {
       name: "Développé incliné à la Smith machine",
@@ -55,12 +55,12 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     machine_chest_press: {
       name: "Développé pectoraux à la machine",
       description:
-        "Assis, le dos contre le dossier, pousse les poignées vers l'avant jusqu'à tendre les bras et contrôle le retour.",
+        "Assieds-toi le dos contre le dossier, pousse les poignées vers l'avant jusqu'à tendre les bras et contrôle le retour.",
     },
     incline_machine_chest_press: {
       name: "Développé incliné à la machine",
       description:
-        "Assis sur la machine de développé incliné, pousse les poignées vers le haut et l'avant jusqu'à tendre les bras.",
+        "Assieds-toi sur la machine de développé incliné, pousse les poignées vers le haut et l'avant jusqu'à tendre les bras.",
     },
     cable_chest_press: {
       name: "Développé pectoraux à la poulie",
@@ -70,7 +70,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     dumbbell_fly: {
       name: "Écarté couché aux haltères",
       description:
-        "Allongé sur le banc, ouvre les bras, coudes légèrement fléchis, jusqu'à sentir l'étirement, puis referme-les au-dessus de la poitrine.",
+        "Allonge-toi sur le banc, ouvre les bras, coudes légèrement fléchis, jusqu'à sentir l'étirement, puis referme-les au-dessus de la poitrine.",
     },
     incline_dumbbell_fly: {
       name: "Écarté incliné aux haltères",
@@ -95,12 +95,12 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     pec_deck: {
       name: "Écarté à la machine (pec deck)",
       description:
-        "Assis, le dos contre le dossier, rapproche les bras devant la poitrine et reviens lentement à la position de départ.",
+        "Assieds-toi le dos contre le dossier, rapproche les bras devant la poitrine et reviens lentement à la position de départ.",
     },
     dumbbell_pullover: {
       name: "Pull-over à l'haltère",
       description:
-        "Allongé sur le banc, descends l'haltère derrière la tête, bras presque tendus, puis ramène-le au-dessus de la poitrine.",
+        "Allonge-toi sur le banc, descends l'haltère derrière la tête, bras presque tendus, puis ramène-le au-dessus de la poitrine.",
     },
     svend_press: {
       name: "Svend press",
@@ -180,7 +180,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     machine_dip: {
       name: "Dips à la machine",
       description:
-        "Assis sur la machine, pousse les poignées vers le bas jusqu'à tendre les coudes et contrôle le retour.",
+        "Assieds-toi sur la machine, pousse les poignées vers le bas jusqu'à tendre les coudes et contrôle le retour.",
     },
     band_chest_press: {
       name: "Développé pectoraux à l'élastique",
@@ -195,7 +195,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     seated_overhead_press: {
       name: "Développé militaire assis",
       description:
-        "Assis, le dos droit, pousse la barre depuis les épaules jusqu'à tendre les bras au-dessus de la tête.",
+        "Assieds-toi le dos droit, pousse la barre depuis les épaules jusqu'à tendre les bras au-dessus de la tête.",
     },
     push_press: {
       name: "Push press",
@@ -205,12 +205,12 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     behind_the_neck_press: {
       name: "Développé nuque",
       description:
-        "Assis, descends la barre derrière la tête jusqu'au niveau des oreilles et pousse jusqu'à tendre les bras ; demande une bonne mobilité des épaules.",
+        "Assieds-toi, descends la barre derrière la tête jusqu'au niveau des oreilles et pousse jusqu'à tendre les bras ; demande une bonne mobilité des épaules.",
     },
     dumbbell_shoulder_press: {
       name: "Développé épaules aux haltères",
       description:
-        "Assis, le dos en appui, pousse les haltères depuis les épaules jusqu'à tendre les bras au-dessus de la tête.",
+        "Assieds-toi le dos en appui, pousse les haltères depuis les épaules jusqu'à tendre les bras au-dessus de la tête.",
     },
     standing_dumbbell_press: {
       name: "Développé épaules debout aux haltères",
@@ -230,12 +230,12 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     machine_shoulder_press: {
       name: "Développé épaules à la machine",
       description:
-        "Assis, le dos en appui, pousse les poignées vers le haut jusqu'à tendre les bras et contrôle la descente.",
+        "Assieds-toi le dos en appui, pousse les poignées vers le haut jusqu'à tendre les bras et contrôle la descente.",
     },
     smith_machine_shoulder_press: {
       name: "Développé épaules à la Smith machine",
       description:
-        "Assis sous la barre guidée de la Smith machine, pousse-la depuis la hauteur du menton jusqu'à tendre les bras.",
+        "Assieds-toi sous la barre guidée de la Smith machine, pousse-la depuis la hauteur du menton jusqu'à tendre les bras.",
     },
     kettlebell_press: {
       name: "Développé à la kettlebell",
@@ -260,7 +260,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     seated_lateral_raise: {
       name: "Élévations latérales assis",
       description:
-        "Assis, le dos droit, monte les haltères sur les côtés jusqu'à hauteur d'épaules et redescends lentement.",
+        "Assieds-toi le dos droit, monte les haltères sur les côtés jusqu'à hauteur d'épaules et redescends lentement.",
     },
     cable_lateral_raise: {
       name: "Élévations latérales à la poulie",
@@ -270,7 +270,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     machine_lateral_raise: {
       name: "Élévations latérales à la machine",
       description:
-        "Assis sur la machine, monte les bras sur les côtés contre les coussinets jusqu'à hauteur d'épaules et reviens lentement.",
+        "Assieds-toi sur la machine, monte les bras sur les côtés contre les coussinets jusqu'à hauteur d'épaules et reviens lentement.",
     },
     band_lateral_raise: {
       name: "Élévations latérales à l'élastique",
@@ -325,7 +325,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     reverse_pec_deck: {
       name: "Oiseau à la machine (pec deck inversé)",
       description:
-        "Assis face au dossier, ouvre les bras vers l'arrière jusqu'à les aligner avec les épaules et reviens lentement.",
+        "Assieds-toi face au dossier, ouvre les bras vers l'arrière jusqu'à les aligner avec les épaules et reviens lentement.",
     },
     cable_rear_delt_fly: {
       name: "Oiseau à la poulie",
@@ -350,7 +350,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     dumbbell_external_rotation: {
       name: "Rotation externe à l'haltère",
       description:
-        "Allongé sur le côté, coude collé au corps et fléchi à 90°, fais pivoter l'avant-bras vers le haut sans décoller le coude.",
+        "Allonge-toi sur le côté, coude collé au corps et fléchi à 90°, fais pivoter l'avant-bras vers le haut sans décoller le coude.",
     },
     cable_external_rotation: {
       name: "Rotation externe à la poulie",
@@ -395,22 +395,22 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     pull_up: {
       name: "Tractions",
       description:
-        "Suspendu à la barre en pronation, mains un peu plus écartées que les épaules, monte jusqu'à passer le menton au-dessus de la barre et contrôle la descente.",
+        "Suspends-toi à la barre en pronation, mains un peu plus écartées que les épaules, monte jusqu'à passer le menton au-dessus de la barre et contrôle la descente.",
     },
     chin_up: {
       name: "Tractions en supination",
       description:
-        "Suspendu à la barre en supination, mains écartées de la largeur des épaules, monte jusqu'à passer le menton au-dessus de la barre et contrôle la descente.",
+        "Suspends-toi à la barre en supination, mains écartées de la largeur des épaules, monte jusqu'à passer le menton au-dessus de la barre et contrôle la descente.",
     },
     neutral_grip_pull_up: {
       name: "Tractions prise neutre",
       description:
-        "Suspendu à des poignées parallèles, paumes face à face, monte jusqu'à ce que le menton dépasse les poignées et contrôle la descente.",
+        "Suspends-toi à des poignées parallèles, paumes face à face, monte jusqu'à ce que le menton dépasse les poignées et contrôle la descente.",
     },
     wide_grip_pull_up: {
       name: "Tractions prise large",
       description:
-        "Suspendu à la barre, mains bien plus écartées que les épaules, monte en amenant la poitrine vers la barre et redescends lentement.",
+        "Suspends-toi à la barre, mains bien plus écartées que les épaules, monte en amenant la poitrine vers la barre et redescends lentement.",
     },
     weighted_pull_up: {
       name: "Tractions lestées",
@@ -440,22 +440,22 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     lat_pulldown: {
       name: "Tirage vertical",
       description:
-        "Assis face à la poulie haute, tire la barre large jusqu'au haut de la poitrine et contrôle la remontée.",
+        "Assieds-toi face à la poulie haute, tire la barre large jusqu'au haut de la poitrine et contrôle la remontée.",
     },
     neutral_grip_lat_pulldown: {
       name: "Tirage vertical prise neutre",
       description:
-        "Assis face à la poulie haute avec la poignée en V, tire la poignée jusqu'à la poitrine et remonte lentement.",
+        "Assieds-toi face à la poulie haute avec la poignée en V, tire la poignée jusqu'à la poitrine et remonte lentement.",
     },
     reverse_grip_lat_pulldown: {
       name: "Tirage vertical prise supination",
       description:
-        "Assis face à la poulie haute, paumes vers toi, tire la barre jusqu'au haut de la poitrine et contrôle la remontée.",
+        "Assieds-toi face à la poulie haute, paumes vers toi, tire la barre jusqu'au haut de la poitrine et contrôle la remontée.",
     },
     single_arm_lat_pulldown: {
       name: "Tirage vertical unilatéral",
       description:
-        "Assis face à la poulie haute, tire la poignée avec un seul bras jusqu'au côté de la poitrine et remonte lentement.",
+        "Assieds-toi face à la poulie haute, tire la poignée avec un seul bras jusqu'au côté de la poitrine et remonte lentement.",
     },
     straight_arm_pulldown: {
       name: "Pull-over à la poulie bras tendus",
@@ -465,7 +465,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     machine_pullover: {
       name: "Pull-over à la machine",
       description:
-        "Assis sur la machine, ramène les coudes du haut vers l'abdomen et contrôle le retour.",
+        "Assieds-toi sur la machine, ramène les coudes du haut vers l'abdomen et contrôle le retour.",
     },
     band_pulldown: {
       name: "Tirage vertical à l'élastique",
@@ -500,7 +500,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     seal_row: {
       name: "Seal row",
       description:
-        "Allongé sur le ventre sur un banc surélevé, tire la barre vers le buste et redescends-la jusqu'à tendre les bras.",
+        "Allonge-toi sur le ventre sur un banc surélevé, tire la barre vers le buste et redescends-la jusqu'à tendre les bras.",
     },
     dumbbell_row: {
       name: "Rowing unilatéral à l'haltère",
@@ -510,7 +510,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     chest_supported_dumbbell_row: {
       name: "Rowing aux haltères buste appuyé",
       description:
-        "Allongé sur le ventre sur un banc incliné, tire les haltères vers les côtes en serrant les omoplates.",
+        "Allonge-toi sur le ventre sur un banc incliné, tire les haltères vers les côtes en serrant les omoplates.",
     },
     bent_over_dumbbell_row: {
       name: "Rowing buste penché aux haltères",
@@ -525,37 +525,37 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     seated_cable_row: {
       name: "Tirage horizontal à la poulie",
       description:
-        "Assis, genoux légèrement fléchis, tire la poignée vers l'abdomen en gardant le dos droit et contrôle le retour.",
+        "Assieds-toi les genoux légèrement fléchis, tire la poignée vers l'abdomen en gardant le dos droit et contrôle le retour.",
     },
     wide_grip_seated_row: {
       name: "Tirage horizontal prise large",
       description:
-        "Assis face à la poulie basse avec une barre large, tire vers le milieu de la poitrine en ouvrant les coudes.",
+        "Assieds-toi face à la poulie basse avec une barre large, tire vers le milieu de la poitrine en ouvrant les coudes.",
     },
     single_arm_cable_row: {
       name: "Tirage horizontal unilatéral à la poulie",
       description:
-        "Assis ou debout face à la poulie, tire la poignée vers la hanche avec un seul bras et contrôle le retour.",
+        "Assieds-toi ou reste debout face à la poulie, tire la poignée vers la hanche avec un seul bras et contrôle le retour.",
     },
     machine_row: {
       name: "Rowing à la machine",
       description:
-        "Assis, poitrine en appui, tire les poignées vers le buste en serrant les omoplates et reviens lentement.",
+        "Assieds-toi la poitrine en appui, tire les poignées vers le buste en serrant les omoplates et reviens lentement.",
     },
     machine_high_row: {
       name: "Tirage haut à la machine",
       description:
-        "Assis sur la machine de tirage haut, tire les poignées vers le bas et l'arrière jusqu'à coller les coudes au buste.",
+        "Assieds-toi sur la machine de tirage haut, tire les poignées vers le bas et l'arrière jusqu'à coller les coudes au buste.",
     },
     inverted_row: {
       name: "Rowing inversé",
       description:
-        "Allongé sous une barre basse, corps gainé, tire ta poitrine vers la barre et contrôle la descente.",
+        "Allonge-toi sous une barre basse, corps gainé, tire ta poitrine vers la barre et contrôle la descente.",
     },
     suspension_row: {
       name: "Rowing en suspension (TRX)",
       description:
-        "Penché en arrière en tenant les poignées de suspension, tire ta poitrine vers tes mains et contrôle la descente.",
+        "Penche-toi en arrière en tenant les poignées de suspension, tire ta poitrine vers tes mains et contrôle la descente.",
     },
     kettlebell_row: {
       name: "Rowing à la kettlebell",
@@ -570,7 +570,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     band_row: {
       name: "Rowing à l'élastique",
       description:
-        "Assis, élastique passé autour des pieds, tire les extrémités vers l'abdomen en serrant les omoplates.",
+        "Assieds-toi avec l'élastique passé autour des pieds et tire les extrémités vers l'abdomen en serrant les omoplates.",
     },
     deadlift: {
       name: "Soulevé de terre",
@@ -635,12 +635,12 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     reverse_hyperextension: {
       name: "Hyperextension inversée",
       description:
-        "Allongé sur le ventre sur la machine, lève les jambes vers l'arrière jusqu'à les aligner avec le buste et contrôle la descente.",
+        "Allonge-toi sur le ventre sur la machine, lève les jambes vers l'arrière jusqu'à les aligner avec le buste et contrôle la descente.",
     },
     superman: {
       name: "Superman",
       description:
-        "Allongé sur le ventre, décolle en même temps les bras et les jambes du sol, tiens un instant et redescends.",
+        "Allonge-toi sur le ventre, décolle en même temps les bras et les jambes du sol, tiens un instant et redescends.",
     },
     bird_dog: {
       name: "Bird dog",
@@ -665,7 +665,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     machine_preacher_curl: {
       name: "Curl pupitre à la machine",
       description:
-        "Assis, bras en appui sur le coussin, fléchis les coudes pour monter les poignées et redescends lentement.",
+        "Assieds-toi les bras en appui sur le coussin, fléchis les coudes pour monter les poignées et redescends lentement.",
     },
     dumbbell_curl: {
       name: "Curl aux haltères",
@@ -675,7 +675,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     incline_dumbbell_curl: {
       name: "Curl incliné aux haltères",
       description:
-        "Assis sur un banc incliné, bras pendants, fléchis les coudes pour monter les haltères et redescends lentement.",
+        "Assieds-toi sur un banc incliné, bras pendants, fléchis les coudes pour monter les haltères et redescends lentement.",
     },
     hammer_curl: {
       name: "Curl marteau",
@@ -690,12 +690,12 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     concentration_curl: {
       name: "Curl concentré",
       description:
-        "Assis, coude en appui sur la cuisse, fléchis le bras pour monter l'haltère vers l'épaule et redescends lentement.",
+        "Assieds-toi le coude en appui sur la cuisse, fléchis le bras pour monter l'haltère vers l'épaule et redescends lentement.",
     },
     spider_curl: {
       name: "Spider curl",
       description:
-        "Allongé sur le ventre sur un banc incliné, bras pendants, monte les haltères en fléchissant les coudes.",
+        "Allonge-toi sur le ventre sur un banc incliné, bras pendants, monte les haltères en fléchissant les coudes.",
     },
     zottman_curl: {
       name: "Curl Zottman",
@@ -795,22 +795,22 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     skull_crusher: {
       name: "Barre au front",
       description:
-        "Allongé sur le banc, barre EZ au-dessus de la poitrine, fléchis les coudes pour la descendre vers le front et tends-les pour revenir.",
+        "Allonge-toi sur le banc, barre EZ au-dessus de la poitrine, fléchis les coudes pour la descendre vers le front et tends-les pour revenir.",
     },
     dumbbell_skull_crusher: {
       name: "Extension au front aux haltères",
       description:
-        "Allongé sur le banc, haltères au-dessus de la poitrine, fléchis les coudes pour les descendre vers la tête et tends-les pour revenir.",
+        "Allonge-toi sur le banc, haltères au-dessus de la poitrine, fléchis les coudes pour les descendre vers la tête et tends-les pour revenir.",
     },
     close_grip_bench_press: {
       name: "Développé couché prise serrée",
       description:
-        "Allongé sur le banc, descends la barre jusqu'à la poitrine, mains écartées de la largeur des épaules, et pousse jusqu'à tendre les coudes.",
+        "Allonge-toi sur le banc, descends la barre jusqu'à la poitrine, mains écartées de la largeur des épaules, et pousse jusqu'à tendre les coudes.",
     },
     jm_press: {
       name: "JM press",
       description:
-        "Allongé sur le banc, descends la barre vers le menton en fléchissant les coudes vers l'avant et repousse vers le haut.",
+        "Allonge-toi sur le banc, descends la barre vers le menton en fléchissant les coudes vers l'avant et repousse vers le haut.",
     },
     dumbbell_kickback: {
       name: "Kickback à l'haltère",
@@ -825,7 +825,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     machine_triceps_extension: {
       name: "Extension des triceps à la machine",
       description:
-        "Assis sur la machine, tends les coudes en poussant les poignées ou la barre vers le bas et reviens lentement.",
+        "Assieds-toi sur la machine, tends les coudes en poussant les poignées ou la barre vers le bas et reviens lentement.",
     },
     band_pushdown: {
       name: "Extension des triceps à l'élastique",
@@ -915,7 +915,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     leg_press: {
       name: "Presse à cuisses",
       description:
-        "Assis sur la presse, descends la plateforme en fléchissant les genoux et repousse-la jusqu'à presque tendre les jambes sans verrouiller les genoux.",
+        "Assieds-toi sur la presse, descends la plateforme en fléchissant les genoux et repousse-la jusqu'à presque tendre les jambes sans verrouiller les genoux.",
     },
     single_leg_press: {
       name: "Presse à cuisses unilatérale",
@@ -930,12 +930,12 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     leg_extension: {
       name: "Leg extension",
       description:
-        "Assis sur la machine, tends les genoux pour monter les jambes et redescends lentement.",
+        "Assieds-toi sur la machine, tends les genoux pour monter les jambes et redescends lentement.",
     },
     single_leg_extension: {
       name: "Leg extension unilatéral",
       description:
-        "Assis sur la machine, tends un genou pour monter la jambe et redescends lentement.",
+        "Assieds-toi sur la machine, tends un genou pour monter la jambe et redescends lentement.",
     },
     wall_sit: {
       name: "Chaise contre le mur",
@@ -1009,12 +1009,12 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     lying_leg_curl: {
       name: "Leg curl allongé",
       description:
-        "Allongé sur le ventre sur la machine, fléchis les genoux en amenant les talons vers les fessiers et contrôle la descente.",
+        "Allonge-toi sur le ventre sur la machine, fléchis les genoux en amenant les talons vers les fessiers et contrôle la descente.",
     },
     seated_leg_curl: {
       name: "Leg curl assis",
       description:
-        "Assis sur la machine, fléchis les genoux en amenant les talons vers le bas et l'arrière et reviens lentement.",
+        "Assieds-toi sur la machine, fléchis les genoux en amenant les talons vers le bas et l'arrière et reviens lentement.",
     },
     standing_leg_curl: {
       name: "Leg curl debout",
@@ -1029,7 +1029,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     stability_ball_leg_curl: {
       name: "Leg curl sur swiss ball",
       description:
-        "Allongé, talons sur le ballon et hanches levées, fléchis les genoux en rapprochant le ballon des fessiers.",
+        "Allonge-toi sur le dos, talons sur le ballon et hanches levées, fléchis les genoux en rapprochant le ballon des fessiers.",
     },
     glute_ham_raise: {
       name: "Glute-ham raise (GHR)",
@@ -1049,7 +1049,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     machine_hip_thrust: {
       name: "Hip thrust à la machine",
       description:
-        "Assis sur la machine, haut du dos en appui, pousse les hanches vers le haut contre la ceinture et contrôle la descente.",
+        "Assieds-toi sur la machine, haut du dos en appui, pousse les hanches vers le haut contre la ceinture et contrôle la descente.",
     },
     dumbbell_hip_thrust: {
       name: "Hip thrust à l'haltère",
@@ -1064,22 +1064,22 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     glute_bridge: {
       name: "Pont fessier",
       description:
-        "Allongé sur le dos, genoux fléchis, monte les hanches jusqu'à aligner buste et cuisses et contrôle la descente.",
+        "Allonge-toi sur le dos, genoux fléchis, monte les hanches jusqu'à aligner buste et cuisses et contrôle la descente.",
     },
     barbell_glute_bridge: {
       name: "Pont fessier à la barre",
       description:
-        "Allongé au sol, barre sur les hanches, monte les hanches jusqu'à aligner buste et cuisses et contrôle la descente.",
+        "Allonge-toi au sol, barre sur les hanches, monte les hanches jusqu'à aligner buste et cuisses et contrôle la descente.",
     },
     single_leg_glute_bridge: {
       name: "Pont fessier sur une jambe",
       description:
-        "Allongé sur le dos, une jambe tendue en l'air, monte les hanches en poussant sur le pied d'appui et contrôle la descente.",
+        "Allonge-toi sur le dos, une jambe tendue en l'air, monte les hanches en poussant sur le pied d'appui et contrôle la descente.",
     },
     frog_pump: {
       name: "Frog pump",
       description:
-        "Allongé, plantes des pieds jointes et genoux ouverts, monte les hanches en serrant les fessiers et redescends.",
+        "Allonge-toi sur le dos, plantes des pieds jointes et genoux ouverts, monte les hanches en serrant les fessiers et redescends.",
     },
     donkey_kick: {
       name: "Donkey kick",
@@ -1114,7 +1114,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     hip_abduction_machine: {
       name: "Abduction de hanche à la machine",
       description:
-        "Assis sur la machine, écarte les jambes contre les coussinets et reviens lentement.",
+        "Assieds-toi sur la machine, écarte les jambes contre les coussinets et reviens lentement.",
     },
     cable_hip_abduction: {
       name: "Abduction de hanche à la poulie",
@@ -1124,7 +1124,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     side_lying_hip_abduction: {
       name: "Abduction de hanche allongé",
       description:
-        "Allongé sur le côté, jambes tendues, monte la jambe du dessus sans tourner la hanche et contrôle la descente.",
+        "Allonge-toi sur le côté, jambes tendues, monte la jambe du dessus sans tourner la hanche et contrôle la descente.",
     },
     fire_hydrant: {
       name: "Fire hydrant",
@@ -1139,12 +1139,12 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     clamshell: {
       name: "Clamshell (coquillage)",
       description:
-        "Allongé sur le côté, genoux fléchis et élastique autour, ouvre le genou du dessus sans bouger le bassin.",
+        "Allonge-toi sur le côté, genoux fléchis et élastique autour, ouvre le genou du dessus sans bouger le bassin.",
     },
     hip_adduction_machine: {
       name: "Adduction de hanche à la machine",
       description:
-        "Assis sur la machine, rapproche les jambes contre les coussinets et reviens lentement.",
+        "Assieds-toi sur la machine, rapproche les jambes contre les coussinets et reviens lentement.",
     },
     cable_hip_adduction: {
       name: "Adduction de hanche à la poulie",
@@ -1164,12 +1164,12 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     seated_calf_raise: {
       name: "Extension des mollets assis",
       description:
-        "Assis, genoux sous les coussinets, monte sur la pointe des pieds et redescends jusqu'à étirer les mollets.",
+        "Assieds-toi les genoux sous les coussinets, monte sur la pointe des pieds et redescends jusqu'à étirer les mollets.",
     },
     leg_press_calf_raise: {
       name: "Extension des mollets à la presse",
       description:
-        "Assis sur la presse, l'avant des pieds au bord de la plateforme, pousse avec les chevilles et reviens lentement.",
+        "Assieds-toi sur la presse, l'avant des pieds au bord de la plateforme, pousse avec les chevilles et reviens lentement.",
     },
     smith_machine_calf_raise: {
       name: "Extension des mollets à la Smith machine",
@@ -1199,52 +1199,52 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     crunch: {
       name: "Crunch",
       description:
-        "Allongé, genoux fléchis, décolle les épaules du sol en contractant les abdominaux et contrôle la descente.",
+        "Allonge-toi sur le dos, genoux fléchis, décolle les épaules du sol en contractant les abdominaux et contrôle la descente.",
     },
     reverse_crunch: {
       name: "Crunch inversé",
       description:
-        "Allongé sur le dos, ramène les genoux vers la poitrine en décollant le bassin du sol et redescends lentement.",
+        "Allonge-toi sur le dos, ramène les genoux vers la poitrine en décollant le bassin du sol et redescends lentement.",
     },
     bicycle_crunch: {
       name: "Crunch vélo",
       description:
-        "Allongé, amène le coude vers le genou opposé en tendant l'autre jambe et alterne les côtés.",
+        "Allonge-toi sur le dos, amène le coude vers le genou opposé en tendant l'autre jambe et alterne les côtés.",
     },
     sit_up: {
       name: "Sit-up (relevé de buste)",
       description:
-        "Allongé, genoux fléchis, redresse le buste jusqu'à être assis et contrôle la descente.",
+        "Allonge-toi sur le dos, genoux fléchis, redresse le buste jusqu'à la position assise et contrôle la descente.",
     },
     decline_sit_up: {
       name: "Sit-up sur banc décliné",
       description:
-        "Allongé sur un banc décliné, pieds bloqués, redresse le buste jusqu'à être assis et contrôle la descente.",
+        "Allonge-toi sur un banc décliné, pieds bloqués, redresse le buste jusqu'à la position assise et contrôle la descente.",
     },
     v_up: {
       name: "V-up",
       description:
-        "Allongé, bras et jambes tendus, lève en même temps le buste et les jambes pour toucher tes pieds avec les mains.",
+        "Allonge-toi sur le dos, bras et jambes tendus, lève en même temps le buste et les jambes pour toucher tes pieds avec les mains.",
     },
     leg_raise: {
       name: "Relevé de jambes allongé",
       description:
-        "Allongé sur le dos, lève les jambes tendues jusqu'à la verticale et redescends sans les poser au sol.",
+        "Allonge-toi sur le dos, lève les jambes tendues jusqu'à la verticale et redescends sans les poser au sol.",
     },
     flutter_kicks: {
       name: "Battements de jambes (flutter kicks)",
       description:
-        "Allongé sur le dos, jambes levées, alterne de petits mouvements vers le haut et vers le bas, jambes tendues.",
+        "Allonge-toi sur le dos, jambes levées, alterne de petits mouvements vers le haut et vers le bas, jambes tendues.",
     },
     hanging_leg_raise: {
       name: "Relevé de jambes suspendu",
       description:
-        "Suspendu à la barre, lève les jambes tendues jusqu'à l'horizontale ou plus haut et redescends sans te balancer.",
+        "Suspends-toi à la barre, lève les jambes tendues jusqu'à l'horizontale ou plus haut et redescends sans te balancer.",
     },
     hanging_knee_raise: {
       name: "Relevé de genoux suspendu",
       description:
-        "Suspendu à la barre, monte les genoux vers la poitrine et redescends sans te balancer.",
+        "Suspends-toi à la barre, monte les genoux vers la poitrine et redescends sans te balancer.",
     },
     captains_chair_leg_raise: {
       name: "Relevé de jambes à la chaise romaine",
@@ -1254,7 +1254,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     toes_to_bar: {
       name: "Toes to bar",
       description:
-        "Suspendu à la barre, lève les jambes jusqu'à toucher la barre avec les pieds et contrôle la descente.",
+        "Suspends-toi à la barre, lève les jambes jusqu'à toucher la barre avec les pieds et contrôle la descente.",
     },
     cable_crunch: {
       name: "Crunch à la poulie",
@@ -1264,7 +1264,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     machine_crunch: {
       name: "Crunch à la machine",
       description:
-        "Assis sur la machine, enroule le buste contre la résistance en contractant les abdominaux et reviens lentement.",
+        "Assieds-toi sur la machine, enroule le buste contre la résistance en contractant les abdominaux et reviens lentement.",
     },
     ab_wheel_rollout: {
       name: "Roue abdominale",
@@ -1274,7 +1274,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     dragon_flag: {
       name: "Dragon flag",
       description:
-        "Allongé sur un banc en tenant son bord, lève le corps aligné en appui sur les épaules et contrôle la descente.",
+        "Allonge-toi sur un banc en tenant son bord, lève le corps aligné en appui sur les épaules et contrôle la descente.",
     },
     plank: {
       name: "Planche",
@@ -1289,7 +1289,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     hollow_hold: {
       name: "Hollow hold",
       description:
-        "Allongé, bras et jambes tendus, décolle les épaules et les jambes du sol en gardant le bas du dos plaqué au sol.",
+        "Allonge-toi sur le dos, bras et jambes tendus, décolle les épaules et les jambes du sol en gardant le bas du dos plaqué au sol.",
     },
     l_sit: {
       name: "L-sit",
@@ -1299,7 +1299,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     dead_bug: {
       name: "Dead bug",
       description:
-        "Allongé, bras et jambes levés, descends le bras et la jambe opposés sans décoller le bas du dos et alterne.",
+        "Allonge-toi sur le dos, bras et jambes levés, descends le bras et la jambe opposés sans décoller le bas du dos et alterne.",
     },
     mountain_climber: {
       name: "Mountain climbers",
@@ -1314,32 +1314,32 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     oblique_crunch: {
       name: "Crunch oblique",
       description:
-        "Allongé, genoux fléchis et basculés sur le côté, monte l'épaule vers la hanche en contractant les obliques.",
+        "Allonge-toi sur le dos, genoux fléchis et basculés sur le côté, monte l'épaule vers la hanche en contractant les obliques.",
     },
     heel_touch: {
       name: "Touchers de talons",
       description:
-        "Allongé, genoux fléchis, penche-toi sur le côté pour toucher ton talon avec la main et alterne.",
+        "Allonge-toi sur le dos, genoux fléchis, penche-toi sur le côté pour toucher ton talon avec la main et alterne.",
     },
     russian_twist: {
       name: "Russian twist",
       description:
-        "Assis, buste incliné vers l'arrière et pieds levés, fais pivoter le buste d'un côté à l'autre en amenant les mains près de la hanche.",
+        "Assieds-toi le buste incliné vers l'arrière et les pieds levés, fais pivoter le buste d'un côté à l'autre en amenant les mains près de la hanche.",
     },
     weighted_russian_twist: {
       name: "Russian twist lesté",
       description:
-        "Assis, buste incliné vers l'arrière et pieds levés, fais pivoter le buste d'un côté à l'autre en tenant un haltère à deux mains.",
+        "Assieds-toi le buste incliné vers l'arrière et les pieds levés, fais pivoter le buste d'un côté à l'autre en tenant un haltère à deux mains.",
     },
     windshield_wiper: {
       name: "Essuie-glaces au sol",
       description:
-        "Allongé, jambes levées, descends les deux jambes d'un côté puis de l'autre sans poser les pieds.",
+        "Allonge-toi sur le dos, jambes levées, descends les deux jambes d'un côté puis de l'autre sans poser les pieds.",
     },
     hanging_windshield_wiper: {
       name: "Essuie-glaces suspendu",
       description:
-        "Suspendu à la barre, jambes levées, balance-les d'un côté à l'autre en contrôlant le mouvement avec les abdominaux.",
+        "Suspends-toi à la barre, jambes levées, balance-les d'un côté à l'autre en contrôlant le mouvement avec les abdominaux.",
     },
     cable_woodchop: {
       name: "Bûcheron à la poulie (de haut en bas)",
@@ -1369,17 +1369,17 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     neck_flexion: {
       name: "Flexion du cou avec disque",
       description:
-        "Allongé sur le dos, tête dans le vide au bout du banc et disque léger sur le front, amène le menton vers la poitrine et reviens lentement.",
+        "Allonge-toi sur le dos, tête dans le vide au bout du banc et disque léger sur le front, amène le menton vers la poitrine et reviens lentement.",
     },
     neck_extension: {
       name: "Extension du cou avec disque",
       description:
-        "Allongé sur le ventre, tête dans le vide au bout du banc et disque léger tenu sur la nuque, monte la tête jusqu'à l'aligner avec le corps et redescends lentement.",
+        "Allonge-toi sur le ventre, tête dans le vide au bout du banc et disque léger tenu sur la nuque, monte la tête jusqu'à l'aligner avec le corps et redescends lentement.",
     },
     neck_lateral_flexion: {
       name: "Flexion latérale du cou",
       description:
-        "Allongé sur le côté, tête dans le vide au bout du banc et disque léger tenu près de la tempe, incline la tête vers l'épaule du dessus et redescends lentement.",
+        "Allonge-toi sur le côté, tête dans le vide au bout du banc et disque léger tenu près de la tempe, incline la tête vers l'épaule du dessus et redescends lentement.",
     },
     power_clean: {
       name: "Power clean",
@@ -1444,7 +1444,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     kettlebell_turkish_get_up: {
       name: "Turkish get-up",
       description:
-        "Allongé, la kettlebell tenue bras tendu au-dessus de l'épaule, relève-toi en plusieurs étapes sans baisser le bras, puis refais le chemin inverse.",
+        "Allonge-toi sur le dos, la kettlebell tenue bras tendu au-dessus de l'épaule, relève-toi en plusieurs étapes sans baisser le bras, puis refais le chemin inverse.",
     },
     medicine_ball_slam: {
       name: "Slam au médecine-ball",
@@ -1522,7 +1522,7 @@ export const catalogTexts: Pick<Translations, "exerciseCatalog"> = {
     },
     stationary_bike: {
       name: "Vélo d'appartement",
-      description: "Pédale assis, le dos droit, à un rythme régulier.",
+      description: "Assieds-toi le dos droit et pédale à un rythme régulier.",
     },
     assault_bike: {
       name: "Vélo à air (assault bike)",
