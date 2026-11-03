@@ -14,10 +14,15 @@ export const settingsTexts: Pick<
       dark: "Dark",
     },
     language: "Language",
+    closeLanguage: "Close languages",
     languageOptions: {
       system: "System",
       es: "Español",
       en: "English",
+      ca: "Català",
+      eu: "Euskara",
+      fr: "Français",
+      pt: "Português",
     },
     units: {
       weight: "Weight",

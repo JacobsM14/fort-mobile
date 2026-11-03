@@ -1,9 +1,12 @@
 import { SymbolView, type SymbolViewProps } from "expo-symbols";
+import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Chip } from "@/components/ui/inputs/chip";
+import { SelectField } from "@/components/ui/inputs/select-field";
 import { BackHeader } from "@/components/ui/layout/back-header";
+import { OptionsSheet } from "@/components/ui/overlays/options-sheet";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useUnits } from "@/hooks/use-units";
@@ -50,6 +53,12 @@ export default function PreferencesScreen() {
     setDistancePreference,
   } = useUnits();
   const styles = useStyles();
+  // The list is drawn here, outside the ScrollView, so it covers the screen.
+  const [languageOpen, setLanguageOpen] = useState(false);
+  const languageOptions = LANGUAGE_PREFERENCES.map((option) => ({
+    value: option,
+    label: t.settings.languageOptions[option],
+  }));
 
   // Unit symbols read the same in every language; only "system" is
   // translated.
@@ -67,21 +76,12 @@ export default function PreferencesScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <View style={globalStyles.formCage}>
-          <Text style={globalStyles.inputLabel}>{t.settings.language}</Text>
-          <View style={styles.options} accessibilityRole="radiogroup">
-            {LANGUAGE_PREFERENCES.map((option) => (
-              <Chip
-                key={option}
-                role="radio"
-                label={t.settings.languageOptions[option]}
-                selected={option === languagePreference}
-                onPress={() => setLanguagePreference(option)}
-                style={styles.option}
-              />
-            ))}
-          </View>
-        </View>
+        <SelectField
+          label={t.settings.language}
+          valueLabel={t.settings.languageOptions[languagePreference]}
+          open={languageOpen}
+          onPress={() => setLanguageOpen(true)}
+        />
         <View style={styles.units}>
           <View style={[globalStyles.formCage, styles.unitGroup]}>
             <Text style={globalStyles.inputLabel}>
@@ -173,6 +173,15 @@ export default function PreferencesScreen() {
           </View>
         </View>
       </ScrollView>
+      <OptionsSheet
+        visible={languageOpen}
+        title={t.settings.language}
+        closeLabel={t.settings.closeLanguage}
+        options={languageOptions}
+        value={languagePreference}
+        onSelect={setLanguagePreference}
+        onClose={() => setLanguageOpen(false)}
+      />
     </SafeAreaView>
   );
 }

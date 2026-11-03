@@ -2,10 +2,17 @@ import { useLocales } from "expo-localization";
 
 import { useLanguagePreference } from "@/hooks/use-language";
 
+import { ca } from "./ca";
 import { en } from "./en";
 import { es, type Translations } from "./es";
+import { eu } from "./eu";
+import { fr } from "./fr";
+import { pt } from "./pt";
 
-const translations = { es, en } satisfies Record<string, Translations>;
+const translations = { es, en, fr, ca, eu, pt } satisfies Record<
+  string,
+  Translations
+>;
 
 export type Language = keyof typeof translations;
 
