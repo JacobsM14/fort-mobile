@@ -98,7 +98,7 @@ export const settingsTexts: Pick<
       data: "Exportació / Importació",
       preferences: "Preferències",
       exercises: "Gestió d'exercicis",
-      about: "Quant a",
+      about: "Informació",
     },
     accent: {
       label: "Color",
