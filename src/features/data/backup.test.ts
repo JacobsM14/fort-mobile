@@ -330,7 +330,7 @@ describe("parseBackupFile", () => {
 describe("backupFileName", () => {
   it("is named after the local day, with no colons", () => {
     expect(backupFileName(new Date(2026, 9, 30, 23, 50))).toBe(
-      "fortapp-backup-2026-10-30.json",
+      "fort-backup-2026-10-30.json",
     );
   });
 });

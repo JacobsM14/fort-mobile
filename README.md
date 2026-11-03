@@ -1,4 +1,4 @@
-# FortApp
+# Fort
 
 App para registrar entrenamientos de gimnasio. Expo (SDK 57) + Expo Router.
 

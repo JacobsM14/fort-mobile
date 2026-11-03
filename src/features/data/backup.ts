@@ -166,7 +166,7 @@ export function summarizeBackup(file: BackupFile): BackupSummary {
 
 // The local day, with no colons: not every system accepts them in file names.
 export function backupFileName(date: Date) {
-  return `fortapp-backup-${toDateKey(date)}.json`;
+  return `fort-backup-${toDateKey(date)}.json`;
 }
 
 const isNullableString = orNull(isString);
