@@ -316,7 +316,7 @@ Besides that:
 
 © 2026 Marcel Esplugas. All rights reserved.
 
-Being able to read the source code doesn't grant any license to copy, modify or distribute it.
+Being able to read the source code doesn't grant any license to copy, modify or distribute it. See [LICENSE](LICENSE).
 
 ## Author
 
