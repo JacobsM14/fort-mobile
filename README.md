@@ -1,6 +1,6 @@
 # Fort
 
-App para registrar entrenamientos de gimnasio. Expo (SDK 57) + Expo Router.
+App para registrar entrenamientos de gimnasio. Expo (SDK 58) + Expo Router.
 
 ## Arrancar
 
@@ -25,16 +25,23 @@ Los tests de datos ejecutan las consultas reales sobre una base SQLite en memori
 src/
 ├── app/                # Rutas (Expo Router): solo pantallas y _layout.tsx
 ├── features/           # Una carpeta por área: datos del catálogo, tipos y acceso a datos
+│   ├── body/           # Peso corporal e IMC
+│   ├── data/           # Exportar e importar copias de seguridad
 │   ├── exercises/      # Catálogo de ejercicios y ejercicios propios
+│   ├── notifications/  # Aviso del entrenamiento y recordatorio de pesaje (Android)
+│   ├── profile/        # Perfil de atleta y calendario de actividad
+│   ├── progress/       # Gráficas de progreso por ejercicio
 │   ├── routines/       # Rutinas
 │   ├── workouts/       # Entrenamientos: series, descansos y cronómetros
-│   └── settings/       # Preferencias guardadas (tema, color)
+│   └── settings/       # Preferencias guardadas (tema, color, idioma, unidades, perfil)
 ├── components/         # UI reutilizable (ui/ genérica; exercises/, workout/… por área)
 ├── hooks/              # Hooks genéricos, no ligados a una feature
+├── i18n/               # Textos por idioma (es, en, ca, eu, fr, pt)
 ├── constants/          # Tema (colores, espaciados), enums y datos de la app
 ├── utils/              # Funciones puras (fechas, texto, listas, números, duraciones)
 ├── db/                 # Base de datos local: conexión, esquema y migraciones
 └── test/               # Utilidades para los tests
+modules/                # Módulos nativos propios, solo Android (notificaciones)
 assets/                 # Icono, splash (fuentes SVG en images/source/) y fotos de ejercicios
 ```
 
