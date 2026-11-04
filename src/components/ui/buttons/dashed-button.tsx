@@ -1,6 +1,9 @@
 import { SymbolView, type SymbolViewProps } from "expo-symbols";
 import { Pressable, StyleSheet, Text } from "react-native";
 
+import { useFocusedPress } from "@/hooks/use-focused-press";
+import { makeStyles, useTheme } from "@/hooks/use-theme";
+
 import {
   controlHeights,
   fontsInstrument,
@@ -9,8 +12,6 @@ import {
   radii,
   spacing,
 } from "@/constants/theme";
-import { useFocusedPress } from "@/hooks/use-focused-press";
-import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 // So a button beside it can match its height.
 export const DASHED_BUTTON_HEIGHT = 56;

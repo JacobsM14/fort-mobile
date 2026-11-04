@@ -4,9 +4,13 @@ import { Alert, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ExerciseForm } from "@/components/exercises/exercise-form";
+import { IconButton } from "@/components/ui/buttons/icon-button";
 import { BackHeader } from "@/components/ui/layout/back-header";
 import { ConfirmDialog } from "@/components/ui/overlays/confirm-dialog";
-import { IconButton } from "@/components/ui/buttons/icon-button";
+
+import { useTheme } from "@/hooks/use-theme";
+import { useTranslation } from "@/i18n";
+
 import {
   countRoutinesWithExercise,
   deleteExercise,
@@ -15,8 +19,6 @@ import {
   type ExerciseInput,
   type ExerciseSummary,
 } from "@/features/exercises/queries";
-import { useTheme } from "@/hooks/use-theme";
-import { useTranslation } from "@/i18n";
 
 export default function EditExerciseScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

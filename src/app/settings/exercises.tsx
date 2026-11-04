@@ -2,18 +2,21 @@ import { router } from "expo-router";
 import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { BackHeader } from "@/components/ui/layout/back-header";
-import { EmptyStateCard } from "@/components/ui/content/empty-state-card";
 import { IconButton } from "@/components/ui/buttons/icon-button";
+import { EmptyStateCard } from "@/components/ui/content/empty-state-card";
 import { NavCard } from "@/components/ui/content/nav-card";
-import { spacing } from "@/constants/theme";
+import { BackHeader } from "@/components/ui/layout/back-header";
+
+import { useTheme } from "@/hooks/use-theme";
+import { useTranslation } from "@/i18n";
+
 import {
   getExerciseDetail,
   getExerciseText,
 } from "@/features/exercises/catalog";
 import { useExerciseList } from "@/features/exercises/queries";
-import { useTheme } from "@/hooks/use-theme";
-import { useTranslation } from "@/i18n";
+
+import { spacing } from "@/constants/theme";
 
 export default function ExercisesScreen() {
   const { t, language } = useTranslation();

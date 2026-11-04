@@ -5,12 +5,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { DashedButton } from "@/components/ui/buttons/dashed-button";
 import { NavCard } from "@/components/ui/content/nav-card";
 import { NoContentBox } from "@/components/ui/content/no-content-box";
-import { spacing } from "@/constants/theme";
-import { getRoutineDetail } from "@/features/routines/detail";
-import { useRoutineList } from "@/features/routines/queries";
+
 import { NEW_ROUTINE_ID } from "@/hooks/use-routine-draft";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
+
+import { getRoutineDetail } from "@/features/routines/detail";
+import { useRoutineList } from "@/features/routines/queries";
+
+import { spacing } from "@/constants/theme";
 
 export default function RoutinesScreen() {
   const { t } = useTranslation();

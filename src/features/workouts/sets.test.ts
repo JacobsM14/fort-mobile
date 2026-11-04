@@ -2,9 +2,6 @@ import { describe, expect, it } from "@jest/globals";
 
 import { es } from "@/i18n/es";
 
-import type { Units } from "@/utils/units";
-
-import type { SetValues, WorkoutExercise, WorkoutSet } from "./queries";
 import {
   canCompleteSet,
   elapsedSeconds,
@@ -16,6 +13,9 @@ import {
   isStopwatchTracking,
   needsRestChoice,
 } from "./sets";
+
+import type { SetValues, WorkoutExercise, WorkoutSet } from "./queries";
+import type { Units } from "@/utils/units";
 
 const METRIC: Units = { weight: "kg", distance: "km" };
 

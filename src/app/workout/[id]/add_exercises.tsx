@@ -3,9 +3,11 @@ import { useState } from "react";
 import { Alert } from "react-native";
 
 import { ExercisePickerScreen } from "@/components/exercises/exercise-picker-screen";
-import { addWorkoutExercises, useWorkout } from "@/features/workouts/queries";
+
 import { useWorkoutSession } from "@/hooks/use-workout-session";
 import { useTranslation } from "@/i18n";
+
+import { addWorkoutExercises, useWorkout } from "@/features/workouts/queries";
 
 export default function AddExercisesScreen() {
   const { t } = useTranslation();

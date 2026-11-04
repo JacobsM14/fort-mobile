@@ -1,7 +1,8 @@
-import type { ReactNode } from "react";
 import { View, type StyleProp, type ViewStyle } from "react-native";
 
 import { useTheme } from "@/hooks/use-theme";
+
+import type { ReactNode } from "react";
 
 type CornerFrameProps = {
   children: ReactNode;

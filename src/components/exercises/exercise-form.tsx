@@ -3,23 +3,28 @@ import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { PrimaryButton } from "@/components/ui/buttons/primary-button";
 import { Chip } from "@/components/ui/inputs/chip";
+
+import { useTheme } from "@/hooks/use-theme";
+import { useTranslation } from "@/i18n";
+
 import {
   EQUIPMENT,
   TRACKING_TYPES,
   type Equipment,
   type TrackingType,
 } from "@/constants/enums";
+import { MUSCLE_IDS, type MuscleId } from "@/features/exercises/catalog";
+
+import type { ExerciseInput } from "@/features/exercises/queries";
+
+import { toggleItem } from "@/utils/array";
+
 import {
   fontsInstrument,
   fontSizes,
   lineHeights,
   spacing,
 } from "@/constants/theme";
-import { MUSCLE_IDS, type MuscleId } from "@/features/exercises/catalog";
-import type { ExerciseInput } from "@/features/exercises/queries";
-import { useTheme } from "@/hooks/use-theme";
-import { useTranslation } from "@/i18n";
-import { toggleItem } from "@/utils/array";
 
 type ExerciseFormProps = {
   // Values to start from when editing; a new exercise starts empty.

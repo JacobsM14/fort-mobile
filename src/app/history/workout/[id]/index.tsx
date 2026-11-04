@@ -4,6 +4,7 @@ import { Alert, StyleSheet, Text, View, type HostInstance } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { ExerciseInfoSheet } from "@/components/exercises/exercise-info-sheet";
 import {
   DASHED_BUTTON_HEIGHT,
   DashedButton,
@@ -16,7 +17,6 @@ import {
   type ActionMenuAnchor,
 } from "@/components/ui/overlays/action-menu";
 import { ConfirmDialog } from "@/components/ui/overlays/confirm-dialog";
-import { ExerciseInfoSheet } from "@/components/exercises/exercise-info-sheet";
 import { ExerciseTracker } from "@/components/workout/layout/exercise-tracker";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";

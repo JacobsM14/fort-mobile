@@ -1,5 +1,4 @@
 import { eq, getTableColumns, isNotNull, isNull, sql } from "drizzle-orm";
-import type { SQLiteColumn, SQLiteTable } from "drizzle-orm/sqlite-core";
 
 import { db } from "@/db/client";
 import {
@@ -16,9 +15,6 @@ import {
 import { isMuscleId } from "@/features/exercises/catalog";
 import { loadUserProfile } from "@/features/settings/user-profile";
 
-import { groupBy } from "@/utils/array";
-import { fromIso, fromIsoOrNull, toIso, toIsoOrNull } from "@/utils/date";
-
 import {
   BACKUP_FORMAT_VERSION,
   type BackupBodyWeight,
@@ -28,6 +24,11 @@ import {
   type BackupRoutine,
   type BackupWorkout,
 } from "./backup";
+
+import type { SQLiteColumn, SQLiteTable } from "drizzle-orm/sqlite-core";
+
+import { groupBy } from "@/utils/array";
+import { fromIso, fromIsoOrNull, toIso, toIsoOrNull } from "@/utils/date";
 
 // Maps an exercise id to its reference in the file.
 function makeExerciseRef(): (exerciseId: string) => BackupExerciseRef {

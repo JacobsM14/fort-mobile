@@ -65,7 +65,8 @@ export function trainedExercisesQuery(since: Date) {
     .orderBy(desc(max(workouts.startedAt)));
 }
 
-// The picker needs each exercise's name and type: the rows only have ids. Archived exercises have no summary and are left out.
+// The picker needs each exercise's name and type: the rows only have ids.
+// Archived exercises have no summary and are left out.
 export function toTrainedExercises(
   rows: readonly TrainedExerciseRow[],
   summaries: readonly ExerciseSummary[],
@@ -82,7 +83,8 @@ export function toTrainedExercises(
   });
 }
 
-// The exercises trained within the longest range of the filter, so none of them shows an empty chart.
+// The exercises trained within the longest range of the filter, so none of
+// them shows an empty chart.
 export function useTrainedExercises() {
   const since = rangeStart("1y", new Date());
 

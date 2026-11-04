@@ -6,9 +6,10 @@ import {
   type ViewStyle,
 } from "react-native";
 
-import { fontsInstrument, fontSizes, radii } from "@/constants/theme";
 import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles } from "@/hooks/use-theme";
+
+import { fontsInstrument, fontSizes, radii } from "@/constants/theme";
 
 type PrimaryButtonProps = {
   label: string;

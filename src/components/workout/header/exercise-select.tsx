@@ -3,7 +3,15 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 import { DashedButton } from "@/components/ui/buttons/dashed-button";
+
+import { useCloseOnBack } from "@/hooks/use-close-on-back";
+import { makeStyles, useTheme } from "@/hooks/use-theme";
+import { useTranslation } from "@/i18n";
+
+import { TRACKING_TYPE_ICONS } from "@/constants/tracking-type-icons";
+
 import type { TrackingType } from "@/constants/enums";
+
 import {
   controlHeights,
   fontsInstrument,
@@ -13,10 +21,6 @@ import {
   radii,
   spacing,
 } from "@/constants/theme";
-import { TRACKING_TYPE_ICONS } from "@/constants/tracking-type-icons";
-import { useCloseOnBack } from "@/hooks/use-close-on-back";
-import { makeStyles, useTheme } from "@/hooks/use-theme";
-import { useTranslation } from "@/i18n";
 
 const ANIMATION_MS = 150;
 

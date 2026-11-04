@@ -1,9 +1,10 @@
 import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { fontsInstrument, fontSizes, iconSizes } from "@/constants/theme";
 import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
+
+import { fontsInstrument, fontSizes, iconSizes } from "@/constants/theme";
 
 type NavCardProps = {
   title: string;

@@ -1,5 +1,6 @@
-import type { MuscleGroup } from "@/constants/enums";
 import { MUSCLES, type MuscleId } from "@/features/exercises/catalog";
+
+import type { MuscleGroup } from "@/constants/enums";
 import type { Translations } from "@/i18n/es";
 
 export function getRoutineMuscles(

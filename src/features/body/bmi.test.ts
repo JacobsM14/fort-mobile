@@ -1,5 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 
+import { EMPTY_PROFILE } from "@/features/settings/user-profile";
+
 import {
   ADULT_BMI_BANDS,
   ageInMonths,
@@ -17,7 +19,6 @@ import {
   BMI_FOR_AGE_FIRST_MONTH,
   BMI_FOR_AGE_LAST_MONTH,
 } from "./bmi-for-age";
-import { EMPTY_PROFILE } from "@/features/settings/user-profile";
 
 import type { BmiBand } from "./bmi";
 import type { BodyWeightEntry } from "./queries";

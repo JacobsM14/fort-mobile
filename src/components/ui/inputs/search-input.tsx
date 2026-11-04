@@ -1,6 +1,8 @@
 import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
 
+import { makeStyles, useTheme } from "@/hooks/use-theme";
+
 import {
   controlHeights,
   fontsInstrument,
@@ -9,7 +11,6 @@ import {
   radii,
   spacing,
 } from "@/constants/theme";
-import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 type SearchInputProps = {
   value: string;

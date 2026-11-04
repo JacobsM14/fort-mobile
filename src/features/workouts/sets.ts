@@ -1,3 +1,4 @@
+import type { SetValues, WorkoutExercise, WorkoutSet } from "./queries";
 import type { TrackingType } from "@/constants/enums";
 import type { Language } from "@/i18n";
 import type { Translations } from "@/i18n/es";
@@ -5,8 +6,6 @@ import type { Translations } from "@/i18n/es";
 import { formatDuration } from "@/utils/duration";
 import { formatDecimal } from "@/utils/number";
 import { distanceToUnit, weightToUnit, type Units } from "@/utils/units";
-
-import type { SetValues, WorkoutExercise, WorkoutSet } from "./queries";
 
 // Timed and distance exercises run from one big stopwatch; the others log
 // sets in rows.

@@ -12,6 +12,7 @@ import { useUserProfile } from "@/hooks/use-user-profile";
 import { useTranslation } from "@/i18n";
 
 import { GENDERS } from "@/constants/enums";
+
 import { spacing } from "@/constants/theme";
 
 export default function UserScreen() {

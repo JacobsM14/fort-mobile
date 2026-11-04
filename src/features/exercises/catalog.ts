@@ -1,7 +1,7 @@
+import { EXERCISE_IMAGES } from "./images";
+
 import type { Equipment, MuscleGroup, TrackingType } from "@/constants/enums";
 import type { Translations } from "@/i18n/es";
-
-import { EXERCISE_IMAGES } from "./images";
 
 // Catalog bundled with the app. Only stable data lives here (keys, equipment,
 // muscles); texts live in src/i18n, so a new language never touches the DB.

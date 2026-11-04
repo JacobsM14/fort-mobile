@@ -7,8 +7,9 @@ import {
   type ViewStyle,
 } from "react-native";
 
-import { iconSizes, spacing } from "@/constants/theme";
 import { useTheme } from "@/hooks/use-theme";
+
+import { iconSizes, spacing } from "@/constants/theme";
 
 type ChipProps = {
   label: string;

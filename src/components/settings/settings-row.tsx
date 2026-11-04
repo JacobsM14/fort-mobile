@@ -1,14 +1,15 @@
 import { SymbolView, type SymbolViewProps } from "expo-symbols";
 import { Pressable, StyleSheet, Text } from "react-native";
 
+import { useFocusedPress } from "@/hooks/use-focused-press";
+import { makeStyles, useTheme } from "@/hooks/use-theme";
+
 import {
   fontsInstrument,
   fontSizes,
   fontsJetBrainsMono,
   iconSizes,
 } from "@/constants/theme";
-import { useFocusedPress } from "@/hooks/use-focused-press";
-import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 type SettingsRowProps = {
   icon: SymbolViewProps["name"];

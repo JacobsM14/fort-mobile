@@ -25,10 +25,11 @@ import { createExercise } from "@/features/exercises/queries";
 import { syncCatalog } from "@/features/exercises/sync-catalog";
 import { createRoutine } from "@/features/routines/queries";
 
-import { toDateKey } from "@/utils/date";
+import { importBackup, readBackup } from "./queries";
 
 import type { BackupFile } from "./backup";
-import { importBackup, readBackup } from "./queries";
+
+import { toDateKey } from "@/utils/date";
 
 // The profile lives in expo-sqlite's key-value store, which needs the native app.
 jest.mock("@/features/settings/user-profile", () => ({

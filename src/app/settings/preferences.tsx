@@ -20,6 +20,7 @@ import {
   WEIGHT_UNIT_PREFERENCES,
   type ThemePreference,
 } from "@/constants/enums";
+
 import { accentColors, iconSizes, spacing } from "@/constants/theme";
 
 const THEME_ICONS: Record<ThemePreference, SymbolViewProps["name"]> = {

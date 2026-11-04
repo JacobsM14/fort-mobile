@@ -9,13 +9,6 @@ import * as SystemUI from "expo-system-ui";
 import { createContext, use, useEffect, useState, type ReactNode } from "react";
 import { Appearance, Platform, useColorScheme } from "react-native";
 
-import type { AccentColor, ThemePreference } from "@/constants/enums";
-import {
-  mapAccents,
-  themes,
-  type ColorScheme,
-  type Theme,
-} from "@/constants/theme";
 import {
   loadAccentColor,
   saveAccentColor,
@@ -24,6 +17,15 @@ import {
   loadThemePreference,
   saveThemePreference,
 } from "@/features/settings/theme-preference";
+
+import type { AccentColor, ThemePreference } from "@/constants/enums";
+
+import {
+  mapAccents,
+  themes,
+  type ColorScheme,
+  type Theme,
+} from "@/constants/theme";
 
 type ThemeContextValue = Theme & {
   preference: ThemePreference;

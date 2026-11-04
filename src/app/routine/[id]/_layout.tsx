@@ -1,10 +1,11 @@
 import { Stack, useLocalSearchParams } from "expo-router";
 
-import { useRoutine } from "@/features/routines/queries";
 import {
   NEW_ROUTINE_ID,
   RoutineDraftProvider,
 } from "@/hooks/use-routine-draft";
+
+import { useRoutine } from "@/features/routines/queries";
 
 // Stack inside the modal so new_exercises opens within it. The draft lives
 // as long as the modal, so dismissing it discards the changes.

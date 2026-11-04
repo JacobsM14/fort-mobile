@@ -1,0 +1,4 @@
+# Generated: drizzle-kit writes the migrations, and `npm run images` the map of
+# exercise images.
+src/db/migrations/
+src/features/exercises/images.ts

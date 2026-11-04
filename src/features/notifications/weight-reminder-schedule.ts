@@ -4,16 +4,15 @@ import { useEffect } from "react";
 import { useTranslation } from "@/i18n";
 
 import { bodyWeightOnDay, useBodyWeights } from "@/features/body/queries";
-
 import { cancel, schedule } from "@/modules/weight-reminder";
-
-import type { Translations } from "@/i18n/es";
-
-import { toDateKey } from "@/utils/date";
 
 import { nextWeightReminder } from "./next-weight-reminder";
 import { loadNotificationPreferences } from "./preferences";
 import { loadWeightReminder, type WeightReminder } from "./weight-reminder";
+
+import type { Translations } from "@/i18n/es";
+
+import { toDateKey } from "@/utils/date";
 
 type WeightReminderTexts = Translations["notifications"]["weightReminder"];
 

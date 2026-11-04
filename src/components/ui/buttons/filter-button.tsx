@@ -1,8 +1,9 @@
 import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet } from "react-native";
 
-import { controlHeights, iconSizes, radii, spacing } from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
+
+import { controlHeights, iconSizes, radii, spacing } from "@/constants/theme";
 
 type FilterButtonProps = {
   label: string;

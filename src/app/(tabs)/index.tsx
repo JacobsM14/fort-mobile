@@ -15,7 +15,12 @@ import { WeekDays } from "@/components/today/week-days";
 import { EmptyStateCard } from "@/components/ui/content/empty-state-card";
 import { NumberedSteps } from "@/components/ui/content/numbered-steps";
 import { ConfirmDialog } from "@/components/ui/overlays/confirm-dialog";
-import { spacing } from "@/constants/theme";
+
+import { useFocusedPress } from "@/hooks/use-focused-press";
+import { NEW_ROUTINE_ID } from "@/hooks/use-routine-draft";
+import { useTheme } from "@/hooks/use-theme";
+import { useTranslation } from "@/i18n";
+
 import { getRoutineMuscleGroups } from "@/features/routines/detail";
 import {
   useRoutineList,
@@ -26,11 +31,10 @@ import {
   startWorkout,
   useActiveWorkout,
 } from "@/features/workouts/queries";
-import { useFocusedPress } from "@/hooks/use-focused-press";
-import { NEW_ROUTINE_ID } from "@/hooks/use-routine-draft";
-import { useTheme } from "@/hooks/use-theme";
-import { useTranslation } from "@/i18n";
+
 import { formatDayHeader } from "@/utils/date";
+
+import { spacing } from "@/constants/theme";
 
 export default function TodayScreen() {
   const { t, language } = useTranslation();

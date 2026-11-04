@@ -2,13 +2,16 @@ import Constants from "expo-constants";
 import { Platform, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { BackHeader } from "@/components/ui/layout/back-header";
 import { SettingsRow } from "@/components/settings/settings-row";
-import { APP_NAME, CONTACT_EMAIL, STORE_URLS } from "@/constants/app-info";
-import { spacing } from "@/constants/theme";
+import { BackHeader } from "@/components/ui/layout/back-header";
+
 import { useOpenUrl } from "@/hooks/use-open-url";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
+
+import { APP_NAME, CONTACT_EMAIL, STORE_URLS } from "@/constants/app-info";
+
+import { spacing } from "@/constants/theme";
 
 const storeUrl =
   Platform.OS === "ios" || Platform.OS === "android"

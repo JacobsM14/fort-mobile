@@ -1,17 +1,19 @@
 import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { useFocusedPress } from "@/hooks/use-focused-press";
+import { makeStyles, useTheme } from "@/hooks/use-theme";
+import { useTranslation } from "@/i18n";
+
 import { TRACKING_TYPES, type TrackingType } from "@/constants/enums";
+import { TRACKING_TYPE_ICONS } from "@/constants/tracking-type-icons";
+
 import {
   fontsInstrument,
   fontSizes,
   iconSizes,
   spacing,
 } from "@/constants/theme";
-import { TRACKING_TYPE_ICONS } from "@/constants/tracking-type-icons";
-import { useFocusedPress } from "@/hooks/use-focused-press";
-import { makeStyles, useTheme } from "@/hooks/use-theme";
-import { useTranslation } from "@/i18n";
 
 type StartRoutineRowProps = {
   name: string;

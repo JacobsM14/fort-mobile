@@ -4,12 +4,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ExerciseForm } from "@/components/exercises/exercise-form";
 import { BackHeader } from "@/components/ui/layout/back-header";
+
+import { useTheme } from "@/hooks/use-theme";
+import { useTranslation } from "@/i18n";
+
 import {
   createExercise,
   type ExerciseInput,
 } from "@/features/exercises/queries";
-import { useTheme } from "@/hooks/use-theme";
-import { useTranslation } from "@/i18n";
 
 type CreateExerciseScreenProps = {
   backLabel: string;

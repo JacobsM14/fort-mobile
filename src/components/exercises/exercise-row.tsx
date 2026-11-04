@@ -3,15 +3,19 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { IconButton } from "@/components/ui/buttons/icon-button";
 import { CheckBox } from "@/components/ui/inputs/check-box";
+
+import { makeStyles, useTheme } from "@/hooks/use-theme";
+
 import { TRACKING_TYPE_ICONS } from "@/constants/tracking-type-icons";
+
 import type { TrackingType } from "@/constants/enums";
+
 import {
   fontsInstrument,
   fontSizes,
   iconSizes,
   spacing,
 } from "@/constants/theme";
-import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 type ExerciseRowProps = {
   name: string;

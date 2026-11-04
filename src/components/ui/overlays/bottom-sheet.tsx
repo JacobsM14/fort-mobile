@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import {
   PanResponder,
   StyleSheet,
@@ -17,9 +16,13 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scheduleOnRN } from "react-native-worklets";
 
 import { Backdrop } from "@/components/ui/overlays/backdrop";
-import { radii, spacing } from "@/constants/theme";
+
 import { useCloseOnBack } from "@/hooks/use-close-on-back";
 import { makeStyles } from "@/hooks/use-theme";
+
+import type { ReactNode } from "react";
+
+import { radii, spacing } from "@/constants/theme";
 
 const CLOSE_DISTANCE = 100;
 const CLOSE_VELOCITY = 1;

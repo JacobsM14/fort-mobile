@@ -1,7 +1,6 @@
 import { and, countDistinct, eq, inArray, isNull, sql } from "drizzle-orm";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 
-import type { Equipment, MuscleRole, TrackingType } from "@/constants/enums";
 import { db } from "@/db/client";
 import { newId } from "@/db/id";
 import {
@@ -13,6 +12,8 @@ import {
 } from "@/db/schema";
 
 import { isMuscleId, type MuscleId } from "./catalog";
+
+import type { Equipment, MuscleRole, TrackingType } from "@/constants/enums";
 
 export type ExerciseSummary = {
   id: string;

@@ -1,4 +1,5 @@
 import { CreateExerciseScreen } from "@/components/exercises/create-exercise-screen";
+
 import { useTranslation } from "@/i18n";
 
 export default function NewExerciseScreen() {

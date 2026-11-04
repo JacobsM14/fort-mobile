@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 
+import { makeStyles, useTheme } from "@/hooks/use-theme";
+
 import {
   fontsInstrument,
   fontsJetBrainsMono,
@@ -7,7 +9,6 @@ import {
   lineHeights,
   spacing,
 } from "@/constants/theme";
-import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 type NumberedStepsProps = {
   title: string;

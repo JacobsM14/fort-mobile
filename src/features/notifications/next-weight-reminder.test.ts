@@ -1,8 +1,8 @@
 import { describe, expect, it } from "@jest/globals";
 
-import type { WeightReminder } from "./weight-reminder";
-
 import { nextWeightReminder } from "./next-weight-reminder";
+
+import type { WeightReminder } from "./weight-reminder";
 
 const SUNDAY = 0;
 const MONDAY = 1;

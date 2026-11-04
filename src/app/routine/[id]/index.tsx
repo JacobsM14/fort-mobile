@@ -24,7 +24,11 @@ import { PrimaryButton } from "@/components/ui/buttons/primary-button";
 import { NoContentBox } from "@/components/ui/content/no-content-box";
 import { BackHeader } from "@/components/ui/layout/back-header";
 import { ConfirmDialog } from "@/components/ui/overlays/confirm-dialog";
-import { spacing } from "@/constants/theme";
+
+import { NEW_ROUTINE_ID, useRoutineDraft } from "@/hooks/use-routine-draft";
+import { useTheme } from "@/hooks/use-theme";
+import { useTranslation } from "@/i18n";
+
 import {
   getExerciseDetail,
   getExerciseInfo,
@@ -38,9 +42,8 @@ import {
   ROUTINE_NAME_MAX_LENGTH,
   updateRoutine,
 } from "@/features/routines/queries";
-import { NEW_ROUTINE_ID, useRoutineDraft } from "@/hooks/use-routine-draft";
-import { useTheme } from "@/hooks/use-theme";
-import { useTranslation } from "@/i18n";
+
+import { spacing } from "@/constants/theme";
 
 const TRANSITION_MS = 300;
 const LAYOUT_TRANSITION = LinearTransition.duration(TRANSITION_MS).easing(

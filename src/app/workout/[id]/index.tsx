@@ -31,8 +31,8 @@ import { useWorkoutSession } from "@/hooks/use-workout-session";
 import { useTranslation } from "@/i18n";
 
 import { getExerciseInfo } from "@/features/exercises/catalog";
-import { useWorkoutEntries } from "@/features/workouts/entries";
 import { useWorkoutNotification } from "@/features/notifications/workout-notification";
+import { useWorkoutEntries } from "@/features/workouts/entries";
 import {
   deleteSet,
   discardWorkout,

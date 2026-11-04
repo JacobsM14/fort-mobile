@@ -1,6 +1,12 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { ElapsedTime } from "@/components/workout/shared/elapsed-time";
+
+import { makeStyles } from "@/hooks/use-theme";
+import { useTranslation } from "@/i18n";
+
+import { formatDuration } from "@/utils/duration";
+
 import {
   fontsInstrument,
   fontSizes,
@@ -8,9 +14,6 @@ import {
   radii,
   spacing,
 } from "@/constants/theme";
-import { makeStyles } from "@/hooks/use-theme";
-import { useTranslation } from "@/i18n";
-import { formatDuration } from "@/utils/duration";
 
 type RestDividerProps =
   { startedAt: Date; onStop: () => void } | { seconds: number };

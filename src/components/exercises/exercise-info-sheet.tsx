@@ -6,6 +6,13 @@ import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { ImagePlaceholder } from "@/components/ui/content/image-placeholder";
 import { CornerFrame } from "@/components/ui/layout/corner-frame";
 import { Backdrop } from "@/components/ui/overlays/backdrop";
+
+import { useCloseOnBack } from "@/hooks/use-close-on-back";
+import { makeStyles } from "@/hooks/use-theme";
+import { useTranslation } from "@/i18n";
+
+import type { ExerciseInfo } from "@/features/exercises/catalog";
+
 import {
   fontsInstrument,
   fontSizes,
@@ -13,10 +20,6 @@ import {
   radii,
   spacing,
 } from "@/constants/theme";
-import type { ExerciseInfo } from "@/features/exercises/catalog";
-import { useCloseOnBack } from "@/hooks/use-close-on-back";
-import { makeStyles } from "@/hooks/use-theme";
-import { useTranslation } from "@/i18n";
 
 type ExerciseInfoSheetProps = {
   exercise: ExerciseInfo | null;

@@ -3,12 +3,16 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { PrimaryButton } from "@/components/ui/buttons/primary-button";
 import { Chip } from "@/components/ui/inputs/chip";
 import { BottomSheet } from "@/components/ui/overlays/bottom-sheet";
-import { TRACKING_TYPES, type TrackingType } from "@/constants/enums";
-import { fontsInstrument, fontSizes, spacing } from "@/constants/theme";
-import { TRACKING_TYPE_ICONS } from "@/constants/tracking-type-icons";
-import type { MuscleId } from "@/features/exercises/catalog";
+
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
+
+import { TRACKING_TYPES, type TrackingType } from "@/constants/enums";
+import { TRACKING_TYPE_ICONS } from "@/constants/tracking-type-icons";
+
+import type { MuscleId } from "@/features/exercises/catalog";
+
+import { fontsInstrument, fontSizes, spacing } from "@/constants/theme";
 
 type ExerciseFiltersSheetProps = {
   visible: boolean;

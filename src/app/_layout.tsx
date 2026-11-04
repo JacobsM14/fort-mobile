@@ -15,12 +15,13 @@ import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import { useDatabase } from "@/db/use-database";
 import { LanguageProvider } from "@/hooks/use-language";
+import { makeStyles, ThemeProvider, useTheme } from "@/hooks/use-theme";
 import { UnitsProvider } from "@/hooks/use-units";
 import { UserProfileProvider } from "@/hooks/use-user-profile";
-import { makeStyles, ThemeProvider, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
+
+import { useDatabase } from "@/db/use-database";
 
 SplashScreen.preventAutoHideAsync();
 

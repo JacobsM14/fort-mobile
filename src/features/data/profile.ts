@@ -1,6 +1,5 @@
-import type { UserProfile } from "@/features/settings/user-profile";
-
 import type { BackupProfile } from "./backup";
+import type { UserProfile } from "@/features/settings/user-profile";
 
 // What to write into the profile of this device from the one in a file: only
 // the fields still empty here. What the user typed on this device is never

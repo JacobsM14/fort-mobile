@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import { fontsInstrument, radii, spacing } from "@/constants/theme";
 import { makeStyles } from "@/hooks/use-theme";
+
+import { fontsInstrument, radii, spacing } from "@/constants/theme";
 
 type NoContentBoxProps = {
   label: string;

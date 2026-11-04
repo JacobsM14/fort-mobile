@@ -2,6 +2,7 @@ import { SymbolView, type SymbolViewProps } from "expo-symbols";
 import { StyleSheet, Text, View } from "react-native";
 
 import { PrimaryButton } from "@/components/ui/buttons/primary-button";
+
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 import {

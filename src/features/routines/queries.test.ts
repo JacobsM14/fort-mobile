@@ -3,7 +3,6 @@ import { asc, eq } from "drizzle-orm";
 
 import { db } from "@/db/client";
 import { exercises, routineExercises, routines, workouts } from "@/db/schema";
-import type { ExerciseSummary } from "@/features/exercises/queries";
 import { syncCatalog } from "@/features/exercises/sync-catalog";
 
 import {
@@ -13,6 +12,8 @@ import {
   toRoutineSummaries,
   updateRoutine,
 } from "./queries";
+
+import type { ExerciseSummary } from "@/features/exercises/queries";
 
 function catalogId(key: string) {
   const [row] = db

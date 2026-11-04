@@ -1,7 +1,9 @@
 import { Text, type TextProps } from "react-native";
 
-import { elapsedSeconds } from "@/features/workouts/sets";
 import { useNow } from "@/hooks/use-now";
+
+import { elapsedSeconds } from "@/features/workouts/sets";
+
 import { formatDuration } from "@/utils/duration";
 
 type ElapsedTimeProps = Omit<TextProps, "children"> & {

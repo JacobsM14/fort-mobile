@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
+import { TRACKING_TYPE_ICONS } from "@/constants/tracking-type-icons";
 import { getExerciseText } from "@/features/exercises/catalog";
 import {
   averageSessions,
@@ -31,7 +32,6 @@ import {
   radii,
   spacing,
 } from "@/constants/theme";
-import { TRACKING_TYPE_ICONS } from "@/constants/tracking-type-icons";
 
 const EXERCISE_BAR_HEIGHT = 6;
 const PILL_HEIGHT = 8;

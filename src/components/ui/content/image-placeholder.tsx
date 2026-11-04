@@ -1,7 +1,8 @@
 import { StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 
-import { spacing } from "@/constants/theme";
 import { makeStyles } from "@/hooks/use-theme";
+
+import { spacing } from "@/constants/theme";
 
 type ImagePlaceholderProps = {
   aspectRatio: number;

@@ -1,15 +1,16 @@
 import { asc, desc, eq, inArray } from "drizzle-orm";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 
-import type { TrackingType } from "@/constants/enums";
 import { db } from "@/db/client";
 import { newId } from "@/db/id";
 import { routineExercises, routines } from "@/db/schema";
-import type { MuscleId } from "@/features/exercises/catalog";
 import {
   useExerciseList,
   type ExerciseSummary,
 } from "@/features/exercises/queries";
+
+import type { TrackingType } from "@/constants/enums";
+import type { MuscleId } from "@/features/exercises/catalog";
 
 // Long enough for "Pierna y glúteos · semana 3", short enough to fit the
 // routine cards on Today and in Progress.

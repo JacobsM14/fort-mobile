@@ -11,8 +11,10 @@ import { PrimaryButton } from "@/components/ui/buttons/primary-button";
 import { NoContentBox } from "@/components/ui/content/no-content-box";
 import { SearchInput } from "@/components/ui/inputs/search-input";
 import { BackHeader } from "@/components/ui/layout/back-header";
-import type { TrackingType } from "@/constants/enums";
-import { spacing } from "@/constants/theme";
+
+import { useTheme } from "@/hooks/use-theme";
+import { useTranslation } from "@/i18n";
+
 import {
   getExerciseDetail,
   getExerciseInfo,
@@ -25,10 +27,13 @@ import {
   useExerciseList,
   type ExerciseSummary,
 } from "@/features/exercises/queries";
-import { useTheme } from "@/hooks/use-theme";
-import { useTranslation } from "@/i18n";
+
+import type { TrackingType } from "@/constants/enums";
+
 import { toggleItem } from "@/utils/array";
 import { normalizeForSearch } from "@/utils/text";
+
+import { spacing } from "@/constants/theme";
 
 const PAGE_SIZE = 10;
 

@@ -19,13 +19,14 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { fontsInstrument, spacing } from "@/constants/theme";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 import { useAskNotificationPermissionOnFirstOpen } from "@/features/notifications/permission";
 import { useWeightReminderSchedule } from "@/features/notifications/weight-reminder-schedule";
 import { useDismissEndedWorkoutNotification } from "@/features/notifications/workout-notification";
+
+import { fontsInstrument, spacing } from "@/constants/theme";
 
 const TAB_BAR_HEIGHT = 70;
 const INDICATOR_WIDTH = 24;

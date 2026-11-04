@@ -1,6 +1,5 @@
-import type { SymbolViewProps } from "expo-symbols";
-
 import type { TrackingType } from "@/constants/enums";
+import type { SymbolViewProps } from "expo-symbols";
 
 export const TRACKING_TYPE_ICONS: Record<
   TrackingType,

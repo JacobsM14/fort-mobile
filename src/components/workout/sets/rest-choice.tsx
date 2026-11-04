@@ -1,8 +1,9 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { spacing } from "@/constants/theme";
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
+
+import { spacing } from "@/constants/theme";
 
 type RestChoiceProps = {
   onTimed: () => void;

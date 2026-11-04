@@ -43,4 +43,6 @@ ${entries.join("\n")}
 `;
 
 writeFileSync(outFile, source);
-console.log(`${imagesByKey.size} exercises with images -> ${path.relative(root, outFile)}`);
+console.log(
+  `${imagesByKey.size} exercises with images -> ${path.relative(root, outFile)}`,
+);

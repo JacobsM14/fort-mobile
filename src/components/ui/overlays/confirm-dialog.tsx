@@ -3,6 +3,11 @@ import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 import { CornerFrame } from "@/components/ui/layout/corner-frame";
 import { Backdrop } from "@/components/ui/overlays/backdrop";
+
+import { useCloseOnBack } from "@/hooks/use-close-on-back";
+import { useFocusedPress } from "@/hooks/use-focused-press";
+import { makeStyles, useTheme } from "@/hooks/use-theme";
+
 import {
   fontsInstrument,
   fontSizes,
@@ -10,9 +15,6 @@ import {
   radii,
   spacing,
 } from "@/constants/theme";
-import { useCloseOnBack } from "@/hooks/use-close-on-back";
-import { useFocusedPress } from "@/hooks/use-focused-press";
-import { makeStyles, useTheme } from "@/hooks/use-theme";
 
 type ConfirmDialogProps = {
   visible: boolean;

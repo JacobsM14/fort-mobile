@@ -1,10 +1,11 @@
-import type { SymbolViewProps } from "expo-symbols";
 import { StyleSheet, Text, View } from "react-native";
 
 import { IconButton } from "@/components/ui/buttons/icon-button";
 
 import { makeStyles } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
+
+import type { SymbolViewProps } from "expo-symbols";
 
 import { wrap } from "@/utils/number";
 

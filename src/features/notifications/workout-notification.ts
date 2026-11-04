@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useTranslation } from "@/i18n";
 
 import { useActiveWorkout } from "@/features/workouts/queries";
-
 import { dismiss, show } from "@/modules/workout-notification";
 
 import { loadNotificationPreferences } from "./preferences";

@@ -1,11 +1,13 @@
 import { router } from "expo-router";
 import { SymbolView } from "expo-symbols";
-import type { ReactNode } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { iconSizes, spacing } from "@/constants/theme";
 import { useFocusedPress } from "@/hooks/use-focused-press";
 import { useTheme } from "@/hooks/use-theme";
+
+import type { ReactNode } from "react";
+
+import { iconSizes, spacing } from "@/constants/theme";
 
 type BackHeaderProps = {
   backLabel: string;
