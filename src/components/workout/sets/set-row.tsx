@@ -116,7 +116,11 @@ export function SetHeader({ trackingType, showPrevious }: SetHeaderProps) {
         {t.workout.set}
       </Text>
       {showPrevious && (
-        <Text style={[globalStyles.inputLabel, styles.column, styles.label]}>
+        <Text
+          style={[globalStyles.inputLabel, styles.column, styles.label]}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+        >
           {t.workout.previous}
         </Text>
       )}

@@ -135,6 +135,8 @@ function StepButton({ direction, label, name, onPress }: StepButtonProps) {
             styles.stepLabel,
             isNext ? styles.stepLabelNext : styles.alignRight,
           ]}
+          numberOfLines={1}
+          adjustsFontSizeToFit
         >
           {label}
         </Text>

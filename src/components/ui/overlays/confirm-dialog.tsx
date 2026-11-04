@@ -135,13 +135,18 @@ const useStyles = makeStyles(({ colors }) =>
       fontFamily: fontsInstrument.regular,
       color: colors.disabled,
     },
+    // Side by side while both labels fit in half the row; otherwise the buttons
+    // stack, confirm on top. A button never gets narrower than its label, so
+    // long labels in some languages don't break mid-word.
     actions: {
       flexDirection: "row",
+      flexWrap: "wrap-reverse",
       gap: spacing.sm,
       marginTop: spacing.xs,
     },
     button: {
-      flex: 1,
+      flexGrow: 1,
+      minWidth: "40%",
       minHeight: 56,
       alignItems: "center",
       justifyContent: "center",
