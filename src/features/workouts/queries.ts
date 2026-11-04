@@ -312,9 +312,12 @@ export function addWorkoutExercises(
   });
 }
 
-export function addSet(workoutExerciseId: string) {
+export function addSet(
+  workoutExerciseId: string,
+  overrides: Partial<SetValues> = {},
+) {
   db.transaction((tx) => {
-    appendSet(tx, workoutExerciseId);
+    appendSet(tx, workoutExerciseId, overrides);
   });
 }
 
@@ -795,13 +798,20 @@ export function useTrainedDays(from: Date, to: Date) {
 }
 
 // The sets done for an exercise the last time it was in another finished
-// workout, in order. Finishing removes exercises with nothing done, so that
-// one always has sets.
+// workout, in order. Only a time with a set done counts: a workout logged from
+// the history, or corrected there, can keep the exercise with nothing done.
 export function previousSetsQuery(exerciseId: string, workoutId: string) {
   const lastTime = db
     .select({ id: workoutExercises.id })
     .from(workoutExercises)
     .innerJoin(workouts, eq(workouts.id, workoutExercises.workoutId))
+    .innerJoin(
+      workoutSets,
+      and(
+        eq(workoutSets.workoutExerciseId, workoutExercises.id),
+        isNotNull(workoutSets.completedAt),
+      ),
+    )
     .where(
       and(
         eq(workoutExercises.exerciseId, exerciseId),

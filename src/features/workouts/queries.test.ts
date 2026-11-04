@@ -171,6 +171,19 @@ describe("addSet", () => {
     expect(sets).toHaveLength(2);
     expect(sets[1]).toMatchObject({ ...BENCH, completedAt: null });
   });
+
+  it("takes the values it is given over the previous set's", () => {
+    const { workoutId, plank } = startPushDay();
+    updateSetValues(plank.sets[0].id, { ...BENCH, durationS: 45 });
+
+    addSet(plank.id, { durationS: null });
+
+    expect(readWorkout(workoutId)[1].sets[1]).toMatchObject({
+      ...BENCH,
+      durationS: null,
+      completedAt: null,
+    });
+  });
 });
 
 describe("updateSetValues", () => {
@@ -433,6 +446,29 @@ describe("previousSetsQuery", () => {
     expect(previousSetsQuery(benchId, current).all()).toEqual([
       { ...BENCH, weightKg: 77.5, reps: 5 },
       { ...BENCH, weightKg: 80, reps: 3 },
+    ]);
+  });
+
+  it("skips a later time with nothing done, like a workout logged empty", () => {
+    const DAY = 24 * 60 * 60;
+    const benchId = catalogId("bench_press");
+    const routineId = createRoutine({ name: "Bench", exerciseIds: [benchId] });
+
+    const done = startWorkout(routineId, at(4 * DAY));
+    const [doneBench] = readWorkout(done);
+    completeSet(
+      doneBench.sets[0].id,
+      { ...BENCH, weightKg: 82.5, reps: 4 },
+      at(4 * DAY + 30),
+    );
+    finishWorkout(done);
+    // Logged afterwards from the history, its set never filled in.
+    logWorkout(routineId, at(5 * DAY));
+
+    const current = startWorkout(routineId, at(6 * DAY));
+
+    expect(previousSetsQuery(benchId, current).all()).toEqual([
+      { ...BENCH, weightKg: 82.5, reps: 4 },
     ]);
   });
 });

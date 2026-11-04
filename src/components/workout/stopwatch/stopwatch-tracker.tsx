@@ -3,14 +3,14 @@ import Animated, { FadeIn, LinearTransition } from "react-native-reanimated";
 
 import { DashedButton } from "@/components/ui/buttons/dashed-button";
 import { CornerFrame } from "@/components/ui/layout/corner-frame";
-import { DistanceInput } from "@/components/workout/stopwatch/distance-input";
-import { DurationInput } from "@/components/workout/stopwatch/duration-input";
-import { StopwatchControls } from "@/components/workout/stopwatch/stopwatch-controls";
 import {
   DELETE_SET_WIDTH,
   DeleteSetButton,
 } from "@/components/workout/shared/delete-set-button";
 import { ElapsedTime } from "@/components/workout/shared/elapsed-time";
+import { DistanceInput } from "@/components/workout/stopwatch/distance-input";
+import { DurationInput } from "@/components/workout/stopwatch/duration-input";
+import { StopwatchControls } from "@/components/workout/stopwatch/stopwatch-controls";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useUnits } from "@/hooks/use-units";
@@ -248,7 +248,9 @@ export function StopwatchTracker({
               tone="muted"
               icon={{ ios: "plus", android: "add", web: "add" }}
               label={t.workout.addSet}
-              onPress={() => run(() => addSet(exercise.id))}
+              onPress={() =>
+                run(() => addSet(exercise.id, { durationS: null }))
+              }
             />
           )}
         </View>
