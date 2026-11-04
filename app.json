@@ -8,7 +8,7 @@
     "scheme": "fortapp",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "bundleIdentifier": "com.marcelesplu.fortapp",
+      "bundleIdentifier": "com.marcelesplu.fort",
       "supportsTablet": false,
       "config": {
         "usesNonExemptEncryption": false
@@ -41,7 +41,7 @@
       }
     },
     "android": {
-      "package": "com.marcelesplu.fortapp",
+      "package": "com.marcelesplu.fort",
       "adaptiveIcon": {
         "backgroundColor": "#0C0C0D",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
