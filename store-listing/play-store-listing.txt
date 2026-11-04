@@ -1,0 +1,255 @@
+Language: English (en-US)
+
+App name:
+Fort: Gym Routines & Tracker
+
+Short description:
+Create gym routines, log every set and see your progress. All on your phone.
+
+Full description:
+Fort is a gym tracker built around reusable routines. Create a routine once and start it every time you train: Fort logs each set, times your rests, shows what you did last time and charts how you progress.
+
+ROUTINES
+• Build your routines from a catalog of more than 300 exercises, each with its muscles, equipment, description and illustration.
+• Search exercises and filter them by muscle or type.
+• Add your own exercises when one is missing.
+
+WORKOUTS
+• Log weight and reps, reps only, time or distance, depending on the exercise.
+• See what you did last time next to each set.
+• Rest timer after each set, and a timer for the whole workout.
+• Add extra exercises on the fly without changing the routine.
+• A notification shows the workout in progress with its timer.
+• A summary of everything you did when you finish.
+
+PROGRESS
+• A chart for each exercise: estimated one-rep max, best set, best time or speed, over 4 weeks, 3 months, 6 months or a year.
+• Body weight log with its chart, a weekly weigh-in reminder and your body mass index.
+• History of every day you trained: correct past workouts or log one you forgot to record.
+• Your athlete type, your consistency and an activity calendar.
+
+YOUR DATA STAYS ON YOUR PHONE
+• No account, no ads and no analytics. Nothing is sent over the internet.
+• Export your data to a file and import it on another phone.
+
+MADE YOUR WAY
+• Light and dark themes, and six accent colors.
+• Kilograms or pounds, kilometers or miles.
+• Available in English, Spanish, Catalan, Basque, French and Portuguese.
+
+Fort is not a medical device and does not diagnose, treat, cure or prevent any disease.
+
+==========
+
+Idioma: español (es-ES)
+
+Nombre de la aplicación:
+Fort: rutinas de gimnasio
+
+Descripción breve:
+Crea tus rutinas, registra cada serie y mira cómo progresas. Todo en tu móvil.
+
+Descripción completa:
+Fort es una app para el gimnasio pensada para reutilizar tus rutinas. Crea una rutina una vez y empiézala cada vez que entrenes: Fort registra cada serie, cronometra tus descansos, te enseña lo que hiciste la última vez y dibuja cómo progresas.
+
+RUTINAS
+• Monta tus rutinas con un catálogo de más de 300 ejercicios, cada uno con sus músculos, material, descripción e ilustración.
+• Busca ejercicios y fíltralos por músculo o por tipo.
+• Añade tus propios ejercicios si falta alguno.
+
+ENTRENAMIENTOS
+• Registra peso y repeticiones, solo repeticiones, tiempo o distancia, según el ejercicio.
+• Mira lo que hiciste la última vez al lado de cada serie.
+• Cronómetro de descanso después de cada serie y cronómetro del entrenamiento.
+• Añade ejercicios extra sobre la marcha sin cambiar la rutina.
+• Una notificación muestra el entrenamiento en curso con su cronómetro.
+• Un resumen de todo lo que has hecho al terminar.
+
+PROGRESO
+• Una gráfica por ejercicio: 1RM estimado, mejor serie, mejor tiempo o velocidad, en 4 semanas, 3 meses, 6 meses o un año.
+• Registro del peso corporal con su gráfica, recordatorio semanal para pesarte y tu índice de masa corporal.
+• Historial de cada día que entrenaste: corrige entrenamientos pasados o registra uno que olvidaste.
+• Tu tipo de atleta, tu constancia y un calendario de actividad.
+
+TUS DATOS SE QUEDAN EN TU MÓVIL
+• Sin cuenta, sin anuncios y sin analíticas. No se envía nada a internet.
+• Exporta tus datos a un archivo e impórtalos en otro móvil.
+
+A TU MANERA
+• Tema claro y oscuro, y seis colores de acento.
+• Kilos o libras, kilómetros o millas.
+• Disponible en español, inglés, catalán, euskera, francés y portugués.
+
+Fort no es un dispositivo médico y no diagnostica, trata, cura ni previene ninguna enfermedad.
+
+==========
+
+Idioma: català (ca)
+
+Nom de l'aplicació:
+Fort: rutines de gimnàs
+
+Descripció breu:
+Crea les teves rutines, registra cada sèrie i mira com progresses. Tot al mòbil.
+
+Descripció completa:
+Fort és una app per al gimnàs pensada per reutilitzar les teves rutines. Crea una rutina un cop i comença-la cada vegada que entrenis: Fort registra cada sèrie, cronometra els descansos, et mostra el que vas fer l'última vegada i dibuixa com progresses.
+
+RUTINES
+• Munta les teves rutines amb un catàleg de més de 300 exercicis, cadascun amb els seus músculs, material, descripció i il·lustració.
+• Cerca exercicis i filtra'ls per múscul o per tipus.
+• Afegeix els teus propis exercicis si en falta algun.
+
+ENTRENAMENTS
+• Registra pes i repeticions, només repeticions, temps o distància, segons l'exercici.
+• Mira el que vas fer l'última vegada al costat de cada sèrie.
+• Cronòmetre de descans després de cada sèrie i cronòmetre de l'entrenament.
+• Afegeix exercicis extra sobre la marxa sense canviar la rutina.
+• Una notificació mostra l'entrenament en curs amb el seu cronòmetre.
+• Un resum de tot el que has fet en acabar.
+
+PROGRÉS
+• Una gràfica per exercici: 1RM estimat, millor sèrie, millor temps o velocitat, en 4 setmanes, 3 mesos, 6 mesos o un any.
+• Registre del pes corporal amb la seva gràfica, recordatori setmanal per pesar-te i el teu índex de massa corporal.
+• Historial de cada dia que vas entrenar: corregeix entrenaments passats o registra'n un que vas oblidar.
+• El teu tipus d'atleta, la teva constància i un calendari d'activitat.
+
+LES TEVES DADES ES QUEDEN AL MÒBIL
+• Sense compte, sense anuncis i sense analítiques. No s'envia res a internet.
+• Exporta les teves dades a un fitxer i importa-les en un altre mòbil.
+
+A LA TEVA MANERA
+• Tema clar i fosc, i sis colors d'accent.
+• Quilos o lliures, quilòmetres o milles.
+• Disponible en català, castellà, anglès, basc, francès i portuguès.
+
+Fort no és un dispositiu mèdic i no diagnostica, tracta, cura ni prevé cap malaltia.
+
+==========
+
+Hizkuntza: euskara (eu-ES)
+
+Aplikazioaren izena:
+Fort: gimnasioko errutinak
+
+Deskribapen laburra:
+Sortu zure errutinak, erregistratu serie bakoitza eta ikusi zure aurrerapena.
+
+Deskribapen osoa:
+Fort gimnasiorako aplikazio bat da, zure errutinak berrerabiltzeko pentsatua. Sortu errutina bat behin eta hasi entrenatzen duzun bakoitzean: Fortek serie bakoitza erregistratzen du, atsedenaldiak kronometratzen ditu, azken aldian egin zenuena erakusten dizu eta zure aurrerapena marrazten du.
+
+ERRUTINAK
+• Osatu zure errutinak 300 ariketa baino gehiagoko katalogo batekin, bakoitza bere giharrekin, materialarekin, deskribapenarekin eta irudiarekin.
+• Bilatu ariketak eta iragazi gihar edo motaren arabera.
+• Gehitu zure ariketak bat falta bada.
+
+ENTRENAMENDUAK
+• Erregistratu pisua eta errepikapenak, errepikapenak soilik, denbora edo distantzia, ariketaren arabera.
+• Ikusi azken aldian egin zenuena serie bakoitzaren ondoan.
+• Atseden-kronometroa serie bakoitzaren ondoren, eta entrenamenduaren kronometroa.
+• Gehitu ariketa gehigarriak bidean, errutina aldatu gabe.
+• Jakinarazpen batek abian dagoen entrenamendua erakusten du, bere kronometroarekin.
+• Egin duzun guztiaren laburpena amaitzean.
+
+AURRERAPENA
+• Grafiko bat ariketa bakoitzeko: 1RM estimatua, serierik onena, denborarik onena edo abiadura, 4 aste, 3 hilabete, 6 hilabete edo urtebeteko epean.
+• Gorputz-pisuaren erregistroa bere grafikoarekin, astero pisatzeko gogorarazpena eta zure gorputz-masaren indizea.
+• Entrenatu zenuen egun bakoitzaren historia: zuzendu iraganeko entrenamenduak edo erregistratu ahaztu zenuen bat.
+• Zure atleta mota, zure jarraitutasuna eta jarduera-egutegi bat.
+
+ZURE DATUAK ZURE MUGIKORREAN GERATZEN DIRA
+• Konturik, iragarkirik eta analitikarik gabe. Ez da ezer bidaltzen internetera.
+• Esportatu zure datuak fitxategi batera eta inportatu beste mugikor batean.
+
+ZURE ERARA
+• Gai argia eta iluna, eta sei azentu-kolore.
+• Kiloak edo librak, kilometroak edo miliak.
+• Euskaraz, gaztelaniaz, katalanez, ingelesez, frantsesez eta portugesez.
+
+Fort ez da gailu medikoa, eta ez du inolako gaixotasunik diagnostikatzen, tratatzen, sendatzen edo prebenitzen.
+
+==========
+
+Langue : français (fr-FR)
+
+Nom de l'application :
+Fort : routines de muscu
+
+Description courte :
+Crée tes routines, note chaque série et suis tes progrès. Tout sur ton mobile.
+
+Description complète :
+Fort est une app de musculation pensée pour réutiliser tes routines. Crée une routine une fois et lance-la à chaque entraînement : Fort enregistre chaque série, chronomètre tes temps de repos, te montre ce que tu as fait la dernière fois et trace tes progrès.
+
+ROUTINES
+• Compose tes routines à partir d'un catalogue de plus de 300 exercices, chacun avec ses muscles, son matériel, sa description et son illustration.
+• Recherche des exercices et filtre-les par muscle ou par type.
+• Ajoute tes propres exercices s'il en manque un.
+
+ENTRAÎNEMENTS
+• Note la charge et les répétitions, les répétitions seules, le temps ou la distance, selon l'exercice.
+• Vois ce que tu as fait la dernière fois à côté de chaque série.
+• Chrono de repos après chaque série, et chrono de l'entraînement.
+• Ajoute des exercices supplémentaires en cours de route sans modifier la routine.
+• Une notification affiche l'entraînement en cours avec son chrono.
+• Un résumé de tout ce que tu as fait à la fin.
+
+PROGRESSION
+• Un graphique par exercice : 1RM estimé, meilleure série, meilleur temps ou vitesse, sur 4 semaines, 3 mois, 6 mois ou un an.
+• Suivi du poids corporel avec son graphique, rappel de pesée hebdomadaire et ton indice de masse corporelle.
+• Historique de chaque jour d'entraînement : corrige tes entraînements passés ou ajoute-en un que tu as oublié.
+• Ton profil d'athlète, ta régularité et un calendrier d'activité.
+
+TES DONNÉES RESTENT SUR TON TÉLÉPHONE
+• Pas de compte, pas de pub, pas d'analyse. Rien n'est envoyé sur internet.
+• Exporte tes données dans un fichier et importe-les sur un autre téléphone.
+
+À TA FAÇON
+• Thème clair ou sombre, et six couleurs d'accent.
+• Kilos ou livres, kilomètres ou miles.
+• Disponible en français, anglais, espagnol, catalan, basque et portugais.
+
+Fort n'est pas un dispositif médical et ne diagnostique, ne traite, ne guérit ni ne prévient aucune maladie.
+
+==========
+
+Idioma: português (pt-PT)
+
+Nome da aplicação:
+Fort: rotinas de ginásio
+
+Descrição breve:
+Cria as tuas rotinas, regista cada série e vê como evoluis. Tudo no telemóvel.
+
+Descrição completa:
+O Fort é uma app de ginásio pensada para reutilizar as tuas rotinas. Cria uma rotina uma vez e inicia-a sempre que treinares: o Fort regista cada série, cronometra os teus descansos, mostra-te o que fizeste da última vez e desenha a tua evolução.
+
+ROTINAS
+• Monta as tuas rotinas com um catálogo de mais de 300 exercícios, cada um com os seus músculos, equipamento, descrição e ilustração.
+• Pesquisa exercícios e filtra-os por músculo ou por tipo.
+• Adiciona os teus próprios exercícios se faltar algum.
+
+TREINOS
+• Regista peso e repetições, só repetições, tempo ou distância, consoante o exercício.
+• Vê o que fizeste da última vez ao lado de cada série.
+• Cronómetro de descanso depois de cada série e cronómetro do treino.
+• Adiciona exercícios extra pelo caminho sem alterar a rotina.
+• Uma notificação mostra o treino em curso com o seu cronómetro.
+• Um resumo de tudo o que fizeste no fim.
+
+EVOLUÇÃO
+• Um gráfico por exercício: 1RM estimado, melhor série, melhor tempo ou velocidade, em 4 semanas, 3 meses, 6 meses ou um ano.
+• Registo do peso corporal com o seu gráfico, lembrete semanal de pesagem e o teu índice de massa corporal.
+• Histórico de cada dia em que treinaste: corrige treinos passados ou regista um de que te esqueceste.
+• O teu tipo de atleta, a tua constância e um calendário de atividade.
+
+OS TEUS DADOS FICAM NO TEU TELEMÓVEL
+• Sem conta, sem anúncios e sem análises. Nada é enviado para a internet.
+• Exporta os teus dados para um ficheiro e importa-os noutro telemóvel.
+
+À TUA MANEIRA
+• Tema claro e escuro, e seis cores de destaque.
+• Quilos ou libras, quilómetros ou milhas.
+• Disponível em português, inglês, espanhol, catalão, basco e francês.
+
+O Fort não é um dispositivo médico e não diagnostica, trata, cura nem previne nenhuma doença.
