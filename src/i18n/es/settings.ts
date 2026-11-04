@@ -163,13 +163,17 @@ export const settingsTexts = {
       "Tus rutinas y los ejercicios que añades",
       "Tus entrenamientos, series y pesos",
       "Tu peso corporal, si lo registras",
-      "Tus preferencias: apariencia, unidades, idioma y notificaciones, con el día y la hora del recordatorio de pesaje",
+      "Tu perfil, si lo rellenas: altura, fecha de nacimiento y género",
+      "Tus preferencias: apariencia, unidades e idioma",
     ],
+    // Only on Android, where the notifications are.
+    storedNotifications:
+      "Tus preferencias de notificaciones, con el día y la hora del recordatorio de pesaje",
     security:
       "Estos datos están en el almacenamiento privado de la app, al que el sistema no deja acceder a otras apps.",
     notDoneTitle: "Lo que no hace la app",
     notDone: [
-      "Pedirte una cuenta o datos personales",
+      "Pedirte una cuenta o datos personales obligatorios",
       "Enviar nada a internet",
       "Usar analíticas ni rastreo",
       "Mostrar anuncios",

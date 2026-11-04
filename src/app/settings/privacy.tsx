@@ -1,5 +1,4 @@
-import type { ReactNode } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { SettingsRow } from "@/components/settings/settings-row";
@@ -8,12 +7,20 @@ import {
   HeaderTitle,
 } from "@/components/ui/layout/back-header";
 import { CornerFrame } from "@/components/ui/layout/corner-frame";
+
+import { useOpenUrl } from "@/hooks/use-open-url";
+import { makeStyles, useTheme } from "@/hooks/use-theme";
+import { useTranslation } from "@/i18n";
+
 import {
   APP_NAME,
   CONTACT_EMAIL,
   COPYRIGHT,
   PRIVACY_UPDATED_AT,
 } from "@/constants/app-info";
+
+import type { ReactNode } from "react";
+
 import {
   fontsInstrument,
   fontSizes,
@@ -21,9 +28,6 @@ import {
   lineHeights,
   spacing,
 } from "@/constants/theme";
-import { useOpenUrl } from "@/hooks/use-open-url";
-import { makeStyles, useTheme } from "@/hooks/use-theme";
-import { useTranslation } from "@/i18n";
 
 const THIRD_PARTY = [
   { name: "React Native", license: "MIT" },
@@ -40,6 +44,11 @@ export default function PrivacyScreen() {
   const { globalStyles } = useTheme();
   const styles = useStyles();
   const openUrl = useOpenUrl();
+  // The notifications, and so their preferences, exist only on Android.
+  const stored =
+    Platform.OS === "android"
+      ? [...t.privacy.stored, t.privacy.storedNotifications]
+      : t.privacy.stored;
 
   return (
     <SafeAreaView style={[globalStyles.screen, styles.screen]} edges={["top"]}>
@@ -55,7 +64,7 @@ export default function PrivacyScreen() {
 
         <Section title={t.privacy.storedTitle}>
           <Text style={styles.body}>{t.privacy.storedIntro}</Text>
-          {t.privacy.stored.map((item) => (
+          {stored.map((item) => (
             <Bullet key={item} text={item} />
           ))}
           <Text style={styles.body}>{t.privacy.security}</Text>

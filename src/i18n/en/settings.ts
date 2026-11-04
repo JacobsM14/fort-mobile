@@ -157,13 +157,16 @@ export const settingsTexts: Pick<
       "Your routines and the exercises you add",
       "Your workouts, sets and weights",
       "Your body weight, if you log it",
-      "Your preferences: appearance, units, language and notifications, with the day and time of the weigh-in reminder",
+      "Your profile, if you fill it in: height, date of birth and gender",
+      "Your preferences: appearance, units and language",
     ],
+    storedNotifications:
+      "Your notification preferences, with the day and time of the weigh-in reminder",
     security:
       "This data lives in the app's private storage, which the system keeps other apps from accessing.",
     notDoneTitle: "What the app doesn't do",
     notDone: [
-      "Ask you for an account or personal details",
+      "Ask you for an account or required personal details",
       "Send anything over the internet",
       "Use analytics or tracking",
       "Show ads",

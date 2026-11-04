@@ -150,13 +150,16 @@ export const settingsTexts: Pick<
       "Zure errutinak eta gehitzen dituzun ariketak",
       "Zure entrenamenduak, serieak eta pisuak",
       "Zure gorputz-pisua, erregistratzen baduzu",
-      "Zure hobespenak: itxura, unitateak, hizkuntza eta jakinarazpenak, pisatzeko gogorarazpenaren eguna eta ordua barne",
+      "Zure profila, betetzen baduzu: altuera, jaiotze-data eta generoa",
+      "Zure hobespenak: itxura, unitateak eta hizkuntza",
     ],
+    storedNotifications:
+      "Zure jakinarazpen-hobespenak, pisatzeko gogorarazpenaren eguna eta ordua barne",
     security:
       "Datu hauek aplikazioaren biltegiratze pribatuan daude, eta sistemak ez die beste aplikazioei bertara sartzen uzten.",
     notDoneTitle: "Aplikazioak egiten ez duena",
     notDone: [
-      "Kontu bat edo datu pertsonalak eskatzea",
+      "Kontu bat edo nahitaezko datu pertsonalak eskatzea",
       "Datuak Internetera bidaltzea",
       "Analitikak edo jarraipena erabiltzea",
       "Iragarkiak erakustea",

@@ -147,13 +147,16 @@ export const settingsTexts: Pick<
       "Les teves rutines i els exercicis que afegeixes",
       "Els teus entrenaments, sèries i pesos",
       "El teu pes corporal, si el registres",
-      "Les teves preferències: aparença, unitats, idioma i notificacions, amb el dia i l'hora del recordatori per pesar-te",
+      "El teu perfil, si l'omples: alçada, data de naixement i gènere",
+      "Les teves preferències: aparença, unitats i idioma",
     ],
+    storedNotifications:
+      "Les teves preferències de notificacions, amb el dia i l'hora del recordatori per pesar-te",
     security:
       "Aquestes dades es guarden a l'emmagatzematge privat de l'app, al qual el sistema no deixa accedir a altres apps.",
     notDoneTitle: "El que no fa l'app",
     notDone: [
-      "Demanar-te un compte o dades personals",
+      "Demanar-te un compte o dades personals obligatòries",
       "Enviar res a internet",
       "Fer servir analítiques ni seguiment",
       "Mostrar anuncis",

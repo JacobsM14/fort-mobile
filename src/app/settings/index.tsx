@@ -1,14 +1,17 @@
 import { router, type Href } from "expo-router";
-import type { SymbolViewProps } from "expo-symbols";
-import { ScrollView, StyleSheet } from "react-native";
+import { Platform, ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { SettingsRow } from "@/components/settings/settings-row";
 import { BackHeader } from "@/components/ui/layout/back-header";
-import { spacing } from "@/constants/theme";
+
 import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
+
 import type { Translations } from "@/i18n/es";
+import type { SymbolViewProps } from "expo-symbols";
+
+import { spacing } from "@/constants/theme";
 
 type Section = {
   key: keyof Translations["settings"]["sections"];
@@ -66,6 +69,11 @@ const SECTIONS: Section[] = [
   },
 ];
 
+// The notifications come from native modules that only exist on Android.
+const VISIBLE_SECTIONS = SECTIONS.filter(
+  (section) => section.key !== "notifications" || Platform.OS === "android",
+);
+
 export default function SettingsScreen() {
   const { t } = useTranslation();
   const { globalStyles } = useTheme();
@@ -77,7 +85,7 @@ export default function SettingsScreen() {
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
       >
-        {SECTIONS.map((section) => (
+        {VISIBLE_SECTIONS.map((section) => (
           <SettingsRow
             key={section.key}
             icon={section.icon}

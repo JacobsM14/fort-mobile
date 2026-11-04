@@ -147,13 +147,16 @@ export const settingsTexts: Pick<
       "Tes routines et les exercices que tu ajoutes",
       "Tes entraînements, séries et charges",
       "Ton poids corporel, si tu le saisis",
-      "Tes préférences : apparence, unités, langue et notifications, avec le jour et l'heure du rappel de pesée",
+      "Ton profil, si tu le remplis : taille, date de naissance et genre",
+      "Tes préférences : apparence, unités et langue",
     ],
+    storedNotifications:
+      "Tes préférences de notifications, avec le jour et l'heure du rappel de pesée",
     security:
       "Ces données se trouvent dans le stockage privé de l'app, auquel le système interdit l'accès aux autres apps.",
     notDoneTitle: "Ce que l'app ne fait pas",
     notDone: [
-      "Te demander un compte ou des données personnelles",
+      "Te demander un compte ou des données personnelles obligatoires",
       "Envoyer quoi que ce soit sur internet",
       "Utiliser des outils d'analyse ou de suivi",
       "Afficher des publicités",
