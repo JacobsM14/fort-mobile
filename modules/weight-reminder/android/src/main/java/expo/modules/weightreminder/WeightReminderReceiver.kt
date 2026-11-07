@@ -1,9 +1,9 @@
 package expo.modules.weightreminder
 
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.app.PendingIntent
 import android.net.Uri
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
@@ -49,7 +49,6 @@ private fun showNotification(context: Context, reminder: Reminder) {
     )
 }
 
-
 class WeightReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val reminder = ReminderScheduler.load(context) ?: return
@@ -60,4 +59,3 @@ class WeightReminderReceiver : BroadcastReceiver() {
         )
     }
 }
-
