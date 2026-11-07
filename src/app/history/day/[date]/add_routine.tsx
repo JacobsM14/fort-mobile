@@ -15,7 +15,7 @@ import { getRoutineMuscleGroups } from "@/features/routines/detail";
 import { useRoutineList } from "@/features/routines/queries";
 import { logWorkout } from "@/features/workouts/queries";
 
-import { formatDayHeader, parseDateKey } from "@/utils/date";
+import { formatDayHeader, isDateKey, parseDateKey } from "@/utils/date";
 
 import { spacing } from "@/constants/theme";
 
@@ -27,8 +27,9 @@ export default function AddRoutineScreen() {
   const { date } = useLocalSearchParams<{ date: string }>();
   const day = parseDateKey(date);
   const { routines, loaded } = useRoutineList();
-  // A malformed link has no day to log to.
-  const validDay = !Number.isNaN(day.getTime());
+  // A malformed link has no day to log to. The key is checked, not the date:
+  // "2026-13-45" still parses, rolled over to another day.
+  const validDay = isDateKey(date);
 
   function addRoutine(routineId: string) {
     // At the current time of day, so today's lands at now and several logged

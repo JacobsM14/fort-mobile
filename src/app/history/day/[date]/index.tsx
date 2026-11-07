@@ -22,7 +22,12 @@ import {
 } from "@/features/body/queries";
 import { useWorkoutHistory } from "@/features/workouts/queries";
 
-import { formatDayHeader, parseDateKey, toDateKey } from "@/utils/date";
+import {
+  formatDayHeader,
+  isDateKey,
+  parseDateKey,
+  toDateKey,
+} from "@/utils/date";
 
 import { fontSizes, fontsInstrument, spacing } from "@/constants/theme";
 
@@ -73,7 +78,7 @@ export default function HistoryDayScreen() {
     setWeightSheetOpen(false);
   }
 
-  if (Number.isNaN(day.getTime())) {
+  if (!isDateKey(date)) {
     return null;
   }
 
