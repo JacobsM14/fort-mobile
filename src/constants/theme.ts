@@ -10,7 +10,6 @@ type BaseColors = {
   text: string;
   disabled: string;
   border: string;
-  // The day with nothing done in an activity calendar: a step off the card.
   intensityEmpty: string;
   scrim: string;
   danger: string;
@@ -24,13 +23,8 @@ type AccentShades = {
 
 export type Colors = BaseColors &
   AccentShades & {
-    // The accent diluted over the background, for highlighted cards.
     primaryTint: string;
-    // The accent at half strength, between the faint and the full one (the
-    // BMI scale).
     primarySoft: string;
-    // The accent from faint to full in four steps, for the levels of an
-    // activity calendar.
     intensity: readonly [string, string, string, string];
   };
 
@@ -110,8 +104,6 @@ export const fontsInstrument = {
   bold: "InstrumentSans_700Bold",
 };
 
-// Only these two weights are loaded at startup (see app/_layout.tsx): a new
-// one has to be loaded there too.
 export const fontsJetBrainsMono = {
   medium: "JetBrainsMono_500Medium",
   bold: "JetBrainsMono_700Bold",
@@ -164,10 +156,6 @@ export const iconSizes = {
   hero: 64,
 };
 
-// The height of a control: md is the smallest comfortable to tap, sm for
-// compact ones beside other content, lg for the rows of a menu and the
-// search box, xl for the main actions (the primary button, the workout's
-// footer and the stopwatch's controls).
 export const controlHeights = {
   sm: 36,
   md: 44,
@@ -198,18 +186,14 @@ function createGlobalStyles(colors: Colors) {
       gap: spacing.sm,
       paddingBottom: spacing.sm,
     },
-    // A small title above its box: wraps both so the gap is the same everywhere.
     titledSection: {
       gap: spacing.xs,
     },
-    // The title of a titledSection in Progress: dimmer than a subtitle, so the
-    // boxes stand out.
     sectionTitle: {
       fontSize: fontSizes.caption,
       fontFamily: fontsJetBrainsMono.medium,
       color: colors.border,
     },
-    // A bordered box on the secondary background, for a chart and its notes.
     panel: {
       gap: spacing.sm,
       padding: spacing.sm,
@@ -295,7 +279,6 @@ function createGlobalStyles(colors: Colors) {
       fontFamily: fontsInstrument.semiBold,
       color: colors.onPrimary,
     },
-    // Row-shaped card used by list items (routines, settings, exercises).
     card: {
       flexDirection: "row",
       alignItems: "center",
