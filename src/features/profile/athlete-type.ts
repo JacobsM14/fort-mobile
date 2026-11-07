@@ -1,5 +1,7 @@
 import type { TrackingType } from "@/constants/enums";
 
+import { weekEnd } from "@/utils/date";
+
 // What most of the training goes into, read from the exercises done most.
 export type TrainingStyle =
   "strength" | "calisthenics" | "endurance" | "allRound";
@@ -100,15 +102,6 @@ export function nextConsistencyLevel(
     case "unstoppable":
       return null;
   }
-}
-
-// When the week that starts on `weekStart` is over: a week is [start, end).
-function weekEnd(weekStart: Date) {
-  return new Date(
-    weekStart.getFullYear(),
-    weekStart.getMonth(),
-    weekStart.getDate() + 7,
-  );
 }
 
 // The weeks the consistency is read from, out of `weekStarts` (this week

@@ -1,5 +1,6 @@
 import { router } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { DayBox } from "@/components/today/day-box";
 
@@ -8,45 +9,112 @@ import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import { useTrainedDays } from "@/features/workouts/queries";
+import { useFirstBodyWeightDay } from "@/features/body/queries";
+import {
+  useFirstWorkoutStart,
+  useTrainedDays,
+} from "@/features/workouts/queries";
 
-import { formatDayHeader, getWeekDays, toDateKey } from "@/utils/date";
+import {
+  earliestDate,
+  formatDayHeader,
+  getWeekDays,
+  toDateKey,
+  weekEnd,
+  weekStartsSince,
+} from "@/utils/date";
 
 import { fontsInstrument, fontSizes, spacing } from "@/constants/theme";
 
+// This week, and a swipe to the right for each week before it, one whole
+// week at a time. Never ahead of this week.
 export function WeekDays() {
-  const { language } = useTranslation();
   const styles = useStyles();
   const firstWeekday = useFirstWeekday();
-  const today = new Date();
-  const days = getWeekDays(today, firstWeekday);
-  const weekEnd = new Date(days[6]);
-  weekEnd.setDate(weekEnd.getDate() + 1);
-  // A day counts as trained when a workout started that day has a set done.
-  const trainedDays = useTrainedDays(days[0], weekEnd);
+  const firstWorkoutStart = useFirstWorkoutStart();
+  const firstWeighIn = useFirstBodyWeightDay();
   const openDay = useFocusedPress((day: Date) =>
     router.push({
       pathname: "/history/day/[date]",
       params: { date: toDateKey(day), from: "today" },
     }),
   );
+  // Each page is as wide as the row, which is only known once laid out.
+  const [width, setWidth] = useState(0);
+
+  const today = new Date();
+  const since = earliestDate([firstWorkoutStart, firstWeighIn]);
+  const weeks = weekStartsSince(today, firstWeekday, since).map((start) =>
+    getWeekDays(start, firstWeekday),
+  );
 
   return (
-    <View style={styles.week}>
+    <View
+      style={styles.container}
+      onLayout={(event) => setWidth(event.nativeEvent.layout.width)}
+    >
+      {width === 0 ? (
+        // Holds the row's height until the list can be laid out.
+        <Week days={weeks[0]} today={today} onOpenDay={openDay} />
+      ) : (
+        <FlatList
+          data={weeks}
+          keyExtractor={(days) => toDateKey(days[0])}
+          renderItem={({ item: days }) => (
+            <Week days={days} today={today} width={width} onOpenDay={openDay} />
+          )}
+          getItemLayout={(_, index) => ({
+            length: width,
+            offset: width * index,
+            index,
+          })}
+          extraData={width}
+          horizontal
+          inverted
+          pagingEnabled
+          scrollEnabled={weeks.length > 1}
+          showsHorizontalScrollIndicator={false}
+          // No stretch or bounce past this week: there is nothing ahead.
+          bounces={false}
+          overScrollMode="never"
+          // Each week reads its own trained days, so only the one on screen
+          // and its neighbours are kept.
+          initialNumToRender={1}
+          maxToRenderPerBatch={1}
+          windowSize={3}
+        />
+      )}
+    </View>
+  );
+}
+
+type WeekProps = {
+  days: Date[];
+  today: Date;
+  // Unset while the row hasn't been measured: then the week takes the row.
+  width?: number;
+  onOpenDay: (day: Date) => void;
+};
+
+function Week({ days, today, width, onOpenDay }: WeekProps) {
+  const { language } = useTranslation();
+  const styles = useStyles();
+  // A day counts as trained when a workout started that day has a set done.
+  const trainedDays = useTrainedDays(days[0], weekEnd(days[0]));
+
+  return (
+    <View style={[styles.week, width !== undefined && { width }]}>
       {days.map((day) => {
         const key = day.toDateString();
         const isToday = key === today.toDateString();
         const trained = trainedDays.has(key);
-        // Days already gone without a workout are dashed.
         const missed = !trained && !isToday && day < today;
-        // Days still to come have nothing to show yet, and today is already
-        // what this screen is about: its routines are right below.
         const disabled = isToday || day > today;
         return (
           <Pressable
             key={key}
             style={({ pressed }) => [styles.day, pressed && styles.dayPressed]}
-            onPress={() => openDay(day)}
+            onPress={() => onOpenDay(day)}
             disabled={disabled}
             accessibilityRole="button"
             accessibilityLabel={formatDayHeader(day, language)}
@@ -72,10 +140,12 @@ export function WeekDays() {
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
+    container: {
+      marginTop: spacing.lg,
+    },
     week: {
       flexDirection: "row",
       justifyContent: "space-between",
-      marginTop: spacing.lg,
     },
     day: {
       alignItems: "center",

@@ -13,6 +13,9 @@ import {
   parseDateKey,
   toDateKey,
   toIso,
+  weekEnd,
+  weekStartsSince,
+  earliestDate,
 } from "./date";
 
 // expo-localization numbers weekdays from 1 (Sunday).
@@ -78,6 +81,71 @@ describe("lastWeekStarts", () => {
   it("gives as many weeks as asked", () => {
     expect(lastWeekStarts(today, MONDAY, 12)).toHaveLength(12);
     expect(lastWeekStarts(today, MONDAY, 1)).toEqual([new Date(2026, 9, 19)]);
+  });
+});
+
+describe("weekStartsSince", () => {
+  // A Sunday.
+  const today = new Date(2026, 9, 25, 18, 30);
+
+  it("goes back to the week of the given day, the newest week first", () => {
+    expect(weekStartsSince(today, MONDAY, new Date(2026, 9, 7, 9))).toEqual([
+      new Date(2026, 9, 19),
+      new Date(2026, 9, 12),
+      new Date(2026, 9, 5),
+    ]);
+  });
+
+  it("starts the weeks on the first weekday of the calendar", () => {
+    expect(weekStartsSince(today, SUNDAY, new Date(2026, 9, 17))).toEqual([
+      new Date(2026, 9, 25),
+      new Date(2026, 9, 18),
+      new Date(2026, 9, 11),
+    ]);
+  });
+
+  it("counts whole weeks across a daylight saving change", () => {
+    const weeks = weekStartsSince(today, MONDAY, new Date(2026, 2, 2));
+    expect(weeks).toHaveLength(34);
+    expect(weeks.at(-1)).toEqual(new Date(2026, 2, 2));
+  });
+
+  it("gives only this week without a day, or with one in this week", () => {
+    const thisWeek = [new Date(2026, 9, 19)];
+    expect(weekStartsSince(today, MONDAY, undefined)).toEqual(thisWeek);
+    expect(weekStartsSince(today, MONDAY, new Date(2026, 9, 20))).toEqual(
+      thisWeek,
+    );
+  });
+
+  it("gives only this week for a day still to come", () => {
+    expect(weekStartsSince(today, MONDAY, new Date(2026, 11, 1))).toEqual([
+      new Date(2026, 9, 19),
+    ]);
+  });
+});
+
+describe("weekEnd", () => {
+  it("is midnight of the first day of the next week", () => {
+    expect(weekEnd(new Date(2026, 9, 26))).toEqual(new Date(2026, 10, 2));
+  });
+
+  it("crosses into the next year", () => {
+    expect(weekEnd(new Date(2026, 11, 28))).toEqual(new Date(2027, 0, 4));
+  });
+});
+
+describe("earliestDate", () => {
+  it("gives the earliest date, leaving out the missing ones", () => {
+    const earliest = new Date(2026, 0, 5);
+    expect(earliestDate([new Date(2026, 3, 1), undefined, earliest])).toBe(
+      earliest,
+    );
+  });
+
+  it("is undefined when every date is missing", () => {
+    expect(earliestDate([undefined, undefined])).toBeUndefined();
+    expect(earliestDate([])).toBeUndefined();
   });
 });
 

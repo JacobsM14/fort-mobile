@@ -4,6 +4,7 @@ import {
   bodyWeightOnDay,
   bodyWeightsQuery,
   deleteBodyWeight,
+  firstBodyWeightDayQuery,
   latestBodyWeightKg,
   recentBodyWeights,
   saveBodyWeight,
@@ -18,6 +19,17 @@ function savedIn(year: number) {
     .all()
     .filter((row) => row.measuredOn.startsWith(`${year}-`));
 }
+
+describe("firstBodyWeightDayQuery", () => {
+  it("reads the day of the earliest weigh-in", () => {
+    saveBodyWeight(new Date(1999, 4, 2), 79);
+    saveBodyWeight(new Date(1998, 11, 30), 80);
+
+    expect(firstBodyWeightDayQuery().all()).toEqual([
+      { measuredOn: "1998-12-30" },
+    ]);
+  });
+});
 
 describe("saveBodyWeight", () => {
   it("saves the weight under its day", () => {

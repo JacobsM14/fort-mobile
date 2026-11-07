@@ -15,7 +15,7 @@ import {
   useFirstWorkoutStart,
 } from "@/features/workouts/queries";
 
-import { getDaysBetween, toDateKey } from "@/utils/date";
+import { earliestDate, getDaysBetween, toDateKey } from "@/utils/date";
 
 import { spacing } from "@/constants/theme";
 
@@ -40,9 +40,8 @@ export default function HistoryScreen() {
   const weightsByDay = toBodyWeightsByDay(entries);
   // Going further back than the first workout and the first weigh-in would
   // only add empty days.
-  const hasMore = [firstWorkoutStart, entries.at(0)?.date].some(
-    (first) => first !== undefined && first < from,
-  );
+  const firstLogged = earliestDate([firstWorkoutStart, entries.at(0)?.date]);
+  const hasMore = firstLogged !== undefined && firstLogged < from;
 
   function loadMore() {
     if (hasMore) {

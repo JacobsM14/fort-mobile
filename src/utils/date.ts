@@ -68,6 +68,52 @@ export function lastWeekStarts(
   });
 }
 
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+// The first day of the week of `today` and of every week before it back to
+// the week of `since`, the newest first. Without `since`, or with one in this
+// week or later, only this week.
+export function weekStartsSince(
+  today: Date,
+  firstWeekday: number,
+  since: Date | undefined,
+): Date[] {
+  if (since === undefined) {
+    return lastWeekStarts(today, firstWeekday, 1);
+  }
+  const [thisWeek] = getWeekDays(today, firstWeekday);
+  const [firstWeek] = getWeekDays(since, firstWeekday);
+  // Rounded: a daylight saving change leaves one week an hour short or long.
+  const weeksBack = Math.round(
+    (thisWeek.getTime() - firstWeek.getTime()) / WEEK_MS,
+  );
+  return lastWeekStarts(
+    today,
+    firstWeekday,
+    Math.max(weeksBack, 0) + 1,
+  ).reverse();
+}
+
+// When the week that starts on `weekStart` is over: a week is [start, end).
+export function weekEnd(weekStart: Date) {
+  return new Date(
+    weekStart.getFullYear(),
+    weekStart.getMonth(),
+    weekStart.getDate() + 7,
+  );
+}
+
+// The earliest of the dates given, leaving out the missing ones.
+export function earliestDate(dates: readonly (Date | undefined)[]) {
+  return dates.reduce<Date | undefined>(
+    (earliest, date) =>
+      date !== undefined && (earliest === undefined || date < earliest)
+        ? date
+        : earliest,
+    undefined,
+  );
+}
+
 // Every local day from `from` up to (not including) `to`, newest first.
 export function getDaysBetween(from: Date, to: Date) {
   const days: Date[] = [];

@@ -1,4 +1,4 @@
-import { asc, eq } from "drizzle-orm";
+import { asc, eq, min } from "drizzle-orm";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 
 import { db } from "@/db/client";
@@ -95,6 +95,22 @@ export function useBodyWeights() {
     entries: toBodyWeightEntries(data),
     loaded: updatedAt !== undefined,
   };
+}
+
+// The day of the first weigh-in. Day keys sort like the days they name.
+export function firstBodyWeightDayQuery() {
+  return db
+    .select({ measuredOn: min(bodyWeights.measuredOn) })
+    .from(bodyWeights);
+}
+
+// Midnight of the first weigh-in's day; undefined while there is none. Reads
+// one row, for screens that only need to know how far back to go.
+export function useFirstBodyWeightDay() {
+  const { data } = useLiveQuery(firstBodyWeightDayQuery());
+  const measuredOn = data.at(0)?.measuredOn;
+
+  return measuredOn == null ? undefined : parseDateKey(measuredOn);
 }
 
 // One weigh-in per day: saving again the same day replaces its weight.
