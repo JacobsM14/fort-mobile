@@ -114,6 +114,12 @@ export function earliestDate(dates: readonly (Date | undefined)[]) {
   );
 }
 
+// A day already gone without a workout: Today's week and the history draw it
+// dashed. Today itself isn't missed yet.
+export function isMissedDay(day: Date, trained: boolean, today: Date) {
+  return !trained && day < today && day.toDateString() !== today.toDateString();
+}
+
 // Every local day from `from` up to (not including) `to`, newest first.
 export function getDaysBetween(from: Date, to: Date) {
   const days: Date[] = [];

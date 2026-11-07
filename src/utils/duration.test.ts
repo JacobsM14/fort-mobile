@@ -4,9 +4,19 @@ import {
   cleanDurationDigits,
   digitsFromDuration,
   durationFromDigits,
+  elapsedSeconds,
   formatDuration,
   formatDurationDigits,
 } from "./duration";
+
+describe("elapsedSeconds", () => {
+  const start = new Date(2026, 9, 19, 18, 0, 0);
+
+  it("counts whole seconds and never goes below zero", () => {
+    expect(elapsedSeconds(start, start.getTime() + 61_900)).toBe(61);
+    expect(elapsedSeconds(start, start.getTime() - 500)).toBe(0);
+  });
+});
 
 describe("formatDuration", () => {
   it("shows minutes and seconds, and hours only when needed", () => {

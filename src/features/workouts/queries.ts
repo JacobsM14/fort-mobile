@@ -26,6 +26,8 @@ import {
   workouts,
 } from "@/db/schema";
 
+import { elapsedSeconds } from "@/utils/duration";
+
 export type SetValues = {
   weightKg: number | null;
   reps: number | null;
@@ -52,12 +54,6 @@ export type RestChoice = "timed" | "none";
 
 type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
 
-// Whole seconds, like the live stopwatches show, so a time doesn't change by
-// a second when it's saved.
-function secondsBetween(from: Date, to: Date) {
-  return Math.max(0, Math.floor((to.getTime() - from.getTime()) / 1000));
-}
-
 // A set's stopwatch can be paused and resumed: durationS holds the time
 // before the current run, which started at startedAt.
 function accumulatedSeconds(
@@ -65,7 +61,7 @@ function accumulatedSeconds(
   startedAt: Date,
   now: Date,
 ) {
-  return (durationS ?? 0) + secondsBetween(startedAt, now);
+  return (durationS ?? 0) + elapsedSeconds(startedAt, now.getTime());
 }
 
 // Only these four columns: a whole set passed as SetValues would otherwise
@@ -125,7 +121,7 @@ function endRunningRests(tx: Transaction, workoutId: string, now: Date) {
   for (const { id, restStartedAt } of running) {
     if (restStartedAt !== null) {
       tx.update(workoutSets)
-        .set({ restS: secondsBetween(restStartedAt, now) })
+        .set({ restS: elapsedSeconds(restStartedAt, now.getTime()) })
         .where(eq(workoutSets.id, id))
         .run();
     }
@@ -470,7 +466,7 @@ export function endRest(setId: string, now = new Date()) {
       return;
     }
     tx.update(workoutSets)
-      .set({ restS: secondsBetween(set.restStartedAt, now) })
+      .set({ restS: elapsedSeconds(set.restStartedAt, now.getTime()) })
       .where(eq(workoutSets.id, setId))
       .run();
   });
@@ -772,31 +768,6 @@ export function useWorkoutHistory(range?: { from: Date; to: Date }) {
   };
 }
 
-// The days (as toDateString keys) between from and to with a workout that
-// has a set done. Reads only that range, not the whole history.
-export function useTrainedDays(from: Date, to: Date) {
-  const { data } = useLiveQuery(
-    db
-      .selectDistinct({ startedAt: workouts.startedAt })
-      .from(workoutSets)
-      .innerJoin(
-        workoutExercises,
-        eq(workoutExercises.id, workoutSets.workoutExerciseId),
-      )
-      .innerJoin(workouts, eq(workouts.id, workoutExercises.workoutId))
-      .where(
-        and(
-          isNotNull(workoutSets.completedAt),
-          gte(workouts.startedAt, from),
-          lt(workouts.startedAt, to),
-        ),
-      ),
-    [from.getTime(), to.getTime()],
-  );
-
-  return new Set(data.map((row) => row.startedAt.toDateString()));
-}
-
 // The sets done for an exercise the last time it was in another finished
 // workout, in order. Only a time with a set done counts: a workout logged from
 // the history, or corrected there, can keep the exercise with nothing done.
@@ -874,11 +845,16 @@ export function firstWorkoutStartQuery() {
 }
 
 export function useFirstWorkoutStart() {
-  const { data } = useLiveQuery(firstWorkoutStartQuery());
+  const { data, updatedAt } = useLiveQuery(firstWorkoutStartQuery());
 
-  return data.at(0)?.startedAt ?? undefined;
+  return {
+    firstWorkoutStart: data.at(0)?.startedAt ?? undefined,
+    loaded: updatedAt !== undefined,
+  };
 }
 
+// A row per exercise with a set done, with the day its workout started, for
+// workouts started between from and to. Reads only that range.
 export function dailyExerciseRowsQuery(from: Date, to: Date) {
   return db
     .selectDistinct({
@@ -909,6 +885,8 @@ export function countExercisesByDay(rows: { startedAt: Date }[]) {
   return counts;
 }
 
+// The exercises done each day, by toDateString key. A day with nothing done
+// has no entry, so it also tells which days were trained.
 export function useDailyExerciseCounts(from: Date, to: Date) {
   const { data } = useLiveQuery(dailyExerciseRowsQuery(from, to), [
     from.getTime(),

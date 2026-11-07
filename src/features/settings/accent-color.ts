@@ -1,18 +1,8 @@
-import Storage from "expo-sqlite/kv-store";
+import { ACCENT_COLORS } from "@/constants/enums";
 
-import { ACCENT_COLORS, type AccentColor } from "@/constants/enums";
+import { storedChoice } from "./stored-choice";
 
-const KEY = "accent_color";
+const accentColor = storedChoice("accent_color", ACCENT_COLORS, "orange");
 
-function isAccentColor(value: string | null): value is AccentColor {
-  return ACCENT_COLORS.some((accent) => accent === value);
-}
-
-export function loadAccentColor(): AccentColor {
-  const stored = Storage.getItemSync(KEY);
-  return isAccentColor(stored) ? stored : "orange";
-}
-
-export function saveAccentColor(accent: AccentColor) {
-  Storage.setItemSync(KEY, accent);
-}
+export const loadAccentColor = accentColor.load;
+export const saveAccentColor = accentColor.save;

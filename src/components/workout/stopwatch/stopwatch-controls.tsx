@@ -7,6 +7,7 @@ import { useTranslation } from "@/i18n";
 import type { StopwatchState } from "@/features/workouts/sets";
 
 import {
+  controlHeights,
   fontsInstrument,
   fontSizes,
   iconSizes,
@@ -129,8 +130,6 @@ export function StopwatchControls({
   );
 }
 
-const CONTROL_HEIGHT = 64;
-
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
     controls: {
@@ -139,7 +138,7 @@ const useStyles = makeStyles(({ colors }) =>
     },
     control: {
       flex: 1,
-      height: CONTROL_HEIGHT,
+      height: controlHeights.xl,
       alignItems: "center",
       justifyContent: "center",
       gap: spacing.xs,

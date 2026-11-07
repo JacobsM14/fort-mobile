@@ -17,7 +17,9 @@ import {
   type ActionMenuAnchor,
 } from "@/components/ui/overlays/action-menu";
 import { ConfirmDialog } from "@/components/ui/overlays/confirm-dialog";
+import { measureMenuAnchor } from "@/components/ui/overlays/measure-anchor";
 import { ExerciseTracker } from "@/components/workout/layout/exercise-tracker";
+import { setConfirmationTexts } from "@/components/workout/shared/set-confirmation";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
@@ -31,17 +33,16 @@ import {
   resetSetTimer,
 } from "@/features/workouts/queries";
 
+import type { SetConfirmation } from "@/components/workout/shared/set-confirmation";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
 import type { WorkoutEntry } from "@/features/workouts/entries";
 
 import { formatDayHeader } from "@/utils/date";
-import { formatDuration } from "@/utils/duration";
 
 import { fontsInstrument, fontSizes, spacing } from "@/constants/theme";
 
 type Confirmation =
-  | { kind: "deleteSet"; setId: string; number: number }
-  | { kind: "resetTimer"; setId: string; seconds: number }
+  | SetConfirmation
   | { kind: "deleteExercise"; workoutExerciseId: string; name: string }
   | { kind: "deleteWorkout" };
 
@@ -68,21 +69,13 @@ export default function HistoryWorkoutScreen() {
   const screenRef = useRef<HostInstance>(null);
   const menuButtons = useRef(new Map<string, HostInstance>());
 
-  // The button scrolls with the list, so where it is on the screen is only
-  // known when the menu opens: measured against the screen the menu covers.
+  // Its right edge lined up with the button's.
   function openMenu(entry: WorkoutEntry) {
-    const button = menuButtons.current.get(entry.id);
-    screenRef.current?.measureInWindow((screenX, screenY, screenWidth) => {
-      button?.measureInWindow((x, y, width, height) => {
-        setMenu({
-          entry,
-          anchor: {
-            top: y - screenY + height + spacing.xs,
-            right: screenWidth - (x - screenX + width),
-          },
-        });
-      });
-    });
+    measureMenuAnchor(
+      screenRef.current,
+      menuButtons.current.get(entry.id),
+      ({ top, right }) => setMenu({ entry, anchor: { top, right } }),
+    );
   }
 
   function selectMenuItem(action: string) {
@@ -139,17 +132,8 @@ export default function HistoryWorkoutScreen() {
   function getDialogTexts(action: Confirmation): DialogTexts {
     switch (action.kind) {
       case "deleteSet":
-        return {
-          title: t.workout.deleteSetTitle(action.number),
-          message: t.workout.deleteSetMessage,
-          confirmLabel: t.workout.deleteSetConfirm,
-        };
       case "resetTimer":
-        return {
-          title: t.workout.resetTitle,
-          message: t.workout.resetMessage(formatDuration(action.seconds)),
-          confirmLabel: t.workout.resetConfirm,
-        };
+        return setConfirmationTexts(action, t);
       case "deleteExercise":
         return {
           title: t.history.deleteExerciseTitle(action.name),

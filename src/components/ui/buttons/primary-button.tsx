@@ -9,7 +9,12 @@ import {
 import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles } from "@/hooks/use-theme";
 
-import { fontsInstrument, fontSizes, radii } from "@/constants/theme";
+import {
+  controlHeights,
+  fontsInstrument,
+  fontSizes,
+  radii,
+} from "@/constants/theme";
 
 type PrimaryButtonProps = {
   label: string;
@@ -51,7 +56,7 @@ const useStyles = makeStyles(({ colors }) =>
       alignItems: "center",
       justifyContent: "center",
       width: "100%",
-      minHeight: 64,
+      minHeight: controlHeights.xl,
       borderRadius: radii.xs,
       backgroundColor: colors.primary,
     },

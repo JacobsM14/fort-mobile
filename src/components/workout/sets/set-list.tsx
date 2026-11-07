@@ -1,11 +1,12 @@
 import { Fragment } from "react";
-import { Alert, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import Animated, { FadeIn, LinearTransition } from "react-native-reanimated";
 
 import { DashedButton } from "@/components/ui/buttons/dashed-button";
 import { RestChoice } from "@/components/workout/sets/rest-choice";
 import { RestDivider } from "@/components/workout/sets/rest-divider";
 import { SetHeader, SetRow } from "@/components/workout/sets/set-row";
+import { useSetActions } from "@/components/workout/shared/use-set-actions";
 
 import { useTranslation } from "@/i18n";
 
@@ -13,15 +14,10 @@ import {
   addSet,
   chooseRest,
   completeSet,
-  deleteSet,
   endRest,
   updateSetValues,
 } from "@/features/workouts/queries";
-import {
-  isSetDone,
-  isSetUnlocked,
-  needsRestChoice,
-} from "@/features/workouts/sets";
+import { isSetUnlocked, needsRestChoice } from "@/features/workouts/sets";
 
 import type {
   SetValues,
@@ -53,24 +49,8 @@ export function SetList({
   mode = "live",
 }: SetListProps) {
   const { t } = useTranslation();
+  const { run, removeSet } = useSetActions(onDeleteSet);
   const showPrevious = previousSets.length > 0;
-
-  function run(action: () => void) {
-    try {
-      action();
-    } catch {
-      Alert.alert(t.workout.saveError);
-    }
-  }
-
-  // Only a done set asks first; one not done yet holds nothing to lose.
-  function removeSet(set: WorkoutSet, number: number) {
-    if (isSetDone(set)) {
-      onDeleteSet(set.id, number);
-    } else {
-      run(() => deleteSet(set.id));
-    }
-  }
 
   // A rest skipped ("straight on") leaves the rows together.
   function renderRest(set: WorkoutSet) {

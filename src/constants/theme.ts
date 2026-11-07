@@ -110,7 +110,8 @@ export const fontsInstrument = {
   bold: "InstrumentSans_700Bold",
 };
 
-// Only the weight in use is loaded at startup (see app/_layout.tsx).
+// Only these two weights are loaded at startup (see app/_layout.tsx): a new
+// one has to be loaded there too.
 export const fontsJetBrainsMono = {
   medium: "JetBrainsMono_500Medium",
   bold: "JetBrainsMono_700Bold",
@@ -165,11 +166,13 @@ export const iconSizes = {
 
 // The height of a control: md is the smallest comfortable to tap, sm for
 // compact ones beside other content, lg for the rows of a menu and the
-// search box.
+// search box, xl for the main actions (the primary button, the workout's
+// footer and the stopwatch's controls).
 export const controlHeights = {
   sm: 36,
   md: 44,
   lg: 48,
+  xl: 64,
 };
 
 function createGlobalStyles(colors: Colors) {

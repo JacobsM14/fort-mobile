@@ -5,6 +5,13 @@ function pad(value: number) {
   return String(value).padStart(2, "0");
 }
 
+// The whole seconds from `from` to `now` (epoch ms), never below zero. Whole,
+// like the live stopwatches show, so a time doesn't change by a second when
+// it's saved.
+export function elapsedSeconds(from: Date, now: number) {
+  return Math.max(0, Math.floor((now - from.getTime()) / 1000));
+}
+
 // "0:47", "1:32", "1:02:05".
 export function formatDuration(totalSeconds: number) {
   const seconds = Math.max(0, Math.floor(totalSeconds));

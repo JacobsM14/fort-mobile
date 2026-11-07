@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import Animated, { FadeIn, LinearTransition } from "react-native-reanimated";
 
 import { DashedButton } from "@/components/ui/buttons/dashed-button";
@@ -8,6 +8,7 @@ import {
   DeleteSetButton,
 } from "@/components/workout/shared/delete-set-button";
 import { ElapsedTime } from "@/components/workout/shared/elapsed-time";
+import { useSetActions } from "@/components/workout/shared/use-set-actions";
 import { DistanceInput } from "@/components/workout/stopwatch/distance-input";
 import { DurationInput } from "@/components/workout/stopwatch/duration-input";
 import { StopwatchControls } from "@/components/workout/stopwatch/stopwatch-controls";
@@ -19,14 +20,12 @@ import { useTranslation } from "@/i18n";
 import {
   addSet,
   completeSet,
-  deleteSet,
   pauseSetTimer,
   resetSetTimer,
   startNextSetTimer,
   updateSetValues,
 } from "@/features/workouts/queries";
 import {
-  elapsedSeconds,
   formatPreviousSet,
   getStopwatchState,
   isSetDone,
@@ -42,11 +41,15 @@ import type {
   StopwatchTrackingType,
 } from "@/features/workouts/sets";
 
-import { formatDuration } from "@/utils/duration";
+import { elapsedSeconds, formatDuration } from "@/utils/duration";
 
-import { fontSizes, fontsJetBrainsMono, spacing } from "@/constants/theme";
+import {
+  controlHeights,
+  fontSizes,
+  fontsJetBrainsMono,
+  spacing,
+} from "@/constants/theme";
 
-const NUMBER_WIDTH = 44;
 // Less than this is a slip, not a set: stopping drops it instead of saving.
 const MIN_SET_SECONDS = 1;
 
@@ -87,18 +90,11 @@ export function StopwatchTracker({
   const { globalStyles } = useTheme();
   const units = useUnits();
   const styles = useStyles();
+  const { run, removeSet } = useSetActions(onDeleteSet);
   const state = getStopwatchState(exercise.sets);
   const doneSets = exercise.sets.filter(isSetDone);
   const withDistance = trackingType === "distance_duration";
   const rows = mode === "edit" ? exercise.sets : doneSets;
-
-  function run(action: () => void) {
-    try {
-      action();
-    } catch {
-      Alert.alert(t.workout.saveError);
-    }
-  }
 
   function stop() {
     if (state.status === "idle") {
@@ -117,15 +113,6 @@ export function StopwatchTracker({
       run(() => updateSetValues(set.id, { ...set, durationS }));
     } else {
       run(() => completeSet(set.id, { ...set, durationS }));
-    }
-  }
-
-  // Only a done set asks first; one not done yet holds nothing to lose.
-  function removeSet(set: WorkoutSet, number: number) {
-    if (isSetDone(set)) {
-      onDeleteSet(set.id, number);
-    } else {
-      run(() => deleteSet(set.id));
     }
   }
 
@@ -306,14 +293,14 @@ const useStyles = makeStyles(({ colors }) =>
     },
     // Same column as the set numbers in the rows of other exercises.
     number: {
-      width: NUMBER_WIDTH,
+      width: controlHeights.md,
       textAlign: "center",
       fontSize: fontSizes.label,
       fontFamily: fontsJetBrainsMono.medium,
       color: colors.text,
     },
     numberSpace: {
-      width: NUMBER_WIDTH,
+      width: controlHeights.md,
     },
     columnLabel: {
       flex: 1,

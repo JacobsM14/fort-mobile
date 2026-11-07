@@ -8,7 +8,7 @@ import {
   workouts,
   workoutSets,
 } from "@/db/schema";
-import { firstWorkoutStartQuery } from "@/features/workouts/queries";
+import { useFirstWorkoutStart } from "@/features/workouts/queries";
 
 import {
   ACTIVITY_CALENDAR_WEEKS,
@@ -67,8 +67,7 @@ export function useAthleteType(firstWeekday: number) {
   );
   const from = weekStarts[0];
   const sets = useLiveQuery(athleteTypeSetsQuery(from), [from.getTime()]);
-  const first = useLiveQuery(firstWorkoutStartQuery());
-  const firstWorkoutStart = first.data.at(0)?.startedAt ?? undefined;
+  const { firstWorkoutStart, loaded: firstLoaded } = useFirstWorkoutStart();
   const rows = sets.data;
 
   return {
@@ -85,7 +84,7 @@ export function useAthleteType(firstWeekday: number) {
           },
     // Both: with only the sets, the consistency would show first over every
     // week and change once the first workout is known.
-    loaded: sets.updatedAt !== undefined && first.updatedAt !== undefined,
+    loaded: sets.updatedAt !== undefined && firstLoaded,
   };
 }
 

@@ -8,6 +8,7 @@ import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 import {
+  controlHeights,
   fontsInstrument,
   fontSizes,
   fontsJetBrainsMono,
@@ -183,7 +184,7 @@ const useStyles = makeStyles(({ colors }) =>
       flexDirection: "row",
       alignItems: "center",
       gap: spacing.sm,
-      minHeight: 64,
+      minHeight: controlHeights.xl,
       paddingHorizontal: spacing.md,
       borderRadius: radii.xs,
     },

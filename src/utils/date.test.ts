@@ -1,6 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 
 import {
+  earliestDate,
   formatDayHeader,
   formatShortDay,
   fromIso,
@@ -9,13 +10,13 @@ import {
   getWeekDays,
   isDateKey,
   isIsoDate,
+  isMissedDay,
   lastWeekStarts,
   parseDateKey,
   toDateKey,
   toIso,
   weekEnd,
   weekStartsSince,
-  earliestDate,
 } from "./date";
 
 // expo-localization numbers weekdays from 1 (Sunday).
@@ -146,6 +147,23 @@ describe("earliestDate", () => {
   it("is undefined when every date is missing", () => {
     expect(earliestDate([undefined, undefined])).toBeUndefined();
     expect(earliestDate([])).toBeUndefined();
+  });
+});
+
+describe("isMissedDay", () => {
+  const today = new Date(2026, 9, 28, 18, 30);
+
+  it("is a day already gone without a workout", () => {
+    expect(isMissedDay(new Date(2026, 9, 27), false, today)).toBe(true);
+  });
+
+  it("isn't a day that was trained", () => {
+    expect(isMissedDay(new Date(2026, 9, 27), true, today)).toBe(false);
+  });
+
+  it("isn't today, at any hour, nor a day still to come", () => {
+    expect(isMissedDay(new Date(2026, 9, 28), false, today)).toBe(false);
+    expect(isMissedDay(new Date(2026, 9, 29), false, today)).toBe(false);
   });
 });
 

@@ -74,10 +74,6 @@ export function getDefaultExerciseId(exercises: readonly WorkoutExercise[]) {
   )?.id;
 }
 
-export function elapsedSeconds(from: Date, now: number) {
-  return Math.max(0, Math.floor((now - from.getTime()) / 1000));
-}
-
 export type StopwatchState =
   | { status: "idle" }
   // offsetS is the time run before a pause, counted on top of since.

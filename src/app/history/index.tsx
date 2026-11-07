@@ -35,7 +35,7 @@ export default function HistoryScreen() {
   const to = new Date(y, m, d + 1);
   const days = getDaysBetween(from, to);
   const dailyExerciseCounts = useDailyExerciseCounts(from, to);
-  const firstWorkoutStart = useFirstWorkoutStart();
+  const { firstWorkoutStart } = useFirstWorkoutStart();
   const { entries } = useBodyWeights();
   const weightsByDay = toBodyWeightsByDay(entries);
   // Going further back than the first workout and the first weigh-in would

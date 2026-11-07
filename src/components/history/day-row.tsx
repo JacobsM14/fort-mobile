@@ -13,7 +13,7 @@ import {
   formatBodyWeightValue,
 } from "@/features/body/format";
 
-import { formatDayHeader } from "@/utils/date";
+import { formatDayHeader, isMissedDay } from "@/utils/date";
 
 import {
   fontsInstrument,
@@ -41,7 +41,7 @@ export function DayRow({ day, exerciseCount, weightKg, onPress }: DayRowProps) {
   const today = new Date();
   const trained = exerciseCount > 0;
   const isToday = day.toDateString() === today.toDateString();
-  const missed = !trained && !isToday && day < today;
+  const missed = isMissedDay(day, trained, today);
   const title = formatDayHeader(day, language);
   const detail = trained
     ? t.history.exerciseCount(exerciseCount)

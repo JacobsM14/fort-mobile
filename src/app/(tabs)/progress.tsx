@@ -18,9 +18,10 @@ import { BodyWeightCard } from "@/components/progress/body-weight-card";
 import { BodyWeightEntry } from "@/components/progress/body-weight-entry";
 import { EmptyChart } from "@/components/progress/empty-chart";
 import { ExercisePickerButton } from "@/components/progress/exercise-picker-button";
-import { LineChart } from "@/components/progress/line-chart";
+import { CHART_HEIGHT, LineChart } from "@/components/progress/line-chart";
 import { RangeFilter } from "@/components/progress/range-filter";
 import { IconButton } from "@/components/ui/buttons/icon-button";
+import { measureMenuAnchor } from "@/components/ui/overlays/measure-anchor";
 import { ExerciseSelectMenu } from "@/components/workout/header/exercise-select";
 
 import { useFocusedPress } from "@/hooks/use-focused-press";
@@ -117,22 +118,17 @@ export default function ProgressScreen() {
     }
   }
 
-  // The header scrolls with the content, so its place on the screen is only
-  // known when the menu opens: measured against the screen the menu covers.
+  // As wide as the header, which scrolls with the content.
   function toggleMenu() {
     if (menuAnchor !== undefined) {
       setMenuAnchor(undefined);
       return;
     }
-    screenRef.current?.measureInWindow((screenX, screenY) => {
-      headerRef.current?.measureInWindow((x, y, width, height) => {
-        setMenuAnchor({
-          top: y - screenY + height + spacing.xs,
-          left: x - screenX,
-          width,
-        });
-      });
-    });
+    measureMenuAnchor(
+      screenRef.current,
+      headerRef.current,
+      ({ top, left, width }) => setMenuAnchor({ top, left, width }),
+    );
   }
 
   function saveWeight(kg: number) {
@@ -313,10 +309,10 @@ const useStyles = makeStyles(({ colors }) =>
       fontFamily: fontsInstrument.medium,
       color: colors.disabled,
     },
-    // As tall as the chart card it stands in for, so the screen doesn't jump
-    // when the first workout arrives.
+    // As tall as the chart it stands in for, so the screen doesn't jump when
+    // the first workout arrives.
     emptySection: {
-      minHeight: 200,
+      minHeight: CHART_HEIGHT,
       justifyContent: "center",
       paddingHorizontal: spacing.lg,
     },

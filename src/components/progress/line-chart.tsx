@@ -45,7 +45,8 @@ import {
   spacing,
 } from "@/constants/theme";
 
-const CHART_HEIGHT = 200;
+// Exported so what stands in for a chart can match it.
+export const CHART_HEIGHT = 200;
 // The block with the selected value, floating at the start of its line.
 const BLOCK_WIDTH = 84;
 const BLOCK_HEIGHT = 44;

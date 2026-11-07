@@ -20,11 +20,13 @@ import {
 } from "@/components/ui/layout/back-header";
 import { ActionMenu } from "@/components/ui/overlays/action-menu";
 import { ConfirmDialog } from "@/components/ui/overlays/confirm-dialog";
+import { measureMenuAnchor } from "@/components/ui/overlays/measure-anchor";
 import { CurrentExerciseHeader } from "@/components/workout/header/current-exercise-header";
 import { ExerciseSelectMenu } from "@/components/workout/header/exercise-select";
 import { WorkoutTimer } from "@/components/workout/header/workout-timer";
 import { ExerciseTracker } from "@/components/workout/layout/exercise-tracker";
 import { WorkoutFooter } from "@/components/workout/layout/workout-footer";
+import { setConfirmationTexts } from "@/components/workout/shared/set-confirmation";
 
 import { useTheme } from "@/hooks/use-theme";
 import { useWorkoutSession } from "@/hooks/use-workout-session";
@@ -46,18 +48,13 @@ import type {
   ActionMenuItem,
 } from "@/components/ui/overlays/action-menu";
 import type { MenuAnchor } from "@/components/workout/header/exercise-select";
+import type { SetConfirmation } from "@/components/workout/shared/set-confirmation";
 import type { ExerciseInfo } from "@/features/exercises/catalog";
 import type { WorkoutEntry } from "@/features/workouts/entries";
 
-import { formatDuration } from "@/utils/duration";
-
 import { spacing } from "@/constants/theme";
 
-type Confirmation =
-  | { kind: "finish" }
-  | { kind: "cancel" }
-  | { kind: "deleteSet"; setId: string; number: number }
-  | { kind: "resetTimer"; setId: string; seconds: number };
+type Confirmation = { kind: "finish" } | { kind: "cancel" } | SetConfirmation;
 
 type DialogTexts = {
   tone: "primary" | "danger";
@@ -127,18 +124,14 @@ export default function WorkoutScreen() {
     setMenuAnchor({ top: y + height, left: x, width });
   }
 
-  // Measured against the screen the menu covers, its right edge lined up with
-  // the button's.
+  // Its right edge lined up with the button's.
   function openActions() {
     setMenuOpen(false);
-    screenRef.current?.measureInWindow((screenX, screenY, screenWidth) => {
-      actionsButtonRef.current?.measureInWindow((x, y, width, height) => {
-        setActionsAnchor({
-          top: y - screenY + height + spacing.xs,
-          right: screenWidth - (x - screenX + width),
-        });
-      });
-    });
+    measureMenuAnchor(
+      screenRef.current,
+      actionsButtonRef.current,
+      ({ top, right }) => setActionsAnchor({ top, right }),
+    );
   }
 
   function getActionItems(): ActionMenuItem[] {
@@ -284,19 +277,10 @@ export default function WorkoutScreen() {
           cancelLabel: t.workout.keepTraining,
         };
       case "deleteSet":
-        return {
-          tone: "danger",
-          title: t.workout.deleteSetTitle(action.number),
-          message: t.workout.deleteSetMessage,
-          confirmLabel: t.workout.deleteSetConfirm,
-          cancelLabel: t.workout.cancel,
-        };
       case "resetTimer":
         return {
           tone: "danger",
-          title: t.workout.resetTitle,
-          message: t.workout.resetMessage(formatDuration(action.seconds)),
-          confirmLabel: t.workout.resetConfirm,
+          ...setConfirmationTexts(action, t),
           cancelLabel: t.workout.cancel,
         };
     }

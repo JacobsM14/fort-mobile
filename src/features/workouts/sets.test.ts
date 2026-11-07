@@ -4,7 +4,6 @@ import { es } from "@/i18n/es";
 
 import {
   canCompleteSet,
-  elapsedSeconds,
   formatPreviousSet,
   formatSet,
   getDefaultExerciseId,
@@ -134,13 +133,6 @@ describe("getDefaultExerciseId", () => {
     ];
     expect(getDefaultExerciseId(exercises)).toBe("b");
     expect(getDefaultExerciseId([])).toBeUndefined();
-  });
-});
-
-describe("elapsedSeconds", () => {
-  it("counts whole seconds and never goes below zero", () => {
-    expect(elapsedSeconds(DONE_AT, DONE_AT.getTime() + 61_900)).toBe(61);
-    expect(elapsedSeconds(DONE_AT, DONE_AT.getTime() - 500)).toBe(0);
   });
 });
 

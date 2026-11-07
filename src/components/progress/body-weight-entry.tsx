@@ -8,6 +8,8 @@ import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
 
+import { formatBodyWeightValue } from "@/features/body/format";
+
 import { formatDecimal, parseDecimal, roundToTenth } from "@/utils/number";
 import { weightFromUnit, weightToUnit } from "@/utils/units";
 
@@ -45,10 +47,7 @@ export function BodyWeightEntry({
   const styles = useStyles();
 
   const [text, setText] = useState(() =>
-    formatDecimal(
-      roundToTenth(weightToUnit(initialKg, units.weight)),
-      language,
-    ),
+    formatBodyWeightValue(initialKg, units, language),
   );
   const value = parseDecimal(text);
   // Compared as shown (a tenth), so a saved 72.44 kg isn't "changed" by the

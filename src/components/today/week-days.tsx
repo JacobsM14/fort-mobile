@@ -11,14 +11,15 @@ import { useTranslation } from "@/i18n";
 
 import { useFirstBodyWeightDay } from "@/features/body/queries";
 import {
+  useDailyExerciseCounts,
   useFirstWorkoutStart,
-  useTrainedDays,
 } from "@/features/workouts/queries";
 
 import {
   earliestDate,
   formatDayHeader,
   getWeekDays,
+  isMissedDay,
   toDateKey,
   weekEnd,
   weekStartsSince,
@@ -31,7 +32,7 @@ import { fontsInstrument, fontSizes, spacing } from "@/constants/theme";
 export function WeekDays() {
   const styles = useStyles();
   const firstWeekday = useFirstWeekday();
-  const firstWorkoutStart = useFirstWorkoutStart();
+  const { firstWorkoutStart } = useFirstWorkoutStart();
   const firstWeighIn = useFirstBodyWeightDay();
   const openDay = useFocusedPress((day: Date) =>
     router.push({
@@ -100,15 +101,15 @@ function Week({ days, today, width, onOpenDay }: WeekProps) {
   const { language } = useTranslation();
   const styles = useStyles();
   // A day counts as trained when a workout started that day has a set done.
-  const trainedDays = useTrainedDays(days[0], weekEnd(days[0]));
+  const exerciseCounts = useDailyExerciseCounts(days[0], weekEnd(days[0]));
 
   return (
     <View style={[styles.week, width !== undefined && { width }]}>
       {days.map((day) => {
         const key = day.toDateString();
         const isToday = key === today.toDateString();
-        const trained = trainedDays.has(key);
-        const missed = !trained && !isToday && day < today;
+        const trained = exerciseCounts.has(key);
+        const missed = isMissedDay(day, trained, today);
         const disabled = isToday || day > today;
         return (
           <Pressable

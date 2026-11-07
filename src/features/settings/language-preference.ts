@@ -1,23 +1,12 @@
-import Storage from "expo-sqlite/kv-store";
+import { LANGUAGE_PREFERENCES } from "@/constants/enums";
 
-import {
+import { storedChoice } from "./stored-choice";
+
+const languagePreference = storedChoice(
+  "language_preference",
   LANGUAGE_PREFERENCES,
-  type LanguagePreference,
-} from "@/constants/enums";
+  "system",
+);
 
-const KEY = "language_preference";
-
-function isLanguagePreference(
-  value: string | null,
-): value is LanguagePreference {
-  return LANGUAGE_PREFERENCES.some((preference) => preference === value);
-}
-
-export function loadLanguagePreference(): LanguagePreference {
-  const stored = Storage.getItemSync(KEY);
-  return isLanguagePreference(stored) ? stored : "system";
-}
-
-export function saveLanguagePreference(preference: LanguagePreference) {
-  Storage.setItemSync(KEY, preference);
-}
+export const loadLanguagePreference = languagePreference.load;
+export const saveLanguagePreference = languagePreference.save;
