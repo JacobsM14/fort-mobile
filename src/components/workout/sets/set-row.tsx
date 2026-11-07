@@ -10,6 +10,7 @@ import {
   DeleteSetButton,
 } from "@/components/workout/shared/delete-set-button";
 
+import { useSaveOnUnmount } from "@/hooks/use-save-on-unmount";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
@@ -201,6 +202,8 @@ export function SetRow({
     }
   }
 
+  useSaveOnUnmount(save);
+
   function renderField(field: Field) {
     return (
       <TextInput
@@ -281,9 +284,6 @@ const useStyles = makeStyles(({ colors }) =>
       fontSize: fontSizes.body,
       fontFamily: fontsInstrument.semiBold,
       color: colors.text,
-      // backgroundColor: colors.backgroundSecondary,
-      // borderWidth: 1,
-      // borderColor: colors.border,
     },
     // The check box's width, so the labels line up with the rows.
     boxSpace: {

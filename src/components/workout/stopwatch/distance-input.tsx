@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 // See SetRow: lets a drag that starts here scroll the list.
 import { TextInput } from "react-native-gesture-handler";
 
+import { useSaveOnUnmount } from "@/hooks/use-save-on-unmount";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
@@ -66,6 +67,8 @@ export function DistanceInput({
       setText(savedText);
     }
   }
+
+  useSaveOnUnmount(save);
 
   return (
     <TextInput
