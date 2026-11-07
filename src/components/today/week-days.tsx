@@ -39,17 +39,18 @@ export function WeekDays() {
         const trained = trainedDays.has(key);
         // Days already gone without a workout are dashed.
         const missed = !trained && !isToday && day < today;
-        // Days still to come have nothing to show yet.
-        const upcoming = !isToday && day > today;
+        // Days still to come have nothing to show yet, and today is already
+        // what this screen is about: its routines are right below.
+        const disabled = isToday || day > today;
         return (
           <Pressable
             key={key}
             style={({ pressed }) => [styles.day, pressed && styles.dayPressed]}
             onPress={() => openDay(day)}
-            disabled={upcoming}
+            disabled={disabled}
             accessibilityRole="button"
             accessibilityLabel={formatDayHeader(day, language)}
-            accessibilityState={{ disabled: upcoming }}
+            accessibilityState={{ disabled }}
           >
             <Text style={styles.initial}>
               {day
