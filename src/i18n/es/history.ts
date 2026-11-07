@@ -20,6 +20,9 @@ export const historyTexts = {
     deleteWeightConfirm: "Eliminar",
     addExercise: "Añadir ejercicio",
     addRoutine: "Añadir rutina",
+    // Today's own workout is started from Today, not logged here.
+    todayAddRoutineHint:
+      "Solo para registrar un entrenamiento que ya has hecho. Para entrenar ahora, empieza la rutina desde Hoy.",
     chooseRoutine: "Elige la rutina que hiciste",
     logError: "No se ha podido añadir. Inténtalo de nuevo.",
     exerciseOptions: (name: string) => `Opciones de ${name}`,

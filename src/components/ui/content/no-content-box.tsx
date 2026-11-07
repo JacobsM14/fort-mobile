@@ -6,13 +6,16 @@ import { fontsInstrument, radii, spacing } from "@/constants/theme";
 
 type NoContentBoxProps = {
   label: string;
+  // Takes the space its parent leaves it instead of a fixed height, so it
+  // never makes a screen scroll on its own.
+  fill?: boolean;
 };
 
-export function NoContentBox({ label }: NoContentBoxProps) {
+export function NoContentBox({ label, fill = false }: NoContentBoxProps) {
   const styles = useStyles();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, fill ? styles.fill : styles.fixed]}>
       <View style={styles.line} />
       <View style={styles.row}>
         <View style={styles.lineHorizontal} />
@@ -27,11 +30,16 @@ export function NoContentBox({ label }: NoContentBoxProps) {
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
     container: {
-      height: 300,
       backgroundColor: colors.background,
       borderRadius: radii.md,
       alignItems: "center",
       gap: spacing.sm,
+    },
+    fixed: {
+      height: 300,
+    },
+    fill: {
+      flex: 1,
     },
     line: {
       flex: 1,

@@ -10,7 +10,7 @@ import { NoContentBox } from "@/components/ui/content/no-content-box";
 import { BackHeader } from "@/components/ui/layout/back-header";
 import { WorkoutCard } from "@/components/workout/summary/workout-card";
 
-import { useTheme } from "@/hooks/use-theme";
+import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 import {
@@ -22,13 +22,14 @@ import {
 } from "@/features/body/queries";
 import { useWorkoutHistory } from "@/features/workouts/queries";
 
-import { formatDayHeader, parseDateKey } from "@/utils/date";
+import { formatDayHeader, parseDateKey, toDateKey } from "@/utils/date";
 
-import { spacing } from "@/constants/theme";
+import { fontSizes, fontsInstrument, spacing } from "@/constants/theme";
 
 export default function HistoryDayScreen() {
   const { t, language } = useTranslation();
   const { globalStyles } = useTheme();
+  const styles = useStyles();
   // "today" when opened from Today's week: going back closes the modal and
   // returns there instead of to the history list.
   const { date, from } = useLocalSearchParams<{
@@ -45,6 +46,7 @@ export default function HistoryDayScreen() {
     from: day,
     to: nextDay,
   });
+  const isToday = date === toDateKey(new Date());
 
   const { entries, loaded: weightsLoaded } = useBodyWeights();
   const weight = bodyWeightOnDay(entries, date);
@@ -71,7 +73,6 @@ export default function HistoryDayScreen() {
     setWeightSheetOpen(false);
   }
 
-  // A malformed link has no day to show.
   if (Number.isNaN(day.getTime())) {
     return null;
   }
@@ -102,28 +103,14 @@ export default function HistoryDayScreen() {
           contentContainerStyle={styles.list}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
-            loaded ? <NoContentBox label={t.history.noWorkout} /> : undefined
-          }
-          ListFooterComponent={
             loaded ? (
-              <DashedButton
-                icon={{ ios: "plus", android: "add", web: "add" }}
-                label={t.history.addRoutine}
-                onPress={() =>
-                  router.push({
-                    pathname: "/history/day/[date]/add_routine",
-                    params: { date },
-                  })
-                }
-              />
+              <NoContentBox label={t.history.noWorkout} fill />
             ) : undefined
           }
           renderItem={({ item }) => (
             <WorkoutCard
               workout={item}
               onPress={() =>
-                // The workout in progress belongs to its own screen, with the
-                // stopwatch, rests and notification.
                 item.endedAt === null
                   ? router.push({
                       pathname: "/workout/[id]",
@@ -138,6 +125,21 @@ export default function HistoryDayScreen() {
           )}
         />
       </View>
+      <View style={styles.footer}>
+        <DashedButton
+          icon={{ ios: "plus", android: "add", web: "add" }}
+          label={t.history.addRoutine}
+          onPress={() =>
+            router.push({
+              pathname: "/history/day/[date]/add_routine",
+              params: { date },
+            })
+          }
+        />
+        {isToday && (
+          <Text style={styles.hint}>{t.history.todayAddRoutineHint}</Text>
+        )}
+      </View>
       <BodyWeightSheet
         visible={weightSheetOpen}
         onClose={() => setWeightSheetOpen(false)}
@@ -151,15 +153,31 @@ export default function HistoryDayScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  screen: {
-    paddingBottom: 0,
-  },
-  workouts: {
-    flex: 1,
-  },
-  list: {
-    gap: spacing.sm,
-    paddingBottom: spacing.lg,
-  },
-});
+const useStyles = makeStyles(({ colors }) =>
+  StyleSheet.create({
+    screen: {
+      paddingBottom: 0,
+    },
+    workouts: {
+      flex: 1,
+    },
+    // Grows to the list's height, so the empty box can fill it instead of
+    // scrolling.
+    list: {
+      flexGrow: 1,
+      gap: spacing.sm,
+      paddingBottom: spacing.lg,
+    },
+    // Fixed under the scrolling workouts, so the way to log a routine, and
+    // today's note about it, are always in sight.
+    footer: {
+      gap: spacing.sm,
+      paddingVertical: spacing.sm,
+    },
+    hint: {
+      fontSize: fontSizes.caption,
+      fontFamily: fontsInstrument.medium,
+      color: colors.disabled,
+    },
+  }),
+);
