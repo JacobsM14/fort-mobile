@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-// Gesture handler's input, with its scroll view on the screen, lets a drag
-// that starts on it scroll the list; on Android the plain one keeps the touch.
 import { TextInput } from "react-native-gesture-handler";
 
 import { CheckBox } from "@/components/ui/inputs/check-box";
@@ -143,10 +141,8 @@ type SetRowProps = {
   number: number;
   set: WorkoutSet;
   trackingType: RepsTrackingType;
-  // The set with the same number last time; undefined when it had fewer.
   previous: SetValues | undefined;
   showPrevious: boolean;
-  // The set before it isn't done yet, so this one can't be started or done.
   locked: boolean;
   onSave: (values: SetValues) => void;
   onComplete: (values: SetValues) => void;

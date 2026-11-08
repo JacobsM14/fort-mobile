@@ -46,15 +46,10 @@ type ExerciseItem = ExerciseSummary & {
 type ExercisePickerScreenProps = {
   backLabel: string;
   initialSelectedIds?: readonly string[];
-  // Left out of the list, e.g. the exercises already in a workout.
   excludeIds?: readonly string[];
   doneLabel: (count: number) => string;
   onDone: (selectedIds: string[]) => void;
-  // A routine can be left with no exercises picked; adding to a workout
-  // needs at least one.
   allowEmpty?: boolean;
-  // Creating a custom exercise from the picker (only routines for now). The
-  // new exercise comes back through subscribeExerciseCreated.
   onCreateCustom?: () => void;
   subscribeExerciseCreated?: (
     listener: (exerciseId: string) => void,

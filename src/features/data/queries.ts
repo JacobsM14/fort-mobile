@@ -333,17 +333,11 @@ export function readBackup(now = new Date()): BackupFile {
 const IMPORT_BATCH_SIZE = 50;
 
 export type ImportResult = {
-  // Rows written: those the file brought new or newer than the stored ones.
   exercises: number;
   routines: number;
   workouts: number;
   bodyWeights: number;
-  // Rows written inside routines and workouts (their exercises and sets).
-  // They change on their own, as when a set is edited in the history, so a
-  // file may bring nothing else.
   details: number;
-  // Exercises of a routine or workout that this app's catalog doesn't know,
-  // left out with their sets.
   skippedExercises: number;
 };
 
@@ -387,8 +381,6 @@ export function importBackup(file: BackupFile): ImportResult {
       skippedExercises: 0,
     };
 
-    // Custom exercises first: routines and workouts point at them. Their
-    // muscles are replaced only along with the exercise row.
     for (const exercise of file.exercises) {
       const written = tx
         .insert(exercises)
@@ -408,9 +400,11 @@ export function importBackup(file: BackupFile): ImportResult {
           setWhere: isNewer(exercises),
         })
         .run().changes;
+
       if (written === 0) {
         continue;
       }
+
       result.exercises += 1;
       tx.delete(exerciseMuscles)
         .where(eq(exerciseMuscles.exerciseId, exercise.id))
@@ -437,6 +431,7 @@ export function importBackup(file: BackupFile): ImportResult {
         .all()
         .map((row) => [row.key, row.id] as const),
     );
+
     function exerciseIdOf(ref: BackupExerciseRef) {
       return "key" in ref ? catalogIds.get(ref.key) : ref.id;
     }
@@ -444,6 +439,7 @@ export function importBackup(file: BackupFile): ImportResult {
     const routineRows: (typeof routines.$inferInsert)[] = [];
     const routineExerciseRows: (typeof routineExercises.$inferInsert)[] = [];
     const routineSetRows: (typeof routineSets.$inferInsert)[] = [];
+
     for (const routine of file.routines) {
       routineRows.push({
         id: routine.id,
@@ -451,6 +447,7 @@ export function importBackup(file: BackupFile): ImportResult {
         createdAt: fromIso(routine.createdAt),
         updatedAt: fromIso(routine.updatedAt),
       });
+
       for (const exercise of routine.exercises) {
         const exerciseId = exerciseIdOf(exercise.exercise);
         if (exerciseId === undefined) {

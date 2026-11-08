@@ -19,7 +19,6 @@ type ProfileFieldProps = {
   placeholder: string;
   maxLength: number;
   accessibilityLabel: string;
-  // Wider for the year than for the day.
   grow?: number;
 };
 
