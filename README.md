@@ -276,13 +276,9 @@ Fort keeps everything on the device: there is no account, no server, no ads and 
 
 ## Use of AI
 
-This project was developed with the help of [Claude](https://www.anthropic.com/claude) (Anthropic) as a coding agent, used only to:
+I used AI ([Claude](https://www.anthropic.com/claude), by Anthropic) in this project to speed up development, delegating some tasks, such as the tests, to keep the workload manageable. It also wrote functions following my guidelines (they are in [CLAUDE.md](CLAUDE.md)) and under my review, and it helped me find bugs and consider alternatives.
 
-- find bugs,
-- document and comment code,
-- make tasks easier,
-- find documentation,
-- explore different options.
+I believe using AI responsibly is what sets a competent developer apart today. My aim was never to work with one hand tied behind my back, but never to stop learning either: at times the AI pointed me to the documentation I needed to do things I had never done before, and once I had learned them, I used it to avoid writing tedious code.
 
 Besides that:
 
