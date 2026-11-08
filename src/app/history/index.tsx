@@ -38,8 +38,6 @@ export default function HistoryScreen() {
   const { firstWorkoutStart } = useFirstWorkoutStart();
   const { entries } = useBodyWeights();
   const weightsByDay = toBodyWeightsByDay(entries);
-  // Going further back than the first workout and the first weigh-in would
-  // only add empty days.
   const firstLogged = earliestDate([firstWorkoutStart, entries.at(0)?.date]);
   const hasMore = firstLogged !== undefined && firstLogged < from;
 

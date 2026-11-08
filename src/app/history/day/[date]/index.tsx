@@ -155,15 +155,11 @@ const styles = StyleSheet.create({
   workouts: {
     flex: 1,
   },
-  // Grows to the list's height, so the empty box can fill it instead of
-  // scrolling.
   list: {
     flexGrow: 1,
     gap: spacing.sm,
     paddingBottom: spacing.lg,
   },
-  // Fixed under the scrolling workouts, so adding a routine is always in
-  // sight.
   footer: {
     paddingVertical: spacing.sm,
   },

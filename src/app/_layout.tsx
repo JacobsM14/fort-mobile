@@ -25,8 +25,6 @@ import { useDatabase } from "@/db/use-database";
 
 SplashScreen.preventAutoHideAsync();
 
-// Keeps the tabs underneath when a modal is opened directly (e.g. a deep
-// link), so dismissing it doesn't leave an empty stack.
 export const unstable_settings = {
   anchor: "(tabs)",
 };

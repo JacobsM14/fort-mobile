@@ -54,8 +54,6 @@ export default function AddRoutineScreen() {
       start(routine);
       return;
     }
-    // At the current time of day, so several logged on the same day keep the
-    // order they were added in.
     const now = new Date();
     const startedAt = new Date(
       day.getFullYear(),

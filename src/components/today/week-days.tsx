@@ -88,7 +88,6 @@ export function WeekDays() {
 type WeekProps = {
   days: Date[];
   today: Date;
-  // Unset while he row hasn't been measured: then the week takes the row.
   width?: number;
   onOpenDay: (day: Date) => void;
 };
