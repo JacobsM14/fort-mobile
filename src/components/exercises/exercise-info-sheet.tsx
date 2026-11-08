@@ -112,6 +112,7 @@ export function ExerciseInfoSheet({
                     <ImagePlaceholder
                       key={slot}
                       aspectRatio={IMAGE_ASPECT_RATIO}
+                      label={t.exercises.noImages}
                       style={styles.imageSlot}
                     />
                   ))}
