@@ -15,15 +15,16 @@ private const val KEY_CHANNEL_NAME = "channel_name"
 private const val ALARM_REQUEST_CODE = 2001
 private const val DAYS_IN_WEEK = 7
 
-// Shared by the module and the two receivers. The reminder is kept in
-// SharedPreferences because the receivers run without JavaScript: when the
-// alarm goes off, and after the phone restarts, which clears every alarm.
+// Shared by the module and the two receivers.
+// It handles scheduling, cancelling, and loading reminders.
+// It also calculates the next weekly occurrence of a reminder.
+// We use SharedPreferences because the receivers run without JavaScript
+// and can't read the app's database.
+// (device restarts reset alarms, so we need to reload the reminder to reschedule it)
 object ReminderScheduler {
 
     fun schedule(context: Context, reminder: Reminder) {
         save(context, reminder)
-        // Inexact: it may come a few minutes late while the phone is dozing,
-        // which doesn't matter here, and it needs no special permission.
         context.getSystemService(AlarmManager::class.java)
             .setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, reminder.atMs, alarmIntent(context))
     }
@@ -33,7 +34,6 @@ object ReminderScheduler {
         preferences(context).edit().clear().apply()
     }
 
-    // Null when no reminder is set.
     fun load(context: Context): Reminder? {
         val preferences = preferences(context)
         if (!preferences.contains(KEY_AT_MS)) {
@@ -48,12 +48,11 @@ object ReminderScheduler {
         )
     }
 
-    // The first weekly repeat of fromMs that is still ahead of nowMs. A day is
-    // added on the calendar, not 24 hours in milliseconds, so the reminder
-    // keeps its local hour across a clock change. It loops because the alarm
-    // may come late, or the phone may have been off when it was due.
+    // After fromMs, find the next weekly occurrence that is still ahead of nowMs.
     fun nextWeekly(fromMs: Long, nowMs: Long): Long {
         val calendar = Calendar.getInstance().apply { timeInMillis = fromMs }
+        // Because of inexact alarms, or the phone being off when it was due,
+        // we check that the calculated time is still ahead of nowMs.
         while (calendar.timeInMillis <= nowMs) {
             calendar.add(Calendar.DAY_OF_YEAR, DAYS_IN_WEEK)
         }

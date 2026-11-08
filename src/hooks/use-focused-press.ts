@@ -1,14 +1,12 @@
 import { useNavigation } from "expo-router";
 
-// A quick double tap fires a button twice before the navigation it starts has
-// finished animating: a push opens the screen twice, and a save or a back runs
-// again. The navigation state changes as soon as the first press navigates, so
-// presses are ignored once their screen is no longer the focused one.
+// Prevents double taps from firing before navigation finishes.
 export function useFocusedPress<Args extends unknown[]>(
   onPress?: (...args: Args) => void,
 ): (...args: Args) => void {
   const navigation = useNavigation();
 
+  // If navigation is not focused, ignore the press.
   return (...args) => {
     if (onPress !== undefined && navigation.isFocused()) {
       onPress(...args);

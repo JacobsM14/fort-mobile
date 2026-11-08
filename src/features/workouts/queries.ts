@@ -505,6 +505,8 @@ export function finishWorkout(workoutId: string): "finished" | "discarded" {
       .from(workoutSets)
       .where(inArray(workoutSets.workoutExerciseId, exerciseIds))
       .all();
+
+    // Discard the workout if no sets were completed.
     if (done.length === 0) {
       tx.delete(workouts).where(eq(workouts.id, workoutId)).run();
       return "discarded";
@@ -513,6 +515,7 @@ export function finishWorkout(workoutId: string): "finished" | "discarded" {
     const doneExerciseIds = [
       ...new Set(done.map((row) => row.workoutExerciseId)),
     ];
+    // Remove exercises that have no completed sets.
     tx.delete(workoutExercises)
       .where(
         and(
