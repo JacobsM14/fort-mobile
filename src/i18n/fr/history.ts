@@ -23,8 +23,6 @@ export const historyTexts: Pick<Translations, "history"> = {
     deleteWeightConfirm: "Supprimer",
     addExercise: "Ajouter un exercice",
     addRoutine: "Ajouter une routine",
-    todayAddRoutineHint:
-      "Uniquement pour enregistrer un entraînement déjà fait. Pour t'entraîner maintenant, commence la routine depuis Aujourd'hui.",
     chooseRoutine: "Choisis la routine que tu as faite",
     logError: "Impossible de l'ajouter. Réessaie.",
     exerciseOptions: (name) => `Options de l'exercice ${name}`,

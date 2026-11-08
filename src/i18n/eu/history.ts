@@ -23,8 +23,6 @@ export const historyTexts: Pick<Translations, "history"> = {
     deleteWeightConfirm: "Ezabatu",
     addExercise: "Gehitu ariketa",
     addRoutine: "Gehitu errutina",
-    todayAddRoutineHint:
-      "Dagoeneko egin duzun entrenamendu bat erregistratzeko soilik. Orain entrenatzeko, hasi errutina Gaur ataletik.",
     chooseRoutine: "Aukeratu egin zenuen errutina",
     logError: "Ezin izan da gehitu. Saiatu berriro.",
     exerciseOptions: (name) => `${name} ariketaren aukerak`,

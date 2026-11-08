@@ -55,7 +55,6 @@ export function WeekDays() {
       onLayout={(event) => setWidth(event.nativeEvent.layout.width)}
     >
       {width === 0 ? (
-        // Holds the row's height until the list can be laid out.
         <Week days={weeks[0]} today={today} onOpenDay={openDay} />
       ) : (
         <FlatList
@@ -75,11 +74,8 @@ export function WeekDays() {
           pagingEnabled
           scrollEnabled={weeks.length > 1}
           showsHorizontalScrollIndicator={false}
-          // No stretch or bounce past this week: there is nothing ahead.
           bounces={false}
           overScrollMode="never"
-          // Each week reads its own trained days, so only the one on screen
-          // and its neighbours are kept.
           initialNumToRender={1}
           maxToRenderPerBatch={1}
           windowSize={3}
@@ -92,7 +88,7 @@ export function WeekDays() {
 type WeekProps = {
   days: Date[];
   today: Date;
-  // Unset while the row hasn't been measured: then the week takes the row.
+  // Unset while he row hasn't been measured: then the week takes the row.
   width?: number;
   onOpenDay: (day: Date) => void;
 };
@@ -100,7 +96,6 @@ type WeekProps = {
 function Week({ days, today, width, onOpenDay }: WeekProps) {
   const { language } = useTranslation();
   const styles = useStyles();
-  // A day counts as trained when a workout started that day has a set done.
   const exerciseCounts = useDailyExerciseCounts(days[0], weekEnd(days[0]));
 
   return (
@@ -110,7 +105,7 @@ function Week({ days, today, width, onOpenDay }: WeekProps) {
         const isToday = key === today.toDateString();
         const trained = exerciseCounts.has(key);
         const missed = isMissedDay(day, trained, today);
-        const disabled = isToday || day > today;
+        const disabled = day > today;
         return (
           <Pressable
             key={key}

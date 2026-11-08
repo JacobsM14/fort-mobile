@@ -22,8 +22,6 @@ export const historyTexts: Pick<Translations, "history"> = {
     deleteWeightConfirm: "Eliminar",
     addExercise: "Adicionar exercício",
     addRoutine: "Adicionar rotina",
-    todayAddRoutineHint:
-      "Só para registar um treino que já fizeste. Para treinar agora, inicia a rotina a partir de Hoje.",
     chooseRoutine: "Escolhe a rotina que fizeste",
     logError: "Não foi possível adicionar. Tenta novamente.",
     exerciseOptions: (name) => `Opções de ${name}`,
