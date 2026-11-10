@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { ProfileField } from "@/components/settings/profile-field";
 
+import { useSaveOnUnmount } from "@/hooks/use-save-on-unmount";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
@@ -58,6 +59,8 @@ export function HeightField({ heightCm, imperial, onSave }: HeightFieldProps) {
       onSave(typed);
     }
   }
+
+  useSaveOnUnmount(save);
 
   return (
     <View style={globalStyles.formCage}>
