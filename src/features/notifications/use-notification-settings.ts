@@ -3,6 +3,7 @@ import { AppState } from "react-native";
 
 import {
   ensureNotificationPermission,
+  hasAskedNotificationPermission,
   hasNotificationPermission,
 } from "./permission";
 import {
@@ -26,6 +27,9 @@ export function useNotificationSettings() {
   const [reminder, setReminderState] = useState(loadWeightReminder);
   // Null until checked.
   const [permitted, setPermitted] = useState<boolean | null>(null);
+  // Before the first request the permission is missing but not refused, so
+  // there is nothing to point to the system settings for.
+  const [asked, setAsked] = useState(hasAskedNotificationPermission);
   const rescheduleWeightReminder = useRescheduleWeightReminder();
 
   // Checked again on coming back to the app: the user may have gone to the
@@ -57,6 +61,7 @@ export function useNotificationSettings() {
   async function setEnabled(enabled: boolean) {
     if (enabled) {
       const granted = await ensureNotificationPermission();
+      setAsked(true);
       setPermitted(granted);
       if (!granted) {
         return;
@@ -75,7 +80,7 @@ export function useNotificationSettings() {
     // Shown off without the permission, whatever was saved: nothing would
     // reach the user anyway.
     enabled: preferences.enabled && permitted !== false,
-    blocked: permitted === false,
+    blocked: asked && permitted === false,
     workout: preferences.workout,
     weightReminder: preferences.weightReminder,
     reminder,

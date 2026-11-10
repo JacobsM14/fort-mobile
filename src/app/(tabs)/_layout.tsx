@@ -22,7 +22,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import { useAskNotificationPermissionOnFirstOpen } from "@/features/notifications/permission";
 import { useWeightReminderSchedule } from "@/features/notifications/weight-reminder-schedule";
 import { useDismissEndedWorkoutNotification } from "@/features/notifications/workout-notification";
 
@@ -74,7 +73,6 @@ export default function TabsLayout() {
   // Here because the tabs stay mounted under every modal, and only once the
   // database is ready.
   useDismissEndedWorkoutNotification();
-  useAskNotificationPermissionOnFirstOpen();
   useWeightReminderSchedule();
 
   return (
