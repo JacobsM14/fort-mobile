@@ -15,6 +15,8 @@ import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
+import { OnboardingDialog } from "@/components/onboarding/onboarding-dialog";
+
 import { LanguageProvider } from "@/hooks/use-language";
 import { makeStyles, ThemeProvider, useTheme } from "@/hooks/use-theme";
 import { UnitsProvider } from "@/hooks/use-units";
@@ -91,13 +93,16 @@ function RootNavigator() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="routine/[id]" options={MODAL_OPTIONS} />
-      <Stack.Screen name="workout/[id]" options={MODAL_OPTIONS} />
-      <Stack.Screen name="history" options={MODAL_OPTIONS} />
-      <Stack.Screen name="settings" options={MODAL_OPTIONS} />
-    </Stack>
+    <>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="routine/[id]" options={MODAL_OPTIONS} />
+        <Stack.Screen name="workout/[id]" options={MODAL_OPTIONS} />
+        <Stack.Screen name="history" options={MODAL_OPTIONS} />
+        <Stack.Screen name="settings" options={MODAL_OPTIONS} />
+      </Stack>
+      <OnboardingDialog />
+    </>
   );
 }
 

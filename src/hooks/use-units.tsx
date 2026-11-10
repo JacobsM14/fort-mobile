@@ -61,25 +61,28 @@ export function UnitsProvider({ children }: { children: ReactNode }) {
 
 // The units to show, with "system" resolved from the device: the US uses
 // pounds and miles, the UK kg in the gym and miles on the road.
-export function useUnits(): Units & UnitsContextValue {
+export function useUnits(): Units &
+  UnitsContextValue & {
+    systemWeight: WeightUnit;
+    systemDistance: DistanceUnit;
+  } {
   const context = use(UnitsContext);
   if (context === null) {
     throw new Error("useUnits must be used inside UnitsProvider");
   }
   const [locale] = useLocales();
   const system = locale.measurementSystem;
-  const weight: WeightUnit =
+  const systemWeight: WeightUnit = system === "us" ? "lb" : "kg";
+  const systemDistance: DistanceUnit =
+    system === "us" || system === "uk" ? "mi" : "km";
+  const weight =
     context.weightPreference !== "system"
       ? context.weightPreference
-      : system === "us"
-        ? "lb"
-        : "kg";
-  const distance: DistanceUnit =
+      : systemWeight;
+  const distance =
     context.distancePreference !== "system"
       ? context.distancePreference
-      : system === "us" || system === "uk"
-        ? "mi"
-        : "km";
+      : systemDistance;
 
-  return { ...context, weight, distance };
+  return { ...context, weight, distance, systemWeight, systemDistance };
 }

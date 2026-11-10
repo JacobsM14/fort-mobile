@@ -2,6 +2,7 @@ import { catalogTexts } from "./catalog";
 import { commonTexts } from "./common";
 import { exercisesTexts } from "./exercises";
 import { historyTexts } from "./history";
+import { onboardingTexts } from "./onboarding";
 import { profileTexts } from "./profile";
 import { progressTexts } from "./progress";
 import { routinesTexts } from "./routines";
@@ -16,6 +17,7 @@ export const es = {
   ...commonTexts,
   ...exercisesTexts,
   ...historyTexts,
+  ...onboardingTexts,
   ...profileTexts,
   ...progressTexts,
   ...routinesTexts,

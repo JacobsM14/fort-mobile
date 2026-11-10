@@ -114,6 +114,7 @@ export const spacing = {
   sm: 12,
   md: 16,
   lg: 24,
+  xl: 32,
   badgeGap: 5,
   badgeInset: 9,
 };
