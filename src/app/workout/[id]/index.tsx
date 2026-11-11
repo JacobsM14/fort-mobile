@@ -340,7 +340,10 @@ export default function WorkoutScreen() {
       >
         {view.entries.length === 0 && (
           <>
-            <NoContentBox label={t.workout.noExercises} />
+            <NoContentBox
+              label={t.workout.noExercises}
+              onPress={addExtraExercise}
+            />
             <DashedButton
               icon={{ ios: "plus", android: "add", web: "add" }}
               label={t.workout.extraExercise}

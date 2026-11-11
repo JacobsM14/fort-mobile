@@ -15,6 +15,13 @@ import { useRoutineList } from "@/features/routines/queries";
 
 import { spacing } from "@/constants/theme";
 
+function openNewRoutine() {
+  router.push({
+    pathname: "/routine/[id]",
+    params: { id: NEW_ROUTINE_ID },
+  });
+}
+
 export default function RoutinesScreen() {
   const { t } = useTranslation();
   const { globalStyles } = useTheme();
@@ -32,7 +39,7 @@ export default function RoutinesScreen() {
         keyboardShouldPersistTaps="handled"
       >
         {loaded && routines.length === 0 ? (
-          <NoContentBox label={t.routines.noContent} />
+          <NoContentBox label={t.routines.noContent} onPress={openNewRoutine} />
         ) : (
           routines.map((routine) => (
             <NavCard
@@ -52,12 +59,7 @@ export default function RoutinesScreen() {
       <DashedButton
         icon={{ ios: "plus", android: "add", web: "add" }}
         label={t.routines.add}
-        onPress={() =>
-          router.push({
-            pathname: "/routine/[id]",
-            params: { id: NEW_ROUTINE_ID },
-          })
-        }
+        onPress={openNewRoutine}
       />
     </SafeAreaView>
   );

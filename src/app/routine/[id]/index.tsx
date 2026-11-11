@@ -66,6 +66,13 @@ export default function RoutineFormScreen() {
     );
   }
 
+  function openExercisePicker() {
+    router.push({
+      pathname: "/routine/[id]/new_exercises",
+      params: { id: routineId ?? NEW_ROUTINE_ID },
+    });
+  }
+
   const selectedExercises = exerciseIds
     .map((id) => exercises.find((exercise) => exercise.id === id))
     .filter((exercise) => exercise !== undefined);
@@ -150,7 +157,10 @@ export default function RoutineFormScreen() {
             {t.newRoutine.exercisesLabel} · {selectedExercises.length}
           </Text>
           {loaded && selectedExercises.length === 0 && (
-            <NoContentBox label={t.newRoutine.noContent} />
+            <NoContentBox
+              label={t.newRoutine.noContent}
+              onPress={openExercisePicker}
+            />
           )}
           {selectedExercises.map((exercise) => (
             <Animated.View
@@ -173,12 +183,7 @@ export default function RoutineFormScreen() {
           <DashedButton
             tone="muted"
             label={t.newRoutine.addExercise}
-            onPress={() =>
-              router.push({
-                pathname: "/routine/[id]/new_exercises",
-                params: { id: routineId ?? NEW_ROUTINE_ID },
-              })
-            }
+            onPress={openExercisePicker}
           />
           <PrimaryButton
             label={texts.primaryButton}

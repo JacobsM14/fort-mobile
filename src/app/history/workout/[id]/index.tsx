@@ -174,7 +174,9 @@ export default function HistoryWorkoutScreen() {
         automaticallyAdjustKeyboardInsets
         showsVerticalScrollIndicator={false}
       >
-        {entries.length === 0 && <NoContentBox label={t.workout.noExercises} />}
+        {entries.length === 0 && (
+          <NoContentBox label={t.workout.noExercises} onPress={addExercise} />
+        )}
         {entries.map((entry, index) => (
           <View key={entry.id} style={styles.exercise}>
             {index > 0 && (
