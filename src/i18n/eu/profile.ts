@@ -8,6 +8,7 @@ export const profileTexts: Pick<Translations, "profile"> = {
   profile: {
     athleteType: {
       title: "Zure kirolari mota",
+      period: (weeks) => `Zure azken ${weeks} asteetan oinarrituta`,
       styles: {
         strength: {
           name: "Indar-kirolaria",

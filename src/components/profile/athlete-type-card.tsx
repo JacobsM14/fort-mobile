@@ -7,6 +7,7 @@ import { useTranslation } from "@/i18n";
 import { TRACKING_TYPE_ICONS } from "@/constants/tracking-type-icons";
 import { getExerciseText } from "@/features/exercises/catalog";
 import {
+  ATHLETE_TYPE_WEEKS,
   averageSessions,
   CONSISTENCY_LEVELS,
   consistencyLevel,
@@ -150,7 +151,12 @@ export function AthleteTypeCard({ athleteType }: AthleteTypeCardProps) {
               </View>
             ))}
           </View>
-          <Text style={styles.hint}>{nextLevelHint(texts, level)}</Text>
+          <View style={styles.notes}>
+            <Text style={styles.hint}>{nextLevelHint(texts, level)}</Text>
+            <Text style={globalStyles.subtitle}>
+              {texts.period(ATHLETE_TYPE_WEEKS)}
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -194,7 +200,6 @@ const useStyles = makeStyles(({ colors }) =>
       fontFamily: fontsInstrument.regular,
       color: colors.disabled,
     },
-    // Each part under the type, split from the one above by a hairline.
     section: {
       gap: spacing.sm,
       paddingTop: spacing.md,
@@ -269,6 +274,9 @@ const useStyles = makeStyles(({ colors }) =>
     levelLabelCurrent: {
       fontFamily: fontsInstrument.semiBold,
       color: colors.text,
+    },
+    notes: {
+      gap: spacing.xs,
     },
     hint: {
       fontSize: fontSizes.detail,

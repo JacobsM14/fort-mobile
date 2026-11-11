@@ -7,6 +7,7 @@ export const profileTexts = {
   profile: {
     athleteType: {
       title: "Tu tipo de deportista",
+      period: (weeks: number) => `Según tus últimas ${weeks} semanas`,
       styles: {
         strength: {
           name: "Atleta de fuerza",

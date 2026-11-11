@@ -7,6 +7,7 @@ export const profileTexts: Pick<Translations, "profile"> = {
   profile: {
     athleteType: {
       title: "O teu tipo de atleta",
+      period: (weeks) => `Com base nas tuas últimas ${weeks} semanas`,
       styles: {
         strength: {
           name: "Atleta de força",
