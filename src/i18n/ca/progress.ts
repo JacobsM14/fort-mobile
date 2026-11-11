@@ -28,7 +28,8 @@ export const progressTexts: Pick<Translations, "progress"> = {
     noTrained: "Registra un entrenament per veure aquí el teu progrés",
     changeLabel: (change) => `Canvi en el període: ${change}`,
     oneRepMaxShort: "1RM est.",
-    ranges: {
+    views: {
+      today: { short: "AVUI", label: "Avui" },
       "4w": { short: "4S", label: "4 setmanes" },
       "3m": { short: "3M", label: "3 mesos" },
       "6m": { short: "6M", label: "6 mesos" },

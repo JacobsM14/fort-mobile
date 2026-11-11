@@ -3,9 +3,9 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { makeStyles } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import { PROGRESS_RANGES } from "@/features/progress/ranges";
+import { PROGRESS_VIEWS } from "@/features/progress/views";
 
-import type { ProgressRange } from "@/features/progress/ranges";
+import type { ProgressView } from "@/features/progress/views";
 
 import {
   controlHeights,
@@ -15,35 +15,38 @@ import {
   spacing,
 } from "@/constants/theme";
 
-type RangeFilterProps = {
-  value: ProgressRange;
-  onChange: (range: ProgressRange) => void;
+type ProgressViewFilterProps = {
+  value: ProgressView;
+  onChange: (view: ProgressView) => void;
 };
 
-// How far back the statistics look.
-export function RangeFilter({ value, onChange }: RangeFilterProps) {
+// Today, or how far back the statistics look.
+export function ProgressViewFilter({
+  value,
+  onChange,
+}: ProgressViewFilterProps) {
   const { t } = useTranslation();
   const styles = useStyles();
 
   return (
     <View style={styles.row} accessibilityRole="radiogroup">
-      {PROGRESS_RANGES.map((range) => {
-        const selected = range === value;
+      {PROGRESS_VIEWS.map((view) => {
+        const selected = view === value;
         return (
           <Pressable
-            key={range}
+            key={view}
             style={({ pressed }) => [
               styles.option,
               selected && styles.optionSelected,
               pressed && !selected && styles.optionPressed,
             ]}
-            onPress={() => onChange(range)}
+            onPress={() => onChange(view)}
             accessibilityRole="radio"
             accessibilityState={{ checked: selected }}
-            accessibilityLabel={t.progress.ranges[range].label}
+            accessibilityLabel={t.progress.views[view].label}
           >
             <Text style={[styles.text, selected && styles.textSelected]}>
-              {t.progress.ranges[range].short}
+              {t.progress.views[view].short}
             </Text>
           </Pressable>
         );

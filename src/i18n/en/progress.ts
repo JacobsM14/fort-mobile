@@ -24,7 +24,8 @@ export const progressTexts: Pick<Translations, "progress"> = {
     noTrained: "Log a workout to see your progress here",
     changeLabel: (change) => `Change over the period: ${change}`,
     oneRepMaxShort: "est. 1RM",
-    ranges: {
+    views: {
+      today: { short: "TODAY", label: "Today" },
       "4w": { short: "4W", label: "4 weeks" },
       "3m": { short: "3M", label: "3 months" },
       "6m": { short: "6M", label: "6 months" },

@@ -25,7 +25,8 @@ export const progressTexts: Pick<Translations, "progress"> = {
     noTrained: "Erregistratu entrenamendu bat zure aurrerapena hemen ikusteko",
     changeLabel: (change) => `Aldaketa aldi honetan: ${change}`,
     oneRepMaxShort: "1RM est.",
-    ranges: {
+    views: {
+      today: { short: "GAUR", label: "Gaur" },
       "4w": { short: "4A", label: "4 aste" },
       "3m": { short: "3H", label: "3 hilabete" },
       "6m": { short: "6H", label: "6 hilabete" },

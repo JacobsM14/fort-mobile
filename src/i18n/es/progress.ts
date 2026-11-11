@@ -1,6 +1,6 @@
 import type { TrackingType } from "@/constants/enums";
 import type { BmiCategory } from "@/features/body/bmi";
-import type { ProgressRange } from "@/features/progress/ranges";
+import type { ProgressView } from "@/features/progress/views";
 
 export const progressTexts = {
   progress: {
@@ -26,12 +26,13 @@ export const progressTexts = {
     noTrained: "Registra un entreno para ver aquí tu progreso",
     changeLabel: (change: string) => `Cambio en el periodo: ${change}`,
     oneRepMaxShort: "1RM est.",
-    ranges: {
+    views: {
+      today: { short: "HOY", label: "Hoy" },
       "4w": { short: "4S", label: "4 semanas" },
       "3m": { short: "3M", label: "3 meses" },
       "6m": { short: "6M", label: "6 meses" },
       "1y": { short: "1A", label: "1 año" },
-    } satisfies Record<ProgressRange, { short: string; label: string }>,
+    } satisfies Record<ProgressView, { short: string; label: string }>,
     registerWeight: "Registrar peso corporal",
     saveWeight: "Guardar peso corporal",
     weightSaved: "Peso guardado",

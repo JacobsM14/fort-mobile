@@ -8,7 +8,7 @@ import Animated, {
 import {
   BodyWeightEntry,
   ENTRY_BUTTON_SIZE,
-} from "@/components/progress/body-weight-entry";
+} from "@/components/progress/body-weight/body-weight-entry";
 import { IconButton } from "@/components/ui/buttons/icon-button";
 import { BottomSheet } from "@/components/ui/overlays/bottom-sheet";
 import { ConfirmDialog } from "@/components/ui/overlays/confirm-dialog";

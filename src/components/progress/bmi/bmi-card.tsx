@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import { BmiScale } from "@/components/progress/bmi-scale";
+import { BmiScale } from "@/components/progress/bmi/bmi-scale";
 import { EmptyStateCard } from "@/components/ui/content/empty-state-card";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";

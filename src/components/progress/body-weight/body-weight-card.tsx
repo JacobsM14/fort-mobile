@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import { DashedArrow } from "@/components/progress/dashed-arrow";
-import { EmptyChart } from "@/components/progress/empty-chart";
-import { LineChart } from "@/components/progress/line-chart";
-import { ViewToggle } from "@/components/progress/view-toggle";
+import { DashedArrow } from "@/components/progress/body-weight/dashed-arrow";
+import { ViewToggle } from "@/components/progress/body-weight/view-toggle";
+import { EmptyChart } from "@/components/progress/charts/empty-chart";
+import { LineChart } from "@/components/progress/charts/line-chart";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useUnits } from "@/hooks/use-units";
@@ -14,7 +14,7 @@ import { formatBodyWeight, formatWeightChange } from "@/features/body/format";
 import { recentBodyWeights, toBodyWeightPoints } from "@/features/body/queries";
 import { pointsInRange } from "@/features/progress/ranges";
 
-import type { WeightView } from "@/components/progress/view-toggle";
+import type { WeightView } from "@/components/progress/body-weight/view-toggle";
 import type { BodyWeightEntry } from "@/features/body/queries";
 import type { ProgressRange } from "@/features/progress/ranges";
 
