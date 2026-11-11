@@ -137,12 +137,8 @@ const useStyles = makeStyles(({ colors }) =>
       fontFamily: fontsInstrument.regular,
       color: colors.disabled,
     },
-    // Side by side while both labels fit in half the row; otherwise the buttons
-    // stack, confirm on top. A button never gets narrower than its label, so
-    // long labels in some languages don't break mid-word.
     actions: {
-      flexDirection: "row",
-      flexWrap: "wrap-reverse",
+      flexDirection: "column",
       gap: spacing.sm,
       marginTop: spacing.xs,
     },
