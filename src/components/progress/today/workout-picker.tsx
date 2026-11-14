@@ -46,6 +46,7 @@ export function WorkoutPicker({
   return (
     <ScrollView
       horizontal
+      style={styles.scroll}
       contentContainerStyle={styles.row}
       showsHorizontalScrollIndicator={false}
       accessibilityRole="radiogroup"
@@ -82,6 +83,9 @@ export function WorkoutPicker({
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
+    scroll: {
+      flexGrow: 0,
+    },
     row: {
       flexGrow: 1,
       gap: spacing.xs,
