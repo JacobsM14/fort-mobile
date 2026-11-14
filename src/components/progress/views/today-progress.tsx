@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 import { WorkoutPicker } from "@/components/progress/today/workout-picker";
+import { WorkoutStats } from "@/components/progress/today/workout-stats";
 import { NoContentBox } from "@/components/ui/content/no-content-box";
 
 import { makeStyles } from "@/hooks/use-theme";
@@ -38,9 +39,9 @@ export function TodayProgress({ filter }: TodayProgressProps) {
   const workouts = history.workouts.filter(isFinishedWorkout);
   const loaded = history.loaded;
   const [selectedId, setSelectedId] = useState<string>();
-  const selectedWorkoutId = workouts.some((w) => w.id === selectedId)
-    ? selectedId
-    : workouts.at(0)?.id;
+
+  const selectedWorkout =
+    workouts.find((w) => w.id === selectedId) ?? workouts.at(0);
 
   return (
     <ScrollView
@@ -57,10 +58,11 @@ export function TodayProgress({ filter }: TodayProgressProps) {
       {workouts.length > 1 && (
         <WorkoutPicker
           workouts={workouts}
-          selectedId={selectedWorkoutId}
+          selectedId={selectedWorkout?.id}
           onSelect={setSelectedId}
         />
       )}
+      {selectedWorkout && <WorkoutStats />}
       {!workouts.length && loaded && (
         <View style={styles.noContentBox}>
           <NoContentBox label={t.progress.noWorkoutToday} fill />
