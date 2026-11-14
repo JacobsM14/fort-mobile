@@ -17,9 +17,17 @@ export function formatShortDay(date: Date, language: Language) {
     .replace(".", "");
 }
 
-// "lun 19 oct · 18:05"
-export function formatDateTime(date: Date, language: Language) {
-  const day = date
+// "18:05"
+export function formatTime(date: Date, language: Language) {
+  return date.toLocaleTimeString(language, {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+// "lun 19 oct"
+export function formatShortDate(date: Date, language: Language) {
+  return date
     .toLocaleDateString(language, {
       weekday: "short",
       day: "numeric",
@@ -27,12 +35,11 @@ export function formatDateTime(date: Date, language: Language) {
     })
     .replaceAll(".", "")
     .replace(",", "");
-  const time = date.toLocaleTimeString(language, {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+}
 
-  return `${day} · ${time}`;
+// "lun 19 oct · 18:05"
+export function formatDateTime(date: Date, language: Language) {
+  return `${formatShortDate(date, language)} · ${formatTime(date, language)}`;
 }
 
 export function getWeekDays(date: Date, firstWeekday: number) {
