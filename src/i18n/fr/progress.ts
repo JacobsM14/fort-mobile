@@ -8,6 +8,10 @@ export const progressTexts: Pick<Translations, "progress"> = {
     oneRepMaxNote:
       "1RM estimé : la charge maximale que tu pourrais soulever une seule fois, calculée à partir de la meilleure série du jour (formule d'Epley). Les séries de plus de 15 répétitions comptent comme 15.",
     today: "Aujourd'hui",
+    minutes: (minutes) => `${minutes} min`,
+    noWorkoutToday: "Pas d'entraînement aujourd'hui",
+    workoutCount: (count) =>
+      count <= 1 ? `${count} entraînement` : `${count} entraînements`,
     chooseExercise: (name) => `Choisir l'exercice, ${name}`,
     metrics: {
       weight_reps: "1RM estimé",

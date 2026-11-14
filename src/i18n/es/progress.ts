@@ -10,6 +10,10 @@ export const progressTexts = {
     oneRepMaxNote:
       "1RM estimado: el peso máximo que podrías levantar una sola vez, calculado con la mejor serie del día (fórmula de Epley). Las series de más de 15 repeticiones cuentan como 15.",
     today: "Hoy",
+    minutes: (minutes: number) => `${minutes} min`,
+    noWorkoutToday: "No has entrenado hoy",
+    workoutCount: (count: number) =>
+      count === 1 ? "1 entreno" : `${count} entrenos`,
     chooseExercise: (name: string) => `Elegir ejercicio, ${name}`,
     metrics: {
       weight_reps: "1RM estimado",

@@ -8,6 +8,10 @@ export const progressTexts: Pick<Translations, "progress"> = {
     oneRepMaxNote:
       "1RM estimatua: behin bakarrik altxa zenezakeen gehieneko pisua, eguneko serie onenarekin kalkulatua (Epleyren formula). 15 errepikapen baino gehiagoko serieek 15 balio dute.",
     today: "Gaur",
+    minutes: (minutes) => `${minutes} min`,
+    noWorkoutToday: "Gaur ez duzu entrenatu",
+    workoutCount: (count) =>
+      count === 1 ? "entrenamendu 1" : `${count} entrenamendu`,
     chooseExercise: (name) => `Aukeratu ariketa, ${name}`,
     metrics: {
       weight_reps: "1RM estimatua",
