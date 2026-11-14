@@ -4,7 +4,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { makeStyles } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import type { WorkoutHistoryItem } from "@/features/workouts/queries";
+import type { FinishedWorkoutHistoryItem } from "@/features/workouts/queries";
 import type { Translations } from "@/i18n/es";
 
 import { formatTime } from "@/utils/date";
@@ -22,15 +22,15 @@ import {
 const WORKOUT_BUTTON_MIN_WIDTH = 140;
 
 type WorkoutPickerProps = {
-  workouts: readonly WorkoutHistoryItem[];
+  workouts: readonly FinishedWorkoutHistoryItem[];
   selectedId: string | undefined;
   onSelect: (id: string) => void;
 };
 
-function durationLabel(workout: WorkoutHistoryItem, t: Translations): string {
-  if (workout.endedAt === null) {
-    return t.today.inProgress;
-  }
+function durationLabel(
+  workout: FinishedWorkoutHistoryItem,
+  t: Translations,
+): string {
   const seconds = elapsedSeconds(workout.startedAt, workout.endedAt.getTime());
   return t.progress.minutes(Math.floor(seconds / 60));
 }

@@ -8,7 +8,10 @@ import { NoContentBox } from "@/components/ui/content/no-content-box";
 import { makeStyles } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import { useWorkoutHistory } from "@/features/workouts/queries";
+import {
+  isFinishedWorkout,
+  useWorkoutHistory,
+} from "@/features/workouts/queries";
 
 import { formatShortDate } from "@/utils/date";
 
@@ -30,7 +33,10 @@ export function TodayProgress({ filter }: TodayProgressProps) {
     now.getDate() + 1,
   );
 
-  const { workouts, loaded } = useWorkoutHistory({ from: day, to: nextDay });
+  const history = useWorkoutHistory({ from: day, to: nextDay });
+
+  const workouts = history.workouts.filter(isFinishedWorkout);
+  const loaded = history.loaded;
   const [selectedId, setSelectedId] = useState<string>();
   const selectedWorkoutId = workouts.some((w) => w.id === selectedId)
     ? selectedId
