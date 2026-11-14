@@ -10,6 +10,7 @@ export const progressTexts: Pick<Translations, "progress"> = {
     today: "Hoje",
     minutes: (minutes) => `${minutes} min`,
     noWorkoutToday: "Hoje ainda não treinaste",
+    todayExercises: "Exercícios de hoje",
     workoutCount: (count) => (count === 1 ? "1 treino" : `${count} treinos`),
     chooseExercise: (name) => `Escolher exercício, ${name}`,
     metrics: {

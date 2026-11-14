@@ -2,6 +2,7 @@ import { useState, type ReactNode } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
+import { TodayExercises } from "@/components/progress/today/today-exercises";
 import { WorkoutPicker } from "@/components/progress/today/workout-picker";
 import { WorkoutStats } from "@/components/progress/today/workout-stats";
 import { NoContentBox } from "@/components/ui/content/no-content-box";
@@ -63,6 +64,7 @@ export function TodayProgress({ filter }: TodayProgressProps) {
         />
       )}
       {selectedWorkout && <WorkoutStats />}
+      {selectedWorkout && <TodayExercises />}
       {!workouts.length && loaded && (
         <View style={styles.noContentBox}>
           <NoContentBox label={t.progress.noWorkoutToday} fill />
@@ -77,7 +79,7 @@ const useStyles = makeStyles(({ colors }) =>
     content: {
       gap: spacing.lg,
       paddingBottom: spacing.lg,
-      flex: 1,
+      flexGrow: 1,
     },
     title: {
       fontSize: fontSizes.overline,
