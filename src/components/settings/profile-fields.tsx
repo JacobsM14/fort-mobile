@@ -13,9 +13,17 @@ import { GENDERS } from "@/constants/enums";
 
 import { spacing } from "@/constants/theme";
 
+type ProfileFieldsProps = {
+  heightRequired?: boolean;
+  onHeightDraftChange?: (heightCm: number | null) => void;
+};
+
 // Returns sibling fields so the parent's gap spaces them like the rest of
 // its fields.
-export function ProfileFields() {
+export function ProfileFields({
+  heightRequired = false,
+  onHeightDraftChange,
+}: ProfileFieldsProps) {
   const { t } = useTranslation();
   const { globalStyles } = useTheme();
   const { distance } = useUnits();
@@ -30,6 +38,8 @@ export function ProfileFields() {
         heightCm={profile.heightCm}
         imperial={imperial}
         onSave={(heightCm) => updateProfile({ heightCm })}
+        onDraftChange={onHeightDraftChange}
+        required={heightRequired}
       />
       <BirthDateField
         birthDate={profile.birthDate}

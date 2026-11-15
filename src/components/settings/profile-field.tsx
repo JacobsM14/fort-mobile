@@ -20,9 +20,9 @@ type ProfileFieldProps = {
   maxLength: number;
   accessibilityLabel: string;
   grow?: number;
+  decimal?: boolean;
 };
 
-// A short number box of the user settings: the height, or a part of the date.
 export function ProfileField({
   value,
   onChangeText,
@@ -31,6 +31,7 @@ export function ProfileField({
   maxLength,
   accessibilityLabel,
   grow = 1,
+  decimal = false,
 }: ProfileFieldProps) {
   const { colors } = useTheme();
   const styles = useStyles();
@@ -41,7 +42,7 @@ export function ProfileField({
       value={value}
       onChangeText={onChangeText}
       onEndEditing={onEndEditing}
-      keyboardType="number-pad"
+      keyboardType={decimal ? "decimal-pad" : "number-pad"}
       maxLength={maxLength}
       selectTextOnFocus
       placeholder={placeholder}
