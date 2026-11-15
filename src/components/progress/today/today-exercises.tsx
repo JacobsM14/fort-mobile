@@ -18,6 +18,10 @@ export function TodayExercises({ entries }: TodayExercisesProps) {
   const { t } = useTranslation();
   const styles = useStyles();
 
+  if (entries.length === 0) {
+    return null;
+  }
+
   const maxSets = Math.max(...entries.map((entry) => entry.sets.length));
 
   return (

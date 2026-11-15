@@ -39,12 +39,22 @@ export function ExerciseRow({ entry, maxSets }: ExerciseRowProps) {
     .filter((part) => part !== null)
     .join(" · ");
 
-  const total = exerciseTotal(trackingType, entry.sets);
+  const total = formatTotal(
+    trackingType,
+    exerciseTotal(trackingType, entry.sets),
+    units,
+    t,
+    language,
+  );
 
   const share = entry.sets.length / maxSets;
 
   return (
-    <View style={styles.exercise}>
+    <View
+      style={styles.exercise}
+      accessible
+      accessibilityLabel={`${entry.name}, ${detail}, ${total}`}
+    >
       <View style={styles.header}>
         <View style={styles.info}>
           <Text style={styles.name} numberOfLines={1}>
@@ -52,9 +62,7 @@ export function ExerciseRow({ entry, maxSets }: ExerciseRowProps) {
           </Text>
           <Text style={styles.detail}>{detail}</Text>
         </View>
-        <Text style={styles.total}>
-          {formatTotal(trackingType, total, units, t, language)}
-        </Text>
+        <Text style={styles.total}>{total}</Text>
       </View>
       <View style={styles.track}>
         <View

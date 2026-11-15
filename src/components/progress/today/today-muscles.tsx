@@ -18,6 +18,10 @@ export function TodayMuscles({ entries }: TodayMusclesProps) {
 
   const shares = muscleShares(entries);
 
+  if (Object.keys(shares).length === 0) {
+    return null;
+  }
+
   return (
     <View>
       <SectionTitle label={t.progress.musclesWorked} />
