@@ -1,5 +1,5 @@
 // One capture per slide and language, so the screens match the language
-// the user picked in the second step.
+// the user picked in the setup.
 import type { Language } from "@/i18n";
 
 export const TOUR_SLIDES = [

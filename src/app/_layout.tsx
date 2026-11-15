@@ -15,9 +15,11 @@ import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import { OnboardingDialog } from "@/components/onboarding/onboarding-dialog";
+import { SetupScreen } from "@/components/onboarding/setup-screen";
+import { TutorialDialog } from "@/components/onboarding/tutorial-dialog";
 
 import { LanguageProvider } from "@/hooks/use-language";
+import { OnboardingProvider, useOnboarding } from "@/hooks/use-onboarding";
 import { makeStyles, ThemeProvider, useTheme } from "@/hooks/use-theme";
 import { UnitsProvider } from "@/hooks/use-units";
 import { UserProfileProvider } from "@/hooks/use-user-profile";
@@ -43,7 +45,9 @@ export default function RootLayout() {
         <UnitsProvider>
           <UserProfileProvider>
             <ThemeProvider>
-              <RootNavigator />
+              <OnboardingProvider>
+                <RootNavigator />
+              </OnboardingProvider>
             </ThemeProvider>
           </UserProfileProvider>
         </UnitsProvider>
@@ -65,6 +69,7 @@ function RootNavigator() {
     JetBrainsMono_700Bold,
   });
   const { t } = useTranslation();
+  const { setupCompleted, tutorialVisible, closeTutorial } = useOnboarding();
 
   // If a font fails to load, carry on with the system font.
   const fontsDone = fontsLoaded || fontsError !== null;
@@ -92,6 +97,10 @@ function RootNavigator() {
     return null;
   }
 
+  if (!setupCompleted) {
+    return <SetupScreen />;
+  }
+
   return (
     <>
       <Stack screenOptions={{ headerShown: false }}>
@@ -101,13 +110,11 @@ function RootNavigator() {
         <Stack.Screen name="history" options={MODAL_OPTIONS} />
         <Stack.Screen name="settings" options={MODAL_OPTIONS} />
       </Stack>
-      <OnboardingDialog />
+      <TutorialDialog visible={tutorialVisible} onClose={closeTutorial} />
     </>
   );
 }
 
-// Gesture handler's components (the scroll views and inputs of the workout)
-// only work inside it.
 const rootStyles = StyleSheet.create({
   root: {
     flex: 1,

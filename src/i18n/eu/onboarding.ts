@@ -10,6 +10,12 @@ export const onboardingTexts: Pick<Translations, "onboarding"> = {
     next: "Hurrengoa",
     finish: "Amaitu",
     progress: (step, total) => `${step}. urratsa, ${total}etik`,
+    setup: "Konfigurazioa",
+    doneTitle: "Dena prest",
+    doneMessage:
+      "Orain zure lehen errutina sor dezakezu. Nahi baduzu, aplikazioak nola funtzionatzen duen erakutsiko dizugu une batean.",
+    seeTutorial: "Ikusi tutoriala",
+    startWithoutTutorial: "Hasi tutorialik gabe",
     tour: {
       newRoutine: {
         title: "Sortu zure errutinak",
