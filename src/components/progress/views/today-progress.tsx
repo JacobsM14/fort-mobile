@@ -90,7 +90,7 @@ export function TodayProgress({ filter }: TodayProgressProps) {
             exercisesCount={exercisesCount}
             setsCount={setsCount}
           />
-          <TodayMuscles />
+          <TodayMuscles entries={entries} />
           <TodayExercises />
         </>
       )}

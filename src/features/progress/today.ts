@@ -1,6 +1,6 @@
 import { useTranslation } from "@/i18n";
 
-import { getExerciseText } from "@/features/exercises/catalog";
+import { getExerciseText, MuscleId } from "@/features/exercises/catalog";
 import { useExerciseList } from "@/features/exercises/queries";
 
 import type { ExerciseSummary } from "@/features/exercises/queries";
@@ -33,4 +33,36 @@ export function useTodayEntries(
   );
 
   return { entries, loaded };
+}
+
+// Every set done counts once, split evenly between its exercise's primary
+// muscles; exercises with none are left out so the shares still add up to 1.
+export function muscleShares(
+  entries: readonly TodayEntry[],
+): Partial<Record<MuscleId, number>> {
+  const counts = new Map<MuscleId, number>();
+
+  let total = 0;
+
+  for (const entry of entries) {
+    const muscles = entry.summary.primaryMuscles;
+
+    if (muscles.length === 0) continue;
+
+    const sets = entry.sets.length;
+    total += sets;
+    for (const muscle of muscles) {
+      counts.set(muscle, (counts.get(muscle) ?? 0) + sets / muscles.length);
+    }
+  }
+
+  const shares: Partial<Record<MuscleId, number>> = {};
+
+  for (const [muscle, count] of counts.entries()) {
+    shares[muscle] = count / total;
+  }
+
+  return Object.fromEntries(
+    [...counts].map(([muscle, count]) => [muscle, count / total]),
+  );
 }

@@ -5,23 +5,23 @@ import { SectionTitle } from "@/components/progress/today/section-title";
 
 import { useTranslation } from "@/i18n";
 
-import type { MuscleId } from "@/features/exercises/catalog";
+import { muscleShares } from "@/features/progress/today";
 
-const SHARES = {
-  chest: 0.33,
-  front_delts: 0.17,
-  lats: 0.17,
-  abs: 0.17,
-  quads: 0.16,
-} satisfies Partial<Record<MuscleId, number>>;
+import type { TodayEntry } from "@/features/progress/today";
 
-export function TodayMuscles() {
+type TodayMusclesProps = {
+  entries: readonly TodayEntry[];
+};
+
+export function TodayMuscles({ entries }: TodayMusclesProps) {
   const { t } = useTranslation();
+
+  const shares = muscleShares(entries);
 
   return (
     <View>
       <SectionTitle label={t.progress.musclesWorked} />
-      <MuscleMap shares={SHARES} />
+      <MuscleMap shares={shares} />
     </View>
   );
 }
