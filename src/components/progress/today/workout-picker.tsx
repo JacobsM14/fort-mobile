@@ -4,11 +4,11 @@ import { ScrollView } from "react-native-gesture-handler";
 import { makeStyles } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
+import { formatWorkoutDuration } from "@/features/progress/today";
+
 import type { FinishedWorkoutHistoryItem } from "@/features/workouts/queries";
-import type { Translations } from "@/i18n/es";
 
 import { formatTime } from "@/utils/date";
-import { elapsedSeconds } from "@/utils/duration";
 
 import {
   controlHeights,
@@ -26,14 +26,6 @@ type WorkoutPickerProps = {
   selectedId: string | undefined;
   onSelect: (id: string) => void;
 };
-
-function durationLabel(
-  workout: FinishedWorkoutHistoryItem,
-  t: Translations,
-): string {
-  const seconds = elapsedSeconds(workout.startedAt, workout.endedAt.getTime());
-  return t.progress.minutes(Math.floor(seconds / 60));
-}
 
 export function WorkoutPicker({
   workouts,
@@ -71,9 +63,9 @@ export function WorkoutPicker({
               ]}
             >
               {formatTime(workout.startedAt, language)} ·{" "}
-              {durationLabel(workout, t)}
+              {formatWorkoutDuration(workout, t)}
             </Text>
-            <Text style={styles.name}>{workout.name}</Text>
+            <Text style={styles.name}>{workout.name ?? t.workout.title}</Text>
           </Pressable>
         );
       })}

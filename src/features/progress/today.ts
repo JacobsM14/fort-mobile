@@ -15,7 +15,7 @@ import type { Language } from "@/i18n";
 import type { Translations } from "@/i18n/es";
 import type { Units } from "@/utils/units";
 
-import { formatDuration } from "@/utils/duration";
+import { elapsedSeconds, formatDuration } from "@/utils/duration";
 import { formatDecimal, roundToTenth } from "@/utils/number";
 import { distanceToUnit, weightToUnit } from "@/utils/units";
 
@@ -26,23 +26,40 @@ export type TodayEntry = WorkoutHistoryExercise & {
 
 // Exercises deleted since are archived and missing from the exercise list, so
 // they are left out here too.
+export function toTodayEntries(
+  exercises: readonly WorkoutHistoryExercise[],
+  summaries: readonly ExerciseSummary[],
+  t: Translations,
+): TodayEntry[] {
+  const summariesById = new Map(summaries.map((s) => [s.id, s] as const));
+  return exercises.flatMap((exercise): TodayEntry[] => {
+    const summary = summariesById.get(exercise.exerciseId);
+    return summary === undefined
+      ? []
+      : [{ ...exercise, summary, name: getExerciseText(summary, t).name }];
+  });
+}
+
 export function useTodayEntries(
   workout: FinishedWorkoutHistoryItem | undefined,
 ) {
   const { t } = useTranslation();
   const { exercises: summaries, loaded } = useExerciseList();
 
-  const summariesById = new Map(summaries.map((s) => [s.id, s] as const));
-  const entries = (workout?.exercises ?? []).flatMap(
-    (exercise): TodayEntry[] => {
-      const summary = summariesById.get(exercise.exerciseId);
-      return summary === undefined
-        ? []
-        : [{ ...exercise, summary, name: getExerciseText(summary, t).name }];
-    },
-  );
+  return {
+    entries: toTodayEntries(workout?.exercises ?? [], summaries, t),
+    loaded,
+  };
+}
 
-  return { entries, loaded };
+// A workout logged afterwards from the history starts and ends at the same
+// time, so it has no length to show.
+export function formatWorkoutDuration(
+  workout: FinishedWorkoutHistoryItem,
+  t: Translations,
+) {
+  const seconds = elapsedSeconds(workout.startedAt, workout.endedAt.getTime());
+  return seconds > 0 ? t.progress.minutes(Math.floor(seconds / 60)) : "-";
 }
 
 // Every set done counts once, split evenly between its exercise's primary

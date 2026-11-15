@@ -5,12 +5,18 @@ import { es } from "@/i18n/es";
 import {
   exerciseTotal,
   formatTotal,
+  formatWorkoutDuration,
   muscleShares,
+  toTodayEntries,
   type TodayEntry,
 } from "./today";
 
 import type { MuscleId } from "@/features/exercises/catalog";
-import type { SetValues } from "@/features/workouts/queries";
+import type { ExerciseSummary } from "@/features/exercises/queries";
+import type {
+  FinishedWorkoutHistoryItem,
+  SetValues,
+} from "@/features/workouts/queries";
 
 const SET: SetValues = {
   weightKg: 60,
@@ -193,5 +199,79 @@ describe("formatTotal", () => {
     expect(formatTotal("distance_duration", 8046.72, imperial, es, "es")).toBe(
       "5 mi",
     );
+  });
+});
+
+describe("toTodayEntries", () => {
+  function summary(id: string, fields: Partial<ExerciseSummary> = {}) {
+    return {
+      id,
+      key: null,
+      name: null,
+      description: null,
+      equipment: null,
+      trackingType: "weight_reps",
+      primaryMuscles: [],
+      secondaryMuscles: [],
+      ...fields,
+    } satisfies ExerciseSummary;
+  }
+
+  const exercises = [
+    { id: "we-1", exerciseId: "bench", sets: [SET, SET] },
+    { id: "we-2", exerciseId: "deleted", sets: [SET] },
+    { id: "we-3", exerciseId: "custom", sets: [SET] },
+  ];
+  const summaries = [
+    summary("custom", { name: "Mi press" }),
+    summary("bench", { key: "bench_press", primaryMuscles: ["chest"] }),
+  ];
+
+  it("joins each exercise with its summary, in the workout's order", () => {
+    const entries = toTodayEntries(exercises, summaries, es);
+    expect(entries.map((entry) => entry.id)).toEqual(["we-1", "we-3"]);
+    expect(entries[0].summary.primaryMuscles).toEqual(["chest"]);
+    expect(entries[0].sets).toHaveLength(2);
+  });
+
+  it("names catalog exercises in the language and keeps custom names", () => {
+    const entries = toTodayEntries(exercises, summaries, es);
+    expect(entries.map((entry) => entry.name)).toEqual([
+      es.exerciseCatalog.bench_press.name,
+      "Mi press",
+    ]);
+  });
+
+  it("leaves out exercises deleted since", () => {
+    const entries = toTodayEntries(exercises, summaries, es);
+    expect(entries.some((entry) => entry.exerciseId === "deleted")).toBe(false);
+  });
+});
+
+describe("formatWorkoutDuration", () => {
+  function workout(startedAt: Date, endedAt: Date): FinishedWorkoutHistoryItem {
+    return {
+      id: "workout",
+      name: null,
+      startedAt,
+      endedAt,
+      exercises: [],
+      setCount: 0,
+    };
+  }
+
+  const start = new Date(2026, 10, 14, 9, 12);
+
+  it("shows the whole minutes it lasted", () => {
+    expect(
+      formatWorkoutDuration(
+        workout(start, new Date(2026, 10, 14, 10, 10, 40)),
+        es,
+      ),
+    ).toBe("58 min");
+  });
+
+  it("shows a dash for a workout logged afterwards, with no length", () => {
+    expect(formatWorkoutDuration(workout(start, start), es)).toBe("-");
   });
 });

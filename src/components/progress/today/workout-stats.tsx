@@ -7,13 +7,13 @@ import { useTranslation } from "@/i18n";
 import { fontSizes, fontsJetBrainsMono, spacing } from "@/constants/theme";
 
 type WorkoutStatsProps = {
-  seconds: number;
+  duration: string;
   exercisesCount: number;
   setsCount: number;
 };
 
 export function WorkoutStats({
-  seconds,
+  duration,
   exercisesCount,
   setsCount,
 }: WorkoutStatsProps) {
@@ -22,10 +22,7 @@ export function WorkoutStats({
   const styles = useStyles();
 
   const stats = [
-    {
-      label: t.finished.duration,
-      value: seconds > 0 ? t.progress.minutes(Math.floor(seconds / 60)) : "-",
-    },
+    { label: t.finished.duration, value: duration },
     { label: t.finished.sets, value: setsCount.toString() },
     { label: t.finished.exercises, value: exercisesCount.toString() },
   ];
