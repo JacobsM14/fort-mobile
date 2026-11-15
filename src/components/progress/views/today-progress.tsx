@@ -11,12 +11,14 @@ import { NoContentBox } from "@/components/ui/content/no-content-box";
 import { makeStyles } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
+import { useTodayEntries } from "@/features/progress/today";
 import {
   isFinishedWorkout,
   useWorkoutHistory,
 } from "@/features/workouts/queries";
 
 import { formatShortDate } from "@/utils/date";
+import { elapsedSeconds } from "@/utils/duration";
 
 import { fontSizes, fontsJetBrainsMono, spacing } from "@/constants/theme";
 
@@ -39,11 +41,26 @@ export function TodayProgress({ filter }: TodayProgressProps) {
   const history = useWorkoutHistory({ from: day, to: nextDay });
 
   const workouts = history.workouts.filter(isFinishedWorkout);
-  const loaded = history.loaded;
   const [selectedId, setSelectedId] = useState<string>();
 
   const selectedWorkout =
     workouts.find((w) => w.id === selectedId) ?? workouts.at(0);
+
+  const { entries, loaded: entriesLoaded } = useTodayEntries(selectedWorkout);
+  const loaded = history.loaded && entriesLoaded;
+
+  const seconds = selectedWorkout
+    ? elapsedSeconds(
+        selectedWorkout.startedAt,
+        selectedWorkout.endedAt.getTime(),
+      )
+    : 0;
+
+  const exercisesCount = entries.length;
+  const setsCount = entries.reduce(
+    (count, entry) => count + entry.sets.length,
+    0,
+  );
 
   return (
     <ScrollView
@@ -64,9 +81,17 @@ export function TodayProgress({ filter }: TodayProgressProps) {
           onSelect={setSelectedId}
         />
       )}
-      {selectedWorkout && <WorkoutStats />}
-      {selectedWorkout && <TodayMuscles />}
-      {selectedWorkout && <TodayExercises />}
+      {selectedWorkout && (
+        <>
+          <WorkoutStats
+            seconds={seconds}
+            exercisesCount={exercisesCount}
+            setsCount={setsCount}
+          />
+          <TodayMuscles />
+          <TodayExercises />
+        </>
+      )}
       {!workouts.length && loaded && (
         <View style={styles.noContentBox}>
           <NoContentBox label={t.progress.noWorkoutToday} fill />
