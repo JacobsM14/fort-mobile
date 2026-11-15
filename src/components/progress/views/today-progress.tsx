@@ -71,7 +71,9 @@ export function TodayProgress({ filter }: TodayProgressProps) {
       {loaded && (
         <Text style={styles.title}>
           {formatShortDate(day, language)} ·{" "}
-          {t.progress.workoutCount(workouts.length)}
+          {workouts.length === 1
+            ? (workouts[0].name ?? t.workout.title)
+            : t.progress.workoutCount(workouts.length)}
         </Text>
       )}
       {workouts.length > 1 && (
