@@ -138,6 +138,7 @@ export const settingsTexts: Pick<
     version: "Bertsioa",
     contact: "Harremanetarako",
     rate: "Baloratu aplikazioa",
+    tutorial: "Ikusi tutoriala",
     disclaimer: (appName) =>
       `${appName} ez da gailu medikoa, eta ez du inolako gaixotasunik diagnostikatzen, tratatzen, sendatzen edo prebenitzen. Kontsultatu osasun-profesional batekin ariketa-programa bat hasi aurretik.`,
   },

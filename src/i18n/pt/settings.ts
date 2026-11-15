@@ -136,6 +136,7 @@ export const settingsTexts: Pick<
     version: "Versão",
     contact: "Contacto",
     rate: "Avaliar a app",
+    tutorial: "Ver o tutorial",
     disclaimer: (appName) =>
       `${appName} não é um dispositivo médico e não diagnostica, trata, cura nem previne nenhuma doença. Consulta um profissional de saúde antes de começares um programa de exercício.`,
   },

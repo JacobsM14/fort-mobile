@@ -1,7 +1,9 @@
 import Constants from "expo-constants";
+import { useState } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { TutorialDialog } from "@/components/onboarding/tutorial-dialog";
 import { SettingsRow } from "@/components/settings/settings-row";
 import { BackHeader } from "@/components/ui/layout/back-header";
 
@@ -23,6 +25,7 @@ export default function AboutScreen() {
   const { globalStyles } = useTheme();
   const openUrl = useOpenUrl();
   const version = Constants.expoConfig?.version ?? "-";
+  const [tutorialVisible, setTutorialVisible] = useState(false);
 
   return (
     <SafeAreaView style={globalStyles.screen} edges={["top"]}>
@@ -48,8 +51,17 @@ export default function AboutScreen() {
             onPress={() => openUrl(storeUrl)}
           />
         )}
+        <SettingsRow
+          icon={{ ios: "questionmark.circle", android: "help", web: "help" }}
+          label={t.about.tutorial}
+          onPress={() => setTutorialVisible(true)}
+        />
       </View>
       <Text style={globalStyles.subtitle}>{t.about.disclaimer(APP_NAME)}</Text>
+      <TutorialDialog
+        visible={tutorialVisible}
+        onClose={() => setTutorialVisible(false)}
+      />
     </SafeAreaView>
   );
 }
