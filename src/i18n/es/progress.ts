@@ -18,6 +18,7 @@ export const progressTexts = {
     bodyBack: "Espalda",
     workoutCount: (count: number) =>
       count === 1 ? "1 entreno" : `${count} entrenos`,
+    setCount: (count: number) => (count === 1 ? "1 serie" : `${count} series`),
     chooseExercise: (name: string) => `Elegir ejercicio, ${name}`,
     metrics: {
       weight_reps: "1RM estimado",

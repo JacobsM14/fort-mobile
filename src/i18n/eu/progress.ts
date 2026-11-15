@@ -16,6 +16,7 @@ export const progressTexts: Pick<Translations, "progress"> = {
     bodyBack: "Atzealdea",
     workoutCount: (count) =>
       count === 1 ? "entrenamendu 1" : `${count} entrenamendu`,
+    setCount: (count) => (count === 1 ? "serie 1" : `${count} serie`),
     chooseExercise: (name) => `Aukeratu ariketa, ${name}`,
     metrics: {
       weight_reps: "1RM estimatua",

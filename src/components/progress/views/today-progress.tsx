@@ -91,7 +91,7 @@ export function TodayProgress({ filter }: TodayProgressProps) {
             setsCount={setsCount}
           />
           <TodayMuscles entries={entries} />
-          <TodayExercises />
+          <TodayExercises entries={entries} />
         </>
       )}
       {!workouts.length && loaded && (

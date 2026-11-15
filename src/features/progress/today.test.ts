@@ -1,6 +1,13 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { muscleShares, type TodayEntry } from "./today";
+import { es } from "@/i18n/es";
+
+import {
+  exerciseTotal,
+  formatTotal,
+  muscleShares,
+  type TodayEntry,
+} from "./today";
 
 import type { MuscleId } from "@/features/exercises/catalog";
 import type { SetValues } from "@/features/workouts/queries";
@@ -87,5 +94,104 @@ describe("muscleShares", () => {
 
   it("is empty without exercises", () => {
     expect(muscleShares([])).toEqual({});
+  });
+});
+
+describe("exerciseTotal", () => {
+  const EMPTY: SetValues = {
+    weightKg: null,
+    reps: null,
+    durationS: null,
+    distanceM: null,
+  };
+
+  it("adds up the weight lifted, weight times reps", () => {
+    expect(
+      exerciseTotal("weight_reps", [
+        { ...EMPTY, weightKg: 80, reps: 8 },
+        { ...EMPTY, weightKg: 90, reps: 5 },
+      ]),
+    ).toBe(1090);
+  });
+
+  it("counts nothing for a weighted set missing its weight or reps", () => {
+    expect(
+      exerciseTotal("weight_reps", [
+        { ...EMPTY, weightKg: null, reps: 8 },
+        { ...EMPTY, weightKg: 80, reps: null },
+        { ...EMPTY, weightKg: 50, reps: 10 },
+      ]),
+    ).toBe(500);
+  });
+
+  it("adds up the reps of a bodyweight exercise", () => {
+    expect(
+      exerciseTotal("bodyweight_reps", [
+        { ...EMPTY, reps: 12 },
+        { ...EMPTY, reps: 10 },
+        { ...EMPTY, reps: 8 },
+      ]),
+    ).toBe(30);
+  });
+
+  it("adds up the time of a timed exercise", () => {
+    expect(
+      exerciseTotal("duration", [
+        { ...EMPTY, durationS: 75 },
+        { ...EMPTY, durationS: 60 },
+        { ...EMPTY, durationS: null },
+      ]),
+    ).toBe(135);
+  });
+
+  it("adds up the distance of a distance exercise, not its time", () => {
+    expect(
+      exerciseTotal("distance_duration", [
+        { ...EMPTY, distanceM: 5200, durationS: 1570 },
+        { ...EMPTY, distanceM: 800, durationS: 240 },
+      ]),
+    ).toBe(6000);
+  });
+
+  it("only adds the values its tracking type uses", () => {
+    const set = { weightKg: 60, reps: 10, durationS: 45, distanceM: 1000 };
+    expect(exerciseTotal("bodyweight_reps", [set])).toBe(10);
+    expect(exerciseTotal("duration", [set])).toBe(45);
+  });
+
+  it("is 0 without sets", () => {
+    expect(exerciseTotal("weight_reps", [])).toBe(0);
+  });
+});
+
+describe("formatTotal", () => {
+  const metric = { weight: "kg", distance: "km" } as const;
+  const imperial = { weight: "lb", distance: "mi" } as const;
+
+  it("shows the weight lifted rounded to whole units", () => {
+    expect(formatTotal("weight_reps", 856.4, metric, es, "es")).toBe("856 kg");
+    expect(formatTotal("weight_reps", 100, imperial, es, "es")).toBe("220 lb");
+  });
+
+  it("shows the reps", () => {
+    expect(formatTotal("bodyweight_reps", 30, metric, es, "es")).toBe(
+      "30 reps",
+    );
+  });
+
+  it("shows the time like a stopwatch", () => {
+    expect(formatTotal("duration", 195, metric, es, "es")).toBe("3:15");
+  });
+
+  it("shows the distance with one decimal in the language's format", () => {
+    expect(formatTotal("distance_duration", 5240, metric, es, "es")).toBe(
+      "5,2 km",
+    );
+    expect(formatTotal("distance_duration", 5240, metric, es, "en")).toBe(
+      "5.2 km",
+    );
+    expect(formatTotal("distance_duration", 8046.72, imperial, es, "es")).toBe(
+      "5 mi",
+    );
   });
 });

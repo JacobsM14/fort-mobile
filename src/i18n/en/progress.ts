@@ -15,6 +15,7 @@ export const progressTexts: Pick<Translations, "progress"> = {
     bodyFront: "Front",
     bodyBack: "Back",
     workoutCount: (count) => (count === 1 ? "1 workout" : `${count} workouts`),
+    setCount: (count) => (count === 1 ? "1 set" : `${count} sets`),
     chooseExercise: (name) => `Choose exercise, ${name}`,
     metrics: {
       weight_reps: "Estimated 1RM",
