@@ -2,6 +2,7 @@ import { describe, expect, it } from "@jest/globals";
 
 import {
   formatDecimal,
+  formatPercent,
   parseDecimal,
   parseInteger,
   roundToTenth,
@@ -40,6 +41,17 @@ describe("formatDecimal", () => {
     expect(formatDecimal(62.5, "en")).toBe("62.5");
     expect(formatDecimal(1250, "es")).toBe("1250");
     expect(formatDecimal(2.125, "en")).toBe("2.13");
+  });
+});
+
+describe("formatPercent", () => {
+  // The space before or after the sign is a non-breaking one.
+  const plain = (text: string) => text.replace(/\s/g, " ");
+
+  it("writes the sign where each language does, without decimals", () => {
+    expect(plain(formatPercent(0.33, "es"))).toBe("33 %");
+    expect(plain(formatPercent(0.333, "en"))).toBe("33%");
+    expect(plain(formatPercent(1, "en"))).toBe("100%");
   });
 });
 
