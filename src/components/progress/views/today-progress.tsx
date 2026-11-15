@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 import { TodayExercises } from "@/components/progress/today/today-exercises";
+import { TodayMuscles } from "@/components/progress/today/today-muscles";
 import { WorkoutPicker } from "@/components/progress/today/workout-picker";
 import { WorkoutStats } from "@/components/progress/today/workout-stats";
 import { NoContentBox } from "@/components/ui/content/no-content-box";
@@ -64,6 +65,7 @@ export function TodayProgress({ filter }: TodayProgressProps) {
         />
       )}
       {selectedWorkout && <WorkoutStats />}
+      {selectedWorkout && <TodayMuscles />}
       {selectedWorkout && <TodayExercises />}
       {!workouts.length && loaded && (
         <View style={styles.noContentBox}>

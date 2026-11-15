@@ -11,6 +11,9 @@ export const progressTexts: Pick<Translations, "progress"> = {
     minutes: (minutes) => `${minutes} min`,
     noWorkoutToday: "You haven't trained today",
     todayExercises: "Today's exercises",
+    musclesWorked: "Muscles worked",
+    bodyFront: "Front",
+    bodyBack: "Back",
     workoutCount: (count) => (count === 1 ? "1 workout" : `${count} workouts`),
     chooseExercise: (name) => `Choose exercise, ${name}`,
     metrics: {

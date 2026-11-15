@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import { makeStyles, useTheme } from "@/hooks/use-theme";
+import { SectionTitle } from "@/components/progress/today/section-title";
+
+import { makeStyles } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 import {
@@ -38,18 +40,39 @@ const EXERCISES = [
     share: 0.45,
     sets: ["50×6", "50×6", "45×8"],
   },
+  {
+    name: "Dominadas",
+    detail: "Dorsales · 3 series",
+    total: "30 reps",
+    change: "+3",
+    share: 0.5,
+    sets: ["12", "10", "8"],
+  },
+  {
+    name: "Plancha",
+    detail: "Abdominales · 3 series",
+    total: "3:15",
+    change: "+0:15",
+    share: 0.7,
+    sets: ["1:15", "1:00", "1:00"],
+  },
+  {
+    name: "Carrera",
+    detail: "Cuádriceps · 1 serie",
+    total: "5,2 km",
+    change: "+0,4",
+    share: 0.3,
+    sets: ["5,2 km / 26:10"],
+  },
 ];
 
 export function TodayExercises() {
   const { t } = useTranslation();
-  const { globalStyles } = useTheme();
   const styles = useStyles();
 
   return (
     <View>
-      <Text style={[globalStyles.inputLabel, styles.title]}>
-        {t.progress.todayExercises}
-      </Text>
+      <SectionTitle label={t.progress.todayExercises} />
       <View style={styles.exercisesContainer}>
         {EXERCISES.map((exercise) => (
           <View key={exercise.name} style={styles.exercise}>
@@ -90,12 +113,6 @@ export function TodayExercises() {
 
 const useStyles = makeStyles(({ colors }) =>
   StyleSheet.create({
-    title: {
-      paddingBottom: spacing.xs,
-      marginBottom: spacing.sm,
-      borderBottomColor: colors.border,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-    },
     exercisesContainer: {
       gap: spacing.sm,
     },

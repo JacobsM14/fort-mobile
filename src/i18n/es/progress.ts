@@ -13,6 +13,9 @@ export const progressTexts = {
     minutes: (minutes: number) => `${minutes} min`,
     noWorkoutToday: "No has entrenado hoy",
     todayExercises: "Ejercicios de hoy",
+    musclesWorked: "Músculos trabajados",
+    bodyFront: "Frente",
+    bodyBack: "Espalda",
     workoutCount: (count: number) =>
       count === 1 ? "1 entreno" : `${count} entrenos`,
     chooseExercise: (name: string) => `Elegir ejercicio, ${name}`,

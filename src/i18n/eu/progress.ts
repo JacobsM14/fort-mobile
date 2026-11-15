@@ -11,6 +11,9 @@ export const progressTexts: Pick<Translations, "progress"> = {
     minutes: (minutes) => `${minutes} min`,
     noWorkoutToday: "Gaur ez duzu entrenatu",
     todayExercises: "Gaurko ariketak",
+    musclesWorked: "Landutako giharrak",
+    bodyFront: "Aurrealdea",
+    bodyBack: "Atzealdea",
     workoutCount: (count) =>
       count === 1 ? "entrenamendu 1" : `${count} entrenamendu`,
     chooseExercise: (name) => `Aukeratu ariketa, ${name}`,
