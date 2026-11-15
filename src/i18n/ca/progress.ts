@@ -12,6 +12,15 @@ export const progressTexts: Pick<Translations, "progress"> = {
     oneRepMaxNote:
       "1RM estimat: el pes màxim que podries aixecar una sola vegada, calculat amb la millor sèrie del dia (fórmula d'Epley). Les sèries de més de 15 repeticions compten com a 15.",
     today: "Avui",
+    minutes: (minutes) => `${minutes} min`,
+    noWorkoutToday: "Avui no has entrenat",
+    todayExercises: "Exercicis d'avui",
+    musclesWorked: "Músculs treballats",
+    bodyFront: "Davant",
+    bodyBack: "Esquena",
+    workoutCount: (count) =>
+      count === 1 ? "1 entrenament" : `${count} entrenaments`,
+    setCount: (count) => (count === 1 ? "1 sèrie" : `${count} sèries`),
     chooseExercise: (name) => `Tria l'exercici, ${name}`,
     metrics: {
       weight_reps: "1RM estimat",
@@ -28,7 +37,8 @@ export const progressTexts: Pick<Translations, "progress"> = {
     noTrained: "Registra un entrenament per veure aquí el teu progrés",
     changeLabel: (change) => `Canvi en el període: ${change}`,
     oneRepMaxShort: "1RM est.",
-    ranges: {
+    views: {
+      today: { short: "AVUI", label: "Avui" },
       "4w": { short: "4S", label: "4 setmanes" },
       "3m": { short: "3M", label: "3 mesos" },
       "6m": { short: "6M", label: "6 mesos" },

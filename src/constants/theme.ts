@@ -121,6 +121,7 @@ export const spacing = {
 
 export const fontSizes = {
   lowFont: 10,
+  overline: 11,
   caption: 12,
   footnote: 13,
   detail: 14,

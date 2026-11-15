@@ -633,7 +633,6 @@ export function useWorkout(id: string) {
 }
 
 export type WorkoutHistoryExercise = {
-  // The workout_exercises row, not the exercise.
   id: string;
   exerciseId: string;
   sets: SetValues[];
@@ -643,12 +642,18 @@ export type WorkoutHistoryItem = {
   id: string;
   name: string | null;
   startedAt: Date;
-  // null while in progress.
   endedAt: Date | null;
-  // Only the exercises with a set done, each with its done sets in order.
   exercises: WorkoutHistoryExercise[];
   setCount: number;
 };
+
+export type FinishedWorkoutHistoryItem = WorkoutHistoryItem & { endedAt: Date };
+
+export function isFinishedWorkout(
+  workout: WorkoutHistoryItem,
+): workout is FinishedWorkoutHistoryItem {
+  return workout.endedAt !== null;
+}
 
 export type WorkoutHistoryRow = {
   id: string;

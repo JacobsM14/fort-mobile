@@ -1,6 +1,6 @@
 import type { TrackingType } from "@/constants/enums";
 import type { BmiCategory } from "@/features/body/bmi";
-import type { ProgressRange } from "@/features/progress/ranges";
+import type { ProgressView } from "@/features/progress/views";
 
 export const progressTexts = {
   progress: {
@@ -10,6 +10,15 @@ export const progressTexts = {
     oneRepMaxNote:
       "1RM estimado: el peso máximo que podrías levantar una sola vez, calculado con la mejor serie del día (fórmula de Epley). Las series de más de 15 repeticiones cuentan como 15.",
     today: "Hoy",
+    minutes: (minutes: number) => `${minutes} min`,
+    noWorkoutToday: "No has entrenado hoy",
+    todayExercises: "Ejercicios de hoy",
+    musclesWorked: "Músculos trabajados",
+    bodyFront: "Frente",
+    bodyBack: "Espalda",
+    workoutCount: (count: number) =>
+      count === 1 ? "1 entreno" : `${count} entrenos`,
+    setCount: (count: number) => (count === 1 ? "1 serie" : `${count} series`),
     chooseExercise: (name: string) => `Elegir ejercicio, ${name}`,
     metrics: {
       weight_reps: "1RM estimado",
@@ -26,12 +35,13 @@ export const progressTexts = {
     noTrained: "Registra un entreno para ver aquí tu progreso",
     changeLabel: (change: string) => `Cambio en el periodo: ${change}`,
     oneRepMaxShort: "1RM est.",
-    ranges: {
+    views: {
+      today: { short: "HOY", label: "Hoy" },
       "4w": { short: "4S", label: "4 semanas" },
       "3m": { short: "3M", label: "3 meses" },
       "6m": { short: "6M", label: "6 meses" },
       "1y": { short: "1A", label: "1 año" },
-    } satisfies Record<ProgressRange, { short: string; label: string }>,
+    } satisfies Record<ProgressView, { short: string; label: string }>,
     registerWeight: "Registrar peso corporal",
     saveWeight: "Guardar peso corporal",
     weightSaved: "Peso guardado",

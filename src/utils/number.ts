@@ -23,6 +23,15 @@ export function formatDecimal(value: number, language: Language) {
   });
 }
 
+// A share from 0 to 1 as each language writes a percentage: "33 %" in Spanish,
+// "33%" in English, "% 33" in Basque.
+export function formatPercent(share: number, language: Language) {
+  return share.toLocaleString(language, {
+    style: "percent",
+    maximumFractionDigits: 0,
+  });
+}
+
 // One decimal, as weights and speeds are shown. Also hides the float noise of
 // repeated steps of 0.1.
 export function roundToTenth(value: number) {

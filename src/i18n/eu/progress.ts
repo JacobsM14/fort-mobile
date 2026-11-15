@@ -8,6 +8,15 @@ export const progressTexts: Pick<Translations, "progress"> = {
     oneRepMaxNote:
       "1RM estimatua: behin bakarrik altxa zenezakeen gehieneko pisua, eguneko serie onenarekin kalkulatua (Epleyren formula). 15 errepikapen baino gehiagoko serieek 15 balio dute.",
     today: "Gaur",
+    minutes: (minutes) => `${minutes} min`,
+    noWorkoutToday: "Gaur ez duzu entrenatu",
+    todayExercises: "Gaurko ariketak",
+    musclesWorked: "Landutako giharrak",
+    bodyFront: "Aurrealdea",
+    bodyBack: "Atzealdea",
+    workoutCount: (count) =>
+      count === 1 ? "entrenamendu 1" : `${count} entrenamendu`,
+    setCount: (count) => (count === 1 ? "serie 1" : `${count} serie`),
     chooseExercise: (name) => `Aukeratu ariketa, ${name}`,
     metrics: {
       weight_reps: "1RM estimatua",
@@ -25,7 +34,8 @@ export const progressTexts: Pick<Translations, "progress"> = {
     noTrained: "Erregistratu entrenamendu bat zure aurrerapena hemen ikusteko",
     changeLabel: (change) => `Aldaketa aldi honetan: ${change}`,
     oneRepMaxShort: "1RM est.",
-    ranges: {
+    views: {
+      today: { short: "GAUR", label: "Gaur" },
       "4w": { short: "4A", label: "4 aste" },
       "3m": { short: "3H", label: "3 hilabete" },
       "6m": { short: "6H", label: "6 hilabete" },

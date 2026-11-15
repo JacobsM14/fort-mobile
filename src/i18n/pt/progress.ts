@@ -8,6 +8,14 @@ export const progressTexts: Pick<Translations, "progress"> = {
     oneRepMaxNote:
       "1RM estimado: o peso máximo que conseguirias levantar uma única vez, calculado com a melhor série do dia (fórmula de Epley). As séries com mais de 15 repetições contam como 15.",
     today: "Hoje",
+    minutes: (minutes) => `${minutes} min`,
+    noWorkoutToday: "Hoje ainda não treinaste",
+    todayExercises: "Exercícios de hoje",
+    musclesWorked: "Músculos trabalhados",
+    bodyFront: "Frente",
+    bodyBack: "Costas",
+    workoutCount: (count) => (count === 1 ? "1 treino" : `${count} treinos`),
+    setCount: (count) => (count === 1 ? "1 série" : `${count} séries`),
     chooseExercise: (name) => `Escolher exercício, ${name}`,
     metrics: {
       weight_reps: "1RM estimado",
@@ -24,7 +32,8 @@ export const progressTexts: Pick<Translations, "progress"> = {
     noTrained: "Regista um treino para veres aqui o teu progresso",
     changeLabel: (change) => `Variação no período: ${change}`,
     oneRepMaxShort: "1RM est.",
-    ranges: {
+    views: {
+      today: { short: "HOJE", label: "Hoje" },
       "4w": { short: "4S", label: "4 semanas" },
       "3m": { short: "3M", label: "3 meses" },
       "6m": { short: "6M", label: "6 meses" },
