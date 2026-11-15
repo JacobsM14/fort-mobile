@@ -1,9 +1,8 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 import { ExerciseRow } from "@/components/progress/today/exercise-row";
-import { SectionTitle } from "@/components/progress/today/section-title";
 
-import { makeStyles } from "@/hooks/use-theme";
+import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 import type { TodayEntry } from "@/features/progress/today";
@@ -16,6 +15,7 @@ type TodayExercisesProps = {
 
 export function TodayExercises({ entries }: TodayExercisesProps) {
   const { t } = useTranslation();
+  const { globalStyles } = useTheme();
   const styles = useStyles();
 
   if (entries.length === 0) {
@@ -25,8 +25,8 @@ export function TodayExercises({ entries }: TodayExercisesProps) {
   const maxSets = Math.max(...entries.map((entry) => entry.sets.length));
 
   return (
-    <View>
-      <SectionTitle label={t.progress.todayExercises} />
+    <View style={globalStyles.titledSection}>
+      <Text style={globalStyles.sectionTitle}>{t.progress.todayExercises}</Text>
       <View style={styles.exercisesContainer}>
         {entries.map((entry) => (
           <ExerciseRow key={entry.id} entry={entry} maxSets={maxSets} />

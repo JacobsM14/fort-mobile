@@ -20,7 +20,6 @@ type ProgressViewFilterProps = {
   onChange: (view: ProgressView) => void;
 };
 
-// Today, or how far back the statistics look.
 export function ProgressViewFilter({
   value,
   onChange,

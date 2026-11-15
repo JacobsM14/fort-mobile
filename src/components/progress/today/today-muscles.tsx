@@ -1,8 +1,8 @@
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 import { MuscleMap } from "@/components/progress/muscles/muscle-map";
-import { SectionTitle } from "@/components/progress/today/section-title";
 
+import { useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
 import { muscleShares } from "@/features/progress/today";
@@ -15,6 +15,7 @@ type TodayMusclesProps = {
 
 export function TodayMuscles({ entries }: TodayMusclesProps) {
   const { t } = useTranslation();
+  const { globalStyles } = useTheme();
 
   const shares = muscleShares(entries);
 
@@ -23,8 +24,8 @@ export function TodayMuscles({ entries }: TodayMusclesProps) {
   }
 
   return (
-    <View>
-      <SectionTitle label={t.progress.musclesWorked} />
+    <View style={globalStyles.titledSection}>
+      <Text style={globalStyles.sectionTitle}>{t.progress.musclesWorked}</Text>
       <MuscleMap shares={shares} />
     </View>
   );
