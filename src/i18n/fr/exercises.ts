@@ -23,6 +23,7 @@ export const exercisesTexts: Pick<
     clearFilters: "Effacer",
     closeFilters: "Fermer les filtres",
     typeLabel: "Type",
+    groupLabel: "Groupe musculaire",
     muscleLabel: "Muscle",
     showResults: (count) =>
       count <= 1 ? `Voir ${count} exercice` : `Voir ${count} exercices`,

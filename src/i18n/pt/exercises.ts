@@ -22,6 +22,7 @@ export const exercisesTexts: Pick<
     clearFilters: "Limpar",
     closeFilters: "Fechar filtros",
     typeLabel: "Tipo",
+    groupLabel: "Grupo muscular",
     muscleLabel: "Músculo",
     showResults: (count) =>
       count === 1 ? "Ver 1 exercício" : `Ver ${count} exercícios`,

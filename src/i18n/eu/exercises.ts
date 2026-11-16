@@ -22,6 +22,7 @@ export const exercisesTexts: Pick<
     clearFilters: "Garbitu",
     closeFilters: "Itxi iragazkiak",
     typeLabel: "Mota",
+    groupLabel: "Muskulu-taldea",
     muscleLabel: "Muskulua",
     showResults: (count) =>
       count === 1 ? "Ikusi ariketa 1" : `Ikusi ${count} ariketa`,

@@ -12,6 +12,7 @@ export const exercisesTexts = {
     clearFilters: "Limpiar",
     closeFilters: "Cerrar filtros",
     typeLabel: "Tipo",
+    groupLabel: "Grupo muscular",
     muscleLabel: "Músculo",
     showResults: (count: number) =>
       count === 1 ? "Ver 1 ejercicio" : `Ver ${count} ejercicios`,
