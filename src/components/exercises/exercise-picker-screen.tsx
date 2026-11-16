@@ -135,13 +135,6 @@ export function ExercisePickerScreen({
     resetPaging();
   }
 
-  function toggleGroup(group: MuscleGroup) {
-    setMuscleFilter((current) =>
-      toggleMuscleGroup(current, group, filterMuscles),
-    );
-    resetPaging();
-  }
-
   function clearFilters() {
     setTypeFilter([]);
     setMuscleFilter(EMPTY_MUSCLE_FILTER);
@@ -173,6 +166,13 @@ export function ExercisePickerScreen({
     items.some((item) => item.primaryMuscles.includes(id)),
   );
   const matchingMuscles = filterMuscleIds(muscleFilter);
+
+  function toggleGroup(group: MuscleGroup) {
+    setMuscleFilter((current) =>
+      toggleMuscleGroup(current, group, filterMuscles),
+    );
+    resetPaging();
+  }
 
   const search = normalizeForSearch(query);
   const visibleItems = items.filter(

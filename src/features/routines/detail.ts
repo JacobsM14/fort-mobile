@@ -1,6 +1,6 @@
-import { MUSCLES, type MuscleId } from "@/features/exercises/catalog";
+import { muscleGroupOf } from "@/features/exercises/muscle-filter";
 
-import type { MuscleGroup } from "@/constants/enums";
+import type { MuscleId } from "@/features/exercises/catalog";
 import type { Translations } from "@/i18n/es";
 
 function getRoutineMuscles(
@@ -15,13 +15,7 @@ export function getRoutineMuscleGroups(
   routine: { muscles: readonly MuscleId[] },
   t: Translations,
 ) {
-  const groups = new Set<MuscleGroup>();
-  for (const muscle of routine.muscles) {
-    const group = MUSCLES.find((entry) => entry.id === muscle)?.groupKey;
-    if (group !== undefined) {
-      groups.add(group);
-    }
-  }
+  const groups = new Set(routine.muscles.map(muscleGroupOf));
   return [...groups].map((group) => t.muscleGroups[group]).join(", ");
 }
 
