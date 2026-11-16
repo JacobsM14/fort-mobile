@@ -1,6 +1,13 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { normalizeForSearch } from "./text";
+import { normalizeForSearch, requiredLabel } from "./text";
+
+describe("requiredLabel", () => {
+  it("marks a required field with an asterisk", () => {
+    expect(requiredLabel("Altura", true)).toBe("Altura *");
+    expect(requiredLabel("Altura", false)).toBe("Altura");
+  });
+});
 
 describe("normalizeForSearch", () => {
   it("strips accents, case and surrounding spaces", () => {

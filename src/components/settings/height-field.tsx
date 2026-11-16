@@ -12,21 +12,29 @@ import {
   parseHeightFeetInches,
 } from "@/features/settings/profile-input";
 
+import { requiredLabel } from "@/utils/text";
 import { cmToFeetInches } from "@/utils/units";
 
 import { spacing } from "@/constants/theme";
 
 type HeightFieldProps = {
   heightCm: number | null;
-  // Feet and inches for who measures distance in miles.
   imperial: boolean;
   onSave: (heightCm: number | null) => void;
+  onDraftChange?: (heightCm: number | null) => void;
+  required?: boolean;
 };
 
 // The height, typed in cm or in feet and inches and kept in cm. Saved when the
 // box is left: what isn't a possible height goes back to the saved one, and
 // leaving it empty clears it.
-export function HeightField({ heightCm, imperial, onSave }: HeightFieldProps) {
+export function HeightField({
+  heightCm,
+  imperial,
+  onSave,
+  onDraftChange,
+  required = false,
+}: HeightFieldProps) {
   const { t } = useTranslation();
   const { globalStyles } = useTheme();
   const styles = useStyles();
@@ -38,10 +46,26 @@ export function HeightField({ heightCm, imperial, onSave }: HeightFieldProps) {
     saved === null ? "" : String(saved.inches),
   );
 
+  function changeCm(text: string) {
+    setCm(text);
+    onDraftChange?.(parseHeightCm(text));
+  }
+
+  function changeFeet(text: string) {
+    setFeet(text);
+    onDraftChange?.(parseHeightFeetInches(text, inches));
+  }
+
+  function changeInches(text: string) {
+    setInches(text);
+    onDraftChange?.(parseHeightFeetInches(feet, text));
+  }
+
   function restore() {
     setCm(heightCm === null ? "" : String(heightCm));
     setFeet(saved === null ? "" : String(saved.feet));
     setInches(saved === null ? "" : String(saved.inches));
+    onDraftChange?.(heightCm);
   }
 
   function save() {
@@ -64,13 +88,15 @@ export function HeightField({ heightCm, imperial, onSave }: HeightFieldProps) {
 
   return (
     <View style={globalStyles.formCage}>
-      <Text style={globalStyles.inputLabel}>{t.settings.user.height}</Text>
+      <Text style={globalStyles.inputLabel}>
+        {requiredLabel(t.settings.user.height, required)}
+      </Text>
       <View style={styles.row}>
         {imperial ? (
           <>
             <ProfileField
               value={feet}
-              onChangeText={setFeet}
+              onChangeText={changeFeet}
               onEndEditing={save}
               placeholder={t.settings.user.feet}
               maxLength={1}
@@ -78,7 +104,7 @@ export function HeightField({ heightCm, imperial, onSave }: HeightFieldProps) {
             />
             <ProfileField
               value={inches}
-              onChangeText={setInches}
+              onChangeText={changeInches}
               onEndEditing={save}
               placeholder={t.settings.user.inches}
               maxLength={2}
@@ -88,7 +114,7 @@ export function HeightField({ heightCm, imperial, onSave }: HeightFieldProps) {
         ) : (
           <ProfileField
             value={cm}
-            onChangeText={setCm}
+            onChangeText={changeCm}
             onEndEditing={save}
             placeholder={t.settings.user.cm}
             maxLength={3}

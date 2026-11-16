@@ -2,9 +2,29 @@ import { describe, expect, it } from "@jest/globals";
 
 import {
   parseBirthDate,
+  parseBodyWeightKg,
   parseHeightCm,
   parseHeightFeetInches,
 } from "./profile-input";
+
+describe("parseBodyWeightKg", () => {
+  it("takes a weight in kg, with a comma or a point", () => {
+    expect(parseBodyWeightKg("72,5", "kg")).toBe(72.5);
+    expect(parseBodyWeightKg("80", "kg")).toBe(80);
+  });
+
+  it("turns pounds into kg", () => {
+    expect(parseBodyWeightKg("220", "lb")).toBeCloseTo(99.79);
+  });
+
+  it("rejects what isn't a plausible weight", () => {
+    expect(parseBodyWeightKg("", "kg")).toBeNull();
+    expect(parseBodyWeightKg("abc", "kg")).toBeNull();
+    expect(parseBodyWeightKg("15", "kg")).toBeNull();
+    expect(parseBodyWeightKg("500", "kg")).toBeNull();
+    expect(parseBodyWeightKg("30", "lb")).toBeNull();
+  });
+});
 
 describe("parseHeightCm", () => {
   it("takes whole centimeters within a human range", () => {

@@ -1,6 +1,6 @@
 export const onboardingTexts = {
   onboarding: {
-    welcomeTitle: (app: string) => `Te damos la bienvenida a ${app}`,
+    welcomeTitle: (app: string) => `Bienvenido a ${app}`,
     welcomeMessage:
       "Planifica tus rutinas, apunta cada serie y sigue tu progreso, todo en tu móvil.",
     skip: "Omitir",
@@ -8,6 +8,12 @@ export const onboardingTexts = {
     next: "Siguiente",
     finish: "Terminar",
     progress: (step: number, total: number) => `Paso ${step} de ${total}`,
+    setup: "Configuración",
+    doneTitle: "Todo listo",
+    doneMessage:
+      "Ya puedes crear tu primera rutina. Si quieres, te enseñamos en un momento cómo funciona la app.",
+    seeTutorial: "Ver tutorial",
+    startWithoutTutorial: "Empezar sin tutorial",
     tour: {
       newRoutine: {
         title: "Crea tus rutinas",

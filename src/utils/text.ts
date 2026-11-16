@@ -1,3 +1,8 @@
+// A field's label with the usual mark of a field that must be filled in.
+export function requiredLabel(label: string, required: boolean) {
+  return required ? `${label} *` : label;
+}
+
 // Accents are stripped so typing "biceps" still finds "Bíceps": NFD splits
 // each accented letter into the letter plus a combining mark, which the regex
 // removes.

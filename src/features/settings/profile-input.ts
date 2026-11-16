@@ -1,9 +1,13 @@
+import type { WeightUnit } from "@/constants/enums";
+
 import { toDateKey } from "@/utils/date";
-import { parseInteger } from "@/utils/number";
-import { feetInchesToCm } from "@/utils/units";
+import { parseDecimal, parseInteger } from "@/utils/number";
+import { feetInchesToCm, weightFromUnit } from "@/utils/units";
 
 const MIN_HEIGHT_CM = 50;
 const MAX_HEIGHT_CM = 260;
+const MIN_WEIGHT_KG = 20;
+const MAX_WEIGHT_KG = 400;
 const MIN_BIRTH_YEAR = 1900;
 const MAX_FEET = 8;
 const MAX_INCHES = 11;
@@ -14,6 +18,20 @@ export function parseHeightCm(text: string): number | null {
   return value !== null && value >= MIN_HEIGHT_CM && value <= MAX_HEIGHT_CM
     ? value
     : null;
+}
+
+// A body weight typed in the user's unit, in kg, within what a person can
+// weigh.
+export function parseBodyWeightKg(
+  text: string,
+  unit: WeightUnit,
+): number | null {
+  const value = parseDecimal(text);
+  if (value === null) {
+    return null;
+  }
+  const kg = weightFromUnit(value, unit);
+  return kg >= MIN_WEIGHT_KG && kg <= MAX_WEIGHT_KG ? kg : null;
 }
 
 // Inches may be left empty: 6 feet is 6 feet 0.

@@ -2,7 +2,7 @@ import type { Translations } from "@/i18n/es";
 
 export const onboardingTexts: Pick<Translations, "onboarding"> = {
   onboarding: {
-    welcomeTitle: (app) => `Boas-vindas ao ${app}`,
+    welcomeTitle: (app) => `Bem-vindo ao ${app}`,
     welcomeMessage:
       "Planeia as tuas rotinas, regista cada série e acompanha o teu progresso, tudo no telemóvel.",
     skip: "Saltar",
@@ -10,6 +10,12 @@ export const onboardingTexts: Pick<Translations, "onboarding"> = {
     next: "Seguinte",
     finish: "Terminar",
     progress: (step, total) => `Passo ${step} de ${total}`,
+    setup: "Configuração",
+    doneTitle: "Tudo pronto",
+    doneMessage:
+      "Já podes criar a tua primeira rotina. Se quiseres, mostramos-te num instante como funciona a app.",
+    seeTutorial: "Ver o tutorial",
+    startWithoutTutorial: "Começar sem tutorial",
     tour: {
       newRoutine: {
         title: "Cria as tuas rotinas",

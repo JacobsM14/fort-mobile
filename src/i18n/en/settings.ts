@@ -145,6 +145,7 @@ export const settingsTexts: Pick<
     version: "Version",
     contact: "Contact",
     rate: "Rate the app",
+    tutorial: "View tutorial",
     disclaimer: (appName) =>
       `${appName} is not a medical device and does not diagnose, treat, cure or prevent any medical condition. Talk to a healthcare professional before starting an exercise program.`,
   },
