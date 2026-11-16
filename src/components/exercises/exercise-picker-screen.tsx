@@ -24,11 +24,21 @@ import {
   type MuscleId,
 } from "@/features/exercises/catalog";
 import {
+  activeFilterCount,
+  availableMuscleGroups,
+  EMPTY_MUSCLE_FILTER,
+  filterMuscleIds,
+  toggleFilterMuscle,
+  toggleMuscleGroup,
+  visibleFilterMuscles,
+  type MuscleFilter,
+} from "@/features/exercises/muscle-filter";
+import {
   useExerciseList,
   type ExerciseSummary,
 } from "@/features/exercises/queries";
 
-import type { TrackingType } from "@/constants/enums";
+import type { MuscleGroup, TrackingType } from "@/constants/enums";
 
 import { toggleItem } from "@/utils/array";
 import { normalizeForSearch } from "@/utils/text";
@@ -70,8 +80,11 @@ export function ExercisePickerScreen({
   const { globalStyles } = useTheme();
   const { exercises, loaded } = useExerciseList();
   const [query, setQuery] = useState("");
+
   const [typeFilter, setTypeFilter] = useState<TrackingType[]>([]);
-  const [muscleFilter, setMuscleFilter] = useState<MuscleId[]>([]);
+  const [muscleFilter, setMuscleFilter] =
+    useState<MuscleFilter>(EMPTY_MUSCLE_FILTER);
+
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const [selectedIds, setSelectedIds] = useState<string[]>(() => [
@@ -79,6 +92,7 @@ export function ExercisePickerScreen({
   ]);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [info, setInfo] = useState<ExerciseInfo | null>(null);
+
   // Exercises created from this picker, newest first. They're pinned to the
   // top so they're visible when coming back, instead of somewhere down the
   // alphabetical, paged list.
@@ -117,13 +131,20 @@ export function ExercisePickerScreen({
   }
 
   function toggleMuscle(id: MuscleId) {
-    setMuscleFilter((current) => toggleItem(current, id));
+    setMuscleFilter((current) => toggleFilterMuscle(current, id));
+    resetPaging();
+  }
+
+  function toggleGroup(group: MuscleGroup) {
+    setMuscleFilter((current) =>
+      toggleMuscleGroup(current, group, filterMuscles),
+    );
     resetPaging();
   }
 
   function clearFilters() {
     setTypeFilter([]);
-    setMuscleFilter([]);
+    setMuscleFilter(EMPTY_MUSCLE_FILTER);
     resetPaging();
   }
 
@@ -151,13 +172,16 @@ export function ExercisePickerScreen({
   const filterMuscles = MUSCLE_IDS.filter((id) =>
     items.some((item) => item.primaryMuscles.includes(id)),
   );
+  const matchingMuscles = filterMuscleIds(muscleFilter);
 
   const search = normalizeForSearch(query);
   const visibleItems = items.filter(
     (item) =>
       (typeFilter.length === 0 || typeFilter.includes(item.trackingType)) &&
-      (muscleFilter.length === 0 ||
-        item.primaryMuscles.some((muscle) => muscleFilter.includes(muscle))) &&
+      (matchingMuscles.length === 0 ||
+        item.primaryMuscles.some((muscle) =>
+          matchingMuscles.includes(muscle),
+        )) &&
       item.searchText.includes(search),
   );
   const pagedItems = visibleItems.slice(0, visibleCount);
@@ -185,11 +209,10 @@ export function ExercisePickerScreen({
         </View>
         <FilterButton
           label={t.newExercises.filters}
-          activeCount={typeFilter.length + muscleFilter.length}
+          activeCount={typeFilter.length + activeFilterCount(muscleFilter)}
           onPress={() => setFiltersOpen(true)}
         />
       </View>
-      {/* Together so the button sits closer to the list than the screen's gap. */}
       <View style={styles.results}>
         {onCreateCustom !== undefined && (
           <DashedButton
@@ -242,10 +265,13 @@ export function ExercisePickerScreen({
         visible={filtersOpen}
         onClose={() => setFiltersOpen(false)}
         typeFilter={typeFilter}
-        muscleFilter={muscleFilter}
-        muscles={filterMuscles}
+        groupFilter={muscleFilter.groups}
+        muscleFilter={muscleFilter.muscles}
+        groups={availableMuscleGroups(filterMuscles)}
+        muscles={visibleFilterMuscles(muscleFilter, filterMuscles)}
         resultCount={visibleItems.length}
         onToggleType={toggleType}
+        onToggleGroup={toggleGroup}
         onToggleMuscle={toggleMuscle}
         onClear={clearFilters}
       />

@@ -7,7 +7,11 @@ import { BottomSheet } from "@/components/ui/overlays/bottom-sheet";
 import { makeStyles, useTheme } from "@/hooks/use-theme";
 import { useTranslation } from "@/i18n";
 
-import { TRACKING_TYPES, type TrackingType } from "@/constants/enums";
+import {
+  TRACKING_TYPES,
+  type MuscleGroup,
+  type TrackingType,
+} from "@/constants/enums";
 import { TRACKING_TYPE_ICONS } from "@/constants/tracking-type-icons";
 
 import type { MuscleId } from "@/features/exercises/catalog";
@@ -18,11 +22,13 @@ type ExerciseFiltersSheetProps = {
   visible: boolean;
   onClose: () => void;
   typeFilter: readonly TrackingType[];
+  groupFilter: readonly MuscleGroup[];
   muscleFilter: readonly MuscleId[];
-  // Only muscles that some exercise works, so no chip leads to an empty list.
+  groups: readonly MuscleGroup[];
   muscles: readonly MuscleId[];
   resultCount: number;
   onToggleType: (type: TrackingType) => void;
+  onToggleGroup: (group: MuscleGroup) => void;
   onToggleMuscle: (muscle: MuscleId) => void;
   onClear: () => void;
 };
@@ -31,17 +37,21 @@ export function ExerciseFiltersSheet({
   visible,
   onClose,
   typeFilter,
+  groupFilter,
   muscleFilter,
+  groups,
   muscles,
   resultCount,
   onToggleType,
+  onToggleGroup,
   onToggleMuscle,
   onClear,
 }: ExerciseFiltersSheetProps) {
   const { t } = useTranslation();
   const { globalStyles, colors } = useTheme();
   const styles = useStyles();
-  const hasFilters = typeFilter.length > 0 || muscleFilter.length > 0;
+  const hasFilters =
+    typeFilter.length > 0 || groupFilter.length > 0 || muscleFilter.length > 0;
 
   return (
     <BottomSheet
@@ -94,6 +104,21 @@ export function ExerciseFiltersSheet({
         </View>
         <View style={globalStyles.formCage}>
           <Text style={globalStyles.inputLabel}>
+            {t.newExercises.groupLabel}
+          </Text>
+          <View style={styles.chips}>
+            {groups.map((group) => (
+              <Chip
+                key={group}
+                label={t.muscleGroups[group]}
+                selected={groupFilter.includes(group)}
+                onPress={() => onToggleGroup(group)}
+              />
+            ))}
+          </View>
+        </View>
+        <View style={globalStyles.formCage}>
+          <Text style={globalStyles.inputLabel}>
             {t.newExercises.muscleLabel}
           </Text>
           <View style={styles.chips}>
@@ -126,8 +151,6 @@ const useStyles = makeStyles(({ colors }) =>
     clearDisabled: {
       opacity: 0.4,
     },
-    // Lets the chips scroll when the sheet reaches its max height, keeping the
-    // header and the button in view.
     scroll: {
       flexShrink: 1,
     },
