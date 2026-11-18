@@ -82,7 +82,11 @@
       "expo-font",
       "expo-image",
       "expo-status-bar",
-      "expo-sharing"
+      "expo-sharing",
+      [
+        "./plugins/android-app-icons",
+        { "icons": ["blue", "green", "purple", "pink", "amber"] }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
