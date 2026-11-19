@@ -21,6 +21,7 @@ import {
   deleteSet,
   deleteWorkoutExercise,
   discardWorkout,
+  discardWorkoutIfEmpty,
   doneSetsQuery,
   endRest,
   finishWorkout,
@@ -496,6 +497,45 @@ describe("discardWorkout", () => {
 
     expect(readWorkoutRow(workoutId)).toBeUndefined();
     expect(readWorkout(workoutId)).toEqual([]);
+  });
+});
+
+describe("discardWorkoutIfEmpty", () => {
+  function logLegDay() {
+    const routineId = createRoutine({
+      name: "Legs",
+      exerciseIds: [catalogId("bench_press")],
+    });
+    const workoutId = logWorkout(routineId, START);
+    const [bench] = readWorkout(workoutId);
+    return { workoutId, bench };
+  }
+
+  it("discards a logged workout left with nothing done", () => {
+    const { workoutId } = logLegDay();
+
+    expect(discardWorkoutIfEmpty(workoutId)).toBe(true);
+    expect(readWorkoutRow(workoutId)).toBeUndefined();
+    expect(readWorkout(workoutId)).toEqual([]);
+  });
+
+  it("keeps a finished workout with a set done", () => {
+    const { workoutId, bench } = logLegDay();
+    completeSet(bench.sets[0].id, BENCH, at(30));
+
+    expect(discardWorkoutIfEmpty(workoutId)).toBe(false);
+    expect(readWorkoutRow(workoutId)).toBeDefined();
+  });
+
+  it("never touches the workout in progress", () => {
+    const { workoutId } = startPushDay();
+
+    expect(discardWorkoutIfEmpty(workoutId)).toBe(false);
+    expect(readWorkoutRow(workoutId)).toBeDefined();
+  });
+
+  it("does nothing for a workout that no longer exists", () => {
+    expect(discardWorkoutIfEmpty("missing")).toBe(false);
   });
 });
 

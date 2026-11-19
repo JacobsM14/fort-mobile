@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Alert, StyleSheet, Text, View, type HostInstance } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -30,6 +30,7 @@ import {
   deleteSet,
   deleteWorkoutExercise,
   discardWorkout,
+  discardWorkoutIfEmpty,
   resetSetTimer,
 } from "@/features/workouts/queries";
 
@@ -68,6 +69,20 @@ export default function HistoryWorkoutScreen() {
   const [info, setInfo] = useState<ExerciseInfo | null>(null);
   const screenRef = useRef<HostInstance>(null);
   const menuButtons = useRef(new Map<string, HostInstance>());
+
+  // Left with nothing done, the workout goes, as a live one finished empty
+  // does: a routine logged here and never filled in doesn't stay as a blank
+  // card. Adding an exercise opens on top, so it doesn't count as leaving.
+  useEffect(
+    () => () => {
+      try {
+        discardWorkoutIfEmpty(id);
+      } catch {
+        // The user is already leaving: at worst the empty workout stays.
+      }
+    },
+    [id],
+  );
 
   // Its right edge lined up with the button's.
   function openMenu(entry: WorkoutEntry) {
