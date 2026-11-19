@@ -14,8 +14,10 @@ import {
   type TrackingType,
 } from "@/constants/enums";
 import { MUSCLE_IDS, type MuscleId } from "@/features/exercises/catalog";
-
-import type { ExerciseInput } from "@/features/exercises/queries";
+import {
+  EXERCISE_NAME_MAX_LENGTH,
+  type ExerciseInput,
+} from "@/features/exercises/queries";
 
 import { toggleItem } from "@/utils/array";
 
@@ -29,12 +31,14 @@ import {
 type ExerciseFormProps = {
   // Values to start from when editing; a new exercise starts empty.
   initial?: ExerciseInput;
+  trackingTypeLocked?: boolean;
   submitLabel: string;
   onSubmit: (input: ExerciseInput) => void;
 };
 
 export function ExerciseForm({
   initial,
+  trackingTypeLocked = false,
   submitLabel,
   onSubmit,
 }: ExerciseFormProps) {
@@ -53,6 +57,9 @@ export function ExerciseForm({
   const [description, setDescription] = useState(initial?.description ?? "");
 
   const canSave = name.trim() !== "";
+  const trackingTypes: readonly TrackingType[] = trackingTypeLocked
+    ? [trackingType]
+    : TRACKING_TYPES;
 
   function toggleEquipment(item: Equipment) {
     setEquipment((current) => (current === item ? null : item));
@@ -71,11 +78,19 @@ export function ExerciseForm({
       showsVerticalScrollIndicator={false}
     >
       <View style={globalStyles.formCage}>
-        <Text style={globalStyles.inputLabel}>{t.exerciseForm.nameLabel}</Text>
+        <View style={styles.labelRow}>
+          <Text style={globalStyles.inputLabel}>
+            {t.exerciseForm.nameLabel}
+          </Text>
+          <Text style={globalStyles.inputLabel}>
+            {name.length}/{EXERCISE_NAME_MAX_LENGTH}
+          </Text>
+        </View>
         <TextInput
           style={globalStyles.boxInput}
           value={name}
           onChangeText={setName}
+          maxLength={EXERCISE_NAME_MAX_LENGTH}
           placeholder={t.exercises.namePlaceholder}
           placeholderTextColor={colors.disabled}
         />
@@ -85,7 +100,7 @@ export function ExerciseForm({
           {t.exerciseForm.trackingLabel}
         </Text>
         <View style={styles.chips} accessibilityRole="radiogroup">
-          {TRACKING_TYPES.map((type) => (
+          {trackingTypes.map((type) => (
             <Chip
               key={type}
               role="radio"
@@ -95,6 +110,11 @@ export function ExerciseForm({
             />
           ))}
         </View>
+        {trackingTypeLocked && (
+          <Text style={globalStyles.subtitle}>
+            {t.exerciseForm.trackingLocked}
+          </Text>
+        )}
       </View>
       <View style={globalStyles.formCage}>
         <Text style={globalStyles.inputLabel}>
@@ -162,6 +182,10 @@ const styles = StyleSheet.create({
   content: {
     gap: spacing.lg,
     paddingBottom: spacing.lg,
+  },
+  labelRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   chips: {
     flexDirection: "row",

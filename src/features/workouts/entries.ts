@@ -14,12 +14,13 @@ export type WorkoutEntry = WorkoutExercise & {
 };
 
 // The workout's exercises with what the screen shows of each. Exercises
-// deleted since are archived and left out of the exercise list, so they are
-// left out here too.
+// deleted since are archived, and still shown: what was logged stays.
 export function useWorkoutEntries(workoutId: string) {
   const { t } = useTranslation();
   const { workout, exercises, loaded } = useWorkout(workoutId);
-  const { exercises: summaries, loaded: summariesLoaded } = useExerciseList();
+  const { exercises: summaries, loaded: summariesLoaded } = useExerciseList({
+    includeArchived: true,
+  });
 
   const summariesById = new Map(
     summaries.map((summary) => [summary.id, summary] as const),
@@ -35,7 +36,6 @@ export function useWorkoutEntries(workoutId: string) {
     title: workout?.name ?? t.workout.title,
     found: workout !== undefined,
     startedAt: workout?.startedAt,
-    // undefined while the workout is in progress.
     endedAt: workout?.endedAt ?? undefined,
     entries,
     anyDone: exercises.some(isExerciseDone),

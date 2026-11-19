@@ -58,6 +58,8 @@ export const exercisesTexts: Pick<
   exerciseForm: {
     nameLabel: "Nom",
     trackingLabel: "Tipus de registre",
+    trackingLocked:
+      "Ja té sèries registrades, així que el tipus no es pot canviar. Per a un altre tipus, crea un exercici nou.",
     musclesLabel: "Músculs principals",
     descriptionLabel: "Descripció",
   },

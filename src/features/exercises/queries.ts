@@ -1,4 +1,12 @@
-import { and, countDistinct, eq, inArray, isNull, sql } from "drizzle-orm";
+import {
+  and,
+  countDistinct,
+  eq,
+  inArray,
+  isNotNull,
+  isNull,
+  sql,
+} from "drizzle-orm";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 
 import { db } from "@/db/client";
@@ -9,11 +17,16 @@ import {
   routineExercises,
   routines,
   workoutExercises,
+  workoutSets,
 } from "@/db/schema";
 
 import { isMuscleId, type MuscleId } from "./catalog";
 
 import type { Equipment, MuscleRole, TrackingType } from "@/constants/enums";
+
+import { limitChars } from "@/utils/text";
+
+export const EXERCISE_NAME_MAX_LENGTH = 60;
 
 export type ExerciseSummary = {
   id: string;
@@ -36,7 +49,7 @@ export type ExerciseInput = {
 
 function exerciseValues(input: ExerciseInput) {
   return {
-    name: input.name.trim(),
+    name: limitChars(input.name, EXERCISE_NAME_MAX_LENGTH),
     description: input.description.trim() || null,
     equipment: input.equipment,
     trackingType: input.trackingType,
@@ -98,6 +111,26 @@ export function countRoutinesWithExercise(exerciseId: string) {
       .where(eq(routineExercises.exerciseId, exerciseId))
       .all()
       .at(0)?.count ?? 0
+  );
+}
+
+export function exerciseHasDoneSets(exerciseId: string) {
+  return (
+    db
+      .select({ id: workoutSets.id })
+      .from(workoutSets)
+      .innerJoin(
+        workoutExercises,
+        eq(workoutExercises.id, workoutSets.workoutExerciseId),
+      )
+      .where(
+        and(
+          eq(workoutExercises.exerciseId, exerciseId),
+          isNotNull(workoutSets.completedAt),
+        ),
+      )
+      .limit(1)
+      .all().length > 0
   );
 }
 
@@ -181,26 +214,34 @@ export function toExerciseSummaries(
 // out a new list on every render, so screens re-sort it on every tap.
 const MUSCLE_ORDER = sql`${exerciseMuscles}.rowid`;
 
+// Archived exercises are deleted ones that logged workouts still use: only
+// what shows those workouts asks for them.
+export function exerciseListQuery(includeArchived: boolean) {
+  return db
+    .select({
+      id: exercises.id,
+      key: exercises.key,
+      name: exercises.name,
+      description: exercises.description,
+      equipment: exercises.equipment,
+      trackingType: exercises.trackingType,
+      muscleId: exerciseMuscles.muscleId,
+      role: exerciseMuscles.role,
+    })
+    .from(exercises)
+    .leftJoin(exerciseMuscles, eq(exerciseMuscles.exerciseId, exercises.id))
+    .where(includeArchived ? undefined : isNull(exercises.archivedAt))
+    .orderBy(MUSCLE_ORDER);
+}
+
 // Re-runs by itself when the exercises table changes (client.ts opens the
 // database with enableChangeListener).
-export function useExerciseList() {
-  const { data, updatedAt } = useLiveQuery(
-    db
-      .select({
-        id: exercises.id,
-        key: exercises.key,
-        name: exercises.name,
-        description: exercises.description,
-        equipment: exercises.equipment,
-        trackingType: exercises.trackingType,
-        muscleId: exerciseMuscles.muscleId,
-        role: exerciseMuscles.role,
-      })
-      .from(exercises)
-      .leftJoin(exerciseMuscles, eq(exerciseMuscles.exerciseId, exercises.id))
-      .where(isNull(exercises.archivedAt))
-      .orderBy(MUSCLE_ORDER),
-  );
+export function useExerciseList({
+  includeArchived = false,
+}: { includeArchived?: boolean } = {}) {
+  const { data, updatedAt } = useLiveQuery(exerciseListQuery(includeArchived), [
+    includeArchived,
+  ]);
 
   return {
     exercises: toExerciseSummaries(data),

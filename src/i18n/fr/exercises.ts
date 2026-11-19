@@ -57,6 +57,8 @@ export const exercisesTexts: Pick<
   exerciseForm: {
     nameLabel: "Nom",
     trackingLabel: "Type de suivi",
+    trackingLocked:
+      "Il a déjà des séries enregistrées, son type ne peut donc plus changer. Pour un autre type, crée un nouvel exercice.",
     musclesLabel: "Muscles principaux",
     descriptionLabel: "Description",
   },

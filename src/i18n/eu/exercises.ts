@@ -55,6 +55,8 @@ export const exercisesTexts: Pick<
   exerciseForm: {
     nameLabel: "Izena",
     trackingLabel: "Erregistro mota",
+    trackingLocked:
+      "Dagoeneko serieak erregistratuta ditu; beraz, ezin zaio mota aldatu. Beste mota baterako, sortu ariketa berri bat.",
     musclesLabel: "Muskulu nagusiak",
     descriptionLabel: "Deskribapena",
   },

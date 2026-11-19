@@ -66,7 +66,8 @@ export function trainedExercisesQuery(since: Date) {
 }
 
 // The picker needs each exercise's name and type: the rows only have ids.
-// Archived exercises have no summary and are left out.
+// The summaries include archived exercises, so one deleted since keeps its
+// chart.
 export function toTrainedExercises(
   rows: readonly TrainedExerciseRow[],
   summaries: readonly ExerciseSummary[],
@@ -92,7 +93,7 @@ export function useTrainedExercises() {
     since.getTime(),
   ]);
 
-  const { exercises, loaded } = useExerciseList();
+  const { exercises, loaded } = useExerciseList({ includeArchived: true });
 
   return {
     exercises: toTrainedExercises(data, exercises),

@@ -12,16 +12,14 @@ import {
 import type { TrackingType } from "@/constants/enums";
 import type { MuscleId } from "@/features/exercises/catalog";
 
+import { limitChars } from "@/utils/text";
+
 // Long enough for "Pierna y glúteos · semana 3", short enough to fit the
 // routine cards on Today and in Progress.
 export const ROUTINE_NAME_MAX_LENGTH = 40;
 
-// Counted in characters, not UTF-16 units, so an emoji isn't cut in half.
 function cleanRoutineName(name: string) {
-  return Array.from(name.trim())
-    .slice(0, ROUTINE_NAME_MAX_LENGTH)
-    .join("")
-    .trim();
+  return limitChars(name, ROUTINE_NAME_MAX_LENGTH);
 }
 
 export type RoutineSummary = {

@@ -24,8 +24,7 @@ export type TodayEntry = WorkoutHistoryExercise & {
   name: string;
 };
 
-// Exercises deleted since are archived and missing from the exercise list, so
-// they are left out here too.
+// The summaries include archived exercises, so one deleted since still shows.
 export function toTodayEntries(
   exercises: readonly WorkoutHistoryExercise[],
   summaries: readonly ExerciseSummary[],
@@ -44,7 +43,9 @@ export function useTodayEntries(
   workout: FinishedWorkoutHistoryItem | undefined,
 ) {
   const { t } = useTranslation();
-  const { exercises: summaries, loaded } = useExerciseList();
+  const { exercises: summaries, loaded } = useExerciseList({
+    includeArchived: true,
+  });
 
   return {
     entries: toTodayEntries(workout?.exercises ?? [], summaries, t),

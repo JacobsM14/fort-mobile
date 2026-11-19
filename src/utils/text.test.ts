@@ -1,6 +1,21 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { normalizeForSearch, requiredLabel } from "./text";
+import { limitChars, normalizeForSearch, requiredLabel } from "./text";
+
+describe("limitChars", () => {
+  it("trims the text and cuts it to the limit", () => {
+    expect(limitChars("  Remo con banda  ", 40)).toBe("Remo con banda");
+    expect(limitChars("Remo con banda", 4)).toBe("Remo");
+  });
+
+  it("drops a space left at the end by the cut", () => {
+    expect(limitChars("Remo con banda", 5)).toBe("Remo");
+  });
+
+  it("counts an emoji as one character, so it is never cut in half", () => {
+    expect(limitChars("Remo 💪💪", 6)).toBe("Remo 💪");
+  });
+});
 
 describe("requiredLabel", () => {
   it("marks a required field with an asterisk", () => {
