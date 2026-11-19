@@ -62,6 +62,7 @@ export function SetupScreen() {
   const step = STEPS[index];
   const isFirst = index === 0;
   const isLast = index === STEPS.length - 1;
+  const isBeforeLast = index === STEPS.length - 2;
 
   const weightText = weightDraft.unit === weight ? weightDraft.text : "";
   const weightKg = parseBodyWeightKg(weightText, weight);
@@ -83,6 +84,10 @@ export function SetupScreen() {
       () => {
         if (index === 0) {
           return false;
+        }
+        // Swallowed instead of exiting, which would leave the setup unfinished.
+        if (index === STEPS.length - 1) {
+          return true;
         }
         setIndex(index - 1);
         return true;
@@ -149,28 +154,38 @@ export function SetupScreen() {
             />
           )}
           {step === "notifications" && <NotificationsStep />}
-          {step === "done" && (
-            <DoneStep
-              onSeeTutorial={() => completeSetup(true)}
-              onStart={() => completeSetup(false)}
-            />
-          )}
+          {step === "done" && <DoneStep />}
         </ScrollView>
         <View style={styles.actions}>
-          {!isFirst && (
-            <SecondaryButton
-              label={t.onboarding.previous}
-              onPress={() => setIndex(index - 1)}
-              style={styles.button}
-            />
-          )}
-          {!isLast && (
-            <PrimaryButton
-              label={t.onboarding.next}
-              onPress={next}
-              disabled={!canContinue}
-              style={styles.button}
-            />
+          {isLast ? (
+            <>
+              <SecondaryButton
+                label={t.onboarding.skip}
+                onPress={() => completeSetup(false)}
+                style={styles.button}
+              />
+              <PrimaryButton
+                label={t.onboarding.seeTutorial}
+                onPress={() => completeSetup(true)}
+                style={styles.button}
+              />
+            </>
+          ) : (
+            <>
+              {!isFirst && (
+                <SecondaryButton
+                  label={t.onboarding.previous}
+                  onPress={() => setIndex(index - 1)}
+                  style={styles.button}
+                />
+              )}
+              <PrimaryButton
+                label={isBeforeLast ? t.onboarding.finish : t.onboarding.next}
+                onPress={next}
+                disabled={!canContinue}
+                style={styles.button}
+              />
+            </>
           )}
         </View>
       </KeyboardAvoidingView>

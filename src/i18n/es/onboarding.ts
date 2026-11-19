@@ -13,7 +13,6 @@ export const onboardingTexts = {
     doneMessage:
       "Ya puedes crear tu primera rutina. Si quieres, te enseñamos en un momento cómo funciona la app.",
     seeTutorial: "Ver tutorial",
-    startWithoutTutorial: "Empezar sin tutorial",
     tour: {
       newRoutine: {
         title: "Crea tus rutinas",
