@@ -33,11 +33,7 @@ import { parseBodyWeightKg } from "@/features/settings/profile-input";
 import { controlHeights, spacing } from "@/constants/theme";
 
 type SetupStep =
-  | "welcome"
-  | "preferences"
-  | "profile"
-  | "notifications"
-  | "done";
+  "welcome" | "preferences" | "profile" | "notifications" | "done";
 
 const STEPS: readonly SetupStep[] = [
   "welcome",
