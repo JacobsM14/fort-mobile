@@ -544,6 +544,41 @@ export function discardWorkout(workoutId: string) {
   db.delete(workouts).where(eq(workouts.id, workoutId)).run();
 }
 
+// The rule finishWorkout follows, for a finished workout left from the
+// history with nothing done (one logged and never filled in, for one). The
+// workout in progress is never touched. Returns whether it was discarded.
+export function discardWorkoutIfEmpty(workoutId: string) {
+  return db.transaction((tx) => {
+    const workout = tx
+      .select({ endedAt: workouts.endedAt })
+      .from(workouts)
+      .where(eq(workouts.id, workoutId))
+      .get();
+    if (workout === undefined || workout.endedAt === null) {
+      return false;
+    }
+    const doneSet = tx
+      .select({ id: workoutSets.id })
+      .from(workoutSets)
+      .where(
+        and(
+          inArray(
+            workoutSets.workoutExerciseId,
+            workoutExerciseIds(tx, workoutId),
+          ),
+          isNotNull(workoutSets.completedAt),
+        ),
+      )
+      .limit(1)
+      .get();
+    if (doneSet !== undefined) {
+      return false;
+    }
+    tx.delete(workouts).where(eq(workouts.id, workoutId)).run();
+    return true;
+  });
+}
+
 // Its sets go with it (cascade).
 export function deleteWorkoutExercise(workoutExerciseId: string) {
   db.delete(workoutExercises)

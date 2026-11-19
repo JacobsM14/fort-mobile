@@ -8,6 +8,7 @@ import {
   routines,
   workoutExercises,
   workouts,
+  workoutSets,
 } from "@/db/schema";
 import { createRoutine } from "@/features/routines/queries";
 
@@ -15,6 +16,9 @@ import {
   countRoutinesWithExercise,
   createExercise,
   deleteExercise,
+  EXERCISE_NAME_MAX_LENGTH,
+  exerciseHasDoneSets,
+  exerciseListQuery,
   toExerciseSummaries,
   updateExercise,
   type ExerciseInput,
@@ -53,10 +57,18 @@ function catalogId(key: string) {
 
 function logWorkoutWith(exerciseId: string) {
   const workoutId = `workout-${exerciseId}`;
+  const workoutExerciseId = `${workoutId}-0`;
   db.insert(workouts).values({ id: workoutId, startedAt: new Date() }).run();
   db.insert(workoutExercises)
-    .values({ id: `${workoutId}-0`, workoutId, exerciseId, position: 0 })
+    .values({ id: workoutExerciseId, workoutId, exerciseId, position: 0 })
     .run();
+  return workoutExerciseId;
+}
+
+function exerciseIdsListed(includeArchived: boolean) {
+  return exerciseListQuery(includeArchived)
+    .all()
+    .map((row) => row.id);
 }
 
 beforeAll(() => {
@@ -79,6 +91,12 @@ describe("createExercise", () => {
       { muscleId: "lats", role: "primary" },
       { muscleId: "biceps", role: "primary" },
     ]);
+  });
+
+  it("cuts a name longer than the limit", () => {
+    const id = createExercise({ ...INPUT, name: "a".repeat(70) });
+
+    expect(getExercise(id)?.name).toHaveLength(EXERCISE_NAME_MAX_LENGTH);
   });
 });
 
@@ -146,6 +164,45 @@ describe("deleteExercise", () => {
     deleteExercise(id);
 
     expect(getExercise(id)?.archivedAt).toBeInstanceOf(Date);
+  });
+});
+
+describe("exerciseListQuery", () => {
+  it("leaves out a deleted exercise unless asked for the archived ones", () => {
+    const id = createExercise(INPUT);
+    logWorkoutWith(id);
+    deleteExercise(id);
+
+    expect(exerciseIdsListed(false)).not.toContain(id);
+    expect(exerciseIdsListed(true)).toContain(id);
+  });
+});
+
+describe("exerciseHasDoneSets", () => {
+  it("is false for an exercise only in routines", () => {
+    const id = createExercise(INPUT);
+    createRoutine({ name: "A", exerciseIds: [id] });
+
+    expect(exerciseHasDoneSets(id)).toBe(false);
+  });
+
+  it("is true only once one of its sets is done", () => {
+    const id = createExercise(INPUT);
+    const workoutExerciseId = logWorkoutWith(id);
+    db.insert(workoutSets)
+      .values({
+        id: `${workoutExerciseId}-set`,
+        workoutExerciseId,
+        position: 0,
+      })
+      .run();
+    expect(exerciseHasDoneSets(id)).toBe(false);
+
+    db.update(workoutSets)
+      .set({ completedAt: new Date() })
+      .where(eq(workoutSets.id, `${workoutExerciseId}-set`))
+      .run();
+    expect(exerciseHasDoneSets(id)).toBe(true);
   });
 });
 

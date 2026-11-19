@@ -7,6 +7,7 @@ import { DayBox } from "@/components/today/day-box";
 import { useFirstWeekday } from "@/hooks/use-first-weekday";
 import { useFocusedPress } from "@/hooks/use-focused-press";
 import { makeStyles } from "@/hooks/use-theme";
+import { useToday } from "@/hooks/use-today";
 import { useTranslation } from "@/i18n";
 
 import { useFirstBodyWeightDay } from "@/features/body/queries";
@@ -43,7 +44,7 @@ export function WeekDays() {
   // Each page is as wide as the row, which is only known once laid out.
   const [width, setWidth] = useState(0);
 
-  const today = new Date();
+  const today = useToday();
   const since = earliestDate([firstWorkoutStart, firstWeighIn]);
   const weeks = weekStartsSince(today, firstWeekday, since).map((start) =>
     getWeekDays(start, firstWeekday),

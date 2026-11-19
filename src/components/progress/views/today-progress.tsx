@@ -9,6 +9,7 @@ import { WorkoutStats } from "@/components/progress/today/workout-stats";
 import { NoContentBox } from "@/components/ui/content/no-content-box";
 
 import { makeStyles } from "@/hooks/use-theme";
+import { useToday } from "@/hooks/use-today";
 import { useTranslation } from "@/i18n";
 
 import {
@@ -32,12 +33,11 @@ export function TodayProgress({ filter }: TodayProgressProps) {
   const { t, language } = useTranslation();
   const styles = useStyles();
 
-  const now = new Date();
-  const day = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const day = useToday();
   const nextDay = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() + 1,
+    day.getFullYear(),
+    day.getMonth(),
+    day.getDate() + 1,
   );
 
   const history = useWorkoutHistory({ from: day, to: nextDay });

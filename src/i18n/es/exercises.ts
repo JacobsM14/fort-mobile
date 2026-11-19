@@ -44,6 +44,8 @@ export const exercisesTexts = {
   exerciseForm: {
     nameLabel: "Nombre",
     trackingLabel: "Tipo de registro",
+    trackingLocked:
+      "Ya tiene series registradas, así que el tipo no se puede cambiar. Para otro tipo, crea un ejercicio nuevo.",
     musclesLabel: "Músculos principales",
     descriptionLabel: "Descripción",
   },

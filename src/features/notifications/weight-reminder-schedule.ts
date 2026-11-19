@@ -1,6 +1,7 @@
 import * as Linking from "expo-linking";
 import { useEffect } from "react";
 
+import { useToday } from "@/hooks/use-today";
 import { useTranslation } from "@/i18n";
 
 import { bodyWeightOnDay, useBodyWeights } from "@/features/body/queries";
@@ -55,7 +56,7 @@ type TodayWeighIn = {
 
 function useWeighedInToday(): TodayWeighIn {
   const { entries, loaded } = useBodyWeights();
-  const todayKey = toDateKey(new Date());
+  const todayKey = toDateKey(useToday());
   return {
     todayKey,
     weighedToday: loaded

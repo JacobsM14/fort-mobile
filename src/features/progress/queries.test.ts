@@ -186,7 +186,7 @@ describe("toTrainedExercises", () => {
     ]);
   });
 
-  it("drops the rows whose exercise has no summary, as archived ones", () => {
+  it("drops the rows whose exercise has no summary", () => {
     const result = toTrainedExercises(
       [
         { exerciseId: "gone", lastTrained: NEWER },

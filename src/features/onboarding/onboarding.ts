@@ -1,4 +1,4 @@
-import { Storage } from "expo-sqlite/kv-store";
+import Storage from "expo-sqlite/kv-store";
 
 // The key is still the one of the onboarding that held the setup and the
 // tutorial together, so whoever finished it doesn't get the setup again.

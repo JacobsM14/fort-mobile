@@ -14,6 +14,7 @@ import { useTranslation } from "@/i18n";
 import {
   countRoutinesWithExercise,
   deleteExercise,
+  exerciseHasDoneSets,
   updateExercise,
   useExerciseList,
   type ExerciseInput,
@@ -32,6 +33,7 @@ export default function EditExerciseScreen() {
   // initial values, and after deleting it the screen still shows it while it
   // closes instead of going blank.
   const [exercise, setExercise] = useState<ExerciseSummary>();
+  const [trackingTypeLocked] = useState(() => exerciseHasDoneSets(id));
 
   // Only user exercises can be edited: catalog ones belong to the app.
   const found = exercises.find(
@@ -91,6 +93,7 @@ export default function EditExerciseScreen() {
           equipment: exercise.equipment,
           primaryMuscles: exercise.primaryMuscles,
         }}
+        trackingTypeLocked={trackingTypeLocked}
         submitLabel={t.editExercise.primaryButton}
         onSubmit={saveExercise}
       />

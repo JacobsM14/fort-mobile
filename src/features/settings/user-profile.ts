@@ -2,6 +2,7 @@ import Storage from "expo-sqlite/kv-store";
 
 import { GENDERS, type Gender } from "@/constants/enums";
 
+import { isDateKey } from "@/utils/date";
 import { isOneOf } from "@/utils/guards";
 
 const HEIGHT_KEY = "user_height_cm";
@@ -25,10 +26,11 @@ export const EMPTY_PROFILE: UserProfile = {
 
 export function loadUserProfile(): UserProfile {
   const height = Number(Storage.getItemSync(HEIGHT_KEY));
+  const birthDate = Storage.getItemSync(BIRTH_DATE_KEY);
   const gender = Storage.getItemSync(GENDER_KEY);
   return {
     heightCm: Number.isFinite(height) && height > 0 ? height : null,
-    birthDate: Storage.getItemSync(BIRTH_DATE_KEY),
+    birthDate: isDateKey(birthDate) ? birthDate : null,
     gender: isOneOf(GENDERS, gender) ? gender : null,
   };
 }

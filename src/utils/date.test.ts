@@ -12,14 +12,15 @@ import {
   isIsoDate,
   isMissedDay,
   lastWeekStarts,
+  msUntilNextDay,
   parseDateKey,
+  startOfDay,
   toDateKey,
   toIso,
   weekEnd,
   weekStartsSince,
 } from "./date";
 
-// expo-localization numbers weekdays from 1 (Sunday).
 const SUNDAY = 1;
 const MONDAY = 2;
 
@@ -180,6 +181,34 @@ describe("formatShortDay", () => {
     const monday = new Date(2026, 9, 19);
     expect(formatShortDay(monday, "es")).toBe("19 oct");
     expect(formatShortDay(monday, "en")).toBe("Oct 19");
+  });
+});
+
+describe("startOfDay", () => {
+  it("keeps the local day and drops the time", () => {
+    expect(startOfDay(new Date(2026, 10, 19, 23, 59, 30))).toEqual(
+      new Date(2026, 10, 19),
+    );
+  });
+});
+
+describe("msUntilNextDay", () => {
+  it("counts up to the next local midnight", () => {
+    expect(msUntilNextDay(new Date(2026, 10, 19, 23, 59, 30))).toBe(30_000);
+  });
+
+  it("is a whole day at midnight itself", () => {
+    const midnight = new Date(2026, 10, 19);
+    expect(midnight.getTime() + msUntilNextDay(midnight)).toBe(
+      new Date(2026, 10, 20).getTime(),
+    );
+  });
+
+  it("rolls over the end of the month and the year", () => {
+    const now = new Date(2026, 11, 31, 12, 0, 0);
+    expect(new Date(now.getTime() + msUntilNextDay(now))).toEqual(
+      new Date(2027, 0, 1),
+    );
   });
 });
 

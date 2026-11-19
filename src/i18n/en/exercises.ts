@@ -53,6 +53,8 @@ export const exercisesTexts: Pick<
   exerciseForm: {
     nameLabel: "Name",
     trackingLabel: "Tracking type",
+    trackingLocked:
+      "It already has logged sets, so its type can't change. For another type, create a new exercise.",
     musclesLabel: "Main muscles",
     descriptionLabel: "Description",
   },

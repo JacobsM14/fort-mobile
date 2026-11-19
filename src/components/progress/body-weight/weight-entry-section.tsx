@@ -3,6 +3,7 @@ import { Alert, StyleSheet, Text, View } from "react-native";
 import { BodyWeightEntry } from "@/components/progress/body-weight/body-weight-entry";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
+import { useToday } from "@/hooks/use-today";
 import { useUnits } from "@/hooks/use-units";
 import { useTranslation } from "@/i18n";
 
@@ -31,14 +32,15 @@ export function WeightEntrySection({
   const { globalStyles } = useTheme();
   const units = useUnits();
   const styles = useStyles();
+  const today = useToday();
 
   // The box starts from the latest weigh-in, whatever the range filtered.
   const latestWeightKg = latestBodyWeightKg(entries);
-  const todayWeight = bodyWeightOnDay(entries, toDateKey(new Date()));
+  const todayWeight = bodyWeightOnDay(entries, toDateKey(today));
 
   function saveWeight(kg: number) {
     try {
-      saveBodyWeight(new Date(), kg);
+      saveBodyWeight(today, kg);
     } catch {
       Alert.alert(t.progress.saveWeightError);
     }
@@ -51,7 +53,7 @@ export function WeightEntrySection({
           {t.progress.registerWeight}
         </Text>
         <Text style={styles.today}>
-          {t.progress.today} · {formatShortDay(new Date(), language)}
+          {t.progress.today} · {formatShortDay(today, language)}
         </Text>
       </View>
       {loaded && (
