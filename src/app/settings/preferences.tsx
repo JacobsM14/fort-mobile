@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { AppIconFields } from "@/components/settings/app-icon-fields";
 import { AppearanceFields } from "@/components/settings/appearance-fields";
 import { Chip } from "@/components/ui/inputs/chip";
 import { SelectField } from "@/components/ui/inputs/select-field";
@@ -33,15 +34,13 @@ export default function PreferencesScreen() {
     setWeightPreference,
     setDistancePreference,
   } = useUnits();
-  // The list is drawn here, outside the ScrollView, so it covers the screen.
+
   const [languageOpen, setLanguageOpen] = useState(false);
   const languageOptions = LANGUAGE_PREFERENCES.map((option) => ({
     value: option,
     label: t.settings.languageOptions[option],
   }));
 
-  // Unit symbols read the same in every language; only "system" is
-  // translated.
   function unitLabel(option: string) {
     return option === "system" ? t.settings.units.system : option;
   }
@@ -99,6 +98,7 @@ export default function PreferencesScreen() {
           </View>
         </View>
         <AppearanceFields />
+        {Platform.OS === "android" && <AppIconFields />}
       </ScrollView>
       <OptionsSheet
         visible={languageOpen}

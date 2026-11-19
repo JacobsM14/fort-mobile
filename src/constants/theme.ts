@@ -34,7 +34,7 @@ const SOFT_ALPHA = "80";
 // The four intensity steps: 25, 50, 75 and 100 %.
 const INTENSITY_ALPHAS = ["40", "80", "BF", "FF"] as const;
 
-const baseColors: Record<ColorScheme, BaseColors> = {
+export const baseColors: Record<ColorScheme, BaseColors> = {
   dark: {
     background: "#0C0C0D",
     backgroundSecondary: "#161618",
@@ -110,6 +110,7 @@ export const fontsJetBrainsMono = {
 };
 
 export const spacing = {
+  xxs: 2,
   xs: 4,
   sm: 12,
   md: 16,

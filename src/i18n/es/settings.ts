@@ -127,6 +127,10 @@ export const settingsTexts = {
         amber: "Ámbar",
       } satisfies Record<AccentColor, string>,
     },
+    appIcon: {
+      label: "Icono de la app",
+      note: "El icono cambia cuando sales de la app.",
+    },
     notifications: {
       enabled: "Recibir notificaciones",
       enabledDescription: "Apágalas para no recibir ninguna",

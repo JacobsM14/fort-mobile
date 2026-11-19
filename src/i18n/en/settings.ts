@@ -121,6 +121,10 @@ export const settingsTexts: Pick<
         amber: "Amber",
       },
     },
+    appIcon: {
+      label: "App icon",
+      note: "The icon changes when you leave the app.",
+    },
     notifications: {
       enabled: "Get notifications",
       enabledDescription: "Turn them off to get none at all",
