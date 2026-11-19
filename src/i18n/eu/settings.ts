@@ -114,6 +114,10 @@ export const settingsTexts: Pick<
         amber: "Anbarra",
       },
     },
+    appIcon: {
+      label: "Aplikazioaren ikonoa",
+      note: "Ikonoa aplikaziotik irtetean aldatzen da.",
+    },
     notifications: {
       enabled: "Jakinarazpenak jaso",
       enabledDescription: "Desaktibatu, bat ere ez jasotzeko",

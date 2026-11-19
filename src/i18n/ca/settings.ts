@@ -111,6 +111,10 @@ export const settingsTexts: Pick<
         amber: "Ambre",
       },
     },
+    appIcon: {
+      label: "Icona de l'app",
+      note: "La icona canvia quan surts de l'app.",
+    },
     notifications: {
       enabled: "Rebre notificacions",
       enabledDescription: "Desactiva-les per no rebre'n cap",

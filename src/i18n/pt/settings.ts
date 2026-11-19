@@ -111,6 +111,10 @@ export const settingsTexts: Pick<
         amber: "Âmbar",
       },
     },
+    appIcon: {
+      label: "Ícone da app",
+      note: "O ícone muda quando sais da app.",
+    },
     notifications: {
       enabled: "Receber notificações",
       enabledDescription: "Desativa-as para não receberes nenhuma",
