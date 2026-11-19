@@ -11,6 +11,7 @@ import { useFocusedPress } from "@/hooks/use-focused-press";
 import { NEW_ROUTINE_ID } from "@/hooks/use-routine-draft";
 import { useStartRoutine } from "@/hooks/use-start-routine";
 import { useTheme } from "@/hooks/use-theme";
+import { useToday } from "@/hooks/use-today";
 import { useTranslation } from "@/i18n";
 
 import { getRoutineMuscleGroups } from "@/features/routines/detail";
@@ -27,6 +28,7 @@ function openWorkout(workoutId: string) {
 export default function TodayScreen() {
   const { t, language } = useTranslation();
   const { globalStyles } = useTheme();
+  const today = useToday();
   const { routines, loaded: routinesLoaded } = useRoutineList();
   const {
     activeWorkout,
@@ -39,8 +41,7 @@ export default function TodayScreen() {
 
   const loaded = routinesLoaded && activeLoaded;
   const activeRoutineId = activeWorkout?.routineId ?? null;
-  // A workout whose routine was deleted while it ran has no routine row, so
-  // it gets its own to be continued from.
+
   const orphanWorkout = routines.some(
     (routine) => routine.id === activeRoutineId,
   )
@@ -56,7 +57,7 @@ export default function TodayScreen() {
     <SafeAreaView style={[globalStyles.screen, styles.screen]} edges={["top"]}>
       <View>
         <Text style={globalStyles.subtitle}>
-          {formatDayHeader(new Date(), language)}
+          {formatDayHeader(today, language)}
         </Text>
         <Text style={globalStyles.title}>{t.today.title}</Text>
       </View>

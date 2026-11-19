@@ -127,6 +127,21 @@ export function isMissedDay(day: Date, trained: boolean, today: Date) {
   return !trained && day < today && day.toDateString() !== today.toDateString();
 }
 
+export function startOfDay(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+// Until the next local midnight. Built from the calendar day, so a day made an
+// hour shorter or longer by a clock change still ends at midnight.
+export function msUntilNextDay(now: Date) {
+  const nextDay = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1,
+  );
+  return nextDay.getTime() - now.getTime();
+}
+
 // Every local day from `from` up to (not including) `to`, newest first.
 export function getDaysBetween(from: Date, to: Date) {
   const days: Date[] = [];
