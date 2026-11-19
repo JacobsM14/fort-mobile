@@ -15,7 +15,6 @@ export const onboardingTexts: Pick<Translations, "onboarding"> = {
     doneMessage:
       "Já podes criar a tua primeira rotina. Se quiseres, mostramos-te num instante como funciona a app.",
     seeTutorial: "Ver o tutorial",
-    startWithoutTutorial: "Começar sem tutorial",
     tour: {
       newRoutine: {
         title: "Cria as tuas rotinas",

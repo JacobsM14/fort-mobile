@@ -5,8 +5,6 @@ import { BodyWeightField } from "@/components/onboarding/body-weight-field";
 import { AppearanceFields } from "@/components/settings/appearance-fields";
 import { NotificationFields } from "@/components/settings/notification-fields";
 import { ProfileFields } from "@/components/settings/profile-fields";
-import { PrimaryButton } from "@/components/ui/buttons/primary-button";
-import { SecondaryButton } from "@/components/ui/buttons/secondary-button";
 import { Chip } from "@/components/ui/inputs/chip";
 
 import { makeStyles, useTheme } from "@/hooks/use-theme";
@@ -21,7 +19,6 @@ import {
 } from "@/constants/enums";
 
 import {
-  controlHeights,
   fontsInstrument,
   fontSizes,
   iconSizes,
@@ -156,12 +153,7 @@ export function NotificationsStep() {
   return <NotificationFields />;
 }
 
-type DoneStepProps = {
-  onSeeTutorial: () => void;
-  onStart: () => void;
-};
-
-export function DoneStep({ onSeeTutorial, onStart }: DoneStepProps) {
+export function DoneStep() {
   const styles = useStyles();
   const { globalStyles } = useTheme();
   const { t } = useTranslation();
@@ -176,18 +168,6 @@ export function DoneStep({ onSeeTutorial, onStart }: DoneStepProps) {
           {t.onboarding.doneTitle}
         </Text>
         <Text style={styles.message}>{t.onboarding.doneMessage}</Text>
-      </View>
-      <View style={styles.doneActions}>
-        <SecondaryButton
-          label={t.onboarding.seeTutorial}
-          onPress={onSeeTutorial}
-          style={styles.doneButton}
-        />
-        <PrimaryButton
-          label={t.onboarding.startWithoutTutorial}
-          onPress={onStart}
-          style={styles.doneButton}
-        />
       </View>
     </View>
   );
@@ -240,13 +220,6 @@ const useStyles = makeStyles(({ colors }) =>
       flex: 1,
       alignItems: "center",
       paddingHorizontal: spacing.xs,
-    },
-    doneActions: {
-      alignSelf: "stretch",
-      gap: spacing.sm,
-    },
-    doneButton: {
-      minHeight: controlHeights.lg,
     },
   }),
 );
