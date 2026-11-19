@@ -34,6 +34,9 @@ export function useStartRoutine(openWorkout: (workoutId: string) => void) {
   }
 
   function start(routine: RoutineSummary) {
+    if (!loaded) {
+      return;
+    }
     if (activeWorkout === undefined) {
       startNewWorkout(routine.id);
     } else if (activeWorkout.routineId === routine.id) {
