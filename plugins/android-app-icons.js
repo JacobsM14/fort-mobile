@@ -42,7 +42,15 @@ function withIconAliases(config, icons) {
 
     // Only the aliases can open the app, so the icon library never disables
     // MainActivity: AppCompat keeps recreating it when it's disabled.
-    const filters = main["intent-filter"];
+    // A prebuild without --clean runs this again on the manifest it already
+    // changed, where only the aliases still have the filters.
+    const filters =
+      main["intent-filter"] ?? app["activity-alias"]?.[0]?.["intent-filter"];
+    if (filters === undefined) {
+      throw new Error(
+        "android-app-icons: no launcher intent filters to give the aliases",
+      );
+    }
     delete main["intent-filter"];
     app["activity-alias"] = aliases.map(({ name, icon }) => ({
       $: {
