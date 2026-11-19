@@ -86,7 +86,8 @@
       [
         "./plugins/android-app-icons",
         { "icons": ["blue", "green", "purple", "pink", "amber"] }
-      ]
+      ],
+      "./plugins/android-optional-portrait"
     ],
     "experiments": {
       "typedRoutes": true,
