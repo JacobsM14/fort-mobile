@@ -293,6 +293,7 @@ Besides that:
 
 ## Acknowledgements
 
+- Shout-out to [Berta Pasamontes](https://www.linkedin.com/in/berta-pasamontes/): she didn't design the app, but she was a big help with everything related to UX/UI.
 - Fonts: [Instrument Sans](https://fonts.google.com/specimen/Instrument+Sans) and [JetBrains Mono](https://www.jetbrains.com/lp/mono/), under the SIL Open Font License 1.1.
 - Icons: [Material Symbols](https://fonts.google.com/icons) (Apache 2.0) on Android and SF Symbols on iOS, through [expo-symbols](https://docs.expo.dev/versions/latest/sdk/symbols/).
 - Body mass index references: the [World Health Organization](https://www.who.int/tools/growth-reference-data-for-5to19-years/indicators/bmi-for-age).
