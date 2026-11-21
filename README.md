@@ -13,11 +13,15 @@
   <img alt="React Native 0.88" src="https://img.shields.io/badge/React%20Native-0.88-61DAFB?logo=react&logoColor=black">
   <img alt="TypeScript strict" src="https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white">
   <img alt="Platform: Android" src="https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white">
-  <img alt="Status: pre-release" src="https://img.shields.io/badge/status-pre--release-FF6A3D">
+  <img alt="Status: released" src="https://img.shields.io/badge/status-released-FF6A3D">
   <img alt="License: all rights reserved" src="https://img.shields.io/badge/license-all%20rights%20reserved-lightgrey">
 </p>
 
-<p align="center"><strong>Coming soon to Google Play.</strong></p>
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=com.marcelesplu.fort"><strong>Get it on Google Play</strong></a>
+  ·
+  <a href="https://fort.marcel14.dev/"><strong>Website</strong></a>
+</p>
 
 <p align="center">
   <img src=".github/screenshots/new-routine.webp" alt="Creating a routine" width="200">
@@ -320,6 +324,7 @@ Being able to read the source code doesn't grant any license to copy, modify or 
 **Marcel Esplugas**
 
 - Portfolio: [marcel14.dev](https://marcel14.dev/)
+- Fort: [website](https://fort.marcel14.dev/) and [Google Play](https://play.google.com/store/apps/details?id=com.marcelesplu.fort)
 - GitHub: [@JacobsM14](https://github.com/JacobsM14)
 - LinkedIn: [m-esplugas](https://www.linkedin.com/in/m-esplugas)
 - Email: [contact.marcelesplu@gmail.com](mailto:contact.marcelesplu@gmail.com)
